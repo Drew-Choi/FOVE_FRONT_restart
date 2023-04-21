@@ -218,6 +218,85 @@ export default function Detail_OrderMenu_client({
   // 로그인 여부 확인 - 장바구니 담기, 바로 구매 가능 여부 판단
   const isLogin = useSelector((state) => state.user.isLogin);
 
+  //상품 사이즈 첵
+  const [sizeCheck, setSizeCheck] = useState('');
+  const [onOS, setOnOS] = useState('');
+  const [onS, setOnS] = useState('');
+  const [onM, setOnM] = useState('');
+  const [onL, setOnL] = useState('');
+
+  const handle = (e) => {
+    if (e.target.value === 'OS') {
+      setOnOS('on');
+      setSizeCheck('OS');
+    } else {
+      setOnOS('');
+    }
+
+    if (e.target.value === 'S') {
+      setOnS('on');
+      setSizeCheck('S');
+    } else {
+      setOnS('');
+    }
+
+    if (e.target.value === 'M') {
+      setOnM('on');
+      setSizeCheck('M');
+    } else {
+      setOnM('');
+    }
+
+    if (e.target.value === 'L') {
+      setOnL('on');
+      setSizeCheck('L');
+    } else {
+      setOnL('');
+    }
+  };
+
+  //상품재고에 따라 첫 사이즈 선택을 가능하게 하는 것
+  const sizeFistChecked = async () => {
+    const sizeArr = Object.entries(datas.size).map(([key, value]) => ({
+      size: key,
+      stock: value,
+    }));
+    const sizeFilter = await sizeArr.filter((el) => el.stock !== 0);
+    setSizeCheck((cur) => sizeFilter[0].size);
+  };
+
+  //화면이 마운트되면 바로 초기 사이즈첵의 값을 재고에 따라 잡아준다.
+  useEffect(() => {
+    sizeFistChecked();
+  }, []);
+
+  //이후 UI의 초기 사이즈 값을 설정 할 수 있도록 잡아준다. 이건 sizeCheck이 변경할 때마다 값을 가지게 조건부를 준다.
+  useEffect(() => {
+    if (sizeCheck === 'OS') {
+      setOnOS('on');
+    } else {
+      setOnOS('');
+    }
+
+    if (sizeCheck === 'S') {
+      setOnS('on');
+    } else {
+      setOnS('');
+    }
+
+    if (sizeCheck === 'M') {
+      setOnM('on');
+    } else {
+      setOnM('');
+    }
+
+    if (sizeCheck === 'L') {
+      setOnL('on');
+    } else {
+      setOnL('');
+    }
+  }, [sizeCheck]);
+
   //카트에 추가하는 Post 요청
   const addToCart = async () => {
     // 로그인 상태가 아니면, 로그인 페이지로 이동
@@ -328,43 +407,6 @@ export default function Detail_OrderMenu_client({
 
   const handleCloseModa2 = () => {
     setBeanieSizeOn(false);
-  };
-
-  //상품 사이즈 첵
-  const [sizeCheck, setSizeCheck] = useState('');
-  const [onOS, setOnOS] = useState('on');
-  const [onS, setOnS] = useState('');
-  const [onM, setOnM] = useState('');
-  const [onL, setOnL] = useState('');
-
-  const handle = (e) => {
-    if (e.target.value === 'OS') {
-      setOnOS('on');
-      setSizeCheck('OS');
-    } else {
-      setOnOS('');
-    }
-
-    if (e.target.value === 'S') {
-      setOnS('on');
-      setSizeCheck('S');
-    } else {
-      setOnS('');
-    }
-
-    if (e.target.value === 'M') {
-      setOnM('on');
-      setSizeCheck('M');
-    } else {
-      setOnM('');
-    }
-
-    if (e.target.value === 'L') {
-      setOnL('on');
-      setSizeCheck('L');
-    } else {
-      setOnL('');
-    }
   };
 
   return (

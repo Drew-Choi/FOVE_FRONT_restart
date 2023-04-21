@@ -23,6 +23,7 @@ export default function Intro_movie_client() {
         playing={play}
         muted={true}
         loop={play}
+        volume={0}
       />
       ;
     </section>
