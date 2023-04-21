@@ -262,9 +262,9 @@ export default function CartModal({ className }) {
           // 이곳에서 'products' 속성을 사용하는 코드 작성
           dispatch(update(downData.data.userCart));
         }
-        console.log('성공');
+        downData.data.message;
       } else {
-        console.log('실패');
+        downData.data.message;
       }
     } catch (err) {
       dispatch(update(null));
@@ -280,9 +280,9 @@ export default function CartModal({ className }) {
       );
       if (upData.status === 200) {
         dispatch(update(upData.data.userCart));
-        console.log('성공');
+        upData.data.message;
       } else {
-        console.log('실패');
+        upData.data.message;
       }
     } catch (err) {
       console.error(err);
@@ -297,9 +297,9 @@ export default function CartModal({ className }) {
       );
       if (deleteID.status === 200) {
         dispatch(update(deleteID.data.updatedCart));
-        console.log('성공');
+        deleteID.data.message;
       } else {
-        console.log('실패');
+        deleteID.data.message;
       }
     } catch (err) {
       console.error(err);
@@ -322,11 +322,10 @@ export default function CartModal({ className }) {
         `http://localhost:4000/cart/clean/${userID}`,
       );
       if (allRemoveCart.status === 200) {
-        // dispatch(update(allRemoveCart.data.updatedCart));
-        console.log('성공');
         dispatch(update(allRemoveCart.data.userCart));
+        allRemoveCart.data.message;
       } else {
-        console.log('실패');
+        allRemoveCart.data.message;
       }
     } catch (err) {
       console.error(err);
@@ -356,7 +355,13 @@ export default function CartModal({ className }) {
           <UnitSum>Total:&nbsp;&nbsp;&nbsp;₩</UnitSum>
           <UnitSumNum>{frontPriceComma(unitSum(cartProducts))}</UnitSumNum>
           <UnitSum>/ {sumQuantity(cartProducts)} ea</UnitSum>
-          <AllRemove onClick={allRemove}>All Remove</AllRemove>
+          <AllRemove
+            onClick={() => {
+              allRemove();
+            }}
+          >
+            All Remove
+          </AllRemove>
           <BTN_black_nomal_comp
             className="cart_Btn"
             fontSize="12px"
@@ -386,12 +391,26 @@ export default function CartModal({ className }) {
               <Line1></Line1>
               <Line2></Line2>
               <Line3></Line3>
-              <Pd_miners onClick={() => minersCartItem(el._id)}>-</Pd_miners>
+              <Pd_miners
+                onClick={() => {
+                  minersCartItem(el._id);
+                }}
+              >
+                -
+              </Pd_miners>
               <Pd_count>{el.quantity}</Pd_count>
-              <Pd_plus onClick={() => plusCartItem(el._id)}>+</Pd_plus>
+              <Pd_plus
+                onClick={() => {
+                  plusCartItem(el._id);
+                }}
+              >
+                +
+              </Pd_plus>
             </Pd_quantity_contain>
             <RemoveIcon
-              onClick={() => deletePD(el._id)}
+              onClick={() => {
+                deletePD(el._id);
+              }}
               className="material-symbols-outlined"
             >
               remove

@@ -50,16 +50,6 @@ export default function Store_client() {
     });
   };
 
-  //상품데이터 db에서 가져오기
-  useEffect(() => {
-    getAllProducts();
-    // getFit();
-  }, []);
-
-  useEffect(() => {
-    searchProducts(searchText);
-  }, [searchText]);
-
   //엑시오스로 모든 상품 정보 요청
   const getAllProducts = async () => {
     const productsData = await axios.get('http://localhost:4000/store/all');
@@ -72,7 +62,15 @@ export default function Store_client() {
     }
   };
 
-  console.log(pd_Datas);
+  //상품데이터 db에서 가져오기
+  useEffect(() => {
+    getAllProducts();
+    // getFit();
+  }, []);
+
+  useEffect(() => {
+    searchProducts(searchText);
+  }, [searchText]);
 
   //db Number타입을 스트링으로 바꾸고 천단위 컴마 찍어 프론트에 보내기
   const country = navigator.language;

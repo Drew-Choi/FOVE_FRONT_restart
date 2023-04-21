@@ -321,9 +321,7 @@ export default function Detail_OrderMenu_client({
       );
       if (reqData.status === 200) {
         updateCart();
-        console.log('성공');
       } else {
-        console.error(reqData.status);
         console.log(reqData.data.message);
       }
     } catch (err) {
@@ -339,10 +337,8 @@ export default function Detail_OrderMenu_client({
       );
       if (reqUpdat.status === 200) {
         dispatch(add(reqUpdat.data));
-        console.log('성공');
       } else {
-        console.error(reqUpdat.status);
-        console.log(reqUpdat.data.message);
+        reqUpdat.data.message;
       }
     } catch (err) {
       console.error(err);

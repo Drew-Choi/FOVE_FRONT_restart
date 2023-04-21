@@ -8,6 +8,7 @@ export default function Select_Custom({
   classNameOption,
   classNameDiv,
   name,
+  selectedEvent,
 }) {
   return (
     <div className={classNameDiv}>
@@ -20,7 +21,12 @@ export default function Select_Custom({
         name={name}
       >
         {selectList.map((el) => (
-          <option className={classNameOption} value={el} key={el}>
+          <option
+            className={classNameOption}
+            value={el}
+            key={el}
+            selected={el === selectedEvent}
+          >
             {el}
           </option>
         ))}

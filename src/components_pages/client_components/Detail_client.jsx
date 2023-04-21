@@ -27,8 +27,6 @@ export default function Detail_client() {
     }
   };
 
-  console.log(productData);
-
   const navigate = useNavigate();
 
   return (

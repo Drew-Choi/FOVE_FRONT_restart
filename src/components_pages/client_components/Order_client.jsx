@@ -3,8 +3,6 @@ import '../../styles/order_client.scss';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
-import RadioGroup from '../../components_elements/RadioGroup';
-import RadioEl_frontDot from '../../components_elements/RadioEl_frontDot';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Select_Custom from '../../components_elements/Select_Custom';
 import TextArea_Custom from '../../components_elements/TextArea_Custom';
@@ -189,11 +187,15 @@ export default function Order_client() {
   }, [toggleModal]);
 
   //배송지 주소 가져오기
-  const defaultAdd = useRef();
   const [addData, setAddData] = useState([]);
+  //넘버 가르기
+  const [splitPhoneNum, setSplitPhoneNum] = useState([]);
 
-  //디폴트 주소만 거르기
-  const filteredAdd = addData.filter((addData) => addData.isDefault === true);
+  //기본베송지 체크 값 체크
+  const [selectedOption, setSelectedOption] = useState('defaultAddress');
+  const handleOptionChange = (e) => {
+    setSelectedOption(e.target.value);
+  };
 
   const defaultAddGet = async () => {
     try {
@@ -205,19 +207,27 @@ export default function Order_client() {
       );
 
       if (resAddressAll.status === 200) {
-        // let copy = [...resAddressAll.data.myAddresses];
-        // copy = [resAddressAll.data.myAddresses];
-        // await setData(copy);
-        await setAddData(resAddressAll.data.myAddresses);
+        let copy = [...resAddressAll.data.myAddresses];
+        setAddData((cur) => copy);
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
   useEffect(() => {
     defaultAddGet();
   }, []);
+
+  useEffect(() => {
+    if (addData.length > 0) {
+      setSplitPhoneNum([...addData[0].recipientPhone.split('-')]);
+    }
+  }, [addData]);
+
+  const addressRest = () => {
+    return null;
+  };
 
   return (
     <div className="order_main">
@@ -324,19 +334,27 @@ export default function Order_client() {
           <div className="sangAh">
             <p className="ship_input_title">배송 정보</p>
             <div className="ship_info_input_container">
-              <RadioGroup classNameRadio="adressCheck">
-                <RadioEl_frontDot
-                  value="false"
-                  inputref={defaultAdd}
-                  checkedEvent="true"
-                  name="adressbooks"
-                >
+              <div className="adressCheck">
+                <label>
+                  <input
+                    type="radio"
+                    value="defaultAddress"
+                    checked={selectedOption === 'defaultAddress'}
+                    onChange={handleOptionChange}
+                  />
                   &ensp;회원 정보와 동일 &ensp;&ensp; &ensp;
-                </RadioEl_frontDot>
-                <RadioEl_frontDot name="adressbooks">
+                </label>
+
+                <label>
+                  <input
+                    type="radio"
+                    value="newAddress"
+                    checked={selectedOption === 'newAddress'}
+                    onChange={handleOptionChange}
+                  />
                   &ensp;새로운 배송지
-                </RadioEl_frontDot>
-              </RadioGroup>
+                </label>
+              </div>
               <button className="adressBook">주소록 보기</button>
               <p>*필수입력사항</p>
             </div>
@@ -348,6 +366,11 @@ export default function Order_client() {
                 className="b"
                 type="text"
                 placeholder="받으시는 분"
+                value={
+                  selectedOption === 'defaultAddress' && addData.length > 0
+                    ? addData[0].recipient
+                    : ''
+                }
               />
               <div>
                 <div>
@@ -356,11 +379,19 @@ export default function Order_client() {
                       ref={recipientZipcode}
                       className="address b"
                       type="text"
-                      value={addressData.zonecode}
+                      value={
+                        selectedOption === 'defaultAddress' &&
+                        addData.length > 0
+                          ? addData[0].zipCode
+                          : addressData.zonecode
+                      }
                       placeholder="우편번호*"
                       disabled
                     />
-                    <button onClick={handle.clickButton} className="postCode">
+                    <button
+                      onClick={() => handle.clickButton()}
+                      className="postCode"
+                    >
                       주소 찾기
                     </button>
                     {openPostcode && (
@@ -379,7 +410,12 @@ export default function Order_client() {
                       ref={recipientAddress}
                       className="b"
                       type="text"
-                      value={addressData.address}
+                      value={
+                        selectedOption === 'defaultAddress' &&
+                        addData.length > 0
+                          ? addData[0].address
+                          : addressData.address
+                      }
                       placeholder="주소*"
                       disabled
                     />
@@ -390,7 +426,12 @@ export default function Order_client() {
                       ref={recipientAddressDetail}
                       className="b"
                       type="text"
-                      value={addressData.buildingName}
+                      value={
+                        selectedOption === 'defaultAddress' &&
+                        addData.length > 0
+                          ? addData[0].addressDetail
+                          : addressData.buildingName
+                      }
                       placeholder="나머지주소 (선택입력)"
                       onChange={handleChange}
                     />
@@ -402,6 +443,11 @@ export default function Order_client() {
                     inputRef={phoneCode}
                     classNameSelect="select_group2 phonNum"
                     selectList={selectList_celPhone}
+                    selectedEvent={
+                      selectedOption === 'defaultAddress' && addData.length > 0
+                        ? splitPhoneNum[0]
+                        : ''
+                    }
                   />
                   <p className="numMiners">-</p>
                   <input
@@ -411,6 +457,11 @@ export default function Order_client() {
                     placeholder="휴대폰"
                     maxLength="4"
                     pattern="[0-9]{4}"
+                    value={
+                      selectedOption === 'defaultAddress' && addData.length > 0
+                        ? splitPhoneNum[1]
+                        : ''
+                    }
                   />
                   <p className="numMiners">-</p>
                   <input
@@ -419,6 +470,11 @@ export default function Order_client() {
                     type="tel"
                     maxLength="4"
                     pattern="[0-9]{4}"
+                    value={
+                      selectedOption === 'defaultAddress' && addData.length > 0
+                        ? splitPhoneNum[2]
+                        : ''
+                    }
                   />
                 </div>
 

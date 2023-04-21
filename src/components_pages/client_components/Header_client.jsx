@@ -14,38 +14,43 @@ import { searchinput } from '../../store/modules/search';
 export default function Header_client() {
   const excludeRef = useRef(null);
   const searchBTN = useRef();
-  const isAdmin = useSelector((state) => state.user.isAdmin);
-  const isLogin = useSelector((state) => state.user.isLogin);
-  const menuClicked = useSelector((state) => state.menuAccount.clicked);
+
   const navigate = useNavigate();
 
   //리덕스 디스패치(액션함수 전달용)
   const dispatch = useDispatch();
-  //상품정보 state
-  const cartLength = useSelector((state) =>
-    state.cart.cartProductsLength === 0 ? 0 : state.cart.cartProductsLength,
-  );
+  //모달을 위한 state
+  const offonKey = useSelector((state) => state.cartmodal.offon);
+  const menuClicked = useSelector((state) => state.menuAccount.clicked);
   //유저정보 state
-  const userID = useSelector((state) =>
-    state.user.userID === 0 ? 0 : state.user.userID,
-  );
+  const userData = useSelector((state) => (state.user === 0 ? 0 : state.user));
+  //상품정보 state
+  const cartInfo = useSelector((state) => (state.cart === 0 ? 0 : state.cart));
 
   const location = useLocation();
   const currentURL = location.pathname;
 
   const cartDataReq = async () => {
-    try {
-      const cartDataGet = await axios.post(
-        `http://localhost:4000/cart/list/${userID}`,
-      );
-      if (cartDataGet.status === 200) {
-        await dispatch(importdb(cartDataGet.data));
-      } else {
-        console.error(cartDataGet.status);
-        console.log(cartDataGet.data.message);
+    if (!userData.userID) {
+      let nullCart = {
+        products: [],
+        cartQuantity: 0,
+      };
+      dispatch(importdb(nullCart));
+    } else {
+      try {
+        const cartDataGet = await axios.post(
+          `http://localhost:4000/cart/list/${userData.userID}`,
+        );
+        if (cartDataGet.status === 200) {
+          dispatch(importdb(cartDataGet.data));
+        } else {
+          console.error(cartDataGet.status);
+          console.log(cartDataGet.data.message);
+        }
+      } catch (err) {
+        console.error(err);
       }
-    } catch (err) {
-      console.error(err);
     }
   };
 
@@ -53,12 +58,9 @@ export default function Header_client() {
     cartDataReq();
   });
 
-  //모달을 위한 state
-  const offonKey = useSelector((state) => state.cartmodal.offon);
-
   // 장바구니 버튼(Shopping Bag) - 로그인 상태에서 사용 가능하게
   const clickShoppingBag = () => {
-    if (!isLogin) {
+    if (!userData.isLogin) {
       alert('로그인이 필요한 서비스입니다.');
       return navigate(`/login`);
     }
@@ -67,8 +69,6 @@ export default function Header_client() {
 
   //서칭용 상태관리
   const [searchOnOff, setSearchOnOff] = useState('off');
-  //인풋값 담기
-  const [searchText, setSearchText] = useState('');
   //검색창에 검색 안할떄
   const [empty, setEmpty] = useState('상품검색');
 
@@ -83,9 +83,6 @@ export default function Header_client() {
         searchBTN.current.click();
         e.target.value = '';
       }
-
-      // setSearchText(e.target.value);
-      // navigate(`/store?keyword=${searchText}`);
     }
   };
 
@@ -121,7 +118,7 @@ export default function Header_client() {
         </p>
 
         {/* 관리자 페이지 이동 버튼 */}
-        {isAdmin && (
+        {userData.isAdmin && (
           <button onClick={() => navigate('/admin')}>👩‍💻 관리자 페이지</button>
         )}
 
@@ -163,7 +160,7 @@ export default function Header_client() {
             )}
           </li>
           <li id="cate_li2">
-            {isLogin ? (
+            {userData.isLogin ? (
               <p
                 onClick={() => {
                   dispatch(clickMenu());
@@ -182,7 +179,12 @@ export default function Header_client() {
             )}
           </li>
           <li id="cate_li2_shopbag">
-            <p onClick={clickShoppingBag}>SHOPPING BAG / {cartLength}</p>
+            <p onClick={clickShoppingBag}>
+              SHOPPING BAG /{' '}
+              {!cartInfo.cartProductsLength || cartInfo.cartProductsLength === 0
+                ? 0
+                : cartInfo.cartProductsLength}
+            </p>
             {/* 0 이라는 숫자 장바구니에 넣을 때 올라가야 함 */}
           </li>
         </ul>
