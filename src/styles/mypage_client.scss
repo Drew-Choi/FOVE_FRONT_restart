@@ -1,0 +1,198 @@
+.titleArea {
+  width: 100%;
+  text-align: center;
+
+  h2 {
+    font-weight: bold;
+    font-size: 14px;
+  }
+}
+
+.account_wrap {
+  position: absolute;
+  display: flex;
+  width: 1200px;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0px 70px 70px 70px;
+  margin-left: 250px;
+}
+
+.information {
+    display: flex;
+    padding: 7px 0;
+    width: 100%;
+    border: 1px solid rgb(36, 35, 35);
+    margin-bottom: 30px;
+
+    .thumbnail {
+      margin: 30px 80px;
+
+      .thumbnail > img {
+        width: 200px;
+        height: auto;
+      }
+    }
+}
+
+.description {
+  margin: auto;
+  padding-right: 350px;
+
+span {
+  font-size: 13px;
+}
+
+.namegrade {
+  font-weight: bold;
+}
+
+.price {
+  font-weight: bold;
+}
+
+.percent {
+  font-weight: bold;
+}
+}
+
+.orderstate_box {
+  display: table;
+  table-layout:fixed;
+  padding: 20px 20px 0px 20px;
+  width: 100%;
+  border: 1px solid black; 
+  flex-direction: column; 
+  margin-bottom: 30px;
+
+    h3 {
+      font-size: 14px;
+      font-weight: 600;
+      padding-bottom: 10px;
+
+      span {
+        font-size: 12px;
+        font-weight: 300;
+      }
+    }
+
+    .title_order {
+      border-bottom: 1px solid black;
+      margin-bottom: 3px;
+    }
+
+  }
+
+
+  .order {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+    padding: 10px;
+
+    li {
+      font-size: 13px;
+      margin: auto;
+      list-style: none;
+      list-style-type: none;
+
+      a {
+        margin: auto;
+        text-decoration: none;
+        color: black;
+
+        #count {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+    
+    #count {
+      display: flex;
+      justify-content: flex-start; 
+    }
+  }
+
+  .csbox {
+
+  .cs {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 10px;
+    
+    li {
+      list-style: none;
+      list-style-type: none;
+      font-size: 13px;
+      margin: -5px 0 -5px 0;
+
+      a {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        text-decoration: none;
+        color: black;
+
+        #count {
+          margin-left: 150px;
+        }
+      }
+    }
+  }
+}
+
+  .fourbox {
+    display: flex;
+    justify-content: space-between;
+    border: 2px;
+    padding-bottom: 150px;
+
+
+    .shopmain_order {
+      width: 510px;
+      height: 80px;
+      font-size: 14px;
+      margin-bottom: 30px;
+      text-align: center;
+      padding-top: 10px;
+      border: 1px black solid;
+      cursor: pointer;
+    }
+
+    .shopmain_profile {
+      width: 510px;
+      height: 80px;
+      font-size: 14px;
+      margin-bottom: 30px;
+      text-align: center;
+      padding-top: 10px;
+      border: 1px black solid;
+      cursor: pointer;
+    }
+
+    .shopmain_address {
+      width: 510px;
+      height: 80px;
+      font-size: 14px;
+      margin-bottom: 30px;
+      text-align: center;
+      padding-top: 10px;
+      border: 1px black solid;
+      cursor: pointer;
+    }
+
+    .shopmain_mypick {
+      width: 510px;
+      height: 80px;
+      font-size: 14px;
+      margin-bottom: 30px;
+      text-align: center;
+      padding-top: 10px;
+      border: 1px black solid;
+      cursor: pointer;
+    }
+  }

@@ -1,0 +1,163 @@
+.register_client {
+  position: relative;
+  top: 130px;
+  width: 710px;
+  margin: 0 auto;
+  text-align: center;
+
+  // height: 100%; // footer fixed 돼서 생기는 스크롤 안 생기는 문제 일시적 해결 -> 나중에 빼기
+
+  .register_title {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .register_text {
+    font-size: 13px;
+    text-align: left;
+    margin-bottom: 5px;
+  }
+
+  .register_input {
+    width: 700px;
+    height: 40px;
+    padding: 10px;
+  }
+
+  .register_input.id {
+    width: 600px;
+    padding: 10px;
+  }
+
+  .register_btn_small {
+    width: 100px;
+    height: 40px;
+    color: black;
+    background-color: white;
+    border: 1px solid black;
+
+    &:hover {
+      border: 3px solid black;
+    }
+  }
+
+  .register_btn {
+    width: 350px;
+    height: 40px;
+    color: white;
+    background-color: black;
+    border: 1px solid black;
+    border-radius: 50px;
+    // box-shadow: 5px 5px 5px lightgray;
+    font-weight: 600;
+    transition: 0.3s all;
+
+    &:hover {
+      // color: black;
+      background-color: rgb(158, 158, 158);
+    }
+  }
+
+  .register_btn.white {
+    color: black;
+    background-color: white;
+    transition: 0.3s all;
+
+    &:hover {
+      color: white;
+      background-color: rgb(158, 158, 158);
+    }
+  }
+
+  .code_btn_container{
+    display: flex;
+    flex-wrap: nowrap;
+    margin-bottom: 20px;
+
+    .address {
+      flex: 2;
+    }
+    .postCode {
+      flex: 1;
+      position: relative;
+      padding: 0px;
+      height: 35px;
+      border: 1px solid black;
+      background-color: white;
+      color: rgb(118, 118, 118);
+      margin-left: 10px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      &:hover {
+        background-color: #6c6c6c7a;
+        color: black;
+      }
+    }
+  }
+
+  .adress_detail{
+    display: flex;
+    flex-wrap: nowrap;
+    .adress_detail_input{
+      position: relative;
+        font-size: 13px;
+        margin-bottom: 20px;
+        width: 50vw;
+        height: 35px;
+        // border: 1px solid black;
+        padding: 0px 10px;
+    }
+    }
+
+    .adress_detail2{
+      display: flex;
+      flex-wrap: nowrap;
+
+      .adress_detail2_input{
+        position: relative;
+          font-size: 13px;
+          margin-bottom: 20px;
+          width: 50vw;
+          height: 35px;
+          // border: 1px solid black;
+          padding: 0px 10px;
+      }
+    }
+
+    .phonNum_contain {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr 20px 1fr 20px 1fr;
+        grid-template-rows: 1fr;
+        gap: 10px;
+
+        .phonNum {
+          font-size: 13px;
+          width: 100%;
+          height: 30px
+        }
+
+        .phonNum.last {
+        padding: 2px !important;
+        }
+
+        .numMiners {
+          position: relative;
+          top: 3px;
+          text-align: center;
+        }
+        .select_group2 {
+          width: 100%;
+          position: relative;
+          font-size: 13px;
+          padding: 6px 0px;
+          border: 1px solid black;
+          bottom: 15px;
+        }
+        .phonNum.mid {
+        padding: 2px !important;
+        }
+      }
+}
