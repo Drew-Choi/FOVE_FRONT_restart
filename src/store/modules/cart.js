@@ -27,11 +27,11 @@ export function add(data, total) {
   };
 }
 
-export function update(data) {
+export function update(data, total) {
   // 바깥에서 정보를 받아와야.
   return {
     type: UPDATE,
-    payload: data,
+    payload: { data, total },
   };
 }
 
@@ -60,8 +60,8 @@ export default function cart(state = initState, action) {
     case UPDATE:
       return {
         ...state,
-        cartProducts: action.payload.products,
-        cartProductsLength: action.payload.products.cartQuantity,
+        cartProducts: action.payload.data,
+        cartProductsLength: action.payload.total,
       };
     case RESET:
       return {

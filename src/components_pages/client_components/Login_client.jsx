@@ -1,10 +1,9 @@
 import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../../store/modules/user';
 import '../../styles/login_client.scss';
-import { importdb } from '../../store/modules/cart';
 
 export default function Login_client() {
   const loginbtn = useRef();
@@ -31,23 +30,6 @@ export default function Login_client() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // const cartDataReq = async (parmas) => {
-  //   try {
-  //     const cartDataGet = await axios.post(
-  //       `http://localhost:4000/cart/list/${parmas}`,
-  //     );
-  //     console.log(userID);
-  //     if (cartDataGet.status === 200) {
-  //       await dispatch(importdb(cartDataGet.data.product));
-  //     } else {
-  //       console.error(cartDataGet.status);
-  //       console.log(cartDataGet.data.message);
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
 
   // LOG IN 버튼
   const loginUser = async () => {
@@ -117,19 +99,18 @@ export default function Login_client() {
       </button>
       <br />
       <button className="login_btn white" onClick={() => navigate(`/register`)}>
-        {/* <Link to="/register" style={{ textDecoration: 'none', color: 'black' }}> */}
-        Create Account
-        {/* </Link> */}
+        <Link to="/register" style={{ textDecoration: 'none', color: 'black' }}>
+          Create Account
+        </Link>
       </button>
-      {/* <br />
+      <br />
       <button className="login_kakao">
-        <Link to="" style={{ textDecoration: 'none', color: '#3a1d1d' }}>
+        <Link to="#" style={{ textDecoration: 'none', color: '#3a1d1d' }}>
           카카오 계정으로 로그인
         </Link>
-      </button> */}
+        {/* // fontawesome 카카오 아이콘 코드 */}
+        {/* <i class="fa-solid fa-comment" style="color: #3a1d1d;"></i>; */}
+      </button>
     </div>
   );
 }
-
-// fontawesome 카카오 아이콘 코드
-// <i class="fa-solid fa-comment" style="color: #3a1d1d;"></i>

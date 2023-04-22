@@ -241,8 +241,8 @@ export default function CartModal({ className }) {
 
   //리덕스
   //상품정보 state
-  const cartProducts = useSelector((state) =>
-    !state.cart.cartProducts ? [] : state.cart.cartProducts,
+  const cartInfo = useSelector((state) =>
+    !state.cart.cartProducts ? [] : state.cart,
   );
 
   //유저정보 state
@@ -260,14 +260,15 @@ export default function CartModal({ className }) {
         if (downData.data && downData.data.userCart) {
           // 'cartObj' 객체가 null이 아니고 'products' 속성이 존재하는 경우에만 실행
           // 이곳에서 'products' 속성을 사용하는 코드 작성
-          dispatch(update(downData.data.userCart));
+          const datas = downData.data.userCart.products;
+          const totalQuantity = datas.reduce((sum, el) => sum + el.quantity, 0);
+          dispatch(update(datas, totalQuantity));
         }
         downData.data.message;
       } else {
         downData.data.message;
       }
     } catch (err) {
-      dispatch(update(null));
       console.error(err);
     }
   };
@@ -279,7 +280,13 @@ export default function CartModal({ className }) {
         `http://localhost:4000/cart/qtyplus/${userID}/${identity_id}`,
       );
       if (upData.status === 200) {
-        dispatch(update(upData.data.userCart));
+        if (upData.data && upData.data.userCart) {
+          // 'cartObj' 객체가 null이 아니고 'products' 속성이 존재하는 경우에만 실행
+          // 이곳에서 'products' 속성을 사용하는 코드 작성
+          const datas = upData.data.userCart.products;
+          const totalQuantity = datas.reduce((sum, el) => sum + el.quantity, 0);
+          dispatch(update(datas, totalQuantity));
+        }
         upData.data.message;
       } else {
         upData.data.message;
@@ -295,8 +302,15 @@ export default function CartModal({ className }) {
       const deleteID = await axios.post(
         `http://localhost:4000/cart/remove/${userID}/${identity_id}`,
       );
+      console.log(deleteID.data);
       if (deleteID.status === 200) {
-        dispatch(update(deleteID.data.updatedCart));
+        if (deleteID.data && deleteID.data.updatedCart) {
+          // 'cartObj' 객체가 null이 아니고 'products' 속성이 존재하는 경우에만 실행
+          // 이곳에서 'products' 속성을 사용하는 코드 작성
+          const datas = deleteID.data.updatedCart.products;
+          const totalQuantity = datas.reduce((sum, el) => sum + el.quantity, 0);
+          await dispatch(update(datas, totalQuantity));
+        }
         deleteID.data.message;
       } else {
         deleteID.data.message;
@@ -306,15 +320,6 @@ export default function CartModal({ className }) {
     }
   };
 
-  //카트 함에 담긴 물품들 합산
-  const unitSum = (el) => {
-    let sum = 0;
-    for (let i = 0; i < el.length; i += 1) {
-      sum += el[i].unitSumPrice;
-    }
-    return sum;
-  };
-
   //전체 삭제(카트 비움)
   const allRemove = async () => {
     try {
@@ -322,7 +327,13 @@ export default function CartModal({ className }) {
         `http://localhost:4000/cart/clean/${userID}`,
       );
       if (allRemoveCart.status === 200) {
-        dispatch(update(allRemoveCart.data.userCart));
+        if (allRemoveCart.data && allRemoveCart.data.userCart) {
+          // 'cartObj' 객체가 null이 아니고 'products' 속성이 존재하는 경우에만 실행
+          // 이곳에서 'products' 속성을 사용하는 코드 작성
+          const datas = allRemoveCart.data.userCart.products;
+          const totalQuantity = datas.reduce((sum, el) => sum + el.quantity, 0);
+          dispatch(update(datas, totalQuantity));
+        }
         allRemoveCart.data.message;
       } else {
         allRemoveCart.data.message;
@@ -334,10 +345,17 @@ export default function CartModal({ className }) {
 
   const navigate = useNavigate();
 
-  const sumQuantity = (data) => {
-    let sum = 0;
-    data.map((el) => (sum += el.quantity));
-    return sum;
+  //카트 함에 담긴 물품들 합산
+  const unitSum = (el) => {
+    if (!el) {
+      return <></>;
+    } else {
+      let sum = 0;
+      for (let i = 0; i < el.length; i += 1) {
+        sum += el[i].unitSumPrice;
+      }
+      return sum;
+    }
   };
 
   return (
@@ -353,8 +371,10 @@ export default function CartModal({ className }) {
         </CloseIcon>
         <ExtraTextContainer>
           <UnitSum>Total:&nbsp;&nbsp;&nbsp;₩</UnitSum>
-          <UnitSumNum>{frontPriceComma(unitSum(cartProducts))}</UnitSumNum>
-          <UnitSum>/ {sumQuantity(cartProducts)} ea</UnitSum>
+          <UnitSumNum>
+            {frontPriceComma(unitSum(cartInfo.cartProducts))}
+          </UnitSumNum>
+          <UnitSum>/ {cartInfo.cartProductsLength} ea</UnitSum>
           <AllRemove
             onClick={() => {
               allRemove();
@@ -368,7 +388,7 @@ export default function CartModal({ className }) {
             transFontSize="10px"
             padding="7px 30px"
             onClickEvent={() => {
-              if (cartProducts.length === 0) {
+              if (cartInfo.cartProducts.length === 0) {
                 null;
               } else {
                 navigate(`/store/cartorder`);
@@ -380,43 +400,48 @@ export default function CartModal({ className }) {
           </BTN_black_nomal_comp>
         </ExtraTextContainer>
 
-        {cartProducts.map((el, index) => (
-          <ContentContainer key={index}>
-            <Img imgURL={el.img}></Img>
-            <Pd_name>{el.productName}</Pd_name>
-            <Pd_color>{el.color}</Pd_color>
-            <Pd_size>size {el.size}</Pd_size>
-            <Pd_price>₩ {frontPriceComma(el.unitSumPrice)}</Pd_price>
-            <Pd_quantity_contain>
-              <Line1></Line1>
-              <Line2></Line2>
-              <Line3></Line3>
-              <Pd_miners
+        {/* 카트에 담긴 상품 뿌려주는 곳 */}
+        {cartInfo.cartProducts ? (
+          cartInfo.cartProducts.map((el, index) => (
+            <ContentContainer key={index}>
+              <Img imgURL={el.img}></Img>
+              <Pd_name>{el.productName}</Pd_name>
+              <Pd_color>{el.color}</Pd_color>
+              <Pd_size>size {el.size}</Pd_size>
+              <Pd_price>₩ {frontPriceComma(el.unitSumPrice)}</Pd_price>
+              <Pd_quantity_contain>
+                <Line1></Line1>
+                <Line2></Line2>
+                <Line3></Line3>
+                <Pd_miners
+                  onClick={() => {
+                    minersCartItem(el._id);
+                  }}
+                >
+                  -
+                </Pd_miners>
+                <Pd_count>{el.quantity}</Pd_count>
+                <Pd_plus
+                  onClick={() => {
+                    plusCartItem(el._id);
+                  }}
+                >
+                  +
+                </Pd_plus>
+              </Pd_quantity_contain>
+              <RemoveIcon
                 onClick={() => {
-                  minersCartItem(el._id);
+                  deletePD(el._id);
                 }}
+                className="material-symbols-outlined"
               >
-                -
-              </Pd_miners>
-              <Pd_count>{el.quantity}</Pd_count>
-              <Pd_plus
-                onClick={() => {
-                  plusCartItem(el._id);
-                }}
-              >
-                +
-              </Pd_plus>
-            </Pd_quantity_contain>
-            <RemoveIcon
-              onClick={() => {
-                deletePD(el._id);
-              }}
-              className="material-symbols-outlined"
-            >
-              remove
-            </RemoveIcon>
-          </ContentContainer>
-        ))}
+                remove
+              </RemoveIcon>
+            </ContentContainer>
+          ))
+        ) : (
+          <></>
+        )}
       </CartModal_Layout>
     </>
   );
