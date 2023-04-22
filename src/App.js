@@ -32,6 +32,8 @@ import ProductList_admin from './components_pages/admin_components/ProductList_a
 import OrderList_client from './components_pages/client_components/OrderList_client';
 import Store_NewItems from './components_pages/client_components/Store_NewItems';
 import OrderList_admin from './components_pages/admin_components/OrderList_admin';
+import Kakao_login from './components_pages/client_components/Kakao_login';
+import Kakao_redirect from './components_pages/client_components/Kakao_redirect';
 
 // 팔만대장경 컴포넌트 여기까지 하겠습니다.
 
@@ -120,6 +122,7 @@ function App() {
           />
           {/* 로그인 */}
           <Route path="/login" element={<Login_client />} />
+          <Route path="/login/success" element={<Kakao_redirect />} />
 
           {/* 로그인 상태여야 이동 가능한 페이지들 */}
           {/* 마이페이지 메인 */}

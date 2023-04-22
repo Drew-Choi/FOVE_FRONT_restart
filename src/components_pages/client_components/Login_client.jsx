@@ -6,24 +6,6 @@ import { login } from '../../store/modules/user';
 import '../../styles/login_client.scss';
 
 export default function Login_client() {
-  // 카카오로그인
-  function kakaoLogin() {
-    window.Kakao.Auth.authorize({
-      scope:
-        'profile_nickname, profile_image, account_email, gender, age_range, birthday, talk_message',
-      success: function (authObj) {
-        console.log(authObj);
-        window.Kakao.API.request({
-          url: '/v2/user/me',
-          success: (res) => {
-            const kakao_account = res.kakao_account;
-            console.log(kakao_account);
-          },
-        });
-      },
-    });
-  }
-
   const loginbtn = useRef();
 
   const handleKeyPress1 = (e) => {
@@ -124,7 +106,7 @@ export default function Login_client() {
       <br />
       <button className="login_kakao">
         <div
-          onClick={kakaoLogin}
+          onClick={() => navigate('/login/kakao')}
           style={{ textDecoration: 'none', color: '#3a1d1d' }}
         >
           카카오 계정으로 로그인
