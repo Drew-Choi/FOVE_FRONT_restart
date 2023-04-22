@@ -1,11 +1,29 @@
 import axios from 'axios';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../../store/modules/user';
 import '../../styles/login_client.scss';
 
 export default function Login_client() {
+  // 카카오로그인
+  function kakaoLogin() {
+    window.Kakao.Auth.authorize({
+      scope:
+        'profile_nickname, profile_image, account_email, gender, age_range, birthday, talk_message',
+      success: function (authObj) {
+        console.log(authObj);
+        window.Kakao.API.request({
+          url: '/v2/user/me',
+          success: (res) => {
+            const kakao_account = res.kakao_account;
+            console.log(kakao_account);
+          },
+        });
+      },
+    });
+  }
+
   const loginbtn = useRef();
 
   const handleKeyPress1 = (e) => {
@@ -105,9 +123,12 @@ export default function Login_client() {
       </button>
       <br />
       <button className="login_kakao">
-        <Link to="#" style={{ textDecoration: 'none', color: '#3a1d1d' }}>
+        <div
+          onClick={kakaoLogin}
+          style={{ textDecoration: 'none', color: '#3a1d1d' }}
+        >
           카카오 계정으로 로그인
-        </Link>
+        </div>
         {/* // fontawesome 카카오 아이콘 코드 */}
         {/* <i class="fa-solid fa-comment" style="color: #3a1d1d;"></i>; */}
       </button>
