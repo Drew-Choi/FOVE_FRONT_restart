@@ -4,8 +4,34 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../../store/modules/user';
 import '../../styles/login_client.scss';
+import styled from 'styled-components';
+
+const KakaoBTN = styled.img`
+  width: 400px;
+  padding: 20px;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.7;
+  }
+  &:active {
+    opacity: 0.2;
+  }
+`;
 
 export default function Login_client() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const REST_API_KEY = '1702fb0670a754fbcf00088a79157ad0';
+  const REDIRECT_URI = 'http://localhost:3000/login/kakao/callback';
+  const SCOPE =
+    'profile_nickname, profile_image, account_email, gender, age_range, birthday, talk_message, openid';
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${SCOPE}`;
+
+  const kakoHandleClick = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  };
+
   const loginbtn = useRef();
 
   const handleKeyPress1 = (e) => {
@@ -27,9 +53,6 @@ export default function Login_client() {
 
   const loginIdInput = useRef();
   const loginPwInput = useRef();
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   // LOG IN 버튼
   const loginUser = async () => {
@@ -104,16 +127,13 @@ export default function Login_client() {
         </Link>
       </button>
       <br />
-      <button className="login_kakao">
-        <div
-          onClick={() => navigate('/login/kakao')}
-          style={{ textDecoration: 'none', color: '#3a1d1d' }}
-        >
-          카카오 계정으로 로그인
-        </div>
-        {/* // fontawesome 카카오 아이콘 코드 */}
-        {/* <i class="fa-solid fa-comment" style="color: #3a1d1d;"></i>; */}
-      </button>
+      <a>
+        <KakaoBTN
+          onClick={kakoHandleClick}
+          src="/images/kakao_login_large_wide.png"
+          alt="카카오버튼"
+        />
+      </a>
     </div>
   );
 }

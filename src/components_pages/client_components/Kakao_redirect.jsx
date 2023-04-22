@@ -1,56 +1,56 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
-import qs from 'qs';
-import { useSearchParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { login } from '../../store/modules/user';
 
 export default function Kakao_redirect() {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  console.log(searchParams.get('code'));
+  const dispatch = useDispatch();
 
-  const getToken = async () => {
+  const REST_API_KEY = '1702fb0670a754fbcf00088a79157ad0';
+  const REDIRECT_URI = 'http://localhost:3000/login/kakao/callback';
+
+  // 인가 코드(authorization code)를 받아온 후 실행되는 함수
+  const handleCode = async () => {
     try {
+      //현재 URL에서 인가 코드 추출
+      const code = await searchParams.get('code');
+
+      //인가코드와 함께 액세스 토큰을 요청
       const response = await axios.post(
         'https://kauth.kakao.com/oauth/token',
-        qs.stringify({
+        {
           grant_type: 'authorization_code',
-          client_id: '1702fb0670a754fbcf00088a79157ad0',
-          redirect_uri: 'http://localhost:3000/login/success',
-          code: searchParams.get('code'),
-        }),
+          client_id: REST_API_KEY,
+          redirect_uri: REDIRECT_URI,
+          code,
+        },
         {
           headers: {
-            'Content-type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
           },
         },
       );
-      if (response === 200) {
-        window.Kakao.Auth.setAccessToken(response.data.access_token);
+      if (response.status === 200) {
+        //엑세스 토큰 추출
+        const { access_token } = await response.data;
+        //추출한 엑세스 토큰을 localStorage에 저장
+        localStorage.setItem('access_token', access_token);
+        navigate('/login/kakao/callback/success');
+        console.log(response.data);
+      } else {
+        console.log(response.data);
       }
-      console.log(response.data);
-      // 토큰을 이용한 API 요청 등 추가 작업 수행
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
     }
   };
 
   useEffect(() => {
-    getToken();
-    // window.Kakao.Auth.login({
-    //   success: function (authObj) {
-    //     window.Kakao.API.request({
-    //       url: '/v2/user/me',
-    //       success: function (res) {
-    //         console.log(res);
-    //       },
-    //     });
-    //     console.log(authObj);
-    //     const token = authObj.access_token;
-    //   },
-    //   fail: function (err) {
-    //     alert(JSON.stringify(err));
-    //   },
-    // });
+    handleCode();
   }, []);
 
-  return <></>;
+  return <div>카카오 로그인 중...</div>;
 }
