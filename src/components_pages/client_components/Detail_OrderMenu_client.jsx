@@ -320,25 +320,15 @@ export default function Detail_OrderMenu_client({
         },
       );
       if (reqData.status === 200) {
-        updateCart();
+        // updateCart();
+        const datasArr = reqData.data.userCart.products;
+        const totalQuantity = datasArr.reduce(
+          (sum, el) => sum + el.quantity,
+          0,
+        );
+        dispatch(add(datasArr, totalQuantity));
       } else {
         console.log(reqData.data.message);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  //카트 업데이트용 겟요청. => 이 데이터를 리덕스 리듀서로 보내서 데이터 업데이트 해줌
-  const updateCart = async () => {
-    try {
-      const reqUpdat = await axios.post(
-        `http://localhost:4000/cart/list/${userID}`,
-      );
-      if (reqUpdat.status === 200) {
-        dispatch(add(reqUpdat.data));
-      } else {
-        reqUpdat.data.message;
       }
     } catch (err) {
       console.error(err);
@@ -374,14 +364,22 @@ export default function Detail_OrderMenu_client({
     }
   };
 
-  //라우터
+  //배송정보 모달
   const [shipon, setShipon] = useState(false);
   const handleOpenModal = () => {
     setShipon(true);
   };
-
   const handleCloseModal = () => {
     setShipon(false);
+  };
+
+  //사이즈체크 모달
+  const [beanieSizeOn, setBeanieSizeOn] = useState(false);
+  const handleOpenModal2 = () => {
+    setBeanieSizeOn(true);
+  };
+  const handleCloseModa2 = () => {
+    setBeanieSizeOn(false);
   };
 
   // 바로 구매 시(Buy 버튼)
@@ -391,18 +389,8 @@ export default function Detail_OrderMenu_client({
       alert('로그인이 필요한 서비스입니다.');
       return navigate(`/login`);
     }
-
     await dispatch(single(singleDataSum(datas, count, sizeCheck)));
     navigate(`/store/order`);
-  };
-
-  const [beanieSizeOn, setBeanieSizeOn] = useState(false);
-  const handleOpenModal2 = () => {
-    setBeanieSizeOn(true);
-  };
-
-  const handleCloseModa2 = () => {
-    setBeanieSizeOn(false);
   };
 
   return (

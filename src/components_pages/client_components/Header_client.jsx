@@ -56,7 +56,7 @@ export default function Header_client() {
 
   useEffect(() => {
     cartDataReq();
-  });
+  }, [userData.userID]);
 
   // 장바구니 버튼(Shopping Bag) - 로그인 상태에서 사용 가능하게
   const clickShoppingBag = () => {
