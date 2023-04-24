@@ -4,13 +4,13 @@ import '../../styles/intro_Movie_client.scss';
 import ReactPlayer from 'react-player';
 
 export default function Intro_movie_client() {
-  const [play, setPlay] = useState(false);
+  const [playING, setPlayING] = useState(false);
 
   useEffect(() => {
-    setPlay((cur) => true);
+    setPlayING((cur) => true);
 
     return () => {
-      setPlay((cur) => false);
+      setPlayING((cur) => false);
     };
   }, []);
 
@@ -20,9 +20,9 @@ export default function Intro_movie_client() {
         url="/videos/intro.mp4"
         width="100%"
         height="auto"
-        playing={play}
+        playing={playING}
         muted={true}
-        loop={play}
+        loop={playING}
         volume={0}
       />
       ;
