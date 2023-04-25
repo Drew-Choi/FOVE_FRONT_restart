@@ -33,8 +33,6 @@ export default function Kakao_final() {
   };
 
   const sendDBKakaoMember = async () => {
-    console.log(info.kakao_account.email);
-
     try {
       const resCheckId = await axios.post(
         'http://localhost:4000/register/checkId',
@@ -42,7 +40,6 @@ export default function Kakao_final() {
           id: info.kakao_account.email,
         },
       );
-      console.log(resCheckId.status);
 
       if (resCheckId.status === 200) {
         const resKakaoRegister = await axios.post(
