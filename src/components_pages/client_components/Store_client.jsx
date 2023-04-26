@@ -250,7 +250,8 @@ export default function Store_client() {
         </Swiper>
 
         <div className="navi_pagi_fix">
-          <div className="swiper_navigation_container">
+          <div className="pagi_liner"></div>
+          <SwiperPaginationContainer className="swiper_pagination_container">
             <SwiperPaginationBTN
               color="gray"
               hoverColor="lightgray"
@@ -259,17 +260,7 @@ export default function Store_client() {
             >
               〈
             </SwiperPaginationBTN>
-            <SwiperPaginationBTN
-              color="gray"
-              hoverColor="lightgray"
-              className="nav_arrow_next"
-              onClickEvent={() => swiperEl.slideNext()}
-            >
-              〉
-            </SwiperPaginationBTN>
-          </div>
 
-          <SwiperPaginationContainer className="swiper_pagination_container">
             <SwiperPaginationBTN
               className={`pagi1 ${pagination1}`}
               color="gray"
@@ -310,10 +301,18 @@ export default function Store_client() {
             >
               5
             </SwiperPaginationBTN>
+
+            <SwiperPaginationBTN
+              color="gray"
+              hoverColor="lightgray"
+              className="nav_arrow_next"
+              onClickEvent={() => swiperEl.slideNext()}
+            >
+              〉
+            </SwiperPaginationBTN>
           </SwiperPaginationContainer>
         </div>
       </section>
-      <SubNav_client bottom="25px" />
     </main>
   );
 }
