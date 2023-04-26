@@ -119,20 +119,17 @@ export default function Header_client() {
 
         {/* 관리자 페이지 이동 버튼 */}
         {userData.isAdmin && (
-          <button onClick={() => navigate('/admin')}>👩‍💻 관리자 페이지</button>
+          <button className="adminBTN" onClick={() => navigate('/admin')}>
+            👩‍💻 관리자 페이지
+          </button>
         )}
 
-        <ul id="cate">
-          <li id="cate_li">
-            <p onClick={() => navigate('/aboutus')}>ABOUT US</p>
-          </li>
-          <li id="cate_li">
-            <p onClick={() => navigate('/store')}>STORE</p>
-          </li>
-          <li id="cate_li">
-            <p onClick={() => navigate('#')}>COLLECTION</p>
-          </li>
-        </ul>
+        <div id="cate">
+          <p onClick={() => navigate('/aboutus')}>ABOUT US</p>
+          <p onClick={() => navigate('/store')}>STORE</p>
+          <p onClick={() => navigate('#')}>COLLECTION</p>
+        </div>
+
         <ul id="cate2">
           <li id="search_container">
             <input
