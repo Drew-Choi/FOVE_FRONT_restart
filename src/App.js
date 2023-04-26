@@ -120,7 +120,7 @@ function App() {
           {/* 브랜드소개 */}
           <Route path="/aboutus" element={<AboutUs_client />} />
           {/* 상품진열 */}
-          <Route path="/store" element={<Store_client />} />
+          <Route path="/store" element={<></>} />
           {/* 카테고리별 아이템 분리 */}
           <Route path="/store/:category" element={<Store_Categorys />} />
           {/* 신상품 */}

@@ -1,5 +1,5 @@
 header.header_admin {
-  background-color: white;
+  background-color: red;
   box-sizing: border-box;
   position: relative;
   border-bottom: solid 0.5px black;
@@ -11,6 +11,7 @@ header.header_admin {
   white-space: nowrap;
   padding: 0 50px;
   z-index: 3;
+  top: 0px;
 
   .logo {
     position: relative;

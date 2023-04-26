@@ -1,17 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
-
-body {
-  font-family: 'Noto Sans KR', sans-serif;
-}
-
 footer.footer_client {
-  background-color: white;
+  background-color: beige;
   box-sizing: border-box;
   position:relative;
   border-top: solid 0.5px black;
   bottom: 0px;
   width: 100%;
-  height: 50px;
+  height: 200px;
   display: flex;
   white-space: nowrap;
   z-index: 3;

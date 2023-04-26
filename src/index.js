@@ -17,9 +17,7 @@ const store = configureStore({ reducer: rootReducer }, reduxDevTool);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  //router-dom 설정
   <BrowserRouter>
-    {/* redux 세팅  추후 store 추가해야함*/}
     <Provider store={store}>
       <App />
     </Provider>
