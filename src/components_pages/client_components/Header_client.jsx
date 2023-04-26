@@ -10,6 +10,7 @@ import MenuAccount from './MenuAccount';
 import { clickMenu } from '../../store/modules/menuAccount';
 import GoogleIcon from './GoogleIcon';
 import { searchinput } from '../../store/modules/search';
+import MediaQuery from 'react-responsive';
 
 export default function Header_client() {
   const excludeRef = useRef(null);
@@ -166,22 +167,56 @@ export default function Header_client() {
                 ACCOUNT
               </p>
             ) : (
-              <p
-                onClick={() => {
-                  navigate(`/login`);
-                }}
-              >
-                LOG IN
-              </p>
+              <>
+                <MediaQuery minWidth={1145}>
+                  <p
+                    onClick={() => {
+                      navigate(`/login`);
+                    }}
+                  >
+                    LOG IN
+                  </p>
+                </MediaQuery>
+                <MediaQuery maxWidth={1144}>
+                  <span
+                    onClick={() => {
+                      navigate(`/login`);
+                    }}
+                    className="material-symbols-outlined header_login_mediaQ"
+                  >
+                    login
+                  </span>
+                </MediaQuery>
+              </>
             )}
           </li>
           <li id="cate_li2_shopbag">
-            <p onClick={clickShoppingBag}>
-              SHOPPING BAG /{' '}
-              {!cartInfo.cartProductsLength || cartInfo.cartProductsLength === 0
-                ? 0
-                : cartInfo.cartProductsLength}
-            </p>
+            <MediaQuery minWidth={1145}>
+              <p onClick={clickShoppingBag}>
+                SHOPPING BAG /{' '}
+                {!cartInfo.cartProductsLength ||
+                cartInfo.cartProductsLength === 0
+                  ? 0
+                  : cartInfo.cartProductsLength}
+              </p>
+            </MediaQuery>
+
+            <MediaQuery maxWidth={1144}>
+              <div
+                className="header_beg_container_media"
+                onClick={clickShoppingBag}
+              >
+                <span className="material-symbols-sharp header_beg_icon_media">
+                  shopping_bag
+                  <span className="header_beg_count_media">
+                    {!cartInfo.cartProductsLength ||
+                    cartInfo.cartProductsLength === 0
+                      ? 0
+                      : cartInfo.cartProductsLength}
+                  </span>
+                </span>
+              </div>
+            </MediaQuery>
             {/* 0 이라는 숫자 장바구니에 넣을 때 올라가야 함 */}
           </li>
         </ul>

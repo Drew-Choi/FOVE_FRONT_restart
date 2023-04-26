@@ -9,6 +9,10 @@
   padding: 0 50px;
   font-size: 16px;
 
+  @media screen and (max-width: 1144px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
   .logo {
     grid-column: 1 / 2;
     position: relative;
@@ -17,6 +21,10 @@
     font-size: 50px;
     font-weight: 600;
     font-style: italic;
+
+    @media screen and (max-width: 1144px) {
+      grid-column: 1 / 2;
+    }
   }
 
   #cate {
@@ -27,6 +35,11 @@
     text-align: center;
     align-items: center;
     padding-left: 22px;
+
+    @media screen and (max-width: 1144px) {
+      grid-column: 2 / 5;
+      padding-left: 40px;
+    }
 
     p {
       padding: 0px 20px;
@@ -47,6 +60,10 @@
     text-align: center;
     align-items: center;
 
+    @media screen and (max-width: 1144px) {
+      grid-column: 5 / 6;
+    }
+
     li {
       padding-left: 20px;
       cursor: pointer;
@@ -56,6 +73,7 @@
     }
 
     #search_container{
+      cursor: default;
       position: relative;
       align-items: center;
       text-align: center;
@@ -63,32 +81,47 @@
       display: flex;
       bottom: 8px;
       margin-right: 10px;
+      padding: 0px;
+      &:active {
+        user-select: none;
+      }
     
     .searchInput.on {
       position: relative;
+      left: 0px;
       font-size: 14px;
+      opacity: 1;
       width: 157px;
-      transform: scaleX(1);
       transition: 0.4s ease;
       transform-origin: right;
       &::placeholder {
       font-size: 12px;
       color: #a0a0a0;
+      &:active {
+        user-select: none;
+      }
     }
     }  
     
     .searchInput.off {
       position: relative;
-      width: 157px;
-      transform: scaleX(0);
+      padding: 0px;
+      margin: 0px;
+      border: 0px;
+      width: 0px;
+      left: 10px;
+      opacity: 0;
       transition: 0.4s ease;
       transform-origin: right;
-       &::placeholder {
-      font-size: 12px;
-        color: #a0a0a0;
-    }
+      &:active {
+        user-select: none;
+      }
     }
       .material-symbols-outlined.search {
+        cursor: pointer;
+      &:active {
+        color: #a0a0a0;
+      }
       }
     
     }
@@ -138,3 +171,37 @@
   }
 }
 
+//쿼리영역
+.material-symbols-outlined.header_login_mediaQ {
+  position: relative;
+  font-size: 27px;
+  bottom: 4px;
+  right: 5px;
+}
+
+.header_beg_container_media {
+  position: relative;
+
+ .material-symbols-sharp.header_beg_icon_media {
+  position: relative;
+  font-size: 40px;
+  bottom: 8px;
+
+
+  .header_beg_count_media {
+    position: relative;
+    bottom: 10px;
+    right: 27px;
+    font-size: 13px;
+   } 
+
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 300,
+  'GRAD' -25,
+  'opsz' 48
+  
+
+  
+ }
+}
