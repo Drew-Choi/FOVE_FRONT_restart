@@ -99,7 +99,6 @@ export default function Store_client() {
         menu4="CAP"
         menu5="TRAINING"
         menu6="WINDBREAKER"
-        top="70px"
       />
       <section className="product_display">
         <Swiper

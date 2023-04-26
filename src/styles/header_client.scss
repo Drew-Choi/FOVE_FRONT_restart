@@ -7,7 +7,7 @@ body {
 header.header_client {
   background-color: white;
   box-sizing: border-box;
-  position: fixed;
+  position: relative;
   border-bottom: solid 0.5px black;
   height: 70px;
   width: 100%;
@@ -16,7 +16,6 @@ header.header_client {
   justify-content: space-between;
   white-space: nowrap;
   padding: 0 50px;
-  z-index: 3;
 
   button {
     position: absolute;

@@ -111,7 +111,7 @@ function App() {
   const isAdmin = useSelector((state) => state.user.isAdmin);
 
   return (
-    <div>
+    <>
       <Routes>
         {/* Client 영역 */}
         <Route path="/" element={<Client_main />}>
@@ -120,7 +120,7 @@ function App() {
           {/* 브랜드소개 */}
           <Route path="/aboutus" element={<AboutUs_client />} />
           {/* 상품진열 */}
-          <Route path="/store" element={<></>} />
+          <Route path="/store" element={<Store_client />} />
           {/* 카테고리별 아이템 분리 */}
           <Route path="/store/:category" element={<Store_Categorys />} />
           {/* 신상품 */}
@@ -218,7 +218,7 @@ function App() {
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>
-    </div>
+    </>
   );
 }
 
