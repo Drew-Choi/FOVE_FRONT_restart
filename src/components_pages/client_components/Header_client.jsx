@@ -134,27 +134,31 @@ export default function Header_client() {
           </button>
         )}
 
-        <div id="cate">
-          <p onClick={() => navigate('/aboutus')}>ABOUT US</p>
-          <p onClick={() => navigate('/store')}>STORE</p>
-          <p onClick={() => navigate('#')}>COLLECTION</p>
-        </div>
+        <MediaQuery minWidth={768}>
+          <div id="cate">
+            <p onClick={() => navigate('/aboutus')}>ABOUT US</p>
+            <p onClick={() => navigate('/store')}>STORE</p>
+            <p onClick={() => navigate('#')}>COLLECTION</p>
+          </div>
+        </MediaQuery>
 
         {/* 반응형 버거메뉴--------------------- */}
-        <div className="burger_menu_container">
-          <span
-            onClick={burherHandler}
-            className={`material-symbols-sharp burgerIcon ${burger}`}
-          >
-            menu
-          </span>
-          <span
-            onClick={burherHandler}
-            className={`material-symbols-sharp burgerClose ${burgerClose}`}
-          >
-            close
-          </span>
-        </div>
+        <MediaQuery maxWidth={767}>
+          <div className="burger_menu_container">
+            <span
+              onClick={burherHandler}
+              className={`material-symbols-sharp burgerIcon ${burger}`}
+            >
+              menu
+            </span>
+            <span
+              onClick={burherHandler}
+              className={`material-symbols-sharp burgerClose ${burgerClose}`}
+            >
+              close
+            </span>
+          </div>
+        </MediaQuery>
         {/* 반응형 버거메뉴--------------------- */}
 
         <ul id="cate2">

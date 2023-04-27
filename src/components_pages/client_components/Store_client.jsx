@@ -14,6 +14,8 @@ import SwiperPaginationContainer from '../../styles/SwiperPaginationContainer';
 import SubNav_client from './SubNav_client';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import MediaQuery from 'react-responsive';
+import Select_Custom from '../../components_elements/Select_Custom';
 
 SwiperCore.use([Navigation]);
 
@@ -84,234 +86,286 @@ export default function Store_client() {
     }
   };
 
+  //반응형 영역
+  //반응형 카테고리 구현
+  const categotryMenus_act = [
+    'VIEW ALL',
+    'NEW ARRIVALS',
+    'BEANIE',
+    'CAP',
+    'TRAINING',
+    'WINDBREAKER',
+  ];
+
   return (
     <main className="store_main">
-      <SubNav_client
-        onClickEvent1={() => navigate('/store')}
-        onClickEvent2={() => navigate('/store/new')}
-        onClickEvent3={() => navigate('/store/beanie')}
-        onClickEvent4={() => navigate('/store/cap')}
-        onClickEvent5={() => navigate('/store/training')}
-        onClickEvent6={() => navigate('/store/windbreaker')}
-        menu1="VIEW ALL"
-        menu2="NEW ARRIVALS"
-        menu3="BEANIE"
-        menu4="CAP"
-        menu5="TRAINING"
-        menu6="WINDBREAKER"
-      />
+      <MediaQuery minWidth={576}>
+        <SubNav_client
+          onClickEvent1={() => navigate('/store')}
+          onClickEvent2={() => navigate('/store/new')}
+          onClickEvent3={() => navigate('/store/beanie')}
+          onClickEvent4={() => navigate('/store/cap')}
+          onClickEvent5={() => navigate('/store/training')}
+          onClickEvent6={() => navigate('/store/windbreaker')}
+          menu1="VIEW ALL"
+          menu2="NEW ARRIVALS"
+          menu3="BEANIE"
+          menu4="CAP"
+          menu5="TRAINING"
+          menu6="WINDBREAKER"
+        />
+      </MediaQuery>
+
+      <MediaQuery maxWidth={575}>
+        <select className="selectCategorys">
+          {categotryMenus_act.map((el) => (
+            <option key={el}>{el}</option>
+          ))}
+        </select>
+      </MediaQuery>
+
       <section className="product_display">
-        <Swiper
-          // install Swiper modules
-          modules={[Navigation, Pagination, A11y, Mousewheel]}
-          spaceBetween={50}
-          slidesPerView={1}
-          // navigation={true}
-          // pagination={{ clickable: true }}
-          onSwiper={(swiper) => setSwiperEl((cur) => swiper)}
-          // onSlideChange={() => console.log('slide change')}
-          onActiveIndexChange={(swiper) => {
-            swiper.activeIndex !== 0
-              ? setPagination1((cur) => 'off')
-              : setPagination1((cur) => 'on');
-            swiper.activeIndex !== 1
-              ? setPagination2((cur) => 'off')
-              : setPagination2((cur) => 'on');
-            swiper.activeIndex !== 2
-              ? setPagination3((cur) => 'off')
-              : setPagination3((cur) => 'on');
-            swiper.activeIndex !== 3
-              ? setPagination4((cur) => 'off')
-              : setPagination4((cur) => 'on');
-            swiper.activeIndex !== 4
-              ? setPagination5((cur) => 'off')
-              : setPagination5((cur) => 'on');
-          }}
-          mousewheel={false}
-          className="swiper_container"
-        >
-          <SwiperSlide className="swiper_slide">
+        <MediaQuery minWidth={576}>
+          <Swiper
+            // install Swiper modules
+            modules={[Navigation, Pagination, A11y, Mousewheel]}
+            spaceBetween={50}
+            slidesPerView={1}
+            // navigation={true}
+            // pagination={{ clickable: true }}
+            onSwiper={(swiper) => setSwiperEl((cur) => swiper)}
+            // onSlideChange={() => console.log('slide change')}
+            onActiveIndexChange={(swiper) => {
+              swiper.activeIndex !== 0
+                ? setPagination1((cur) => 'off')
+                : setPagination1((cur) => 'on');
+              swiper.activeIndex !== 1
+                ? setPagination2((cur) => 'off')
+                : setPagination2((cur) => 'on');
+              swiper.activeIndex !== 2
+                ? setPagination3((cur) => 'off')
+                : setPagination3((cur) => 'on');
+              swiper.activeIndex !== 3
+                ? setPagination4((cur) => 'off')
+                : setPagination4((cur) => 'on');
+              swiper.activeIndex !== 4
+                ? setPagination5((cur) => 'off')
+                : setPagination5((cur) => 'on');
+            }}
+            mousewheel={false}
+            className="swiper_container"
+          >
+            <SwiperSlide className="swiper_slide">
+              <Container>
+                <Row xs={1} sm={2} md={4} lg={5}>
+                  {pd_Datas.map((el, index) => {
+                    if (index < 10 && index >= 0)
+                      return (
+                        <Col
+                          onClick={() => navigate(`/store/detail/${el._id}`)}
+                          className="store_col"
+                          key={el._id}
+                        >
+                          <Product_client_indiLayout
+                            imgFileName={el.img}
+                            productName={el.productName}
+                            price={frontPriceComma(el.price)}
+                          />
+                        </Col>
+                      );
+                  })}
+                </Row>
+              </Container>
+            </SwiperSlide>
+
+            <SwiperSlide className="swiper_slide">
+              <Container>
+                <Row xs={1} sm={2} md={4} lg={5}>
+                  {pd_Datas.map((el, index) => {
+                    if (index < 20 && index >= 10)
+                      return (
+                        <Col
+                          onClick={() => navigate(`/store/detail/${el._id}`)}
+                          className="store_col"
+                          key={el._id}
+                        >
+                          <Product_client_indiLayout
+                            imgFileName={el.img}
+                            productName={el.productName}
+                            price={frontPriceComma(el.price)}
+                          />
+                        </Col>
+                      );
+                  })}
+                </Row>
+              </Container>
+            </SwiperSlide>
+
+            <SwiperSlide className="swiper_slide">
+              <Container>
+                <Row xs={1} sm={2} md={4} lg={5}>
+                  {pd_Datas.map((el, index) => {
+                    if (index < 30 && index >= 20)
+                      return (
+                        <Col
+                          onClick={() => navigate(`/store/detail/${el._id}`)}
+                          className="store_col"
+                          key={el._id}
+                          onMouseEnter={() => {}}
+                        >
+                          <Product_client_indiLayout
+                            imgFileName={el.img}
+                            productName={el.productName}
+                            price={frontPriceComma(el.price)}
+                          />
+                        </Col>
+                      );
+                  })}
+                </Row>
+              </Container>
+            </SwiperSlide>
+
+            <SwiperSlide className="swiper_slide">
+              <Container>
+                <Row xs={1} sm={2} md={4} lg={5}>
+                  {pd_Datas.map((el, index) => {
+                    if (index < 40 && index >= 30)
+                      return (
+                        <Col
+                          onClick={() => navigate(`/store/detail/${el._id}`)}
+                          className="store_col"
+                          key={el._id}
+                          onMouseEnter={() => {}}
+                        >
+                          <Product_client_indiLayout
+                            imgFileName={el.img}
+                            productName={el.productName}
+                            price={frontPriceComma(el.price)}
+                          />
+                        </Col>
+                      );
+                  })}
+                </Row>
+              </Container>
+            </SwiperSlide>
+
+            <SwiperSlide className="swiper_slide">
+              <Container>
+                <Row xs={1} sm={2} md={4} lg={5}>
+                  {pd_Datas.map((el, index) => {
+                    if (index < 50 && index >= 40)
+                      return (
+                        <Col
+                          onClick={() => navigate(`/store/detail/${el._id}`)}
+                          className="store_col"
+                          key={el._id}
+                          onMouseEnter={() => {}}
+                        >
+                          <Product_client_indiLayout
+                            imgFileName={el.img}
+                            productName={el.productName}
+                            price={frontPriceComma(el.price)}
+                          />
+                        </Col>
+                      );
+                  })}
+                </Row>
+              </Container>
+            </SwiperSlide>
+          </Swiper>
+        </MediaQuery>
+
+        <MediaQuery maxWidth={575}>
+          {/* 반응형 상품진열 ---- */}
+          {
             <Container>
-              <Row xs={1} sm={2} md={4} lg={5}>
+              <Row xs={1}>
                 {pd_Datas.map((el, index) => {
-                  if (index < 10 && index >= 0)
-                    return (
-                      <Col
-                        onClick={() => navigate(`/store/detail/${el._id}`)}
-                        className="store_col"
-                        key={el._id}
-                      >
-                        <Product_client_indiLayout
-                          imgFileName={el.img}
-                          productName={el.productName}
-                          price={frontPriceComma(el.price)}
-                        />
-                      </Col>
-                    );
+                  return (
+                    <Col
+                      onClick={() => navigate(`/store/detail/${el._id}`)}
+                      className="store_col"
+                      key={el._id}
+                      onMouseEnter={() => {}}
+                    >
+                      <Product_client_indiLayout
+                        imgFileName={el.img}
+                        productName={el.productName}
+                        price={frontPriceComma(el.price)}
+                      />
+                    </Col>
+                  );
                 })}
               </Row>
             </Container>
-          </SwiperSlide>
+          }
+        </MediaQuery>
 
-          <SwiperSlide className="swiper_slide">
-            <Container>
-              <Row xs={1} sm={2} md={4} lg={5}>
-                {pd_Datas.map((el, index) => {
-                  if (index < 20 && index >= 10)
-                    return (
-                      <Col
-                        onClick={() => navigate(`/store/detail/${el._id}`)}
-                        className="store_col"
-                        key={el._id}
-                      >
-                        <Product_client_indiLayout
-                          imgFileName={el.img}
-                          productName={el.productName}
-                          price={frontPriceComma(el.price)}
-                        />
-                      </Col>
-                    );
-                })}
-              </Row>
-            </Container>
-          </SwiperSlide>
+        <MediaQuery minWidth={576}>
+          <div className="navi_pagi_fix">
+            <div className="pagi_liner"></div>
+            <SwiperPaginationContainer className="swiper_pagination_container">
+              <SwiperPaginationBTN
+                color="gray"
+                hoverColor="lightgray"
+                className="nav_arrow_pre"
+                onClickEvent={() => swiperEl.slidePrev()}
+              >
+                〈
+              </SwiperPaginationBTN>
 
-          <SwiperSlide className="swiper_slide">
-            <Container>
-              <Row xs={1} sm={2} md={4} lg={5}>
-                {pd_Datas.map((el, index) => {
-                  if (index < 30 && index >= 20)
-                    return (
-                      <Col
-                        onClick={() => navigate(`/store/detail/${el._id}`)}
-                        className="store_col"
-                        key={el._id}
-                        onMouseEnter={() => {}}
-                      >
-                        <Product_client_indiLayout
-                          imgFileName={el.img}
-                          productName={el.productName}
-                          price={frontPriceComma(el.price)}
-                        />
-                      </Col>
-                    );
-                })}
-              </Row>
-            </Container>
-          </SwiperSlide>
+              <SwiperPaginationBTN
+                className={`pagi1 ${pagination1}`}
+                color="gray"
+                hoverColor="lightgray"
+                onClickEvent={() => swiperEl.slideTo(0)}
+              >
+                1
+              </SwiperPaginationBTN>
+              <SwiperPaginationBTN
+                className={`pagi2 ${pagination2}`}
+                color="gray"
+                hoverColor="lightgray"
+                onClickEvent={() => swiperEl.slideTo(1)}
+              >
+                2
+              </SwiperPaginationBTN>
+              <SwiperPaginationBTN
+                className={`pagi3 ${pagination3}`}
+                color="gray"
+                hoverColor="lightgray"
+                onClickEvent={() => swiperEl.slideTo(2)}
+              >
+                3
+              </SwiperPaginationBTN>
+              <SwiperPaginationBTN
+                className={`pagi4 ${pagination4}`}
+                color="gray"
+                hoverColor="lightgray"
+                onClickEvent={() => swiperEl.slideTo(3)}
+              >
+                4
+              </SwiperPaginationBTN>
+              <SwiperPaginationBTN
+                className={`pagi5 ${pagination5}`}
+                color="gray"
+                hoverColor="lightgray"
+                onClickEvent={() => swiperEl.slideTo(4)}
+              >
+                5
+              </SwiperPaginationBTN>
 
-          <SwiperSlide className="swiper_slide">
-            <Container>
-              <Row xs={1} sm={2} md={4} lg={5}>
-                {pd_Datas.map((el, index) => {
-                  if (index < 40 && index >= 30)
-                    return (
-                      <Col
-                        onClick={() => navigate(`/store/detail/${el._id}`)}
-                        className="store_col"
-                        key={el._id}
-                        onMouseEnter={() => {}}
-                      >
-                        <Product_client_indiLayout
-                          imgFileName={el.img}
-                          productName={el.productName}
-                          price={frontPriceComma(el.price)}
-                        />
-                      </Col>
-                    );
-                })}
-              </Row>
-            </Container>
-          </SwiperSlide>
-
-          <SwiperSlide className="swiper_slide">
-            <Container>
-              <Row xs={1} sm={2} md={4} lg={5}>
-                {pd_Datas.map((el, index) => {
-                  if (index < 50 && index >= 40)
-                    return (
-                      <Col
-                        onClick={() => navigate(`/store/detail/${el._id}`)}
-                        className="store_col"
-                        key={el._id}
-                        onMouseEnter={() => {}}
-                      >
-                        <Product_client_indiLayout
-                          imgFileName={el.img}
-                          productName={el.productName}
-                          price={frontPriceComma(el.price)}
-                        />
-                      </Col>
-                    );
-                })}
-              </Row>
-            </Container>
-          </SwiperSlide>
-        </Swiper>
-
-        <div className="navi_pagi_fix">
-          <div className="pagi_liner"></div>
-          <SwiperPaginationContainer className="swiper_pagination_container">
-            <SwiperPaginationBTN
-              color="gray"
-              hoverColor="lightgray"
-              className="nav_arrow_pre"
-              onClickEvent={() => swiperEl.slidePrev()}
-            >
-              〈
-            </SwiperPaginationBTN>
-
-            <SwiperPaginationBTN
-              className={`pagi1 ${pagination1}`}
-              color="gray"
-              hoverColor="lightgray"
-              onClickEvent={() => swiperEl.slideTo(0)}
-            >
-              1
-            </SwiperPaginationBTN>
-            <SwiperPaginationBTN
-              className={`pagi2 ${pagination2}`}
-              color="gray"
-              hoverColor="lightgray"
-              onClickEvent={() => swiperEl.slideTo(1)}
-            >
-              2
-            </SwiperPaginationBTN>
-            <SwiperPaginationBTN
-              className={`pagi3 ${pagination3}`}
-              color="gray"
-              hoverColor="lightgray"
-              onClickEvent={() => swiperEl.slideTo(2)}
-            >
-              3
-            </SwiperPaginationBTN>
-            <SwiperPaginationBTN
-              className={`pagi4 ${pagination4}`}
-              color="gray"
-              hoverColor="lightgray"
-              onClickEvent={() => swiperEl.slideTo(3)}
-            >
-              4
-            </SwiperPaginationBTN>
-            <SwiperPaginationBTN
-              className={`pagi5 ${pagination5}`}
-              color="gray"
-              hoverColor="lightgray"
-              onClickEvent={() => swiperEl.slideTo(4)}
-            >
-              5
-            </SwiperPaginationBTN>
-
-            <SwiperPaginationBTN
-              color="gray"
-              hoverColor="lightgray"
-              className="nav_arrow_next"
-              onClickEvent={() => swiperEl.slideNext()}
-            >
-              〉
-            </SwiperPaginationBTN>
-          </SwiperPaginationContainer>
-        </div>
+              <SwiperPaginationBTN
+                color="gray"
+                hoverColor="lightgray"
+                className="nav_arrow_next"
+                onClickEvent={() => swiperEl.slideNext()}
+              >
+                〉
+              </SwiperPaginationBTN>
+            </SwiperPaginationContainer>
+          </div>
+        </MediaQuery>
       </section>
     </main>
   );

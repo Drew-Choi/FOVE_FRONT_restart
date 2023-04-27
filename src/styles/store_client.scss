@@ -64,10 +64,20 @@
       text-decoration: underline;
     }
   }
-}
+ }
 
   .store_col {
     text-align: center;
     cursor: pointer;
+  
+  }
+
+  //반응형 카테고리 셀렉트 메뉴
+  .selectCategorys {
+    position: absolute;
+    margin: 10px;
+    font-size: 13px;
+    right: 10px;
+    z-index: 999;
   }
 }

@@ -8,10 +8,17 @@
   border-top: solid 0.5px black;
   bottom: 0px;
 
+  @media screen and (max-width: 575px) {
+    display: block;
+  }
 
   .footer_info_left {
     position: relative;
     padding: 10px 40px;
+
+    @media screen and (max-width: 575px) {
+      padding: 10px 30px;
+    }
 
     .footer_copyright{
       font-size: 11px;
@@ -46,6 +53,11 @@
       font-size: 10px;
       list-style: none;
       text-align: right;
+
+      @media screen and (max-width: 575px) {
+        text-align: left;
+        padding: 0px;
+      }
     }
   }
 }
