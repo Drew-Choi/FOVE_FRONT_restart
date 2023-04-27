@@ -13,6 +13,7 @@ import { searchinput } from '../../store/modules/search';
 import MediaQuery from 'react-responsive';
 
 export default function Header_client() {
+  const [reactSearchModal, setReactSearchModal] = useState(false);
   const excludeRef = useRef(null);
   const searchBTN = useRef();
 
@@ -83,10 +84,15 @@ export default function Header_client() {
   const [empty, setEmpty] = useState('상품검색');
 
   //서칭용 엔터 핸들러
-  const handleKeyPress = (e) => {
+  const handleKeyPress = async (e) => {
     if (e.key === 'Enter') {
       // 검색 로직 실행
-      dispatch(searchinput(e.target.value));
+      if (currentURL !== 'store') {
+        await dispatch(searchinput(e.target.value));
+        navigate('store');
+      } else {
+        dispatch(searchinput(e.target.value));
+      }
       if (!e.target.value) {
         setEmpty('검색어를 입력해주세요.');
       } else {
@@ -122,6 +128,29 @@ export default function Header_client() {
 
   return (
     <>
+      <MediaQuery maxWidth={1327}>
+        {/* 반응형 검색 모달 */}
+        {reactSearchModal && (
+          <div className="search_react_modal_container">
+            <div
+              className="search_react_modal_bg"
+              onClick={() => setReactSearchModal((cur) => !cur)}
+            ></div>
+            <input
+              ref={excludeRef}
+              className="search_react_modal_input"
+              type="text"
+              placeholder={empty}
+              onKeyDown={(e) => handleKeyPress(e)}
+              onClick={handleClick}
+            />
+            <p className="search_react_modal_desc">
+              Enter keywords for searching
+            </p>
+          </div>
+        )}
+      </MediaQuery>
+
       <header className="header_client">
         <p className="logo" onClick={() => navigate('/')}>
           FOVE
@@ -137,7 +166,13 @@ export default function Header_client() {
         <MediaQuery minWidth={768}>
           <div id="cate">
             <p onClick={() => navigate('/aboutus')}>ABOUT US</p>
-            <p onClick={() => navigate('/store')}>STORE</p>
+            <p
+              onClick={() => {
+                navigate('/store'), dispatch(searchinput(''));
+              }}
+            >
+              STORE
+            </p>
             <p onClick={() => navigate('#')}>COLLECTION</p>
           </div>
         </MediaQuery>
@@ -162,31 +197,48 @@ export default function Header_client() {
         {/* 반응형 버거메뉴--------------------- */}
 
         <ul id="cate2">
-          <li id="search_container">
-            <input
-              ref={excludeRef}
-              className={`searchInput ${searchOnOff}`}
-              type="text"
-              placeholder={empty}
-              onKeyDown={(e) => handleKeyPress(e)}
-              onClick={handleClick}
-            />
+          <MediaQuery minWidth={1328}>
+            <li id="search_container">
+              <input
+                ref={excludeRef}
+                className={`searchInput ${searchOnOff}`}
+                type="text"
+                placeholder={empty}
+                onKeyDown={(e) => handleKeyPress(e)}
+                onClick={handleClick}
+              />
+              {currentURL === '/' ? (
+                <></>
+              ) : (
+                <span
+                  ref={searchBTN}
+                  className="material-symbols-outlined search"
+                  onClick={(cur) =>
+                    searchOnOff === 'off'
+                      ? setSearchOnOff('on')
+                      : setSearchOnOff('off')
+                  }
+                >
+                  search
+                </span>
+              )}
+            </li>
+          </MediaQuery>
+
+          <MediaQuery maxWidth={1327}>
             {currentURL === '/' ? (
               <></>
             ) : (
               <span
                 ref={searchBTN}
-                className="material-symbols-outlined search"
-                onClick={(cur) =>
-                  searchOnOff === 'off'
-                    ? setSearchOnOff('on')
-                    : setSearchOnOff('off')
-                }
+                className="material-symbols-outlined search_react"
+                onClick={() => setReactSearchModal((cur) => !cur)}
               >
                 search
               </span>
             )}
-          </li>
+          </MediaQuery>
+
           <li id="cate_li2">
             {userData.isLogin ? (
               <p
@@ -259,7 +311,13 @@ export default function Header_client() {
             <p onClick={() => navigate('/aboutus')}>ABOUT US</p>
           </li>
           <li>
-            <p onClick={() => navigate('/store')}>STORE</p>
+            <p
+              onClick={() => {
+                navigate('/store'), dispatch(searchinput(''));
+              }}
+            >
+              STORE
+            </p>
           </li>
           <li>
             <p onClick={() => navigate('#')}>COLLECTION</p>

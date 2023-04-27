@@ -37,6 +37,7 @@ export default function Store_client() {
   //All상품데이터 get
   const [pd_Datas, setPd_Datas] = useState([]);
 
+  //상품검색
   const searchProducts = (text) => {
     setPd_Datas((cur) => {
       const newData = [...orignData.current];
@@ -54,13 +55,17 @@ export default function Store_client() {
 
   //엑시오스로 모든 상품 정보 요청
   const getAllProducts = async () => {
-    const productsData = await axios.get('http://localhost:4000/store/all');
-    if (productsData.status === 200) {
-      orignData.current = productsData.data;
-      await setPd_Datas(productsData.data);
-      return productsData.data.message;
-    } else {
-      return productsData.data.message;
+    try {
+      const productsData = await axios.get('http://localhost:4000/store/all');
+      if (productsData.status === 200) {
+        orignData.current = productsData.data;
+        await setPd_Datas(productsData.data);
+        return productsData.data.message;
+      } else {
+        return productsData.data.message;
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -72,7 +77,7 @@ export default function Store_client() {
 
   useEffect(() => {
     searchProducts(searchText);
-  }, [searchText]);
+  }, [searchText] && [getAllProducts]);
 
   //db Number타입을 스트링으로 바꾸고 천단위 컴마 찍어 프론트에 보내기
   const country = navigator.language;
@@ -117,7 +122,24 @@ export default function Store_client() {
       </MediaQuery>
 
       <MediaQuery maxWidth={575}>
-        <select className="selectCategorys">
+        <select
+          className="selectCategorys"
+          onChange={(e) => {
+            if (e.target.value === 'VIEW ALL') {
+              return navigate('/store');
+            } else if (e.target.value === 'NEW ARRIVALS') {
+              return navigate('/store/new');
+            } else if (e.target.value === 'BEANIE') {
+              return navigate('/store/beanie');
+            } else if (e.target.value === 'CAP') {
+              return navigate('/store/cap');
+            } else if (e.target.value === 'TRAINING') {
+              return navigate('/store/training');
+            } else if (e.target.value === 'WINDBREAKER') {
+              return navigate('/store/windbreaker');
+            }
+          }}
+        >
           {categotryMenus_act.map((el) => (
             <option key={el}>{el}</option>
           ))}

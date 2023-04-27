@@ -196,11 +196,6 @@
   }
 }
 
-  // MAIN MENU
- 
-
-
-
 
 .cart_modal.off {
   transform: translateX(360px);
@@ -294,3 +289,62 @@
     }
   }
  }
+
+ .material-symbols-outlined.search_react {
+  position: relative;
+  bottom: 8px;
+  margin-right: 10px;
+  cursor: pointer;
+  &:active {
+    color: #a0a0a0;
+  }
+}
+
+.search_react_modal_container{
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .search_react_modal_bg {
+    position: absolute;
+    background-color: white;
+    opacity: 0.8;
+    width: 100vw;
+    height: 100vh;
+    z-index: 5;
+  }
+
+  .search_react_modal_input{
+    position: relative;
+    bottom: 100px;
+    flex: none;
+    display: block;
+    margin: 0 auto;
+    opacity: 1;
+    z-index: 7;
+    width: 400px;
+    height: 50px;
+    border-radius: 20px;
+    border: 1px solid black;
+    padding: 20px;
+  }
+
+  .search_react_modal_desc {
+    position: relative;
+    bottom: 95px;
+    flex: none;
+    display: block;
+    margin: 0 auto;
+    z-index: 7;
+    text-align: center;
+    font-size: 15px;
+  }
+
+  flex-direction: column;
+}
+
+
+ 
