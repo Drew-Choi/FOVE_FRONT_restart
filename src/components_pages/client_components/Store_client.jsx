@@ -132,7 +132,7 @@ export default function Store_client() {
         >
           <SwiperSlide className="swiper_slide">
             <Container>
-              <Row xs={2} md={4} lg={5}>
+              <Row xs={1} sm={2} md={4} lg={5}>
                 {pd_Datas.map((el, index) => {
                   if (index < 10 && index >= 0)
                     return (
@@ -155,7 +155,7 @@ export default function Store_client() {
 
           <SwiperSlide className="swiper_slide">
             <Container>
-              <Row xs={2} md={4} lg={5}>
+              <Row xs={1} sm={2} md={4} lg={5}>
                 {pd_Datas.map((el, index) => {
                   if (index < 20 && index >= 10)
                     return (
@@ -178,7 +178,7 @@ export default function Store_client() {
 
           <SwiperSlide className="swiper_slide">
             <Container>
-              <Row xs={2} md={4} lg={5}>
+              <Row xs={1} sm={2} md={4} lg={5}>
                 {pd_Datas.map((el, index) => {
                   if (index < 30 && index >= 20)
                     return (
@@ -202,7 +202,7 @@ export default function Store_client() {
 
           <SwiperSlide className="swiper_slide">
             <Container>
-              <Row xs={2} md={4} lg={5}>
+              <Row xs={1} sm={2} md={4} lg={5}>
                 {pd_Datas.map((el, index) => {
                   if (index < 40 && index >= 30)
                     return (
@@ -226,7 +226,7 @@ export default function Store_client() {
 
           <SwiperSlide className="swiper_slide">
             <Container>
-              <Row xs={2} md={4} lg={5}>
+              <Row xs={1} sm={2} md={4} lg={5}>
                 {pd_Datas.map((el, index) => {
                   if (index < 50 && index >= 40)
                     return (

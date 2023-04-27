@@ -1,6 +1,7 @@
 .header_client {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(1, 1fr);
   background-color: white;
   position: relative;
   border-bottom: solid 0.5px black;
@@ -11,10 +12,18 @@
 
   @media screen and (max-width: 1144px) {
     grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+  }
+
+  @media screen and (max-width: 767px) {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    padding: 0 20px;
   }
 
   .logo {
     grid-column: 1 / 2;
+    grid-row: 1/1;
     position: relative;
     justify-self: start;
     cursor: pointer;
@@ -25,10 +34,19 @@
     @media screen and (max-width: 1144px) {
       grid-column: 1 / 2;
     }
+
+    @media screen and (max-width: 767px) {
+      grid-column: 2 / 3;
+      justify-self: center;
+      font-size: 50px;
+      text-align: center;
+    }
   }
 
   #cate {
+    display: block;
     grid-column: 2 / 3;
+    grid-row: 1/1;
     display: flex;
     list-style: none;
     justify-content: center;
@@ -41,6 +59,10 @@
       padding-left: 40px;
     }
 
+    @media screen and (max-width: 767px) {
+      display: none;
+    }
+
     p {
       padding: 0px 20px;
       cursor: pointer;
@@ -50,8 +72,59 @@
     }
   }
 
+  .burger_menu_container {
+    display: none;
+    grid-column: 1 / 2;
+    grid-row: 1 / 1;
+    position: relative;
+    justify-self: start;
+    cursor: pointer;
+    // background-color: #a0a0a0;
+
+    @media screen and (max-width: 767px) {
+      display: block;
+    }
+  
+    .material-symbols-sharp.burgerIcon.on {
+     display: block;
+     position: relative;
+     top: 12px;
+     font-size: 40px;
+     cursor: pointer;
+
+     font-variation-settings:
+     'FILL' 0,
+     'wght' 200,
+     'GRAD' 0,
+     'opsz' 48
+    }
+
+    .material-symbols-sharp.burgerIcon.off {
+      display: none;
+    }
+    
+    .material-symbols-sharp.burgerClose.on{
+      display: block;
+      position: relative;
+      top: 12px;
+      font-size: 40px;
+      cursor: pointer;
+
+      font-variation-settings:
+      'FILL' 0,
+      'wght' 200,
+      'GRAD' 0,
+      'opsz' 48
+    }
+
+    .material-symbols-sharp.burgerClose.off{
+      display: none;
+    }
+   }
+
   #cate2 {
     grid-column: 3 / 4;
+    grid-row: 1/1;
     padding: 0px;
     margin: 0px;
     display: flex;
@@ -62,6 +135,10 @@
 
     @media screen and (max-width: 1144px) {
       grid-column: 5 / 6;
+    }
+
+    @media screen and (max-width: 767px) {
+      grid-column: 3 / 4;
     }
 
     li {
@@ -171,7 +248,7 @@
   }
 }
 
-//쿼리영역
+//쿼리영역----------
 .material-symbols-outlined.header_login_mediaQ {
   position: relative;
   font-size: 27px;
@@ -200,8 +277,29 @@
   'wght' 300,
   'GRAD' -25,
   'opsz' 48
-  
-
-  
  }
 }
+
+
+.burger_menu_list {
+  position: absolute;
+  top: 69px;
+  z-index: 999;
+  list-style: none;
+  background-color: white;
+  // border-left: 0.5px solid black;
+  border-right: 0.5px solid black;
+  border-bottom: 0.5px solid black;
+  padding: 30px;
+  padding-bottom: 10px;
+
+  li {
+    cursor: pointer;
+    &:active {
+      color: #a0a0a0;
+    }
+    p{
+      margin-bottom: 20px;
+    }
+  }
+ }

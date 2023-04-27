@@ -16,6 +16,15 @@ export default function Header_client() {
   const excludeRef = useRef(null);
   const searchBTN = useRef();
 
+  //반응형 햄버거 메뉴 커서
+  const [burger, setBurger] = useState('on');
+  const [burgerClose, setBurgerClose] = useState('off');
+  const burherHandler = () => {
+    burger === 'on' && burgerClose === 'off'
+      ? (setBurger((cur) => 'off'), setBurgerClose((cur) => 'on'))
+      : (setBurger((cur) => 'on'), setBurgerClose((cur) => 'off'));
+  };
+
   const navigate = useNavigate();
 
   //리덕스 디스패치(액션함수 전달용)
@@ -131,6 +140,23 @@ export default function Header_client() {
           <p onClick={() => navigate('#')}>COLLECTION</p>
         </div>
 
+        {/* 반응형 버거메뉴--------------------- */}
+        <div className="burger_menu_container">
+          <span
+            onClick={burherHandler}
+            className={`material-symbols-sharp burgerIcon ${burger}`}
+          >
+            menu
+          </span>
+          <span
+            onClick={burherHandler}
+            className={`material-symbols-sharp burgerClose ${burgerClose}`}
+          >
+            close
+          </span>
+        </div>
+        {/* 반응형 버거메뉴--------------------- */}
+
         <ul id="cate2">
           <li id="search_container">
             <input
@@ -221,6 +247,23 @@ export default function Header_client() {
           </li>
         </ul>
       </header>
+
+      {/* 버거 모달 */}
+      {burger === 'off' ? (
+        <ul className="burger_menu_list">
+          <li>
+            <p onClick={() => navigate('/aboutus')}>ABOUT US</p>
+          </li>
+          <li>
+            <p onClick={() => navigate('/store')}>STORE</p>
+          </li>
+          <li>
+            <p onClick={() => navigate('#')}>COLLECTION</p>
+          </li>
+        </ul>
+      ) : (
+        <></>
+      )}
 
       {/* 카트 모달 임 */}
       <CartModal className={`cart_modal ${offonKey}`} />
