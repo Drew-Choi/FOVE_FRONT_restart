@@ -304,23 +304,35 @@ export default function Header_client() {
         </ul>
       </header>
 
-      {/* 버거 모달 */}
+      {/* 반응형 버거 모달 */}
       {burger === 'off' ? (
         <ul className="burger_menu_list">
           <li>
-            <p onClick={() => navigate('/aboutus')}>ABOUT US</p>
+            <p
+              onClick={() => {
+                burherHandler(), navigate('/aboutus');
+              }}
+            >
+              ABOUT US
+            </p>
           </li>
           <li>
             <p
               onClick={() => {
-                navigate('/store'), dispatch(searchinput(''));
+                burherHandler(), navigate('/store'), dispatch(searchinput(''));
               }}
             >
               STORE
             </p>
           </li>
           <li>
-            <p onClick={() => navigate('#')}>COLLECTION</p>
+            <p
+              onClick={() => {
+                burherHandler(), navigate('#');
+              }}
+            >
+              COLLECTION
+            </p>
           </li>
         </ul>
       ) : (

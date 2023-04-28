@@ -74,6 +74,7 @@
     position: relative;
     justify-self: start;
     cursor: pointer;
+    z-index: 7;
     // background-color: #a0a0a0;
   
     .material-symbols-sharp.burgerIcon.on {
@@ -240,22 +241,41 @@
   font-size: 27px;
   bottom: 4px;
   right: 5px;
+
+  @media screen and (max-width: 400px) {
+    font-size: 23px;
+    bottom: 0px;
+    right: -10px;
+    }
 }
 
 .header_beg_container_media {
   position: relative;
+  @media screen and (max-width: 400px) {
+    left: 10px;
+    }
 
  .material-symbols-sharp.header_beg_icon_media {
   position: relative;
   font-size: 40px;
   bottom: 8px;
 
+  @media screen and (max-width: 400px) {
+    font-size: 29px;
+    bottom: 3px;
+    }
 
   .header_beg_count_media {
     position: relative;
     bottom: 11px;
     right: 25px;
     font-size: 10px;
+
+    @media screen and (max-width: 400px) {
+      font-size: 8px;
+      bottom: 7.5px;
+      right: 20px;
+      }
    } 
 
   font-variation-settings:
@@ -297,6 +317,13 @@
   cursor: pointer;
   &:active {
     color: #a0a0a0;
+  }
+
+  @media screen and (max-width: 575px) {
+  position: absolute;
+  top: 75px;
+  right: 25px;
+  z-index: 3;
   }
 }
 
