@@ -73,7 +73,7 @@ export default function Store_client() {
   useEffect(() => {
     getAllProducts();
     // getFit();
-  }, []);
+  }, [] || [selectedCategory]);
 
   useEffect(() => {
     searchProducts(searchText);
@@ -102,6 +102,28 @@ export default function Store_client() {
     'WINDBREAKER',
   ];
 
+  //반응형 셀렉터 핸들
+  const [selectedCategory, setSelectedCategory] = useState('VIEW ALL');
+
+  const handleCategoryChange = (e) => {
+    const value = e.target.value;
+    setSelectedCategory(value);
+
+    if (value === 'VIEW ALL') {
+      navigate('/store');
+    } else if (value === 'NEW ARRIVALS') {
+      navigate('/store/new');
+    } else if (value === 'BEANIE') {
+      navigate('/store/beanie');
+    } else if (value === 'CAP') {
+      navigate('/store/cap');
+    } else if (value === 'TRAINING') {
+      navigate('/store/training');
+    } else if (value === 'WINDBREAKER') {
+      navigate('/store/windbreaker');
+    }
+  };
+
   return (
     <main className="store_main">
       <MediaQuery minWidth={576}>
@@ -124,21 +146,8 @@ export default function Store_client() {
       <MediaQuery maxWidth={575}>
         <select
           className="selectCategorys"
-          onChange={(e) => {
-            if (e.target.value === 'VIEW ALL') {
-              return navigate('/store');
-            } else if (e.target.value === 'NEW ARRIVALS') {
-              return navigate('/store/new');
-            } else if (e.target.value === 'BEANIE') {
-              return navigate('/store/beanie');
-            } else if (e.target.value === 'CAP') {
-              return navigate('/store/cap');
-            } else if (e.target.value === 'TRAINING') {
-              return navigate('/store/training');
-            } else if (e.target.value === 'WINDBREAKER') {
-              return navigate('/store/windbreaker');
-            }
-          }}
+          value={selectedCategory}
+          onChange={handleCategoryChange}
         >
           {categotryMenus_act.map((el) => (
             <option key={el}>{el}</option>
