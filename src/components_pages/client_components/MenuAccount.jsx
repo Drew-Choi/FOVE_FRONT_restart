@@ -8,21 +8,41 @@ import { reset, update } from '../../store/modules/cart';
 import axios from 'axios';
 
 const MenuAccountWrap = styled.div`
-  position: fixed;
-  top: 50px;
-  right: 0;
-  z-index: 1000; // 장바구니보다 위에 위치
-  width: 280px;
-  height: 150px;
-  border: 2px solid black;
+  position: absolute;
+  top: 69px;
+  right: 130px;
+  z-index: 999; // 장바구니보다 위에 위치
+  width: 200px;
+  height: 140px;
+  border-left: 0.5px solid black;
+  border-right: 0.5px solid black;
+  border-bottom: 0.5px solid black;
   background-color: white;
   padding: 15px;
+
+  @media screen and (max-width: 1144px) {
+    right: 25px;
+  }
+
+  @media screen and (max-width: 767px) {
+    right: 0px;
+  }
+
+  @media screen and (max-width: 400px) {
+    right: 0px;
+    width: 150px;
+    height: 120px;
+  }
 `;
 
 const ContentTitle = styled.p`
   margin: 0;
   font-size: 15px;
   font-weight: 800;
+
+  @media screen and (max-width: 400px) {
+    font-size: 13px;
+  }
 `;
 
 const Content = styled.p`
@@ -33,6 +53,10 @@ const Content = styled.p`
     font-weight: 900;
     border-bottom: 2px solid black;
     /* background-color: #e9e9e9; */
+  }
+
+  @media screen and (max-width: 400px) {
+    font-size: 13px;
   }
 `;
 

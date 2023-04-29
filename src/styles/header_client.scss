@@ -265,25 +265,29 @@
     bottom: 3px;
     }
 
-  .header_beg_count_media {
-    position: relative;
-    bottom: 11px;
-    right: 25px;
-    font-size: 10px;
-
-    @media screen and (max-width: 400px) {
-      font-size: 8px;
-      bottom: 7.5px;
-      right: 20px;
-      }
-   } 
-
   font-variation-settings:
   'FILL' 0,
   'wght' 300,
   'GRAD' -25,
   'opsz' 48
  }
+
+ .header_beg_count_media {
+  position: absolute;
+  bottom: 19px;
+  right: 5px;
+  font-size: 13px;
+  font-weight: bold;
+  text-align: center;
+  // background-color: #a0a0a0;
+  width: 30px;
+
+  @media screen and (max-width: 400px) {
+    font-size: 12px;
+    bottom: 11px;
+    left: -0.5px;
+    }
+ } 
 }
 
 
@@ -377,5 +381,46 @@
   flex-direction: column;
 }
 
+.material-symbols-sharp.account_react {
+  cursor: pointer;
+  font-size: 35px;
+  position: relative;
+  bottom: 6.5px;
 
+  @media screen and (max-width: 400px) {
+    font-size: 25px;
+    bottom: 2px;
+    left: 20px;
+    }
+
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+
+  
+}
+
+.account_close_container{
+  width: 68.344px;
+
+  .material-symbols-sharp.account-close {
+    position: relative;
+    bottom: 5px;
+    font-size: 30px;
+  }
+}
+
+.material-symbols-sharp.account-close2 {
+  position: relative;
+  bottom: 5px;
+  font-size: 35px;
+
+  @media screen and (max-width: 400px) {
+    font-size: 25px;
+    bottom: 0px;
+    left: 20px;
+    }
+}
  

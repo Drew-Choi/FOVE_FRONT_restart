@@ -16,6 +16,8 @@ export default function Header_client() {
   const [reactSearchModal, setReactSearchModal] = useState(false);
   const excludeRef = useRef(null);
   const searchBTN = useRef();
+  const accountRef = useRef();
+  const account_btn = useRef();
 
   //반응형 햄버거 메뉴 커서
   const [burger, setBurger] = useState('on');
@@ -145,6 +147,21 @@ export default function Header_client() {
     setSearchOnOff('on');
   };
 
+  //윈도우 클릭시 기능해제, account
+  useEffect(() => {
+    const handleClickOutside2 = (event) => {
+      if (accountRef.current && !accountRef.current.contains(event.target)) {
+        dispatch(clickMenu());
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside2);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside2);
+    };
+  }, [accountRef, menuClicked]);
+
   return (
     <>
       <MediaQuery maxWidth={1327}>
@@ -156,7 +173,6 @@ export default function Header_client() {
               onClick={() => setReactSearchModal((cur) => !cur)}
             ></div>
             <input
-              ref={excludeRef}
               className="search_react_modal_input"
               type="text"
               placeholder={empty}
@@ -259,13 +275,54 @@ export default function Header_client() {
 
           <li id="cate_li2">
             {userData.isLogin ? (
-              <p
-                onClick={() => {
-                  dispatch(clickMenu());
-                }}
-              >
-                ACCOUNT
-              </p>
+              <>
+                <MediaQuery minWidth={1145}>
+                  {!menuClicked ? (
+                    <p
+                      ref={account_btn}
+                      onClick={() => {
+                        dispatch(clickMenu());
+                      }}
+                    >
+                      ACCOUNT
+                    </p>
+                  ) : (
+                    <div className="account_close_container">
+                      <span
+                        ref={accountRef}
+                        className="material-symbols-sharp account-close"
+                        onClick={() => {
+                          dispatch(clickMenu());
+                        }}
+                      >
+                        close
+                      </span>
+                    </div>
+                  )}
+                </MediaQuery>
+
+                <MediaQuery maxWidth={1144}>
+                  {!menuClicked ? (
+                    <span
+                      onClick={() => {
+                        dispatch(clickMenu());
+                      }}
+                      className="material-symbols-sharp account_react"
+                    >
+                      account_circle
+                    </span>
+                  ) : (
+                    <span
+                      className="material-symbols-sharp account-close2"
+                      onClick={() => {
+                        dispatch(clickMenu());
+                      }}
+                    >
+                      close
+                    </span>
+                  )}
+                </MediaQuery>
+              </>
             ) : (
               <>
                 <MediaQuery minWidth={1145}>
@@ -308,13 +365,13 @@ export default function Header_client() {
               >
                 <span className="material-symbols-sharp header_beg_icon_media">
                   shopping_bag
-                  <span className="header_beg_count_media">
-                    {!cartInfo.cartProductsLength ||
-                    cartInfo.cartProductsLength === 0
-                      ? 0
-                      : cartInfo.cartProductsLength}
-                  </span>
                 </span>
+                <div className="header_beg_count_media">
+                  {!cartInfo.cartProductsLength ||
+                  cartInfo.cartProductsLength === 0
+                    ? 0
+                    : cartInfo.cartProductsLength}
+                </div>
               </div>
             </MediaQuery>
             {/* 0 이라는 숫자 장바구니에 넣을 때 올라가야 함 */}
