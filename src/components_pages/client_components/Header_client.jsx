@@ -102,6 +102,25 @@ export default function Header_client() {
     }
   };
 
+  //반응형 서칭용 엔터 핸들러
+  const handleKeyPress2 = async (e) => {
+    if (e.key === 'Enter') {
+      // 검색 로직 실행
+      if (currentURL !== 'store') {
+        await dispatch(searchinput(e.target.value));
+        navigate('store');
+      } else {
+        dispatch(searchinput(e.target.value));
+      }
+      if (!e.target.value) {
+        setEmpty('검색어를 입력해주세요.');
+      } else {
+        setReactSearchModal((cur) => false);
+        e.target.value = '';
+      }
+    }
+  };
+
   //윈도우 클릭시 기능해제, 돋보기
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -141,8 +160,8 @@ export default function Header_client() {
               className="search_react_modal_input"
               type="text"
               placeholder={empty}
-              onKeyDown={(e) => handleKeyPress(e)}
-              onClick={handleClick}
+              onKeyDown={(e) => handleKeyPress2(e)}
+              // onClick={handleClick}
             />
             <p className="search_react_modal_desc">
               Enter keywords for searching
@@ -230,7 +249,6 @@ export default function Header_client() {
               <></>
             ) : (
               <span
-                ref={searchBTN}
                 className="material-symbols-outlined search_react"
                 onClick={() => setReactSearchModal((cur) => !cur)}
               >
