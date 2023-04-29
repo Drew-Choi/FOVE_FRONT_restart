@@ -73,11 +73,15 @@ export default function Store_client() {
   useEffect(() => {
     getAllProducts();
     // getFit();
-  }, [] || [selectedCategory]);
+  }, []);
 
-  useEffect(() => {
-    searchProducts(searchText);
-  }, [searchText] && [getAllProducts]);
+  useEffect(
+    () => {
+      searchProducts(searchText);
+    },
+    [searchText],
+    [getAllProducts],
+  );
 
   //db Number타입을 스트링으로 바꾸고 천단위 컴마 찍어 프론트에 보내기
   const country = navigator.language;
@@ -103,23 +107,20 @@ export default function Store_client() {
   ];
 
   //반응형 셀렉터 핸들
-  const [selectedCategory, setSelectedCategory] = useState('VIEW ALL');
-
   const handleCategoryChange = (e) => {
-    const value = e.target.value;
-    setSelectedCategory(value);
+    let eValue = e.target.value;
 
-    if (value === 'VIEW ALL') {
+    if (eValue === 'VIEW ALL') {
       navigate('/store');
-    } else if (value === 'NEW ARRIVALS') {
+    } else if (eValue === 'NEW ARRIVALS') {
       navigate('/store/new');
-    } else if (value === 'BEANIE') {
+    } else if (eValue === 'BEANIE') {
       navigate('/store/beanie');
-    } else if (value === 'CAP') {
+    } else if (eValue === 'CAP') {
       navigate('/store/cap');
-    } else if (value === 'TRAINING') {
+    } else if (eValue === 'TRAINING') {
       navigate('/store/training');
-    } else if (value === 'WINDBREAKER') {
+    } else if (eValue === 'WINDBREAKER') {
       navigate('/store/windbreaker');
     }
   };
@@ -146,11 +147,13 @@ export default function Store_client() {
       <MediaQuery maxWidth={575}>
         <select
           className="selectCategorys"
-          value={selectedCategory}
+          value="VIEW ALL"
           onChange={handleCategoryChange}
         >
           {categotryMenus_act.map((el) => (
-            <option key={el}>{el}</option>
+            <option value={el} key={el}>
+              {el}
+            </option>
           ))}
         </select>
       </MediaQuery>
