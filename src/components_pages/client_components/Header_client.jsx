@@ -7,7 +7,7 @@ import { importdb } from '../../store/modules/cart';
 import CartModal from './CartModal';
 import { offon } from '../../store/modules/cartmodal';
 import MenuAccount from './MenuAccount';
-import { clickMenu } from '../../store/modules/menuAccount';
+import { clickMenu, menuClose } from '../../store/modules/menuAccount';
 import GoogleIcon from './GoogleIcon';
 import { searchinput } from '../../store/modules/search';
 import MediaQuery from 'react-responsive';
@@ -151,7 +151,9 @@ export default function Header_client() {
   useEffect(() => {
     const handleClickOutside2 = (event) => {
       if (accountRef.current && !accountRef.current.contains(event.target)) {
-        dispatch(clickMenu());
+        if (event.target !== account_btn.current) {
+          dispatch(menuClose());
+        }
       }
     };
 
@@ -160,7 +162,7 @@ export default function Header_client() {
     return () => {
       document.removeEventListener('click', handleClickOutside2);
     };
-  }, [accountRef, menuClicked]);
+  }, [accountRef]);
 
   return (
     <>
@@ -278,12 +280,7 @@ export default function Header_client() {
               <>
                 <MediaQuery minWidth={1145}>
                   {!menuClicked ? (
-                    <p
-                      ref={account_btn}
-                      onClick={() => {
-                        dispatch(clickMenu());
-                      }}
-                    >
+                    <p ref={account_btn} onClick={() => dispatch(clickMenu())}>
                       ACCOUNT
                     </p>
                   ) : (

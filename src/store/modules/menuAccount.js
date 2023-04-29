@@ -5,11 +5,18 @@ const initState = {
 
 // 액션 타입(문자열) 설정.
 const CLICKED = 'menuAccount/CLICKED';
+const MENUCLOSE = 'menuAccount/MENUCLOSE';
 
 // 액션 생성 함수.
 export function clickMenu() {
   return {
     type: CLICKED,
+  };
+}
+
+export function menuClose() {
+  return {
+    type: MENUCLOSE,
   };
 }
 
@@ -28,6 +35,11 @@ export default function menuAccount(state = initState, action) {
           clicked: true,
         };
       }
+    case MENUCLOSE:
+      return {
+        ...state,
+        clicked: false,
+      };
     default:
       return state;
   }
