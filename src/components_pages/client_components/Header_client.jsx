@@ -17,7 +17,7 @@ export default function Header_client() {
   const excludeRef = useRef(null);
   const searchBTN = useRef();
   const accountRef = useRef();
-  const account_btn = useRef();
+  const accountRef2 = useRef();
 
   //반응형 햄버거 메뉴 커서
   const [burger, setBurger] = useState('on');
@@ -147,22 +147,35 @@ export default function Header_client() {
     setSearchOnOff('on');
   };
 
-  //윈도우 클릭시 기능해제, account
+  const handleClickOutside2 = (event) => {
+    if (accountRef.current && !accountRef.current.contains(event.target)) {
+      dispatch(menuClose());
+    }
+  };
+
   useEffect(() => {
-    const handleClickOutside2 = (event) => {
-      if (accountRef.current && !accountRef.current.contains(event.target)) {
-        if (event.target !== account_btn.current) {
-          dispatch(menuClose());
-        }
-      }
-    };
-
-    document.addEventListener('click', handleClickOutside2);
-
+    if (accountRef.current) {
+      document.addEventListener('mousedown', handleClickOutside2);
+    }
     return () => {
-      document.removeEventListener('click', handleClickOutside2);
+      document.removeEventListener('mousedown', handleClickOutside2);
     };
   }, [accountRef]);
+
+  const handleClickOutside3 = (event) => {
+    if (accountRef2.current && !accountRef2.current.contains(event.target)) {
+      dispatch(menuClose());
+    }
+  };
+
+  useEffect(() => {
+    if (accountRef2.current) {
+      document.addEventListener('mousedown', handleClickOutside3);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside3);
+    };
+  }, [accountRef2]);
 
   return (
     <>
@@ -248,7 +261,6 @@ export default function Header_client() {
                 <></>
               ) : (
                 <span
-                  ref={searchBTN}
                   className="material-symbols-outlined search"
                   onClick={(cur) =>
                     searchOnOff === 'off'
@@ -280,12 +292,10 @@ export default function Header_client() {
               <>
                 <MediaQuery minWidth={1145}>
                   {!menuClicked ? (
-                    <p ref={account_btn} onClick={() => dispatch(clickMenu())}>
-                      ACCOUNT
-                    </p>
+                    <p onClick={() => dispatch(clickMenu())}>ACCOUNT</p>
                   ) : (
                     <div className="account_close_container">
-                      <span
+                      <p
                         ref={accountRef}
                         className="material-symbols-sharp account-close"
                         onClick={() => {
@@ -293,7 +303,7 @@ export default function Header_client() {
                         }}
                       >
                         close
-                      </span>
+                      </p>
                     </div>
                   )}
                 </MediaQuery>
@@ -310,6 +320,7 @@ export default function Header_client() {
                     </span>
                   ) : (
                     <span
+                      ref={accountRef2}
                       className="material-symbols-sharp account-close2"
                       onClick={() => {
                         dispatch(clickMenu());
