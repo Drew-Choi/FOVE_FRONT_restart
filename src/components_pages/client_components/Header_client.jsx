@@ -5,19 +5,22 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { importdb } from '../../store/modules/cart';
 import CartModal from './CartModal';
-import { offon } from '../../store/modules/cartmodal';
+import { offon, onlyoff } from '../../store/modules/cartmodal';
 import MenuAccount from './MenuAccount';
 import { clickMenu, menuClose } from '../../store/modules/menuAccount';
-import GoogleIcon from './GoogleIcon';
 import { searchinput } from '../../store/modules/search';
 import MediaQuery from 'react-responsive';
 
 export default function Header_client() {
   const [reactSearchModal, setReactSearchModal] = useState(false);
   const excludeRef = useRef(null);
-  const searchBTN = useRef();
-  const accountRef = useRef();
-  const accountRef2 = useRef();
+  const searchBTN = useRef(null);
+  const accountRef = useRef(null);
+  const accountRef2 = useRef(null);
+  const menuAccountRef = useRef(null);
+  const cartModalRef = useRef(null);
+  const cartModalRef2 = useRef(null);
+  const cartModalMenu = useRef(null);
 
   //반응형 햄버거 메뉴 커서
   const [burger, setBurger] = useState('on');
@@ -148,34 +151,50 @@ export default function Header_client() {
   };
 
   const handleClickOutside2 = (event) => {
-    if (accountRef.current && !accountRef.current.contains(event.target)) {
+    if (
+      (accountRef.current &&
+        !accountRef.current.contains(event.target) &&
+        menuAccountRef.current &&
+        !menuAccountRef.current.contains(event.target)) ||
+      (accountRef2.current &&
+        !accountRef2.current.contains(event.target) &&
+        menuAccountRef.current &&
+        !menuAccountRef.current.contains(event.target))
+    ) {
       dispatch(menuClose());
     }
   };
 
   useEffect(() => {
-    if (accountRef.current) {
-      document.addEventListener('mousedown', handleClickOutside2);
-    }
+    document.addEventListener('mousedown', handleClickOutside2);
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside2);
     };
-  }, [accountRef]);
+  }, []);
 
   const handleClickOutside3 = (event) => {
-    if (accountRef2.current && !accountRef2.current.contains(event.target)) {
-      dispatch(menuClose());
+    if (
+      (cartModalRef.current &&
+        !cartModalRef.current.contains(event.target) &&
+        cartModalMenu.current &&
+        !cartModalMenu.current.contains(event.target)) ||
+      (cartModalRef2.current &&
+        !cartModalRef2.current.contains(event.target) &&
+        cartModalMenu.current &&
+        !cartModalMenu.current.contains(event.target))
+    ) {
+      dispatch(onlyoff());
     }
   };
 
   useEffect(() => {
-    if (accountRef2.current) {
-      document.addEventListener('mousedown', handleClickOutside3);
-    }
+    document.addEventListener('mousedown', handleClickOutside3);
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside3);
     };
-  }, [accountRef2]);
+  }, [cartModalRef] || [cartModalRef2]);
 
   return (
     <>
@@ -229,20 +248,24 @@ export default function Header_client() {
 
         {/* 반응형 버거메뉴--------------------- */}
         <MediaQuery maxWidth={767}>
-          <div className="burger_menu_container">
-            <span
-              onClick={burherHandler}
-              className={`material-symbols-sharp burgerIcon ${burger}`}
-            >
-              menu
-            </span>
-            <span
-              onClick={burherHandler}
-              className={`material-symbols-sharp burgerClose ${burgerClose}`}
-            >
-              close
-            </span>
-          </div>
+          {currentURL === '/' ? (
+            <></>
+          ) : (
+            <div className="burger_menu_container">
+              <span
+                onClick={burherHandler}
+                className={`material-symbols-sharp burgerIcon ${burger}`}
+              >
+                menu
+              </span>
+              <span
+                onClick={burherHandler}
+                className={`material-symbols-sharp burgerClose ${burgerClose}`}
+              >
+                close
+              </span>
+            </div>
+          )}
         </MediaQuery>
         {/* 반응형 버거메뉴--------------------- */}
 
@@ -357,35 +380,62 @@ export default function Header_client() {
           </li>
           <li id="cate_li2_shopbag">
             <MediaQuery minWidth={1145}>
-              <p onClick={clickShoppingBag}>
-                SHOPPING BAG /{' '}
-                {!cartInfo.cartProductsLength ||
-                cartInfo.cartProductsLength === 0
-                  ? 0
-                  : cartInfo.cartProductsLength}
-              </p>
-            </MediaQuery>
-
-            <MediaQuery maxWidth={1144}>
-              <div
-                className="header_beg_container_media"
-                onClick={clickShoppingBag}
-              >
-                <span className="material-symbols-sharp header_beg_icon_media">
-                  shopping_bag
-                </span>
-                <div className="header_beg_count_media">
+              {currentURL === '/' ? (
+                <></>
+              ) : (
+                <p onClick={clickShoppingBag} ref={cartModalRef}>
+                  SHOPPING BAG /
                   {!cartInfo.cartProductsLength ||
                   cartInfo.cartProductsLength === 0
                     ? 0
                     : cartInfo.cartProductsLength}
+                </p>
+              )}
+            </MediaQuery>
+
+            <MediaQuery maxWidth={1144}>
+              {currentURL === '/' ? (
+                <></>
+              ) : (
+                <div
+                  className="header_beg_container_media"
+                  onClick={clickShoppingBag}
+                  ref={cartModalRef2}
+                >
+                  <span className="material-symbols-sharp header_beg_icon_media">
+                    shopping_bag
+                  </span>
+                  <div className="header_beg_count_media">
+                    {!cartInfo.cartProductsLength ||
+                    cartInfo.cartProductsLength === 0
+                      ? 0
+                      : cartInfo.cartProductsLength}
+                  </div>
                 </div>
-              </div>
+              )}
             </MediaQuery>
             {/* 0 이라는 숫자 장바구니에 넣을 때 올라가야 함 */}
           </li>
         </ul>
       </header>
+
+      <MediaQuery maxWidth={767}>
+        {currentURL === '/' ? (
+          <nav className="intro_nav_bar">
+            <p onClick={() => navigate('/aboutus')}>ABOUT US</p>
+            <p
+              onClick={() => {
+                navigate('/store'), dispatch(searchinput(''));
+              }}
+            >
+              STORE
+            </p>
+            <p onClick={() => navigate('#')}>COLLECTION</p>
+          </nav>
+        ) : (
+          <></>
+        )}
+      </MediaQuery>
 
       {/* 반응형 버거 모달 */}
       {burger === 'off' ? (
@@ -423,10 +473,13 @@ export default function Header_client() {
       )}
 
       {/* 카트 모달 임 */}
-      <CartModal className={`cart_modal ${offonKey}`} />
+      <CartModal
+        cartModalMenu={cartModalMenu}
+        className={`cart_modal ${offonKey}`}
+      />
 
       {/* ACCOUNT 메뉴 */}
-      {menuClicked && <MenuAccount />}
+      {menuClicked && <MenuAccount menuAccountRef={menuAccountRef} />}
     </>
   );
 }

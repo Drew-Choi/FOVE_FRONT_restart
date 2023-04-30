@@ -60,7 +60,7 @@ const Content = styled.p`
   }
 `;
 
-export default function MenuAccount() {
+export default function MenuAccount({ menuAccountRef }) {
   //리덕스
   //유저정보 state
   const userID = useSelector((state) =>
@@ -91,7 +91,7 @@ export default function MenuAccount() {
   };
 
   return (
-    <MenuAccountWrap>
+    <MenuAccountWrap ref={menuAccountRef}>
       <ContentTitle>{userName} 님, 환영합니다!</ContentTitle>
       <ContentTitle>Point : {userPoints} p</ContentTitle>
       <Content

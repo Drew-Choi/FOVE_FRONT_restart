@@ -224,7 +224,7 @@ const RemoveIcon = styled.span`
   }
 `;
 
-export default function CartModal({ className }) {
+export default function CartModal({ className, cartModalMenu }) {
   //천단위 콤마
   const country = navigator.language;
   const frontPriceComma = (price) => {
@@ -360,7 +360,7 @@ export default function CartModal({ className }) {
 
   return (
     <>
-      <CartModal_Layout className={className}>
+      <CartModal_Layout ref={cartModalMenu} className={className}>
         <CartTitle>ORDER SUMMERY</CartTitle>
 
         <CloseIcon

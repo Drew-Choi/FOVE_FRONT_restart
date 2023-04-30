@@ -16,16 +16,19 @@ export default function Intro_movie_client() {
 
   return (
     <section className="intro_moive">
-      <ReactPlayer
-        url="/videos/intro.mp4"
-        width="100%"
-        height="auto"
-        playing={playING}
-        muted={true}
-        loop={playING}
-        volume={0}
-      />
-      ;
+      <div className="intro_moive_container">
+        <div className="intro_moive_wrap">
+          <ReactPlayer
+            url="/videos/intro.mp4"
+            width="100%"
+            height="auto"
+            playing={playING}
+            muted={true}
+            loop={playING}
+            volume={0}
+          />
+        </div>
+      </div>
     </section>
   );
 }

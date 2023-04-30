@@ -5,12 +5,20 @@ const initState = {
 
 // 액션 타입(문자열) 설정.
 const OFFON = 'cartmodal/OFFON';
+const ONLYOFF = 'cartmodal/ONLYOFF';
 
 // 액션 생성 함수. 바깥에서 사용하므로 export.
 export function offon() {
   // 바깥에서 정보를 받아와야.
   return {
     type: OFFON,
+  };
+}
+
+export function onlyoff() {
+  // 바깥에서 정보를 받아와야.
+  return {
+    type: ONLYOFF,
   };
 }
 
@@ -29,6 +37,11 @@ export default function cartmodal(state = initState, action) {
           offon: 'off',
         };
       }
+    case ONLYOFF:
+      return {
+        ...state,
+        offon: 'off',
+      };
     default:
       return state;
   }

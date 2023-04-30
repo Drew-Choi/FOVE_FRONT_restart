@@ -424,3 +424,22 @@
     }
 }
  
+.intro_nav_bar{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 50px;
+  border-bottom: 0.5px solid black;
+  border-left: 0.5px solid black;
+  border-right:  0.5px solid black;;
+  p {
+    margin: 0px;
+    padding: 20px;
+
+    @media screen and (max-width: 280px) and (max-height: 653px) {
+      padding: 10px;
+    }
+  
+  }
+}
