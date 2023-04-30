@@ -41,6 +41,10 @@
       font-size: 50px;
       text-align: center;
     }
+
+    @media screen and (max-width: 280px) {
+      font-size: 40px;
+    }
   }
 
   #cate {
@@ -247,6 +251,10 @@
     bottom: 0px;
     right: -10px;
     }
+
+    @media screen and (max-width: 280px) {
+      right: -25px;
+      }
 }
 
 .header_beg_container_media {
@@ -329,6 +337,11 @@
   top: 75px;
   right: 25px;
   }
+
+  @media screen and (max-width: 280px) {
+    position: absolute;
+    right: 0px;
+    }
 }
 
 .search_react_modal_container{
@@ -364,6 +377,10 @@
 
     @media screen and (max-width: 400px) {
       width: 300px;
+    }
+
+    @media screen and (max-width: 280px) {
+      width: 220px;
     }
   }
 
@@ -436,10 +453,21 @@
   p {
     margin: 0px;
     padding: 20px;
+    cursor: pointer;
+    &:active {
+      color: #a0a0a0;
+    }
 
     @media screen and (max-width: 280px) and (max-height: 653px) {
       padding: 10px;
+      
     }
   
+  }
+}
+
+#cate_li2 {
+  @media screen and (max-width: 280px) {
+    padding-left: 0px !important;
   }
 }

@@ -7,7 +7,7 @@ import '../../styles/login_client.scss';
 import styled from 'styled-components';
 
 const KakaoBTN = styled.img`
-  width: 400px;
+  width: 370px;
   padding: 20px;
   cursor: pointer;
   &:hover {
@@ -15,6 +15,9 @@ const KakaoBTN = styled.img`
   }
   &:active {
     opacity: 0.2;
+  }
+  @media screen and (max-width: 280px) {
+    width: 300px;
   }
 `;
 
@@ -97,43 +100,46 @@ export default function Login_client() {
 
   return (
     <div className="login_client">
-      <p className="login_title">LOG IN or CREATE ACCOUNT</p>
-      <br />
-      <input
-        type="text"
-        ref={loginIdInput}
-        placeholder="ID (Email Address)"
-        required
-        className="login_input"
-        onKeyDown={(e) => handleKeyPress1(e)}
-      />
-      <br />
-      <input
-        type="password"
-        ref={loginPwInput}
-        placeholder="PW"
-        required
-        className="login_input"
-        onKeyDown={(e) => handleKeyPress2(e)}
-      />
-      <br />
-      <button ref={loginbtn} onClick={loginUser} className="login_btn">
-        LOG IN
-      </button>
-      <br />
-      <button className="login_btn white" onClick={() => navigate(`/register`)}>
-        <Link to="/register" style={{ textDecoration: 'none', color: 'black' }}>
-          Create Account
-        </Link>
-      </button>
-      <br />
-      <a>
-        <KakaoBTN
-          onClick={kakoHandleClick}
-          src="/images/kakao_login_large_wide.png"
-          alt="카카오버튼"
+      <div className="login_client_container">
+        <p className="login_title">LOG IN or CREATE ACCOUNT</p>
+        <br />
+        <input
+          type="text"
+          ref={loginIdInput}
+          placeholder="ID (Email Address)"
+          required
+          className="login_input"
+          onKeyDown={(e) => handleKeyPress1(e)}
         />
-      </a>
+        <br />
+        <input
+          type="password"
+          ref={loginPwInput}
+          placeholder="PW"
+          required
+          className="login_input"
+          onKeyDown={(e) => handleKeyPress2(e)}
+        />
+        <br />
+        <button ref={loginbtn} onClick={loginUser} className="login_btn">
+          LOG IN
+        </button>
+        <br />
+        <button
+          className="login_btn white"
+          onClick={() => navigate(`/register`)}
+        >
+          Create Account
+        </button>
+        <br />
+        <a>
+          <KakaoBTN
+            onClick={kakoHandleClick}
+            src="/images/kakao_login_large_wide.png"
+            alt="카카오버튼"
+          />
+        </a>
+      </div>
     </div>
   );
 }

@@ -144,7 +144,7 @@ export default function Header_client() {
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
-  }, [searchBTN, excludeRef]);
+  }, [searchBTN]);
 
   const handleClick = () => {
     setSearchOnOff('on');
@@ -284,6 +284,7 @@ export default function Header_client() {
                 <></>
               ) : (
                 <span
+                  ref={searchBTN}
                   className="material-symbols-outlined search"
                   onClick={(cur) =>
                     searchOnOff === 'off'
