@@ -1,5 +1,8 @@
 .aboutus {
-  width: 100%;
+  position: relative;
+  overflow: hidden;
+  width: 100vw;
+  height: 700px;
   display: flex;
   box-sizing: border-box;
   // align-items: center;
@@ -11,23 +14,34 @@
   }
 
   img {
-    margin-top: 40px;
     margin-left: 60px;
     width: 550px;
     height: auto;
   }
 
   .about_right {
-    width: 100%;
-    text-align: flex-end;
-    padding: 300px 200px 200px 200px;
+    position: relative;
+    margin: auto 0px;
+    width: 100vw;
+    height: 700px;
+    // background-color: beige;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .maintitle{
+      width: 500px;
+      height: 150px;
+
+      h2 {
+          font-size: 14px;
+          font-weight: bold;
+          // padding-bottom: 20px;
+        }
   
-    h2 {
-      font-size: 14px;
-      font-weight: bold;
-      // padding-bottom: 20px;
     }
   
+ 
     .aboutus {
       width: 100%;
       font-size: 12px;

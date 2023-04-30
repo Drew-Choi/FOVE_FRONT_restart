@@ -380,7 +380,7 @@ export default function Header_client() {
           </li>
           <li id="cate_li2_shopbag">
             <MediaQuery minWidth={1145}>
-              {currentURL === '/' ? (
+              {currentURL === '/' || currentURL === '/aboutus' ? (
                 <></>
               ) : (
                 <p onClick={clickShoppingBag} ref={cartModalRef}>
@@ -394,7 +394,7 @@ export default function Header_client() {
             </MediaQuery>
 
             <MediaQuery maxWidth={1144}>
-              {currentURL === '/' ? (
+              {currentURL === '/' || currentURL === '/aboutus' ? (
                 <></>
               ) : (
                 <div
