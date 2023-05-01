@@ -1,0 +1,94 @@
+.myPage_container {
+  position: relative;
+  // background-color: antiquewhite;
+  width: 100vw;
+  height: 700px;
+
+  //타이틀 영역
+  .titleArea {
+    width: 100vw;
+    padding: 50px;
+    text-align: center;
+
+    .subtitle{
+
+    }
+  }
+
+  //회원 정보 파트
+  .account_info_container {
+    position: relative;
+    background-color: aqua;
+    width: 80vw;
+    margin: 0px auto;
+
+    .informations{
+      position: relative;
+      background-color: orange;
+      display: flex;
+      border: 0.5px solid black;
+
+        .info_grade {
+          padding: 50px;
+          text-align: center;
+          margin: 0px;
+          font-size: 16px;
+          font-weight: 700;
+          flex: 1;
+        }
+
+      .info_description {
+        // background-color: red;
+        flex: 9;
+        padding: 20px;
+        font-size: 14px;
+
+        .info_bold {
+          font-weight: 700;
+        }
+      }
+
+    }
+
+    .orderstate_box{
+      margin-top: 30px;
+      background-color: antiquewhite;
+      display: grid;
+      grid-template-columns: 1fr repeat(4, 4fr) repeat(3, 3fr);
+      // grid-template-rows: repeat(3, 1fr);
+
+      // .shipping_info_title {
+      //   grid-area: title;
+      // }
+
+      // .beforeAcount{
+      //   grid-area: beforeAcount;
+      // }
+
+      // .ready {
+      //   grid-area: ready;
+      // }
+
+      // .shipping {
+      //   grid-area: shipping;
+      // }
+
+      // .complete {
+      //   grid-area: complete;
+      // }
+
+      // .cancle {
+      //   grid-area: cancle;
+      // }
+
+      // .change {
+      //   grid-area: change;
+      // }
+
+      // .refund {
+      //   grid-area: refund;
+      // }
+    }
+  }
+
+}
