@@ -42,40 +42,44 @@ export default function Mypage_client() {
             나의 주문처리 현황 <span>(최근 3개월 기준)</span>
           </p>
 
-          <a className={myPage.beforeAcount} href="#">
-            <p>입금전</p>
-            <p>0</p>
-          </a>
+          <div className={myPage.row2_wrap}>
+            <a className={myPage.beforeAcount} href="#">
+              <p>입금전</p>
+              <p>0</p>
+            </a>
 
-          <a className={myPage.ready} href="#">
-            <p>배송준비중</p>
-            <p>0</p>
-          </a>
+            <a className={myPage.ready} href="#">
+              <p>배송준비중</p>
+              <p>0</p>
+            </a>
 
-          <a className={myPage.shipping} href="#">
-            <p>배송중</p>
-            <p>0</p>
-          </a>
+            <a className={myPage.shipping} href="#">
+              <p>배송중</p>
+              <p>0</p>
+            </a>
 
-          <a className={myPage.complete} href="#">
-            <p>배송완료</p>
-            <p>0</p>
-          </a>
+            <a className={myPage.complete} href="#">
+              <p>배송완료</p>
+              <p>0</p>
+            </a>
+          </div>
 
-          <a className={myPage.cancle} href="#">
-            <p>취소</p>
-            <p>0</p>
-          </a>
+          <div className={myPage.row3_wrap}>
+            <a className={myPage.cancle} href="#">
+              <p>취소</p>
+              <p>0</p>
+            </a>
 
-          <a className={myPage.change} href="#">
-            <p>교환</p>
-            <p>0</p>
-          </a>
+            <a className={myPage.change} href="#">
+              <p>교환</p>
+              <p>0</p>
+            </a>
 
-          <a className={myPage.refund} href="#">
-            <p>반품</p>
-            <p>0</p>
-          </a>
+            <a className={myPage.refund} href="#">
+              <p>반품</p>
+              <p>0</p>
+            </a>
+          </div>
         </div>
 
         {/* 박스 4개 */}

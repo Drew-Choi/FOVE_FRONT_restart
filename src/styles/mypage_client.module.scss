@@ -53,41 +53,46 @@
     .orderstate_box{
       margin-top: 30px;
       background-color: antiquewhite;
-      display: grid;
-      grid-template-columns: 1fr repeat(4, 4fr) repeat(3, 3fr);
-      // grid-template-rows: repeat(3, 1fr);
+      display: block;
 
-      // .shipping_info_title {
-      //   grid-area: title;
-      // }
+      .shipping_info_title {
+        margin: 0px;
+      }
 
-      // .beforeAcount{
-      //   grid-area: beforeAcount;
-      // }
+      .row2_wrap{
+          display: flex;
 
-      // .ready {
-      //   grid-area: ready;
-      // }
+        .beforeAcount {
+          flex: 1;
+        }
 
-      // .shipping {
-      //   grid-area: shipping;
-      // }
+        .ready {
+          flex: 1;
+        }
 
-      // .complete {
-      //   grid-area: complete;
-      // }
+        .shipping {
+          flex: 1;
+        }
 
-      // .cancle {
-      //   grid-area: cancle;
-      // }
+        .complete {
+          flex: 1;
+        }
+      }
+      
+      .row3_wrap {
+        display: flex;
+        .cancle {
+          flex: 1;
+        }
 
-      // .change {
-      //   grid-area: change;
-      // }
+        .change {
+          flex: 1;
+        }
 
-      // .refund {
-      //   grid-area: refund;
-      // }
+        .refund {
+          flex: 1;
+        }
+      }
     }
   }
 
