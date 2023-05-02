@@ -61,26 +61,37 @@
 
       .row2_wrap{
           display: flex;
+          text-align: center;
+          text-decoration: none;
 
         .beforeAcount {
           flex: 1;
+          color: black;
+          text-decoration: none;
         }
 
         .ready {
           flex: 1;
+          color: black;
+          text-decoration: none;
         }
 
         .shipping {
           flex: 1;
+          color: black;
+          text-decoration: none;
         }
 
         .complete {
           flex: 1;
+          color: black;
+          text-decoration: none;
         }
       }
       
       .row3_wrap {
         display: flex;
+
         .cancle {
           flex: 1;
         }
