@@ -2,7 +2,6 @@
   position: relative;
   // background-color: antiquewhite;
   width: 100vw;
-  height: 700px;
 
   //타이틀 영역
   .titleArea {
@@ -28,6 +27,10 @@
       display: flex;
       border: 0.5px solid black;
 
+      @media screen and (max-width: 414px) {
+        display: block;
+      }
+
         .info_grade {
           padding: 50px;
           text-align: center;
@@ -35,6 +38,10 @@
           font-size: 16px;
           font-weight: 700;
           flex: 1;
+
+          @media screen and (max-width: 414px) {
+            padding: 30px;
+          }
         }
 
       .info_description {
@@ -63,6 +70,10 @@
         border-color: black;
         font-size: 15px;
 
+        @media screen and (max-Width: 280px) {
+          font-size: 13px;
+        }
+
         span {
           font-size: 13px;
           margin-left: 10px;
@@ -71,6 +82,10 @@
             margin: 0px;
             font-weight: 600;
             color: black;
+          }
+
+          @media screen and (max-Width: 280px) {
+            font-size: 11px;
           }
         }
       }
@@ -82,6 +97,10 @@
           border-style: solid;
           border-color: black;
           font-size: 15px;
+
+          @media screen and (max-Width: 280px) {
+            font-size: 12px;
+          }
 
         .beforeAcount {
           flex: 1;
@@ -149,6 +168,10 @@
         border-color: black;
         font-size: 15px;
 
+        @media screen and (max-Width: 280px) {
+          font-size: 12px;
+        }
+
         .cancle {
           display: flex;
           flex: 1;
@@ -164,6 +187,12 @@
           }
           &:active {
             color: rgb(224, 224, 224);
+          }
+
+          @media screen and (max-Width: 280px) {
+            display: block;
+            text-align: center;
+            padding: 10px
           }
 
           p{
@@ -188,6 +217,12 @@
             color: rgb(224, 224, 224);
           }
 
+          @media screen and (max-Width: 280px) {
+            display: block;
+            text-align: center;
+            padding: 10px
+          }
+
           p{
             margin: 0px;
           }
@@ -209,6 +244,12 @@
             color: rgb(224, 224, 224);
           }
 
+          @media screen and (max-Width: 280px) {
+            display: block;
+            text-align: center;
+            padding: 10px
+          }
+
           p{
             margin: 0px;
           }
@@ -217,6 +258,7 @@
     }
 
     .fourBox{
+      margin-bottom: 21px;
       position: relative;
       margin-top: 30px;
       display: grid;
@@ -224,14 +266,21 @@
       grid-template-areas: 
       'shopmain_order shopmain_profile'
       'shopmain_address shopmain_mypick';
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
       text-align: center;
       gap: 20px;
       font-size: 15px;
+
+      @media screen and (max-Width: 280px) {
+        font-size: 13px;
+      }
 
       .shopmain_order{
         grid-area: shopmain_order;
         border: 0.5px solid black;
         padding: 10px;
+        width: 100%;
         cursor: pointer;
         &:hover {
           color: rgb(154, 154, 154);
@@ -245,6 +294,7 @@
         grid-area: shopmain_profile;
         border: 0.5px solid black;
         padding: 10px;
+        width: 100%;
         cursor: pointer;
         &:hover {
           color: rgb(154, 154, 154);
@@ -258,6 +308,7 @@
         grid-area: shopmain_address;
         border: 0.5px solid black;
         padding: 10px;
+        width: 100%;
         cursor: pointer;
         &:hover {
           color: rgb(154, 154, 154);
@@ -271,6 +322,7 @@
         grid-area: shopmain_mypick;
         border: 0.5px solid black;
         padding: 10px;
+        width: 100%;
         cursor: pointer;
         &:hover {
           color: rgb(154, 154, 154);
