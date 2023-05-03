@@ -52,34 +52,56 @@
 
     .orderstate_box{
       margin-top: 30px;
-      background-color: antiquewhite;
+      // background-color: antiquewhite;
       display: block;
 
       .shipping_info_title {
         margin: 0px;
+        padding: 10px 20px;
+        border-width: 0.5px 0.5px 0.5px 0.5px;
+        border-style: solid;
+        border-color: black;
+        font-size: 15px;
+
+        span {
+          font-size: 13px;
+          margin-left: 10px;
+          color: rgb(92, 92, 92);
+          .threeMonth{
+            margin: 0px;
+            font-weight: 600;
+            color: black;
+          }
+        }
       }
 
       .row2_wrap{
           display: flex;
           text-align: center;
-          text-decoration: none;
+          border-width: 0px 0.5px 0.5px 0.5px;
+          border-style: solid;
+          border-color: black;
+          font-size: 15px;
 
         .beforeAcount {
           flex: 1;
           color: black;
           text-decoration: none;
+          border-right: 0.5px solid black;
         }
 
         .ready {
           flex: 1;
           color: black;
           text-decoration: none;
+          border-right: 0.5px solid black;
         }
 
         .shipping {
           flex: 1;
           color: black;
           text-decoration: none;
+          border-right: 0.5px solid black;
         }
 
         .complete {
@@ -90,18 +112,57 @@
       }
       
       .row3_wrap {
+        position: relative;
         display: flex;
+        // background-color: blueviolet;
+        height: 50px;
+        border-width: 0px 0.5px 0.5px 0.5px;
+        border-style: solid;
+        border-color: black;
+        font-size: 15px;
 
         .cancle {
+          display: flex;
           flex: 1;
+          color: black;
+          text-decoration: none;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0px 20px;
+          border-right: 0.5px solid black;
+
+          p{
+            margin: 0px;
+          }
         }
 
         .change {
+          display: flex;
           flex: 1;
+          color: black;
+          text-decoration: none;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0px 20px;
+          border-right: 0.5px solid black;
+
+          p{
+            margin: 0px;
+          }
         }
 
         .refund {
+          display: flex;
           flex: 1;
+          color: black;
+          text-decoration: none;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0px 20px;
+
+          p{
+            margin: 0px;
+          }
         }
       }
     }

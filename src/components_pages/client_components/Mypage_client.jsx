@@ -39,7 +39,10 @@ export default function Mypage_client() {
 
         <div className={myPage.orderstate_box}>
           <p className={myPage.shipping_info_title}>
-            나의 주문처리 현황 <span>(최근 3개월 기준)</span>
+            나의 주문처리 현황
+            <span>
+              (최근 <span className={myPage.threeMonth}>3개월</span> 기준)
+            </span>
           </p>
 
           <div className={myPage.row2_wrap}>
@@ -66,17 +69,17 @@ export default function Mypage_client() {
 
           <div className={myPage.row3_wrap}>
             <a className={myPage.cancle} href="#">
-              <p>취소</p>
+              <p>취소 :</p>
               <p>0</p>
             </a>
 
             <a className={myPage.change} href="#">
-              <p>교환</p>
+              <p>교환 :</p>
               <p>0</p>
             </a>
 
             <a className={myPage.refund} href="#">
-              <p>반품</p>
+              <p>반품 :</p>
               <p>0</p>
             </a>
           </div>
