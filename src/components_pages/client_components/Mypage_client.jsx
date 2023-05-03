@@ -86,35 +86,34 @@ export default function Mypage_client() {
         </div>
 
         {/* 박스 4개 */}
-        <div className="fourbox">
-          <div className="line_one">
-            <div
-              onClick={() => navigate('/mypage/orderlist')}
-              className="shopmain_order"
-            >
-              <p>주문 조회</p>
-              <span className="material-symbols-outlined">local_shipping</span>
-            </div>
-            <div
-              onClick={() => navigate('/mypage/editInfo')}
-              className="shopmain_profile"
-            >
-              <p>회원 정보 수정</p>
-              <span className="material-symbols-outlined">person</span>
-            </div>
+        <div className={myPage.fourBox}>
+          <div
+            onClick={() => navigate('/mypage/orderlist')}
+            className={myPage.shopmain_order}
+          >
+            <p>주문 조회</p>
+            <span className="material-symbols-outlined">local_shipping</span>
           </div>
-          <div className="line_two">
-            <div
-              onClick={() => navigate('/mypage/checkAddress')}
-              className="shopmain_address"
-            >
-              <p>배송 주소록</p>
-              <span className="material-symbols-outlined">home</span>
-            </div>
-            <div onClick={() => navigate('#')} className="shopmain_mypick">
-              <p>MY STYLING PICK</p>
-              <span className="material-symbols-outlined">favorite</span>
-            </div>
+
+          <div
+            onClick={() => navigate('/mypage/editInfo')}
+            className={myPage.shopmain_profile}
+          >
+            <p>회원 정보 수정</p>
+            <span className="material-symbols-outlined">person</span>
+          </div>
+
+          <div
+            onClick={() => navigate('/mypage/checkAddress')}
+            className={myPage.shopmain_address}
+          >
+            <p>배송 주소록</p>
+            <span className="material-symbols-outlined">home</span>
+          </div>
+
+          <div onClick={() => navigate('#')} className={myPage.shopmain_mypick}>
+            <p>MY STYLING PICK</p>
+            <span className="material-symbols-outlined">favorite</span>
           </div>
         </div>
       </div>

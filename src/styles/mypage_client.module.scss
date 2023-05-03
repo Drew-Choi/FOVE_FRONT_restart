@@ -7,7 +7,7 @@
   //타이틀 영역
   .titleArea {
     width: 100vw;
-    padding: 50px;
+    padding: 45px;
     text-align: center;
 
     .subtitle{
@@ -18,13 +18,13 @@
   //회원 정보 파트
   .account_info_container {
     position: relative;
-    background-color: aqua;
+    // background-color: aqua;
     width: 80vw;
     margin: 0px auto;
 
     .informations{
       position: relative;
-      background-color: orange;
+      // background-color: orange;
       display: flex;
       border: 0.5px solid black;
 
@@ -88,6 +88,13 @@
           color: black;
           text-decoration: none;
           border-right: 0.5px solid black;
+          cursor: pointer;
+          &:hover {
+            color: rgb(154, 154, 154);
+          }
+          &:active {
+            color: rgb(224, 224, 224);
+          }
         }
 
         .ready {
@@ -95,6 +102,13 @@
           color: black;
           text-decoration: none;
           border-right: 0.5px solid black;
+          cursor: pointer;
+          &:hover {
+            color: rgb(154, 154, 154);
+          }
+          &:active {
+            color: rgb(224, 224, 224);
+          }
         }
 
         .shipping {
@@ -102,12 +116,26 @@
           color: black;
           text-decoration: none;
           border-right: 0.5px solid black;
+          cursor: pointer;
+          &:hover {
+            color: rgb(154, 154, 154);
+          }
+          &:active {
+            color: rgb(224, 224, 224);
+          }
         }
 
         .complete {
           flex: 1;
           color: black;
           text-decoration: none;
+          cursor: pointer;
+          &:hover {
+            color: rgb(154, 154, 154);
+          }
+          &:active {
+            color: rgb(224, 224, 224);
+          }
         }
       }
       
@@ -130,6 +158,13 @@
           align-items: center;
           padding: 0px 20px;
           border-right: 0.5px solid black;
+          cursor: pointer;
+          &:hover {
+            color: rgb(154, 154, 154);
+          }
+          &:active {
+            color: rgb(224, 224, 224);
+          }
 
           p{
             margin: 0px;
@@ -145,6 +180,13 @@
           align-items: center;
           padding: 0px 20px;
           border-right: 0.5px solid black;
+          cursor: pointer;
+          &:hover {
+            color: rgb(154, 154, 154);
+          }
+          &:active {
+            color: rgb(224, 224, 224);
+          }
 
           p{
             margin: 0px;
@@ -159,6 +201,13 @@
           justify-content: space-between;
           align-items: center;
           padding: 0px 20px;
+          cursor: pointer;
+          &:hover {
+            color: rgb(154, 154, 154);
+          }
+          &:active {
+            color: rgb(224, 224, 224);
+          }
 
           p{
             margin: 0px;
@@ -166,6 +215,72 @@
         }
       }
     }
+
+    .fourBox{
+      position: relative;
+      margin-top: 30px;
+      display: grid;
+      // background-color: antiquewhite;
+      grid-template-areas: 
+      'shopmain_order shopmain_profile'
+      'shopmain_address shopmain_mypick';
+      text-align: center;
+      gap: 20px;
+      font-size: 15px;
+
+      .shopmain_order{
+        grid-area: shopmain_order;
+        border: 0.5px solid black;
+        padding: 10px;
+        cursor: pointer;
+        &:hover {
+          color: rgb(154, 154, 154);
+        }
+        &:active {
+          color: rgb(224, 224, 224);
+        }
+      }
+
+      .shopmain_profile{
+        grid-area: shopmain_profile;
+        border: 0.5px solid black;
+        padding: 10px;
+        cursor: pointer;
+        &:hover {
+          color: rgb(154, 154, 154);
+        }
+        &:active {
+          color: rgb(224, 224, 224);
+        }
+      }
+
+      .shopmain_address{
+        grid-area: shopmain_address;
+        border: 0.5px solid black;
+        padding: 10px;
+        cursor: pointer;
+        &:hover {
+          color: rgb(154, 154, 154);
+        }
+        &:active {
+          color: rgb(224, 224, 224);
+        }
+      }
+
+      .shopmain_mypick{
+        grid-area: shopmain_mypick;
+        border: 0.5px solid black;
+        padding: 10px;
+        cursor: pointer;
+        &:hover {
+          color: rgb(154, 154, 154);
+        }
+        &:active {
+          color: rgb(224, 224, 224);
+        }
+      }
+    }
+
   }
 
 }
