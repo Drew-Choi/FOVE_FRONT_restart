@@ -177,7 +177,7 @@ function App() {
           {/* 주문조회 */}
           <Route
             path="/mypage/orderlist"
-            element={isLogin ? <OrderList_client /> : <OrderList_client />}
+            element={isLogin ? <OrderList_client /> : <Login_client />}
           />
 
           {/* 배송 주소록 목록 */}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../styles/orderlist_client.scss';
+import orderList from '../../styles/orderlist_client.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -12,16 +12,16 @@ export default function OrderList_client() {
   };
 
   return (
-    <>
+    <section className={orderList.orderList_container}>
       {/* 주문조회 (ORDER LIST) 제목 위치 */}
-      <div className="titleArea">
-        <h2 className="subtitle">ORDER LIST</h2>
+      <div className={orderList.titleArea}>
+        <h5 className={orderList.subtitle}>ORDER LIST</h5>
       </div>
 
-      <div className="account_inner">
-        <div className="orderstatus1">
+      <div className={orderList.order_info_wrap}>
+        <div className={orderList.order_info_category}>
           <span
-            className="ordersuc"
+            className={orderList.order_list_check}
             style={{ borderBottom: '1px solid black' }}
             onClick={() => navigate('/mypage/orderlist')}
           >
@@ -29,19 +29,18 @@ export default function OrderList_client() {
             <span>(1)</span>
           </span>
           <span
-            className="ordercan"
+            className={orderList.cancle_list_check}
             style={{
               fontWeight: isSpanClicked ? 'bold' : 'normal',
               textDecoration: isSpanClicked ? 'underline' : 'none',
             }}
-            onClick={() => {
-              window.location.href = '/mypage/orderlist2';
-            }}
+            onClick={() => navigate('/mypage/orderlist2')}
           >
             취소/반품/교환 내역
             <span>(0)</span>
           </span>
         </div>
+
         <div className="orderlist_wrap">
           {/* 주문 조회 내역 */}
           <div className="orderlist_info">
@@ -77,6 +76,6 @@ export default function OrderList_client() {
           </div>
         </div>
       </div>
-    </>
+    </section>
   );
 }

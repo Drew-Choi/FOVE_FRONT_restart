@@ -1,0 +1,30 @@
+.orderList_container{
+  position: relative;
+  // background-color: beige;
+  width: 100vw;
+
+  .titleArea{
+    width: 100vw;
+    padding: 50px;
+    text-align: center;
+
+    .subtitle{
+
+    }
+  }
+
+  .order_info_wrap {
+    position: relative;
+    background-color: aqua;
+    width: 50vw;
+    margin: 0px auto;
+
+    .order_info_category{
+      display: flex;
+
+      span {
+        margin-right:  20px;
+      }
+    }
+  }
+}
