@@ -2,6 +2,7 @@
   position: relative;
   // background-color: beige;
   width: 100vw;
+  // height: 700px;
 
   .titleArea{
     width: 100vw;
@@ -15,15 +16,115 @@
 
   .order_info_wrap {
     position: relative;
-    background-color: aqua;
+    // background-color: aqua;
     width: 50vw;
     margin: 0px auto;
+    margin-bottom: 262px;
+
+    @media screen and (max-width:1000px) {
+      width: 70vw;
+    }
+
+    @media screen and (max-width:510px) {
+      width: 90vw;
+    }
 
     .order_info_category{
       display: flex;
+      font-size: 15px;
+
+      @media screen and (max-width:280px) {
+        font-size: 13px;
+      }
 
       span {
         margin-right:  20px;
+        cursor: pointer;
+        &:hover{
+          color: gray;
+        }
+        &:active{
+          color: rgb(213, 213, 213);
+        }
+
+        @media screen and (max-width:280px) {
+          margin-right: 10px;
+        }
+      }
+    }
+
+    .orderlist_Check_wrap{
+      // background-color: bisque;
+      border: 0.5px solid black;
+      margin-top: 20px;
+      padding-bottom: 10px;
+
+      .older_date{
+        margin: 5px 0px;
+        margin-left: 10px;
+        font-size: 15px;
+      }
+
+      .older_image_info{
+        // background-color: blueviolet;
+        padding: 0px 10px;
+        display: flex;
+
+        .older_image{
+          width: 100px;
+          height: 100px;
+          background-image: url('../../public/product_images/beanie_pd/be10_blk.jpg');
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+
+          @media screen and (max-width:332px) {
+            background-size: contain;;
+          }
+        }
+
+        .pdnameprice{
+          font-size: 15px;
+          position: relative;
+          margin: auto 0px;
+          margin-left: 10px;
+
+          p{
+            margin: 0px;
+          }
+        }
+      }
+      .older_detail_info{
+        font-size: 15px;
+        margin-left: 10px;
+        margin-top: 10px;
+      }
+
+      .status{
+        margin-left: 10px;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .orderCancle{
+        all: unset;
+        margin-left: 10px;
+        cursor: pointer;
+        padding: 5px 10px;
+        border: 0.5px solid black;
+        font-size: 13px;
+        background-color: white;
+        font-weight: 500;
+        transition: 0.3s ease;
+        
+        &:hover {
+          color: white;
+          background-color: black;
+        }
+
+        &:active {
+          background-color: rgb(226, 226, 226);
+        }
       }
     }
   }

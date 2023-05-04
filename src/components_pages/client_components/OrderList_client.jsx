@@ -20,60 +20,36 @@ export default function OrderList_client() {
 
       <div className={orderList.order_info_wrap}>
         <div className={orderList.order_info_category}>
-          <span
-            className={orderList.order_list_check}
-            style={{ borderBottom: '1px solid black' }}
-            onClick={() => navigate('/mypage/orderlist')}
-          >
+          <span className={orderList.order_list_check}>
             주문내역조회
             <span>(1)</span>
           </span>
-          <span
-            className={orderList.cancle_list_check}
-            style={{
-              fontWeight: isSpanClicked ? 'bold' : 'normal',
-              textDecoration: isSpanClicked ? 'underline' : 'none',
-            }}
-            onClick={() => navigate('/mypage/orderlist2')}
-          >
+          <span className={orderList.cancle_list_check}>
             취소/반품/교환 내역
             <span>(0)</span>
           </span>
         </div>
 
-        <div className="orderlist_wrap">
+        <div className={orderList.orderlist_Check_wrap}>
           {/* 주문 조회 내역 */}
-          <div className="orderlist_info">
-            <div className="ol_des">
-              <span className="ol_date">
-                <strong>2023-04-18</strong> (20230413-0000115)
-              </span>
-              <p className="olthumb">
-                <br />
-                <img
-                  className="olimg"
-                  src="../product_images/beanie_pd/be10_blk.jpg"
-                ></img>
-                <br />
-                [옵션: 1]
+          <p className={orderList.older_date}>
+            <strong>2023-04-18</strong> (20230413-0000115)
+          </p>
+          <div className={orderList.older_image_info}>
+            <div className={orderList.older_image}></div>
+            <div className={orderList.pdnameprice}>
+              <p className={orderList.pdname}>
+                Star Logo Jacquard Beanie - BLACK
               </p>
-              <div className="pdnameprice">
-                <span className="pdname">
-                  Star Logo Jacquard Beanie - BLACK
-                </span>
-                <br />
-                <span className="pdprice">
-                  KRW <strong>89,000 1</strong>개
-                </span>
-              </div>
-              <strong className="status">입금전</strong>
-              <br />
-              <br />
-              <button onClick={() => navigate('/mypage/orderlist2')}>
-                주문취소
-              </button>
+              <p className={orderList.pdprice}>
+                KRW <strong>89,000 1</strong>개
+              </p>
             </div>
           </div>
+          <p className={orderList.older_detail_info}>[옵션: 1]</p>
+
+          <p className={orderList.status}>입금전</p>
+          <button className={orderList.orderCancle}>주문취소</button>
         </div>
       </div>
     </section>
