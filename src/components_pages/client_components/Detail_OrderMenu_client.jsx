@@ -1,203 +1,13 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
 import { add } from '../../store/modules/cart';
 import { useNavigate, useParams } from 'react-router-dom';
 import { single } from '../../store/modules/order';
-import GoogleIcon from './GoogleIcon';
 import Shipping_client from './Shipping_client';
 import ModalContainer_client from './ModalContainer_client';
 import ModalContainer_client2 from './ModalContainer_client2';
-import '../../styles/detail_orderMenu.scss';
-
-const Detail_Order = styled.div`
-  /* background-color: aqua; */
-  position: absolute;
-  top: 24px;
-  right: 170px;
-  border-radius: 10px;
-  border: 1px solid black;
-  width: 300px;
-  height: 600px;
-  z-index: 3;
-`;
-
-const Title = styled.p`
-  position: relative;
-  top: 35px;
-  text-align: center;
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: 1px;
-`;
-
-const InfoContain = styled.div`
-  position: absolute;
-  top: 170px;
-  left: 51px;
-`;
-
-const SizeBTN = styled.button`
-  all: unset;
-  position: relative;
-  bottom: 28px;
-  /* background-color: #000000; */
-  color: black;
-  border: 1.5px solid black;
-  width: 40px;
-  margin-right: 10px;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 15px;
-  transition: 0.2s ease;
-
-  &:hover {
-    background-color: #cacaca5b;
-    color: black;
-  }
-  &:active {
-    background-color: #eeeeee56;
-    color: white;
-    transform: scale(1.2);
-  }
-`;
-
-const SizeFitCheck = styled.p`
-  /* background-color: red; */
-  font-size: 13px;
-  font-weight: bold;
-  text-decoration: underline;
-  letter-spacing: 1px;
-  cursor: pointer;
-
-  &:hover {
-    color: #a8a8a8;
-  }
-  &:active {
-    color: #d7d7d7;
-  }
-
-  .material-symbols-outlined {
-    font-size: 18px;
-    font-weight: 500;
-    margin-left: 5px;
-  }
-`;
-
-const DetailDesc = styled.div`
-  /* background-color: blue; */
-  width: 200px;
-  height: 100px;
-  margin-bottom: 30px;
-  font-size: 14px;
-  font-weight: 500p;
-  letter-spacing: 1px;
-  white-space: pre-line;
-`;
-
-const AddCart = styled.button`
-  position: absolute;
-  all: unset;
-  border: 2px solid black;
-  padding: 8px 45px;
-  border-radius: 50px;
-  margin-bottom: 10px;
-  margin-left: 45px;
-  font-weight: 500;
-  color: black;
-  transition: transform 1s ease;
-  cursor: pointer;
-
-  &:hover {
-    background-color: black;
-    color: white;
-  }
-
-  &:active {
-    background-color: black;
-    color: white;
-  }
-`;
-
-const Buy = styled.button`
-  position: absolute;
-  all: unset;
-  border: 2px solid black;
-  padding: 8px 85px;
-  border-radius: 50px;
-  margin-bottom: 25px;
-  letter-spacing: 1px;
-  font-weight: 600;
-  color: white;
-  background-color: black;
-  transition: 0.2s ease;
-  cursor: pointer;
-
-  &:hover {
-    background: white;
-    color: black;
-  }
-  &:active {
-    background-color: white;
-    color: black;
-  }
-`;
-
-const CartIcon = styled.span`
-  font-size: 30px;
-  position: absolute;
-  margin-bottom: -5px;
-  bottom: 90px;
-  left: 3px;
-`;
-
-const CountContainer = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 40px;
-  margin-bottom: 20px;
-  /* background-color: yellow; */
-`;
-
-const Plus = styled.span`
-  font-size: 20px;
-  padding-left: 15px;
-  cursor: pointer;
-  &:active {
-    color: #b4b4b4;
-  }
-`;
-
-const Miners = styled.span`
-  font-size: 22px;
-  font-weight: 500;
-  transform: translateY(-2px);
-  padding-right: 15px;
-  cursor: pointer;
-  &:active {
-    color: #b4b4b4;
-  }
-`;
-
-const CountNumber = styled.span`
-  font-size: 20px;
-`;
-
-const SumPrice = styled.p`
-  position: relative;
-  font-size: 22px;
-  letter-spacing: 2px;
-  top: 25px;
-  left: 100px;
-  color: #555555;
-`;
-
-const DownInfoContain = styled.div`
-  transform: translateY(-25px);
-`;
+import detailOrderMunu from '../../styles/detail_orderMenu.module.scss';
 
 export default function Detail_OrderMenu_client({
   productName,
@@ -220,38 +30,38 @@ export default function Detail_OrderMenu_client({
 
   //상품 사이즈 첵
   const [sizeCheck, setSizeCheck] = useState('');
-  const [onOS, setOnOS] = useState('');
-  const [onS, setOnS] = useState('');
-  const [onM, setOnM] = useState('');
-  const [onL, setOnL] = useState('');
+  const [onOS, setOnOS] = useState(false);
+  const [onS, setOnS] = useState(false);
+  const [onM, setOnM] = useState(false);
+  const [onL, setOnL] = useState(false);
 
   const handle = (e) => {
     if (e.target.value === 'OS') {
-      setOnOS('on');
+      setOnOS(true);
       setSizeCheck('OS');
     } else {
-      setOnOS('');
+      setOnOS(false);
     }
 
     if (e.target.value === 'S') {
-      setOnS('on');
+      setOnS(true);
       setSizeCheck('S');
     } else {
-      setOnS('');
+      setOnS(false);
     }
 
     if (e.target.value === 'M') {
-      setOnM('on');
+      setOnM(true);
       setSizeCheck('M');
     } else {
-      setOnM('');
+      setOnM(false);
     }
 
     if (e.target.value === 'L') {
-      setOnL('on');
+      setOnL(true);
       setSizeCheck('L');
     } else {
-      setOnL('');
+      setOnL(false);
     }
   };
 
@@ -273,27 +83,27 @@ export default function Detail_OrderMenu_client({
   //이후 UI의 초기 사이즈 값을 설정 할 수 있도록 잡아준다. 이건 sizeCheck이 변경할 때마다 값을 가지게 조건부를 준다.
   useEffect(() => {
     if (sizeCheck === 'OS') {
-      setOnOS('on');
+      setOnOS(true);
     } else {
-      setOnOS('');
+      setOnOS(false);
     }
 
     if (sizeCheck === 'S') {
-      setOnS('on');
+      setOnS(true);
     } else {
-      setOnS('');
+      setOnS(false);
     }
 
     if (sizeCheck === 'M') {
-      setOnM('on');
+      setOnM(true);
     } else {
-      setOnM('');
+      setOnM(false);
     }
 
     if (sizeCheck === 'L') {
-      setOnL('on');
+      setOnL(true);
     } else {
-      setOnL('');
+      setOnL(false);
     }
   }, [sizeCheck]);
 
@@ -394,93 +204,115 @@ export default function Detail_OrderMenu_client({
   };
 
   return (
-    <Detail_Order>
+    <div className={detailOrderMunu.Detail_Order}>
       {/* 일단 SHIPPING만 불러오기 */}
       {shipon && <Shipping_client handleCloseModal={handleCloseModal} />}
       {beanieSizeOn && (
         <>
-          <ModalContainer_client handleCloseModa2={handleCloseModa2} />{' '}
+          <ModalContainer_client handleCloseModa2={handleCloseModa2} />
           <ModalContainer_client2 handleCloseModa2={handleCloseModa2} />
         </>
       )}
 
-      <Title>{productName}</Title>
+      <p className={detailOrderMunu.pdTitle}>{productName}</p>
 
-      <SumPrice>₩ {frontPriceComma(count * price)}</SumPrice>
-      <InfoContain>
+      <p className={detailOrderMunu.sumPrice}>
+        ₩ {frontPriceComma(count * price)}
+      </p>
+      <div className={detailOrderMunu.infoContain}>
         {datas.size.OS > 0 ? (
-          <SizeBTN
-            className={`sizeBTN ${onOS}`}
+          <button
+            className={`${detailOrderMunu.sizeBTN} ${
+              onOS ? detailOrderMunu.on : ''
+            }`}
             onClick={(e) => handle(e)}
             value="OS"
           >
             OS
-          </SizeBTN>
+          </button>
         ) : null}
         {datas.size.S > 0 ? (
-          <SizeBTN
-            className={`sizeBTN ${onS}`}
+          <button
+            className={`${detailOrderMunu.sizeBTN} ${
+              onS ? detailOrderMunu.on : ''
+            }`}
             onClick={(e) => handle(e)}
             value="S"
           >
             S
-          </SizeBTN>
+          </button>
         ) : null}
         {datas.size.M > 0 ? (
-          <SizeBTN
-            className={`sizeBTN ${onM}`}
+          <button
+            className={`${detailOrderMunu.sizeBTN} ${
+              onM ? detailOrderMunu.on : ''
+            }`}
             onClick={(e) => handle(e)}
             value="M"
           >
             M
-          </SizeBTN>
+          </button>
         ) : null}
         {datas.size.L > 0 ? (
-          <SizeBTN
-            className={`sizeBTN ${onL}`}
+          <button
+            className={`${detailOrderMunu.sizeBTN} ${
+              onL ? detailOrderMunu.on : ''
+            }`}
             onClick={(e) => handle(e)}
             value="L"
           >
             L
-          </SizeBTN>
+          </button>
         ) : null}
 
-        <DetailDesc>{detail}</DetailDesc>
+        <div className={detailOrderMunu.detailDesc}>{detail}</div>
 
-        <SizeFitCheck>
+        <p className={detailOrderMunu.sizeFitCheck}>
           {/* SIZE & FIT 모달창 '비니'만 만들어놨는데 카테고리 별로 다르게 떠야함 */}
           <span onClick={handleOpenModal2}>SIZE & FIT</span>
           <span className="material-symbols-outlined">open_in_new</span>
-        </SizeFitCheck>
-        <SizeFitCheck>
+        </p>
+        <p className={detailOrderMunu.sizeFitCheck}>
           {/* SIZE & FIT 모달창 '비니'만 만들어놨는데 카테고리 별로 다르게 떠야함 */}
           <span onClick={handleOpenModal}>SHIPPING</span>
           <span className="material-symbols-outlined">open_in_new</span>
-        </SizeFitCheck>
+        </p>
 
-        <DownInfoContain>
-          <CountContainer>
-            <Miners
+        <div className={detailOrderMunu.downInfoContain}>
+          <div className={detailOrderMunu.countContainer}>
+            <span
+              className={detailOrderMunu.miners}
               onClick={() =>
                 count <= 1 ? setCount((cur) => 1) : setCount((cur) => cur - 1)
               }
             >
               -
-            </Miners>
-            <CountNumber>{count}</CountNumber>
+            </span>
 
-            <Plus onClick={() => setCount((cur) => cur + 1)}> + </Plus>
-          </CountContainer>
+            <span className={detailOrderMunu.countNumber}>{count}</span>
 
-          <CartIcon className="material-symbols-rounded">
+            <span
+              className={detailOrderMunu.plus}
+              onClick={() => setCount((cur) => cur + 1)}
+            >
+              {' '}
+              +{' '}
+            </span>
+          </div>
+
+          <span className={detailOrderMunu['material-symbols-rounded']}>
             add_shopping_cart
-          </CartIcon>
+          </span>
 
-          <AddCart onClick={addToCart}>Add Cart</AddCart>
+          <button className={detailOrderMunu.addCart} onClick={addToCart}>
+            Add Cart
+          </button>
           <br></br>
-          <Buy onClick={buyNow}>Buy</Buy>
-        </DownInfoContain>
-      </InfoContain>
-    </Detail_Order>
+          <button className={detailOrderMunu.buy} onClick={buyNow}>
+            Buy
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
