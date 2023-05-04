@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import detailSubImage from '../../styles/detail_subimage_client.module.scss';
 
 const Sub_IMG = styled.div`
+  position: relative;
   ${(props) =>
     props.imgFileName &&
     `background-image: url('http://localhost:4000/uploads/${props.imgFileName}');`}
@@ -20,6 +21,20 @@ const Sub_IMG = styled.div`
   &:active {
     opacity: 0.3;
   }
+`;
+
+const MainImage = styled.div`
+  position: relative;
+  flex: 1;
+  left: 340px;
+  ${(props) =>
+    props.selectImgFileName &&
+    `background-image: url('http://localhost:4000/uploads/${props.selectImgFileName}');`}
+  width: 400px;
+  height: 400px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
 
 const FirstDot = styled.div`
@@ -61,15 +76,7 @@ export default function Detail_SubImage_client({ datas }) {
           ))}
           {/* {selectDot === datas.img[0] ? <FirstDot /> : <SecondDot />} */}
         </div>
-      </div>
-
-      <div className={detailSubImage.mainImageContainer}>
-        {/* 위에서 선별된 이미지를 실제로 쏴준다. */}
-        <img
-          className={detailSubImage.mainImgae}
-          src={`http://localhost:4000/uploads/${selectImgFileName}`}
-          alt="main_preview"
-        />
+        <MainImage selectImgFileName={selectImgFileName} />
       </div>
     </div>
   );

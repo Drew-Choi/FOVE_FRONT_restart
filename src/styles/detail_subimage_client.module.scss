@@ -1,7 +1,6 @@
 .detail_sub_image_totalContainer {
     position: relative;
     flex: 4;
-    display: flex;
     width: 100%;
     background-color: beige;
 
@@ -17,25 +16,7 @@
     align-items: center;
 
     .detail_Sub_Image_PositionCenter {
-      position: relative;
-
-      .sub-IMG{
-
-      }
+      flex: 1;
     }
-
   } 
-
-  .mainImageContainer {
-    position: relative;
-    left: 340px;
-
-    .mainImgae{
-      position: relative;
-      display: inline-block;
-      width: 400px;
-      transition: 0.3s ease;
-    }
-  }
-
 }
