@@ -8,6 +8,7 @@ import Shipping_client from './Shipping_client';
 import ModalContainer_client from './ModalContainer_client';
 import ModalContainer_client2 from './ModalContainer_client2';
 import detailOrderMunu from '../../styles/detail_orderMenu.module.scss';
+import { MdAddShoppingCart } from 'react-icons/md';
 
 export default function Detail_OrderMenu_client({
   productName,
@@ -300,9 +301,9 @@ export default function Detail_OrderMenu_client({
             </span>
           </div>
 
-          <span className={detailOrderMunu['material-symbols-rounded']}>
-            add_shopping_cart
-          </span>
+          <div className={detailOrderMunu.catIcon}>
+            <MdAddShoppingCart />
+          </div>
 
           <button className={detailOrderMunu.addCart} onClick={addToCart}>
             Add Cart
