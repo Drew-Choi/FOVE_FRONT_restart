@@ -1,0 +1,41 @@
+.detail_sub_image_totalContainer {
+    position: relative;
+    flex: 4;
+    display: flex;
+    width: 100%;
+    background-color: beige;
+
+  .detail_Sub_Image_Contain {
+    position: relative;
+    display: flex;
+    top: 70px;
+    left: 150px;
+    width: 300px;
+    height: 500px;
+    /* background-color: beige; */
+    justify-content: right;
+    align-items: center;
+
+    .detail_Sub_Image_PositionCenter {
+      position: relative;
+
+      .sub-IMG{
+
+      }
+    }
+
+  } 
+
+  .mainImageContainer {
+    position: relative;
+    left: 340px;
+
+    .mainImgae{
+      position: relative;
+      display: inline-block;
+      width: 400px;
+      transition: 0.3s ease;
+    }
+  }
+
+}

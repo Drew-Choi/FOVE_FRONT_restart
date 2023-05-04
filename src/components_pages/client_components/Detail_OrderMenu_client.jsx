@@ -7,7 +7,7 @@ import { single } from '../../store/modules/order';
 import Shipping_client from './Shipping_client';
 import ModalContainer_client from './ModalContainer_client';
 import ModalContainer_client2 from './ModalContainer_client2';
-import detailOrderMunu from '../../styles/detail_orderMenu.module.scss';
+import detailOrderMenu from '../../styles/detail_orderMenu.module.scss';
 import { MdAddShoppingCart } from 'react-icons/md';
 
 export default function Detail_OrderMenu_client({
@@ -205,7 +205,7 @@ export default function Detail_OrderMenu_client({
   };
 
   return (
-    <div className={detailOrderMunu.Detail_Order}>
+    <div className={detailOrderMenu.Detail_Order}>
       {/* 일단 SHIPPING만 불러오기 */}
       {shipon && <Shipping_client handleCloseModal={handleCloseModal} />}
       {beanieSizeOn && (
@@ -215,16 +215,16 @@ export default function Detail_OrderMenu_client({
         </>
       )}
 
-      <p className={detailOrderMunu.pdTitle}>{productName}</p>
+      <p className={detailOrderMenu.pdTitle}>{productName}</p>
 
-      <p className={detailOrderMunu.sumPrice}>
+      <p className={detailOrderMenu.sumPrice}>
         ₩ {frontPriceComma(count * price)}
       </p>
-      <div className={detailOrderMunu.infoContain}>
+      <div className={detailOrderMenu.infoContain}>
         {datas.size.OS > 0 ? (
           <button
-            className={`${detailOrderMunu.sizeBTN} ${
-              onOS ? detailOrderMunu.on : ''
+            className={`${detailOrderMenu.sizeBTN} ${
+              onOS ? detailOrderMenu.on : ''
             }`}
             onClick={(e) => handle(e)}
             value="OS"
@@ -234,8 +234,8 @@ export default function Detail_OrderMenu_client({
         ) : null}
         {datas.size.S > 0 ? (
           <button
-            className={`${detailOrderMunu.sizeBTN} ${
-              onS ? detailOrderMunu.on : ''
+            className={`${detailOrderMenu.sizeBTN} ${
+              onS ? detailOrderMenu.on : ''
             }`}
             onClick={(e) => handle(e)}
             value="S"
@@ -245,8 +245,8 @@ export default function Detail_OrderMenu_client({
         ) : null}
         {datas.size.M > 0 ? (
           <button
-            className={`${detailOrderMunu.sizeBTN} ${
-              onM ? detailOrderMunu.on : ''
+            className={`${detailOrderMenu.sizeBTN} ${
+              onM ? detailOrderMenu.on : ''
             }`}
             onClick={(e) => handle(e)}
             value="M"
@@ -256,8 +256,8 @@ export default function Detail_OrderMenu_client({
         ) : null}
         {datas.size.L > 0 ? (
           <button
-            className={`${detailOrderMunu.sizeBTN} ${
-              onL ? detailOrderMunu.on : ''
+            className={`${detailOrderMenu.sizeBTN} ${
+              onL ? detailOrderMenu.on : ''
             }`}
             onClick={(e) => handle(e)}
             value="L"
@@ -266,23 +266,23 @@ export default function Detail_OrderMenu_client({
           </button>
         ) : null}
 
-        <div className={detailOrderMunu.detailDesc}>{detail}</div>
+        <div className={detailOrderMenu.detailDesc}>{detail}</div>
 
-        <p className={detailOrderMunu.sizeFitCheck}>
+        <p className={detailOrderMenu.sizeFitCheck}>
           {/* SIZE & FIT 모달창 '비니'만 만들어놨는데 카테고리 별로 다르게 떠야함 */}
           <span onClick={handleOpenModal2}>SIZE & FIT</span>
           <span className="material-symbols-outlined">open_in_new</span>
         </p>
-        <p className={detailOrderMunu.sizeFitCheck}>
+        <p className={detailOrderMenu.sizeFitCheck}>
           {/* SIZE & FIT 모달창 '비니'만 만들어놨는데 카테고리 별로 다르게 떠야함 */}
           <span onClick={handleOpenModal}>SHIPPING</span>
           <span className="material-symbols-outlined">open_in_new</span>
         </p>
 
-        <div className={detailOrderMunu.downInfoContain}>
-          <div className={detailOrderMunu.countContainer}>
+        <div className={detailOrderMenu.downInfoContain}>
+          <div className={detailOrderMenu.countContainer}>
             <span
-              className={detailOrderMunu.miners}
+              className={detailOrderMenu.miners}
               onClick={() =>
                 count <= 1 ? setCount((cur) => 1) : setCount((cur) => cur - 1)
               }
@@ -290,10 +290,10 @@ export default function Detail_OrderMenu_client({
               -
             </span>
 
-            <span className={detailOrderMunu.countNumber}>{count}</span>
+            <span className={detailOrderMenu.countNumber}>{count}</span>
 
             <span
-              className={detailOrderMunu.plus}
+              className={detailOrderMenu.plus}
               onClick={() => setCount((cur) => cur + 1)}
             >
               {' '}
@@ -301,15 +301,15 @@ export default function Detail_OrderMenu_client({
             </span>
           </div>
 
-          <div className={detailOrderMunu.catIcon}>
+          <div className={detailOrderMenu.catIcon}>
             <MdAddShoppingCart />
           </div>
 
-          <button className={detailOrderMunu.addCart} onClick={addToCart}>
+          <button className={detailOrderMenu.addCart} onClick={addToCart}>
             Add Cart
           </button>
           <br></br>
-          <button className={detailOrderMunu.buy} onClick={buyNow}>
+          <button className={detailOrderMenu.buy} onClick={buyNow}>
             Buy
           </button>
         </div>

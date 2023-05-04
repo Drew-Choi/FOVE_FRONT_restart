@@ -1,22 +1,6 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import Detail_Image_Layout_client from './Detail_Image_Layout_client ';
-
-const Detail_Sub_Image_Contain = styled.div`
-  position: absolute;
-  display: flex;
-  top: 70px;
-  left: 150px;
-  width: 300px;
-  height: 500px;
-  /* background-color: beige; */
-  justify-content: right;
-  align-items: center;
-`;
-
-const Detail_Sub_Image_PositionCenter = styled.div`
-  position: absolute;
-`;
+import detailSubImage from '../../styles/detail_subimage_client.module.scss';
 
 const Sub_IMG = styled.div`
   ${(props) =>
@@ -36,12 +20,6 @@ const Sub_IMG = styled.div`
   &:active {
     opacity: 0.3;
   }
-`;
-
-const MainIMG_Contain = styled.div`
-  position: absolute;
-  right: 50%;
-  transform: translateX(50%);
 `;
 
 const FirstDot = styled.div`
@@ -67,11 +45,12 @@ export default function Detail_SubImage_client({ datas }) {
   const [selectDot, setSelectDot] = useState(datas.img[0]);
 
   return (
-    <>
-      <Detail_Sub_Image_Contain>
-        <Detail_Sub_Image_PositionCenter>
+    <div className={detailSubImage.detail_sub_image_totalContainer}>
+      <div className={detailSubImage.detail_Sub_Image_Contain}>
+        <div className={detailSubImage.detail_Sub_Image_PositionCenter}>
           {datas.img.map((el, index) => (
             <Sub_IMG
+              className="sub-IMG"
               onClick={() => {
                 setSelectImgFileName((cur) => el);
                 setSelectDot((cur) => el);
@@ -80,14 +59,18 @@ export default function Detail_SubImage_client({ datas }) {
               imgFileName={el}
             ></Sub_IMG>
           ))}
-          {/* 
-          {selectDot === datas.img[0] ? <FirstDot /> : <SecondDot />} */}
-        </Detail_Sub_Image_PositionCenter>
-      </Detail_Sub_Image_Contain>
+          {/* {selectDot === datas.img[0] ? <FirstDot /> : <SecondDot />} */}
+        </div>
+      </div>
 
-      <MainIMG_Contain className="image_area">
-        <Detail_Image_Layout_client imgFileData={selectImgFileName} />
-      </MainIMG_Contain>
-    </>
+      <div className={detailSubImage.mainImageContainer}>
+        {/* 위에서 선별된 이미지를 실제로 쏴준다. */}
+        <img
+          className={detailSubImage.mainImgae}
+          src={`http://localhost:4000/uploads/${selectImgFileName}`}
+          alt="main_preview"
+        />
+      </div>
+    </div>
   );
 }

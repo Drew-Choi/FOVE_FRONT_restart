@@ -1,36 +1,38 @@
 .Detail_Order{
-    /* background-color: aqua; */
-    position: absolute;
-    top: 24px;
-    right: 170px;
+    background-color: white;
+    position: relative;
+    margin-right: 60px;
+    top: 20px;
     border-radius: 10px;
     border: 1px solid black;
     width: 300px;
     height: 600px;
-    z-index: 3;
+    flex: 1;
 
   .pdTitle {
     position: relative;
-    top: 35px;
+    top: 30px;
     text-align: center;
     font-size: 22px;
     font-weight: 700;
     letter-spacing: 1px;
+    padding: 0px 10px;
   }
 
   .sumPrice{
     position: relative;
     font-size: 22px;
     letter-spacing: 2px;
-    top: 25px;
-    left: 100px;
+    text-align: center;
+    top: 30px;
     color: #555555;
   }
 
   .infoContain{
     position: absolute;
-    top: 170px;
-    left: 51px;
+    top: 200px;
+    left: 50%;
+    transform: translateX(-50%);
 
     .sizeBTN{
       all: unset;
@@ -64,7 +66,7 @@
       /* background-color: blue; */
       width: 200px;
       height: 100px;
-      margin-bottom: 30px;
+      margin-bottom: -5px;
       font-size: 14px;
       font-weight: 500p;
       letter-spacing: 1px;

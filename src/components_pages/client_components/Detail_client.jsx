@@ -5,7 +5,6 @@ import axios from 'axios';
 import Detail_OrderMenu_client from './Detail_OrderMenu_client';
 import Detail_SubImage_client from './Detail_SubImage_client';
 import SubNav_client from './SubNav_client';
-import { useDispatch, useSelector } from 'react-redux';
 import MediaQuery from 'react-responsive';
 
 export default function Detail_client() {
@@ -98,13 +97,13 @@ export default function Detail_client() {
       그래서 아래와 같이 데이터가 들어오면 컴포넌트를 띄울 수 있게 순서적으로 처리해줘야함 */}
       {productData && (
         <div className={detailClient.OrderMenu_Image_Container}>
+          <Detail_SubImage_client datas={productData} />
           <Detail_OrderMenu_client
             productName={productData.productName}
             detail={productData.detail}
             price={productData.price}
             datas={productData}
           />
-          <Detail_SubImage_client datas={productData} />
         </div>
       )}
     </section>
