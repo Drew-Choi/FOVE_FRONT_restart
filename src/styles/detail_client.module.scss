@@ -1,22 +1,22 @@
 .pd_detail {
-position: relative;
-top: 0px;
-width: 100vw;
-height: 700px;
-
- .selectCategorys {
-  position: absolute;
-  margin: 10px;
-  font-size: 13px;
-  left: 10px;
-  z-index: 3;
-}
-
-  .OrderMenu_Image_Container{
-    display: flex;
-
-    .detail_Sub_Image_PositionCenter {
-
+  position: relative;
+  top: 0px;
+  width: 100vw;
+  height: 700px;
+  
+   .selectCategorys {
+    position: absolute;
+    margin: 10px;
+    font-size: 13px;
+    left: 10px;
+    z-index: 3;
+  }
+  
+    .OrderMenu_Image_Container{
+      width: 100vw;
+      height: 700px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
-}

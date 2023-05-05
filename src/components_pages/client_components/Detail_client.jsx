@@ -3,69 +3,13 @@ import detailClient from '../../styles/detail_client.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Detail_OrderMenu_client from './Detail_OrderMenu_client';
+import Detail_SubImage_client from './Detail_SubImage_client';
 import SubNav_client from './SubNav_client';
 import MediaQuery from 'react-responsive';
-import styled from 'styled-components';
-
-const Sub_IMG = styled.div`
-  ${(props) =>
-    props.imgFileName &&
-    `background-image: url('http://localhost:4000/uploads/${props.imgFileName}');`}
-  width: 50px;
-  height: 50px;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  margin-bottom: 20px;
-  opacity: 1;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.7;
-  }
-  &:active {
-    opacity: 0.3;
-  }
-`;
-
-const MainImage = styled.div`
-  position: relative;
-  /* left: 340px; */
-  ${(props) =>
-    props.selectImgFileName &&
-    `background-image: url('http://localhost:4000/uploads/${props.selectImgFileName}');`}
-  background-size: cover;
-  width: 400px;
-  height: 400px;
-  background-position: center;
-  background-repeat: no-repeat;
-`;
-
-const FirstDot = styled.div`
-  position: absolute;
-  bottom: 90px;
-  left: 0px;
-  width: 50px;
-  height: 2px;
-  /* background-color: black; */
-`;
-
-const SecondDot = styled.div`
-  position: absolute;
-  bottom: 17px;
-  width: 50px;
-  height: 2px;
-  background-color: black;
-`;
 
 export default function Detail_client() {
   const { id } = useParams();
   const [productData, setProductData] = useState();
-
-  //이미지 관련 스테이트
-  const [selectImgFileName, setSelectImgFileName] = useState(
-    productData.img[0],
-  );
-  const [selectDot, setSelectDot] = useState(productData.img[0]);
 
   useEffect(() => {
     getSelectProduct();
@@ -152,32 +96,15 @@ export default function Detail_client() {
       {/* 비동기 특성으로 map이 아니면 데이터 불러오는데 시간이 걸린다.
       그래서 아래와 같이 데이터가 들어오면 컴포넌트를 띄울 수 있게 순서적으로 처리해줘야함 */}
       {productData && (
-        <div className={detailClient.OrderMenu_Image_Container}>
-          {/* 서브 이미지 */}
-          <div className={detailClient.detail_Sub_Image_PositionCenter}>
-            {productData.img.map((el, index) => (
-              <Sub_IMG
-                className="sub-IMG"
-                onClick={() => {
-                  setSelectImgFileName((cur) => el);
-                  setSelectDot((cur) => el);
-                }}
-                key={index}
-                imgFileName={el}
-              ></Sub_IMG>
-            ))}
-            {/* {selectDot === datas.img[0] ? <FirstDot /> : <SecondDot />} */}
-          </div>
-
-          <MainImage selectImgFileName={selectImgFileName} />
-
+        <>
+          <Detail_SubImage_client datas={productData} />
           <Detail_OrderMenu_client
             productName={productData.productName}
             detail={productData.detail}
             price={productData.price}
             datas={productData}
           />
-        </div>
+        </>
       )}
     </section>
   );

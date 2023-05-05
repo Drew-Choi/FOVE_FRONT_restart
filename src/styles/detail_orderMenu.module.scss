@@ -1,189 +1,187 @@
 .Detail_Order{
-    background-color: white;
-    position: relative;
-    top: 20px;
-    border-radius: 10px;
-    border: 1px solid black;
-    width: 300px;
-    height: 600px;
-    flex: 1;
+  background-color: white;
+  position: relative;
+  top: 20px;
+  border-radius: 10px;
+  border: 1px solid black;
+  width: 300px;
+  height: 600px;
 
-  .pdTitle {
-    position: relative;
-    top: 30px;
-    text-align: center;
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    padding: 0px 10px;
-  }
-
-  .sumPrice{
-    position: relative;
-    font-size: 22px;
-    letter-spacing: 2px;
-    text-align: center;
-    top: 30px;
-    color: #555555;
-  }
-
-  .infoContain{
-    position: absolute;
-    top: 200px;
-    left: 50%;
-    transform: translateX(-50%);
-
-    .sizeBTN{
-      all: unset;
+    .pdTitle {
       position: relative;
-      bottom: 28px;
-      /* background-color: #000000; */
-      color: black;
-      border: 1.5px solid black;
-      width: 40px;
-      margin-right: 10px;
+      top: 30px;
       text-align: center;
-      cursor: pointer;
-      border-radius: 15px;
-      transition: 0.2s ease;
-
-      &:hover {
-        background-color: #cacaca5b;
-        color: black;
-      }
-      &:active {
-        background-color: #eeeeee56;
-        color: white;
-        transform: scale(1.2);
-      }
-    }
-    .sizeBTN.on {
-      background-color: black;
-      color: white;
-    }
-    .detailDesc {
-      /* background-color: blue; */
-      width: 200px;
-      height: 100px;
-      margin-bottom: -5px;
-      font-size: 14px;
-      font-weight: 500p;
+      font-size: 22px;
+      font-weight: 700;
       letter-spacing: 1px;
-      white-space: pre-line;
+      padding: 0px 10px;
     }
-    .sizeFitCheck {
-      /* background-color: red; */
-      font-size: 13px;
-      font-weight: bold;
-      text-decoration: underline;
-      letter-spacing: 1px;
-      cursor: pointer;
-
-      &:hover {
-        color: #a8a8a8;
-      }
-      &:active {
-        color: #d7d7d7;
-      }
-
-      .material-symbols-outlined {
-        font-size: 18px;
-        font-weight: 500;
-        margin-left: 5px;
-      }
+    
+    .sumPrice{
+      position: relative;
+      font-size: 22px;
+      letter-spacing: 2px;
+      text-align: center;
+      top: 30px;
+      color: #555555;
     }
-
-    .downInfoContain{
-      transform: translateY(-25px);
-
-      .countContainer{
+    
+    .infoContain{
+      position: absolute;
+      top: 200px;
+      left: 50%;
+      transform: translateX(-50%);
+    
+      .sizeBTN{
+        all: unset;
         position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 40px;
-        margin-bottom: 20px;
-        /* background-color: yellow; */
-
-        .miners {
-          font-size: 22px;
-          font-weight: 500;
-          transform: translateY(-2px);
-          padding-right: 15px;
-          cursor: pointer;
-          &:active {
-            color: #b4b4b4;
-          }
-        }
-        .countNumber {
-          font-size: 20px;
-        }
-        .plus{
-          font-size: 20px;
-          padding-left: 15px;
-          cursor: pointer;
-          &:active {
-            color: #b4b4b4;
-          }
-        }
-      }
-      .catIcon {
-        font-size: 30px;
-        position: absolute;
-        margin-bottom: -10px;
-        bottom: 90px;
-        left: 3px;
-      }
-
-      .addCart{
-        position: absolute;
-        all: unset;
-        border: 2px solid black;
-        padding: 8px 45px;
-        border-radius: 50px;
-        margin-bottom: 10px;
-        margin-left: 45px;
-        font-weight: 500;
+        bottom: 28px;
+        /* background-color: #000000; */
         color: black;
-        transition: transform 1s ease;
+        border: 1.5px solid black;
+        width: 40px;
+        margin-right: 10px;
+        text-align: center;
         cursor: pointer;
-
+        border-radius: 15px;
+        transition: 0.2s ease;
+    
         &:hover {
-          background-color: black;
-          color: white;
+          background-color: #cacaca5b;
+          color: black;
         }
-
         &:active {
-          background-color: black;
+          background-color: #eeeeee56;
           color: white;
+          transform: scale(1.2);
         }
       }
-
-      .buy{
-        position: absolute;
-        all: unset;
-        border: 2px solid black;
-        padding: 8px 85px;
-        border-radius: 50px;
-        margin-bottom: 25px;
-        letter-spacing: 1px;
-        font-weight: 600;
-        color: white;
+      .sizeBTN.on {
         background-color: black;
-        transition: 0.2s ease;
+        color: white;
+      }
+      .detailDesc {
+        /* background-color: blue; */
+        width: 200px;
+        height: 100px;
+        margin-bottom: -5px;
+        font-size: 14px;
+        font-weight: 500p;
+        letter-spacing: 1px;
+        white-space: pre-line;
+      }
+      .sizeFitCheck {
+        /* background-color: red; */
+        font-size: 13px;
+        font-weight: bold;
+        text-decoration: underline;
+        letter-spacing: 1px;
         cursor: pointer;
-
+    
         &:hover {
-          background: white;
-          color: black;
+          color: #a8a8a8;
         }
         &:active {
-          background-color: white;
+          color: #d7d7d7;
+        }
+    
+        .material-symbols-outlined {
+          font-size: 18px;
+          font-weight: 500;
+          margin-left: 5px;
+        }
+      }
+    
+      .downInfoContain{
+        transform: translateY(-25px);
+    
+        .countContainer{
+          position: relative;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-top: 40px;
+          margin-bottom: 20px;
+          /* background-color: yellow; */
+    
+          .miners {
+            font-size: 22px;
+            font-weight: 500;
+            transform: translateY(-2px);
+            padding-right: 15px;
+            cursor: pointer;
+            &:active {
+              color: #b4b4b4;
+            }
+          }
+          .countNumber {
+            font-size: 20px;
+          }
+          .plus{
+            font-size: 20px;
+            padding-left: 15px;
+            cursor: pointer;
+            &:active {
+              color: #b4b4b4;
+            }
+          }
+        }
+        .catIcon {
+          font-size: 30px;
+          position: absolute;
+          margin-bottom: -10px;
+          bottom: 90px;
+          left: 3px;
+        }
+    
+        .addCart{
+          position: absolute;
+          all: unset;
+          border: 2px solid black;
+          padding: 8px 45px;
+          border-radius: 50px;
+          margin-bottom: 10px;
+          margin-left: 45px;
+          font-weight: 500;
           color: black;
+          transition: transform 1s ease;
+          cursor: pointer;
+    
+          &:hover {
+            background-color: black;
+            color: white;
+          }
+    
+          &:active {
+            background-color: black;
+            color: white;
+          }
+        }
+    
+        .buy{
+          position: absolute;
+          all: unset;
+          border: 2px solid black;
+          padding: 8px 85px;
+          border-radius: 50px;
+          margin-bottom: 25px;
+          letter-spacing: 1px;
+          font-weight: 600;
+          color: white;
+          background-color: black;
+          transition: 0.2s ease;
+          cursor: pointer;
+    
+          &:hover {
+            background: white;
+            color: black;
+          }
+          &:active {
+            background-color: white;
+            color: black;
+          }
         }
       }
     }
-  }
 }
-
 

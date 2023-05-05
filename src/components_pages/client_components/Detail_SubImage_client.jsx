@@ -2,7 +2,28 @@ import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import detailSubImage from '../../styles/detail_subimage_client.module.scss';
 
+const Detail_sub_image_totalContainer = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+const MainImage = styled.div`
+  position: relative;
+  top: 50%;
+  left: 340px;
+  ${(props) =>
+    props.selectImgFileName &&
+    `background-image: url('http://localhost:4000/uploads/${props.selectImgFileName}');`}
+  background-size: cover;
+  width: 350px;
+  height: 350px;
+  background-position: center;
+  background-repeat: no-repeat;
+`;
+
 const Sub_IMG = styled.div`
+  position: relative;
+  display: block;
   ${(props) =>
     props.imgFileName &&
     `background-image: url('http://localhost:4000/uploads/${props.imgFileName}');`}
@@ -20,19 +41,6 @@ const Sub_IMG = styled.div`
   &:active {
     opacity: 0.3;
   }
-`;
-
-const MainImage = styled.div`
-  position: relative;
-  /* left: 340px; */
-  ${(props) =>
-    props.selectImgFileName &&
-    `background-image: url('http://localhost:4000/uploads/${props.selectImgFileName}');`}
-  background-size: cover;
-  width: 400px;
-  height: 400px;
-  background-position: center;
-  background-repeat: no-repeat;
 `;
 
 const FirstDot = styled.div`
@@ -53,5 +61,24 @@ const SecondDot = styled.div`
 `;
 
 export default function Detail_SubImage_client({ datas }) {
-  return <div className={detailSubImage.detail_sub_image_totalContainer}></div>;
+  const [selectImgFileName, setSelectImgFileName] = useState(datas.img[0]);
+  const [selectDot, setSelectDot] = useState(datas.img[0]);
+
+  return (
+    <Detail_sub_image_totalContainer>
+      {datas.img.map((el, index) => (
+        <Sub_IMG
+          className="sub-IMG"
+          onClick={() => {
+            setSelectImgFileName((cur) => el);
+            setSelectDot((cur) => el);
+          }}
+          key={index}
+          imgFileName={el}
+        ></Sub_IMG>
+      ))}
+      {/* {selectDot === datas.img[0] ? <FirstDot /> : <SecondDot />} */}
+      <MainImage selectImgFileName={selectImgFileName} />
+    </Detail_sub_image_totalContainer>
+  );
 }
