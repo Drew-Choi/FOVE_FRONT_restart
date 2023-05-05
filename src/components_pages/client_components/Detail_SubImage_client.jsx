@@ -22,6 +22,19 @@ const Sub_IMG = styled.div`
   }
 `;
 
+const MainImage = styled.div`
+  position: relative;
+  /* left: 340px; */
+  ${(props) =>
+    props.selectImgFileName &&
+    `background-image: url('http://localhost:4000/uploads/${props.selectImgFileName}');`}
+  background-size: cover;
+  width: 400px;
+  height: 400px;
+  background-position: center;
+  background-repeat: no-repeat;
+`;
+
 const FirstDot = styled.div`
   position: absolute;
   bottom: 90px;
@@ -34,32 +47,11 @@ const FirstDot = styled.div`
 const SecondDot = styled.div`
   position: absolute;
   bottom: 17px;
-  left: px;
   width: 50px;
   height: 2px;
   background-color: black;
 `;
 
 export default function Detail_SubImage_client({ datas }) {
-  const [selectImgFileName, setSelectImgFileName] = useState(datas.img[0]);
-  const [selectDot, setSelectDot] = useState(datas.img[0]);
-
-  return (
-    <div className={detailSubImage.detail_sub_image_totalContainer}>
-      <div className={detailSubImage.detail_Sub_Image_PositionCenter}>
-        {datas.img.map((el, index) => (
-          <Sub_IMG
-            className="sub-IMG"
-            onClick={() => {
-              setSelectImgFileName((cur) => el);
-              setSelectDot((cur) => el);
-            }}
-            key={index}
-            imgFileName={el}
-          ></Sub_IMG>
-        ))}
-        {/* {selectDot === datas.img[0] ? <FirstDot /> : <SecondDot />} */}
-      </div>
-    </div>
-  );
+  return <div className={detailSubImage.detail_sub_image_totalContainer}></div>;
 }

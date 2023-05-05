@@ -1,10 +1,12 @@
 .detail_sub_image_totalContainer {
     position: relative;
-    background-color: beige;
+    right: 70px;
+    // background-color: beige;
+    flex: 4;
     display: flex;
-    
+    justify-content:right;
+    align-items: center;
+    gap: 110px;
 
-    .detail_Sub_Image_PositionCenter {
-      // flex: 1;
-    }
+
 }
