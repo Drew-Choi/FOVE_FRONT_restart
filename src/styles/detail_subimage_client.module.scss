@@ -1,22 +1,10 @@
 .detail_sub_image_totalContainer {
     position: relative;
-    flex: 4;
-    width: 100%;
     background-color: beige;
-
-  .detail_Sub_Image_Contain {
-    position: relative;
     display: flex;
-    top: 70px;
-    left: 150px;
-    width: 300px;
-    height: 500px;
-    /* background-color: beige; */
-    justify-content: right;
-    align-items: center;
+    
 
     .detail_Sub_Image_PositionCenter {
-      flex: 1;
+      // flex: 1;
     }
-  } 
 }

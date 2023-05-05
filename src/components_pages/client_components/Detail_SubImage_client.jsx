@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import detailSubImage from '../../styles/detail_subimage_client.module.scss';
 
 const Sub_IMG = styled.div`
-  position: relative;
   ${(props) =>
     props.imgFileName &&
     `background-image: url('http://localhost:4000/uploads/${props.imgFileName}');`}
@@ -21,20 +20,6 @@ const Sub_IMG = styled.div`
   &:active {
     opacity: 0.3;
   }
-`;
-
-const MainImage = styled.div`
-  position: relative;
-  flex: 1;
-  left: 340px;
-  ${(props) =>
-    props.selectImgFileName &&
-    `background-image: url('http://localhost:4000/uploads/${props.selectImgFileName}');`}
-  width: 400px;
-  height: 400px;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
 `;
 
 const FirstDot = styled.div`
@@ -61,22 +46,19 @@ export default function Detail_SubImage_client({ datas }) {
 
   return (
     <div className={detailSubImage.detail_sub_image_totalContainer}>
-      <div className={detailSubImage.detail_Sub_Image_Contain}>
-        <div className={detailSubImage.detail_Sub_Image_PositionCenter}>
-          {datas.img.map((el, index) => (
-            <Sub_IMG
-              className="sub-IMG"
-              onClick={() => {
-                setSelectImgFileName((cur) => el);
-                setSelectDot((cur) => el);
-              }}
-              key={index}
-              imgFileName={el}
-            ></Sub_IMG>
-          ))}
-          {/* {selectDot === datas.img[0] ? <FirstDot /> : <SecondDot />} */}
-        </div>
-        <MainImage selectImgFileName={selectImgFileName} />
+      <div className={detailSubImage.detail_Sub_Image_PositionCenter}>
+        {datas.img.map((el, index) => (
+          <Sub_IMG
+            className="sub-IMG"
+            onClick={() => {
+              setSelectImgFileName((cur) => el);
+              setSelectDot((cur) => el);
+            }}
+            key={index}
+            imgFileName={el}
+          ></Sub_IMG>
+        ))}
+        {/* {selectDot === datas.img[0] ? <FirstDot /> : <SecondDot />} */}
       </div>
     </div>
   );
