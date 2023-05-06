@@ -1,0 +1,15 @@
+.detail_sub_image_totalContainer{
+  position: relative;
+  display: flex;
+  background-color: brown;
+  width: 1000px;
+  justify-content: right;
+  align-items: center;
+
+  .sub_image_wrap{
+    position: relative;
+    background-color: aqua;
+    width: 50px;
+    margin-right: 150px;
+  }
+}

@@ -96,7 +96,7 @@ export default function Detail_client() {
       {/* 비동기 특성으로 map이 아니면 데이터 불러오는데 시간이 걸린다.
       그래서 아래와 같이 데이터가 들어오면 컴포넌트를 띄울 수 있게 순서적으로 처리해줘야함 */}
       {productData && (
-        <>
+        <div className={detailClient.image_info_container}>
           <Detail_SubImage_client datas={productData} />
           <Detail_OrderMenu_client
             productName={productData.productName}
@@ -104,7 +104,7 @@ export default function Detail_client() {
             price={productData.price}
             datas={productData}
           />
-        </>
+        </div>
       )}
     </section>
   );

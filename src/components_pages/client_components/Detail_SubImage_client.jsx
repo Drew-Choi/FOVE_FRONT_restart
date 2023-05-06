@@ -2,15 +2,9 @@ import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import detailSubImage from '../../styles/detail_subimage_client.module.scss';
 
-const Detail_sub_image_totalContainer = styled.div`
-  position: relative;
-  display: inline-block;
-`;
-
 const MainImage = styled.div`
   position: relative;
-  top: 50%;
-  left: 340px;
+  margin-right: 190px;
   ${(props) =>
     props.selectImgFileName &&
     `background-image: url('http://localhost:4000/uploads/${props.selectImgFileName}');`}
@@ -65,20 +59,22 @@ export default function Detail_SubImage_client({ datas }) {
   const [selectDot, setSelectDot] = useState(datas.img[0]);
 
   return (
-    <Detail_sub_image_totalContainer>
-      {datas.img.map((el, index) => (
-        <Sub_IMG
-          className="sub-IMG"
-          onClick={() => {
-            setSelectImgFileName((cur) => el);
-            setSelectDot((cur) => el);
-          }}
-          key={index}
-          imgFileName={el}
-        ></Sub_IMG>
-      ))}
-      {/* {selectDot === datas.img[0] ? <FirstDot /> : <SecondDot />} */}
+    <div className={detailSubImage.detail_sub_image_totalContainer}>
+      <div className={detailSubImage.sub_image_wrap}>
+        {datas.img.map((el, index) => (
+          <Sub_IMG
+            className="sub-IMG"
+            onClick={() => {
+              setSelectImgFileName((cur) => el);
+              setSelectDot((cur) => el);
+            }}
+            key={index}
+            imgFileName={el}
+          ></Sub_IMG>
+        ))}
+        {/* {selectDot === datas.img[0] ? <FirstDot /> : <SecondDot />} */}
+      </div>
       <MainImage selectImgFileName={selectImgFileName} />
-    </Detail_sub_image_totalContainer>
+    </div>
   );
 }
