@@ -1,11 +1,22 @@
 .Detail_Order{
   background-color: white;
   position: relative;
-  top: 20px;
   border-radius: 10px;
   border: 1px solid black;
   width: 300px;
   height: 600px;
+  margin: 30px;
+  @media screen and (max-width: 1144px) {
+    flex: 1;
+  }
+
+  @media screen and (max-width: 1040px) {
+    flex: 1;
+  }
+
+  @media screen and (max-width: 840px) {
+    flex: 2;
+  }
 
     .pdTitle {
       position: relative;

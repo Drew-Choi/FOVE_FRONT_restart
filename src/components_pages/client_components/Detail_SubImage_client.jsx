@@ -4,7 +4,7 @@ import detailSubImage from '../../styles/detail_subimage_client.module.scss';
 
 const MainImage = styled.div`
   position: relative;
-  margin-right: 190px;
+  margin-right: 160px;
   ${(props) =>
     props.selectImgFileName &&
     `background-image: url('http://localhost:4000/uploads/${props.selectImgFileName}');`}
@@ -13,6 +13,18 @@ const MainImage = styled.div`
   height: 350px;
   background-position: center;
   background-repeat: no-repeat;
+
+  @media screen and (max-width: 1144px) {
+    margin-right: 110px;
+  }
+
+  @media screen and (max-width: 1040px) {
+    margin-right: 50px;
+  }
+
+  @media screen and (max-width: 840px) {
+    margin-right: 0px;
+  }
 `;
 
 const Sub_IMG = styled.div`
