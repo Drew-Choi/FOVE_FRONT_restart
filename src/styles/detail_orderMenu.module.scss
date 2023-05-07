@@ -42,6 +42,21 @@
         text-align: left;
         padding: 10px 30px;
       }
+
+      @media screen and (max-width: 555px) {
+        top: -520px;
+      }
+
+      @media screen and (max-width: 415px) {
+        top: -420px;
+        font-size: 17px;
+      }
+
+      @media screen and (max-width: 280px) {
+        top: -355px;
+        font-size: 17px;
+        padding: 10px 20px;
+      }
     }
     
     .sumPrice{
@@ -56,6 +71,23 @@
         top: -430px;
         text-align: left;
         padding: 10px 30px;
+      }
+
+      @media screen and (max-width: 555px) {
+        top: -560px;
+        text-align: left;
+        padding: 10px 30px;
+      }
+
+      @media screen and (max-width: 415px) {
+        top: -460px;
+        font-size: 15px;
+      }
+
+      @media screen and (max-width: 280px) {
+        top: -395px;
+        font-size: 15px;
+        padding: 10px 20px;
       }
     }
     

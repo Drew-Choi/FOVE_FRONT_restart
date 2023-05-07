@@ -17,8 +17,11 @@
     z-index: 3;
 
     @media screen and (max-width: 575px) {
-      left: auto;
-      right: 10px;
+      top: -100px;
+    }
+
+    @media screen and (max-width: 280px) {
+      top: -80px;
     }
   }
   

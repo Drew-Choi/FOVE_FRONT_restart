@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import detailSubImage from '../../styles/detail_subimage_client.module.scss';
+import MediaQuery from 'react-responsive';
 
 const MainImage = styled.div`
   position: relative;
@@ -29,6 +30,22 @@ const MainImage = styled.div`
   @media screen and (max-width: 767px) {
     margin-right: 90px;
   }
+
+  @media screen and (max-width: 555px) {
+    margin-right: 0px;
+    margin: 0px auto;
+    margin-bottom: 30px;
+  }
+
+  @media screen and (max-width: 415px) {
+    width: 250px;
+    height: 250px;
+  }
+
+  @media screen and (max-width: 280px) {
+    width: 220px;
+    height: 220px;
+  }
 `;
 
 const Sub_IMG = styled.div`
@@ -50,6 +67,11 @@ const Sub_IMG = styled.div`
   }
   &:active {
     opacity: 0.3;
+  }
+
+  @media screen and (max-width: 280px) {
+    width: 30px;
+    height: 30px;
   }
 `;
 
@@ -76,21 +98,41 @@ export default function Detail_SubImage_client({ datas }) {
 
   return (
     <div className={detailSubImage.detail_sub_image_totalContainer}>
-      <div className={detailSubImage.sub_image_wrap}>
-        {datas.img.map((el, index) => (
-          <Sub_IMG
-            className="sub-IMG"
-            onClick={() => {
-              setSelectImgFileName((cur) => el);
-              setSelectDot((cur) => el);
-            }}
-            key={index}
-            imgFileName={el}
-          ></Sub_IMG>
-        ))}
-        {/* {selectDot === datas.img[0] ? <FirstDot /> : <SecondDot />} */}
-      </div>
-      <MainImage selectImgFileName={selectImgFileName} />
+      <MediaQuery minWidth={556}>
+        <div className={detailSubImage.sub_image_wrap}>
+          {datas.img.map((el, index) => (
+            <Sub_IMG
+              className="sub-IMG"
+              onClick={() => {
+                setSelectImgFileName((cur) => el);
+                setSelectDot((cur) => el);
+              }}
+              key={index}
+              imgFileName={el}
+            ></Sub_IMG>
+          ))}
+          {/* {selectDot === datas.img[0] ? <FirstDot /> : <SecondDot />} */}
+        </div>
+        <MainImage selectImgFileName={selectImgFileName} />
+      </MediaQuery>
+
+      <MediaQuery maxWidth={555}>
+        <MainImage selectImgFileName={selectImgFileName} />
+        <div className={detailSubImage.sub_image_wrap}>
+          {datas.img.map((el, index) => (
+            <Sub_IMG
+              className="sub-IMG"
+              onClick={() => {
+                setSelectImgFileName((cur) => el);
+                setSelectDot((cur) => el);
+              }}
+              key={index}
+              imgFileName={el}
+            ></Sub_IMG>
+          ))}
+          {/* {selectDot === datas.img[0] ? <FirstDot /> : <SecondDot />} */}
+        </div>
+      </MediaQuery>
     </div>
   );
 }
