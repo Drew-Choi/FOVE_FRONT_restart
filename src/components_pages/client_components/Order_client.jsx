@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import '../../styles/order_client.scss';
+import orderClient from '../../styles/order_client.module.scss';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
@@ -230,71 +230,79 @@ export default function Order_client() {
   };
 
   return (
-    <div className="order_main">
-      <div className={`orderModalOff ${on}`}>
+    <div className={orderClient.order_main}>
+      <div
+        className={`${orderClient.orderModalOff} ${
+          on === 'On' ? orderClient.On : ''
+        }`}
+      >
         <p>결제정보 확인 및 구매진행에 동의하셔야 주문이 가능합니다.</p>
         <BTN_black_nomal_comp
           onClickEvent={() => setToggleModal(false)}
-          className="model_checkout"
+          className={orderClient.model_checkout}
         >
           확인
         </BTN_black_nomal_comp>
       </div>
 
-      <div className="memeber_info_contain">
-        <p className="memeber_info_membership">
+      <div className={orderClient.memeber_info_contain}>
+        <p className={orderClient.memeber_info_membership}>
           {userName}님은, <strong>{'[STANDARD]'}</strong> 회원이십니다.
         </p>
-        <p className="memeber_info_event1">
+        <p className={orderClient.memeber_info_event1}>
           KRW 10,000 이상 구매시 <strong>5%</strong>를 추가할인 받으실 수
           있습니다. (최대 KDW 9,999,999)
         </p>
-        <p className="memeber_info_event2">
+        <p className={orderClient.memeber_info_event2}>
           KRW 10,000 이상 구매시 <strong>5%</strong>를 추가할인 받으실 수
           있습니다. (최대 KDW 9,999,999)
         </p>
-        <span className="point_text1">가용적립금:</span>
-        <span className="member_point">{userPoints} 원</span>
-        <span className="point_text2">예치금:</span>
-        <span className="member_deposit">{'0'} 원</span>
-        <span className="point_text3">쿠폰:</span>
-        <span className="member_coupon">{'0'} 개</span>
+        <span className={orderClient.point_text1}>가용적립금:</span>
+        <span className={orderClient.member_point}>{userPoints} 원</span>
+        <span className={orderClient.point_text2}>예치금:</span>
+        <span className={orderClient.member_deposit}>{'0'} 원</span>
+        <span className={orderClient.point_text3}>쿠폰:</span>
+        <span className={orderClient.member_coupon}>{'0'} 개</span>
       </div>
 
       {singleOrder.productName === '' &&
       singleOrder.price === 0 &&
       currentURL === '/store/order' ? (
-        <p className="resetMessage">
+        <p className={orderClient.resetMessage}>
           선택하신 상품이 초기화 되었습니다. 상품을 다시 선택해주세요.
         </p>
       ) : (
         <>
-          <p className="order_product_title">상품 정보</p>
-          <div className="ordermenu_product_contianer">
+          <p className={orderClient.order_product_title}>상품 정보</p>
+          <div className={orderClient.ordermenu_product_contianer}>
             {/* 싱글 오더와 카트오더를 url로 구분 각각 다른 데이터 바인딩 페이지를 보여줘야함*/}
 
             {/* 현재 URL주소가 /store/order라면~ */}
             {currentURL === '/store/order' ? (
               // 아래 싱글데이터를 바인딩한걸 보여줘
-              <div className="individualCopy_layout">
+              <div className={orderClient.individualCopy_layout}>
                 <Pd_order_IMG
                   img={singleOrder.img}
-                  className="order_pdIMG"
+                  className={orderClient.order_pdIMG}
                 ></Pd_order_IMG>
-                <div className="order_pd_info">
-                  <p className="order_product_Name">
+                <div className={orderClient.order_pd_info}>
+                  <p className={orderClient.order_product_Name}>
                     {singleOrder.productName}
                   </p>
-                  <p className="order_product_price">
+                  <p className={orderClient.order_product_price}>
                     ₩ {frontPriceComma(singleOrder.price)}
                   </p>
-                  <p className="order_product_size">SIZE: {singleOrder.size}</p>
-                  <p className="order_product_color">{singleOrder.color}</p>
-                  <p className="order_product_quantity">
+                  <p className={orderClient.order_product_size}>
+                    SIZE: {singleOrder.size}
+                  </p>
+                  <p className={orderClient.order_product_color}>
+                    {singleOrder.color}
+                  </p>
+                  <p className={orderClient.order_product_quantity}>
                     <strong>QTY</strong> :
                     {frontPriceComma(singleOrder.quantity)}
                   </p>
-                  <p className="order_product_unitSumPrice">
+                  <p className={orderClient.order_product_unitSumPrice}>
                     <strong>Total : ₩</strong>{' '}
                     <span>{frontPriceComma(singleOrder.totalPrice)}</span>
                   </p>
@@ -305,22 +313,28 @@ export default function Order_client() {
               //만약 2번째 조건이 맞다면, 아래 카트데이터로 들어오는 걸 바인딩해줘
               //카트아이템은 어레이로 들어오기 때문에 map으로 죠진다
               cartOrderData.cartProducts.map((el, index) => (
-                <div key={el._id} className="individualCopy_layout">
+                <div key={el._id} className={orderClient.individualCopy_layout}>
                   <Pd_order_IMG
                     img={el.img}
-                    className="order_pdIMG"
+                    className={orderClient.order_pdIMG}
                   ></Pd_order_IMG>
-                  <div className="order_pd_info">
-                    <p className="order_product_Name">{el.productName}</p>
-                    <p className="order_product_price">
+                  <div className={orderClient.order_pd_info}>
+                    <p className={orderClient.order_product_Name}>
+                      {el.productName}
+                    </p>
+                    <p className={orderClient.order_product_price}>
                       ₩ {frontPriceComma(el.price)}
                     </p>
-                    <p className="order_product_size">size: {el.size}</p>
-                    <p className="order_product_color">{el.color}</p>
-                    <p className="order_product_quantity">
+                    <p className={orderClient.order_product_size}>
+                      size: {el.size}
+                    </p>
+                    <p className={orderClient.order_product_color}>
+                      {el.color}
+                    </p>
+                    <p className={orderClient.order_product_quantity}>
                       <strong>QTY</strong> : {frontPriceComma(el.quantity)}
                     </p>
-                    <p className="order_product_unitSumPrice">
+                    <p className={orderClient.order_product_unitSumPrice}>
                       <strong>Total : ₩</strong>{' '}
                       <span>{frontPriceComma(el.quantity * el.price)}</span>
                     </p>
@@ -331,10 +345,10 @@ export default function Order_client() {
               <Error404 />
             )}
           </div>
-          <div className="sangAh">
-            <p className="ship_input_title">배송 정보</p>
-            <div className="ship_info_input_container">
-              <div className="adressCheck">
+          <div className={orderClient.sangAh}>
+            <p className={orderClient.ship_input_title}>배송 정보</p>
+            <div className={orderClient.ship_info_input_container}>
+              <div className={orderClient.adressCheck}>
                 <label>
                   <input
                     type="radio"
@@ -355,15 +369,15 @@ export default function Order_client() {
                   &ensp;새로운 배송지
                 </label>
               </div>
-              <button className="adressBook">주소록 보기</button>
+              <button className={orderClient.adressBook}>주소록 보기</button>
               <p>*필수입력사항</p>
             </div>
 
             {/* 주소록 관리 등록 제목 위치 */}
-            <div className="information_contain">
+            <div className={orderClient.information_contain}>
               <input
                 ref={recipientName}
-                className="b"
+                className={orderClient.b}
                 type="text"
                 placeholder="받으시는 분"
                 value={
@@ -374,10 +388,10 @@ export default function Order_client() {
               />
               <div>
                 <div>
-                  <div className="code_btn_container">
+                  <div className={orderClient.code_btn_container}>
                     <input
                       ref={recipientZipcode}
-                      className="address b"
+                      className={`${orderClient.address} ${orderClient.b}`}
                       type="text"
                       value={
                         selectedOption === 'defaultAddress' &&
@@ -390,14 +404,14 @@ export default function Order_client() {
                     />
                     <button
                       onClick={() => handle.clickButton()}
-                      className="postCode"
+                      className={orderClient.postCode}
                     >
                       주소 찾기
                     </button>
                     {openPostcode && (
                       <DaumPostcode
                         style={postCodeStyle2}
-                        className="kakaoadd"
+                        className={orderClient.kakaoadd}
                         onComplete={handle.selectAddress} // 값을 선택할 경우 실행되는 이벤트
                         autoClose={false} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
                         defaultQuery="" // 팝업을 열때 기본적으로 입력되는 검색어
@@ -408,7 +422,7 @@ export default function Order_client() {
                   <div>
                     <input
                       ref={recipientAddress}
-                      className="b"
+                      className={orderClient.b}
                       type="text"
                       value={
                         selectedOption === 'defaultAddress' &&
@@ -424,7 +438,7 @@ export default function Order_client() {
                   <div>
                     <input
                       ref={recipientAddressDetail}
-                      className="b"
+                      className={orderClient.b}
                       type="text"
                       value={
                         selectedOption === 'defaultAddress' &&
@@ -438,10 +452,10 @@ export default function Order_client() {
                   </div>
                 </div>
 
-                <div className="phonNum_contain">
+                <div className={orderClient.phonNum_contain}>
                   <Select_Custom
                     inputRef={phoneCode}
-                    classNameSelect="select_group2 phonNum"
+                    classNameSelect={`${orderClient.select_group2} ${orderClient.phonNum}`}
                     selectList={selectList_celPhone}
                     selectedEvent={
                       selectedOption === 'defaultAddress' && addData.length > 0
@@ -449,10 +463,10 @@ export default function Order_client() {
                         : ''
                     }
                   />
-                  <p className="numMiners">-</p>
+                  <p className={orderClient.numMiners}>-</p>
                   <input
                     ref={phoneMidNum}
-                    className="phonNum mid b"
+                    className={`${orderClient.phonNum} ${orderClient.mid} ${orderClient.b}`}
                     type="tel"
                     placeholder="휴대폰"
                     maxLength="4"
@@ -463,10 +477,10 @@ export default function Order_client() {
                         : ''
                     }
                   />
-                  <p className="numMiners">-</p>
+                  <p className={orderClient.numMiners}>-</p>
                   <input
                     ref={phoneLastNum}
-                    className="phonNum last b"
+                    className={`${orderClient.phonNum} ${orderClient.last} ${orderClient.b}`}
                     type="tel"
                     maxLength="4"
                     pattern="[0-9]{4}"
@@ -485,46 +499,79 @@ export default function Order_client() {
                   rows="3"
                   cols="100"
                   type="text"
-                  textAreaClassName="textAreaClassName"
+                  textAreaClassName={orderClient.textAreaClassName}
                   placeholder="배송 메세지"
                 />
 
                 {/* 결제영역 */}
-                <div className="payment_contain">
+                <div className={orderClient.payment_contain}>
                   {/* 할인코드 */}
-                  <p className="discount_title">할인</p>
-                  <p className="discount_apply">할인코드 적용</p>
-                  <div className="discount_area">
-                    <input type="text" className="discount_code b" />
-                    <button className="diicount_code_btn">적용</button>
-                    <div className="discount_price">추가할인금액: - {''}</div>
+                  <p className={orderClient.discount_title}>할인</p>
+                  <p className={orderClient.discount_apply}>할인코드 적용</p>
+                  <div className={orderClient.discount_area}>
+                    <input
+                      type="text"
+                      className={`${orderClient.discount_code} ${orderClient.b}`}
+                    />
+                    <button className={orderClient.diicount_code_btn}>
+                      적용
+                    </button>
+                    <div className={orderClient.discount_price}>
+                      추가할인금액: -
+                    </div>
                   </div>
                   {/* 포인트 */}
-                  <p className="point_title">포인트</p>
-                  <div className="point">
-                    <input type="text" className="point_apply b" />
-                    <button className="diicount_code_btn">적용</button>
-                    <div className="preview_point">
+                  <p className={orderClient.point_title}>포인트</p>
+                  <div className={orderClient.point}>
+                    <input
+                      type="text"
+                      className={`${orderClient.point_apply} ${orderClient.b}`}
+                    />
+                    <button className={orderClient.diicount_code_btn}>
+                      적용
+                    </button>
+                    <div className={orderClient.preview_point}>
                       사용가능 포인트: {userPoints} p
                     </div>
-                    <div className="point_price_apply">포인트 사용: - {''}</div>
+                    <div className={orderClient.point_price_apply}>
+                      포인트 사용: -{' '}
+                    </div>
                   </div>
                   {/* 예치금 */}
-                  <p className="point_title deposit">예치금</p>
-                  <div className="point">
-                    <input type="text" className="point_apply b" />
-                    <button className="diicount_code_btn">적용</button>
-                    <div className="preview_point">사용가능 예치금: {''}</div>
-                    <div className="point_price_apply">예치금 사용: - {''}</div>
+                  <p
+                    className={`${orderClient.point_title} ${orderClient.deposit}`}
+                  >
+                    예치금
+                  </p>
+                  <div className={orderClient.point}>
+                    <input
+                      type="text"
+                      className={`${orderClient.point_apply} ${orderClient.b}`}
+                    />
+                    <button className={orderClient.diicount_code_btn}>
+                      적용
+                    </button>
+                    <div className={orderClient.preview_point}>
+                      사용가능 예치금:
+                    </div>
+                    <div className={orderClient.point_price_apply}>
+                      예치금 사용: -
+                    </div>
                   </div>
 
                   {/* 결제하기 */}
-                  <p className="point_title deposit"> 총 합계 </p>
-                  <div className="final_checkout_contain">
-                    <div className="unit_sum_price a">
+                  <p
+                    className={`${orderClient.point_title} ${orderClient.deposit}`}
+                  >
+                    총 합계
+                  </p>
+                  <div className={orderClient.final_checkout_contain}>
+                    <div
+                      className={`${orderClient.unit_sum_price} ${orderClient.a}`}
+                    >
                       <p>상품금액</p>
                       <p>
-                        KRW{' '}
+                        KRW
                         {currentURL === '/store/order'
                           ? frontPriceComma(singleOrder.totalPrice)
                           : currentURL === '/store/cartorder'
@@ -532,19 +579,27 @@ export default function Order_client() {
                           : null}
                       </p>
                     </div>
-                    <div className="ship_price a">
+                    <div
+                      className={`${orderClient.ship_price} ${orderClient.a}`}
+                    >
                       <p>배송비</p>
                       <p>+ KRW {'0'}</p>
                     </div>
-                    <div className="extra_ship_price a">
+                    <div
+                      className={`${orderClient.extra_ship_price} ${orderClient.a}`}
+                    >
                       <p>지역별 배송비</p>
                       <p>+ KRW {'0'}</p>
                     </div>
-                    <div className="total_discount a">
+                    <div
+                      className={`${orderClient.total_discount} ${orderClient.a}`}
+                    >
                       <p>총 할인</p>
                       <p>- KRW {'0'}</p>
                     </div>
-                    <div className="final_sum a">
+                    <div
+                      className={`${orderClient.final_sum} ${orderClient.a}`}
+                    >
                       <p>최종 결제 금액</p>
                       <p>
                         = KRW{' '}
@@ -555,7 +610,9 @@ export default function Order_client() {
                           : null}
                       </p>
                     </div>
-                    <div className="rest_point a">
+                    <div
+                      className={`${orderClient.rest_point} ${orderClient.a}`}
+                    >
                       <p>
                         총 적립예정금액{' '}
                         {currentURL === '/store/order'
@@ -576,7 +633,7 @@ export default function Order_client() {
                           setAgreement((cur) => checkoutRef.current.checked)
                         }
                         ref={checkoutRef}
-                        className="checkcheck"
+                        className={orderClient.checkcheck}
                         type="checkbox"
                         name="agree"
                         value="agreement"
@@ -584,10 +641,10 @@ export default function Order_client() {
                       />
                       결제정보를 확인하였으며, 구매진행에 동의합니다.
                     </label>
-                    <div className="btn_order">
+                    <div className={orderClient.btn_order}>
                       <BTN_black_nomal_comp
                         fontSize="18px"
-                        className="order_btn"
+                        className={orderClient.order_btn}
                         padding="10px 0px"
                         onClickEvent={() => {
                           !agreement
