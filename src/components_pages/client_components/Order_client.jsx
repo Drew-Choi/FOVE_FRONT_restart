@@ -257,12 +257,20 @@ export default function Order_client() {
           KRW 10,000 이상 구매시 <strong>5%</strong>를 추가할인 받으실 수
           있습니다. (최대 KDW 9,999,999)
         </p>
-        <span className={orderClient.point_text1}>가용적립금:</span>
-        <span className={orderClient.member_point}>{userPoints} 원</span>
-        <span className={orderClient.point_text2}>예치금:</span>
-        <span className={orderClient.member_deposit}>{'0'} 원</span>
-        <span className={orderClient.point_text3}>쿠폰:</span>
-        <span className={orderClient.member_coupon}>{'0'} 개</span>
+        <div className={orderClient.wrap}>
+          <div className={orderClient.point_text1_wrap}>
+            <span className={orderClient.point_text1}>가용적립금:</span>
+            <span className={orderClient.member_point}>{userPoints} 원</span>
+          </div>
+          <div className={orderClient.point_text2_wrap}>
+            <span className={orderClient.point_text2}>예치금:</span>
+            <span className={orderClient.member_deposit}>{'0'} 원</span>
+          </div>
+          <div className={orderClient.point_text3_wrap}>
+            <span className={orderClient.point_text3}>쿠폰:</span>
+            <span className={orderClient.member_coupon}>{'0'} 개</span>
+          </div>
+        </div>
       </div>
 
       {singleOrder.productName === '' &&
@@ -272,7 +280,7 @@ export default function Order_client() {
           선택하신 상품이 초기화 되었습니다. 상품을 다시 선택해주세요.
         </p>
       ) : (
-        <>
+        <div className={orderClient.orderDetail_wrap}>
           <p className={orderClient.order_product_title}>상품 정보</p>
           <div className={orderClient.ordermenu_product_contianer}>
             {/* 싱글 오더와 카트오더를 url로 구분 각각 다른 데이터 바인딩 페이지를 보여줘야함*/}
@@ -661,7 +669,7 @@ export default function Order_client() {
               </div>
             </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
