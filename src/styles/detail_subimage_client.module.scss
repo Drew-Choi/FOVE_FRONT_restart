@@ -19,6 +19,14 @@
     flex: 3;
   }
 
+  @media screen and (max-width: 767px) {
+    justify-content: center;
+    width: 100vw;
+    // background-color: beige;
+    margin-left: 0px;
+    margin-top: 50px;
+  }
+
   .sub_image_wrap{
     position: relative;
     // background-color: aqua;
@@ -31,6 +39,10 @@
 
     @media screen and (max-width: 840px) {
       margin-right: 0px;
+    }
+
+    @media screen and (max-width: 767px) {
+      margin-right: 50px;
     }
   }
 }

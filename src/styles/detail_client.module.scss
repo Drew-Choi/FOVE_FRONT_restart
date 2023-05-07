@@ -1,8 +1,13 @@
 .pd_detail {
   position: relative;
+  // background-color: beige;
   top: 0px;
   width: 100vw;
   height: 700px;
+
+  @media screen and (max-width: 767px) {
+    height:auto;
+  }
   
    .selectCategorys {
     position: absolute;
@@ -10,12 +15,24 @@
     font-size: 13px;
     left: 10px;
     z-index: 3;
+
+    @media screen and (max-width: 575px) {
+      left: auto;
+      right: 10px;
+    }
   }
   
     .image_info_container{
+      position: relative;
       height: 645px;
       // background-color: beige;
       display: flex;
       justify-content: center;
+
+      @media screen and (max-width: 767px) {
+        display: block;
+        width: 100vw;
+        height:auto;
+      }
     }
   }

@@ -25,6 +25,10 @@ const MainImage = styled.div`
   @media screen and (max-width: 840px) {
     margin-right: 0px;
   }
+
+  @media screen and (max-width: 767px) {
+    margin-right: 90px;
+  }
 `;
 
 const Sub_IMG = styled.div`

@@ -15,7 +15,6 @@ import SubNav_client from './SubNav_client';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import MediaQuery from 'react-responsive';
-import Select_Custom from '../../components_elements/Select_Custom';
 
 SwiperCore.use([Navigation]);
 
