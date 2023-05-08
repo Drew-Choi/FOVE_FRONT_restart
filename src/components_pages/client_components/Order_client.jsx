@@ -635,7 +635,10 @@ export default function Order_client() {
                       </p>
                     </div>
 
-                    <label htmlFor="agree_check">
+                    <label
+                      htmlFor="agree_check"
+                      className={orderClient.checkTitle}
+                    >
                       <input
                         onClick={() =>
                           setAgreement((cur) => checkoutRef.current.checked)
