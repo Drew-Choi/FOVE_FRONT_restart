@@ -3,7 +3,6 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Admin_main from './components_pages/admin_components/Admin_main';
 import ProductRegister_admin from './components_pages/admin_components/ProductRegister_admin';
-import Home_admin from './components_pages/admin_components/Home_admin';
 import Agreement_client from './components_pages/client_components/Agreement_client';
 import Privacy_client from './components_pages/client_components/Privacy_client';
 import Client_main from './components_pages/client_components/Client_main';

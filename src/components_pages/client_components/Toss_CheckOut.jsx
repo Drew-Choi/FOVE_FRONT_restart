@@ -7,6 +7,7 @@ import {
 } from '@tosspayments/payment-widget-sdk';
 import { nanoid } from 'nanoid';
 import tossCheckOut from '../../styles/toss_checkOut.module.scss';
+import { useSelector } from 'react-redux';
 
 const selector = '#payment-widget';
 const clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq';
@@ -16,6 +17,7 @@ export function Toss_CheckOut() {
   const paymentWidgetRef = useRef(null);
   const paymentMethodsWidgetRef = useRef(null);
   const [price, setPrice] = useState(0);
+  const userInfo = useSelector((state) => state.user);
 
   //로컬에서 주문내역 뺴서 가공
   const importLocalProducts = JSON.parse(localStorage.getItem('products'));
@@ -67,13 +69,13 @@ export function Toss_CheckOut() {
             try {
               const kim = await paymentWidget?.requestPayment({
                 orderId: nanoid(),
-                orderName: '유저정보로 입력 예정',
+                orderName: `${userInfo.userID}`,
                 customerName: `${
                   importLocalProducts.length > 0
                     ? '상품명: ' + productName + '외 다수'
                     : '상품명: ' + productName
                 }`,
-                customerEmail: '주문자 이메일 (회원정보에서 끌어다 씀)',
+                customerEmail: `${userInfo.userID}`,
                 successUrl: `${window.location.origin}/store/order/checkout/approval_order`,
                 failUrl: `${window.location.origin}/fail`,
               });

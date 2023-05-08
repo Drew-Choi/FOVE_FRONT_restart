@@ -1,0 +1,164 @@
+.toss_complete_container{
+  position: relative;
+  width: 100vw;
+  min-height: 700px;
+
+  .wrap {
+    position: relative;
+    margin: 0px auto;
+    width: 70vw;
+    // background-color: aquamarine;
+
+    .complete_title {
+      text-align: center;
+      margin: 0px;
+      padding: 30px;
+      font-size: 18px;
+    }
+  
+    .complete_box {
+      position: relative;
+      width: 70vw;
+      background-color: white;
+      border: 0.5px solid black;
+      text-align: center;
+      padding: 80px;
+  
+      .order_title{
+        font-weight: 700;
+        font-size: 20px;
+      }
+  
+      .order_guide{
+        font-size: 13px;
+  
+        span {
+          font-weight: 700;
+          text-decoration: underline;
+        }
+      }
+  
+      .order_info_number {
+        font-size: 13px;
+        margin-bottom: 5px;
+  
+        .number {
+          font-weight: 700;
+          margin-left: 5px;
+        }
+      }
+  
+      .order_info_date {
+        font-size: 13px;
+        margin-bottom: 5px;
+  
+  
+        .date {
+          margin-left: 5px;
+        }
+      }
+    }
+
+    .btn_container {
+      position: relative;
+      // background-color: beige;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: right;
+      gap: 10px;
+
+      .btn_continue {
+        all: unset;
+        padding: 10px 15px;
+        font-size: 15px;
+        border: 0.5px solid black;
+        background-color: white;
+        transition: 0.3s ease;
+        cursor: pointer;
+
+        &:hover {
+          background-color: black;
+          color: white;
+        }
+
+        &:active {
+          background-color: rgb(195, 195, 195);
+        }
+      }
+  
+      .btn_orderList{
+        all: unset;
+        padding: 10px 15px;
+        font-size: 15px;
+        border: 0.5px solid black;
+        background-color: black;
+        color: white;
+        transition: 0.3s ease;
+        cursor: pointer;
+
+        &:hover {
+          background-color: white;
+          color: rgb(0, 0, 0);
+        }
+
+        &:active {
+          background-color: rgb(195, 195, 195);
+        }
+      }
+    }
+  
+   .notice_wrap{
+    margin-top: 50px;
+    margin-bottom: 80px;
+
+    .notice_use{
+      margin-bottom: 30px;
+
+      .use_title{
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+      .use_desc{
+        font-size: 12px;
+      }
+    }
+
+    .notice_recip{
+      margin-bottom: 30px;
+
+      .recip_title{
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+      .recip_desc{
+        font-size: 12px;
+      }
+    }
+
+    .notice_recip_detail{
+      margin-bottom: 30px;
+
+      .recip_detail_title{
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+      .recip_detail_desc{
+        font-size: 12px;
+      }
+    }
+
+    .notice_cash{
+      margin-bottom: 30px;
+
+      .cash_title{
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+      .cash_desc{
+        font-size: 12px;
+      }
+    }
+   }
+  } 
+}
