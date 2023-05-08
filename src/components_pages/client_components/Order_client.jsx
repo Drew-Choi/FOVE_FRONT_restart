@@ -8,7 +8,6 @@ import Select_Custom from '../../components_elements/Select_Custom';
 import TextArea_Custom from '../../components_elements/TextArea_Custom';
 import DaumPostcode from 'react-daum-postcode';
 import Error404 from './Error404';
-import axios from 'axios';
 
 const Pd_order_IMG = styled.div`
   ${(props) =>
@@ -186,49 +185,6 @@ export default function Order_client() {
     }
   }, [toggleModal]);
 
-  //배송지 주소 가져오기
-  const [addData, setAddData] = useState([]);
-  //넘버 가르기
-  const [splitPhoneNum, setSplitPhoneNum] = useState([]);
-
-  //기본베송지 체크 값 체크
-  const [selectedOption, setSelectedOption] = useState('defaultAddress');
-  const handleOptionChange = (e) => {
-    setSelectedOption(e.target.value);
-  };
-
-  const defaultAddGet = async () => {
-    try {
-      const resAddressAll = await axios.post(
-        'http://localhost:4000/mypage/getAddress',
-        {
-          userId: userId, // 리덕스에 있는 아이디 값
-        },
-      );
-
-      if (resAddressAll.status === 200) {
-        let copy = [...resAddressAll.data.myAddresses];
-        setAddData((cur) => copy);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  useEffect(() => {
-    defaultAddGet();
-  }, []);
-
-  useEffect(() => {
-    if (addData.length > 0) {
-      setSplitPhoneNum([...addData[0].recipientPhone.split('-')]);
-    }
-  }, [addData]);
-
-  const addressRest = () => {
-    return null;
-  };
-
   return (
     <div className={orderClient.order_main}>
       <div
@@ -358,22 +314,12 @@ export default function Order_client() {
             <div className={orderClient.ship_info_input_container}>
               <div className={orderClient.adressCheck}>
                 <label>
-                  <input
-                    type="radio"
-                    value="defaultAddress"
-                    checked={selectedOption === 'defaultAddress'}
-                    onChange={handleOptionChange}
-                  />
+                  <input type="radio" value="defaultAddress" />
                   &ensp;회원 정보와 동일 &ensp;&ensp; &ensp;
                 </label>
 
                 <label>
-                  <input
-                    type="radio"
-                    value="newAddress"
-                    checked={selectedOption === 'newAddress'}
-                    onChange={handleOptionChange}
-                  />
+                  <input type="radio" value="newAddress" />
                   &ensp;새로운 배송지
                 </label>
               </div>
@@ -388,11 +334,6 @@ export default function Order_client() {
                 className={orderClient.b}
                 type="text"
                 placeholder="받으시는 분"
-                value={
-                  selectedOption === 'defaultAddress' && addData.length > 0
-                    ? addData[0].recipient
-                    : ''
-                }
               />
               <div>
                 <div>
@@ -401,12 +342,8 @@ export default function Order_client() {
                       ref={recipientZipcode}
                       className={`${orderClient.address} ${orderClient.b}`}
                       type="text"
-                      value={
-                        selectedOption === 'defaultAddress' &&
-                        addData.length > 0
-                          ? addData[0].zipCode
-                          : addressData.zonecode
-                      }
+                      value={addressData.zonecode}
+                      onChange={(e) => handleChange(e)}
                       placeholder="우편번호*"
                       disabled
                     />
@@ -432,12 +369,8 @@ export default function Order_client() {
                       ref={recipientAddress}
                       className={orderClient.b}
                       type="text"
-                      value={
-                        selectedOption === 'defaultAddress' &&
-                        addData.length > 0
-                          ? addData[0].address
-                          : addressData.address
-                      }
+                      value={addressData.address}
+                      onChange={(e) => handleChange(e)}
                       placeholder="주소*"
                       disabled
                     />
@@ -448,14 +381,9 @@ export default function Order_client() {
                       ref={recipientAddressDetail}
                       className={orderClient.b}
                       type="text"
-                      value={
-                        selectedOption === 'defaultAddress' &&
-                        addData.length > 0
-                          ? addData[0].addressDetail
-                          : addressData.buildingName
-                      }
+                      value={addressData.buildingName}
+                      onChange={(e) => handleChange(e)}
                       placeholder="나머지주소 (선택입력)"
-                      onChange={handleChange}
                     />
                   </div>
                 </div>
@@ -465,11 +393,6 @@ export default function Order_client() {
                     inputRef={phoneCode}
                     classNameSelect={`${orderClient.select_group2} ${orderClient.phonNum}`}
                     selectList={selectList_celPhone}
-                    selectedEvent={
-                      selectedOption === 'defaultAddress' && addData.length > 0
-                        ? splitPhoneNum[0]
-                        : ''
-                    }
                   />
                   <p className={orderClient.numMiners}>-</p>
                   <input
@@ -479,11 +402,6 @@ export default function Order_client() {
                     placeholder="휴대폰"
                     maxLength="4"
                     pattern="[0-9]{4}"
-                    value={
-                      selectedOption === 'defaultAddress' && addData.length > 0
-                        ? splitPhoneNum[1]
-                        : ''
-                    }
                   />
                   <p className={orderClient.numMiners}>-</p>
                   <input
@@ -492,11 +410,6 @@ export default function Order_client() {
                     type="tel"
                     maxLength="4"
                     pattern="[0-9]{4}"
-                    value={
-                      selectedOption === 'defaultAddress' && addData.length > 0
-                        ? splitPhoneNum[2]
-                        : ''
-                    }
                   />
                 </div>
 

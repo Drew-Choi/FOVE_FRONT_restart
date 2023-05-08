@@ -1,6 +1,5 @@
 export default function Select_Custom({
   children,
-  value,
   onChangeEvent,
   selectList,
   inputRef,
@@ -8,7 +7,6 @@ export default function Select_Custom({
   classNameOption,
   classNameDiv,
   name,
-  selectedEvent,
 }) {
   return (
     <div className={classNameDiv}>
@@ -16,17 +14,11 @@ export default function Select_Custom({
       <select
         className={classNameSelect}
         ref={inputRef}
-        value={value}
         onChange={onChangeEvent}
         name={name}
       >
         {selectList.map((el) => (
-          <option
-            className={classNameOption}
-            value={el}
-            key={el}
-            selected={el === selectedEvent}
-          >
+          <option className={classNameOption} value={el} key={el}>
             {el}
           </option>
         ))}
