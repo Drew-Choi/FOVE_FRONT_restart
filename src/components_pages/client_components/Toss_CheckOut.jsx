@@ -1,45 +1,12 @@
 /* eslint-disable no-undef */
-
 //유저 정보 받아서 데이터 바인딩 해야함
-
 import { useEffect, useRef, useState } from 'react';
 import {
   PaymentWidgetInstance,
   loadPaymentWidget,
 } from '@tosspayments/payment-widget-sdk';
 import { nanoid } from 'nanoid';
-import '../../App.css';
-import styled from 'styled-components';
-import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
-
-const PaymentBOX = styled.div`
-  position: relative;
-  margin: 0px auto;
-  top: 150px;
-  /* background-color: aqua; */
-  width: 50vw;
-  height: 48vh;
-  border: 2px solid black;
-  padding: 30px;
-
-  button {
-    background-color: black;
-    margin-left: 0px;
-    width: 710px;
-    padding: 10px 40px;
-    border: 1px solid black;
-    border-radius: 50px;
-    font-size: 14px;
-    color: white;
-    transition: all 0.3s;
-
-    &:hover {
-      background-color: white;
-      color: black;
-    }
-  }
-`;
+import tossCheckOut from '../../styles/toss_checkOut.module.scss';
 
 const selector = '#payment-widget';
 const clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq';
@@ -48,8 +15,6 @@ const customerKey = 'dajksdajdklajdkal';
 export function Toss_CheckOut() {
   const paymentWidgetRef = useRef(null);
   const paymentMethodsWidgetRef = useRef(null);
-  const location = useLocation();
-  const currentURL = location.pathname;
   const [price, setPrice] = useState(0);
 
   //로컬에서 주문내역 뺴서 가공
@@ -90,9 +55,9 @@ export function Toss_CheckOut() {
   }, [price]);
 
   return (
-    <>
-      <p>결제하기</p>
-      <PaymentBOX>
+    <div className={tossCheckOut.checkout_container}>
+      <p className={tossCheckOut.checkout_title}>Checkout</p>
+      <div className={tossCheckOut.paymentBOX}>
         <div id="payment-widget" />
 
         <button
@@ -119,7 +84,7 @@ export function Toss_CheckOut() {
         >
           결제진행
         </button>
-      </PaymentBOX>
-    </>
+      </div>
+    </div>
   );
 }

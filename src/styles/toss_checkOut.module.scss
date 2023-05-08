@@ -1,0 +1,61 @@
+.checkout_container {
+  position: relative;
+  // background-color: beige;
+  width: 100vw;
+  min-height: 700px;
+  text-align: center;
+
+  .checkout_title{
+    padding: 30px;
+    font-size: 18px;
+    margin: 0px;
+  }
+
+  .paymentBOX{
+    position: relative;
+    margin: 0px auto;
+    background-color: white;
+    width: 50vw;
+    border: 1px solid black;
+    padding: 30px;
+    margin-bottom: 50px;
+    text-align: center;
+    border-radius: 15px;
+    
+    @media screen and (max-width: 912px) {
+      width: 90vw;
+    }
+
+     @media screen and (max-width: 600px) {
+      padding: 20px;
+    }
+
+      @media screen and (max-width: 280px) {
+      padding: 10px;
+    }
+
+    button {
+      position: relative;
+      padding: 10px 0px;
+      background-color: black;
+      width: 40vw;
+      border: 1px solid black;
+      border-radius: 50px;
+      font-size: 15px;
+      color: white;
+      transition: all 0.3s;
+
+      &:hover {
+        background-color: white;
+        color: black;
+    }
+     @media screen and (max-width: 912px) {
+      width: 80vw;
+    }
+
+     @media screen and (max-width: 600px) {
+      width: 70vw;
+    }
+  }
+ }
+}
