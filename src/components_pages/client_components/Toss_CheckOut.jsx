@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 
 const selector = '#payment-widget';
 const clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq';
-const customerKey = 'dajksdajdklajdkal';
+const customerKey = 'YbX2HuSlsC9uVJW6NMRMj';
 
 export function Toss_CheckOut() {
   const paymentWidgetRef = useRef(null);
