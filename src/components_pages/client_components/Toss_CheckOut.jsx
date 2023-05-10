@@ -10,7 +10,8 @@ import tossCheckOut from '../../styles/toss_checkOut.module.scss';
 import { useSelector } from 'react-redux';
 
 const selector = '#payment-widget';
-const clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq';
+const clientKey = 'test_ck_OAQ92ymxN34dB1xJQOA3ajRKXvdk';
+const secretKey = 'test_sk_O6BYq7GWPVvewyZoJeG3NE5vbo1d';
 const customerKey = 'dajksdajdklajdkal';
 
 export function Toss_CheckOut() {
@@ -67,17 +68,17 @@ export function Toss_CheckOut() {
             const paymentWidget = paymentWidgetRef.current;
 
             try {
-              const kim = await paymentWidget?.requestPayment({
+              await paymentWidget?.requestPayment({
                 orderId: nanoid(),
-                orderName: `${userInfo.userID}`,
-                customerName: `${
+                orderName: `${
                   importLocalProducts.length > 0
                     ? '상품명: ' + productName + '외 다수'
                     : '상품명: ' + productName
                 }`,
+                customerName: `${userInfo.userID}`,
                 customerEmail: `${userInfo.userID}`,
                 successUrl: `${window.location.origin}/store/order/checkout/approval_order`,
-                failUrl: `${window.location.origin}/fail`,
+                failUrl: `${window.location.origin}/store/order/checkout/fail`,
               });
             } catch (error) {
               console.error(error);

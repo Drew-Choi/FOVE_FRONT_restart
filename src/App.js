@@ -144,7 +144,7 @@ function App() {
           <Route path="/privacy" element={<Privacy_client />} />
           <Route path="/guide" element={<Guide_client />} />
 
-          {/* <Route path="/tosspayment/fail" element={<FailPage />} /> */}
+          {/* <Route path="/store/order/checkout/fail" element={<FailPage />} /> */}
 
           {/* 회원 가입 */}
           <Route path="/register" element={<Register_client />} />
