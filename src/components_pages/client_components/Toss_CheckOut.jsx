@@ -10,8 +10,8 @@ import tossCheckOut from '../../styles/toss_checkOut.module.scss';
 import { useSelector } from 'react-redux';
 
 const selector = '#payment-widget';
-const clientKey = 'test_ck_OAQ92ymxN34dB1xJQOA3ajRKXvdk';
-const customerKey = 'dajksdajdklajdkal';
+const clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq'; // 테스트용 클라이언트 키
+const customerKey = 'QcVz7XWxFLQ6r4l3qVgGs';
 
 export function Toss_CheckOut() {
   const paymentWidgetRef = useRef(null);
