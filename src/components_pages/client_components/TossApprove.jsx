@@ -10,7 +10,7 @@ export default function TossApprove() {
   let amountparam = searchParams.get('amount');
   let orderIdparam = searchParams.get('orderId');
   let paymentKeyparam = searchParams.get('paymentKey');
-  const secretKey = 'test_sk_O6BYq7GWPVvewyZoJeG3NE5vbo1d';
+  const secretKey = 'test_sk_zXLkKEypNArWmo50nX3lmeaxYG5R';
 
   const paymentApprov = async () => {
     try {

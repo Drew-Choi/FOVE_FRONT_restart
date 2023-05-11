@@ -664,28 +664,11 @@
   bottom: 100px;
 }
 
-.orderModalOff {
-  display: none;
-  background-color: white;
-  position: fixed;
-  text-align: center;
-  line-height: 150px;
-  box-shadow: 1px 1px 3px 0.5px rgba(0, 0, 0, 0.3);
-  top: 300px;
-  width: 30vw;
-  height: 200px;
-  border: 1px solid black;
-  z-index: 5;
-  right: 50%;
-  transform: translateX(50%);
-}
-
 .orderModalOff.On {
   display: block;
   background-color: white;
   position: fixed;
   text-align: center;
-  line-height: 150px;
   box-shadow: 1px 1px 3px 0.5px rgba(0, 0, 0, 0.3);
   top: 300px;
   width: 30vw;
@@ -694,4 +677,36 @@
   z-index: 5;
   right: 50%;
   transform: translateX(50%);
+  padding: 20px;
+
+  @media screen and (max-width: 1390px) {
+    width: 45vw;
+  }
+
+  @media screen and (max-width: 927px) {
+    width: 70vw;
+  }
+
+  p {
+    position: relative;
+    top: 50px;
+    margin: 0px;
+
+    @media screen and (max-width: 280px) {
+      top: 30px
+    }
+  }
+
+  .model_checkout{
+    position: relative;
+    bottom: -80px;
+
+    @media screen and (max-width: 280px) {
+      bottom: -50px;
+    }
+  }
+}
+
+.orderModalOff {
+  display: none;
 }

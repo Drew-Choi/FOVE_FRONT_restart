@@ -10,8 +10,18 @@ import tossCheckOut from '../../styles/toss_checkOut.module.scss';
 import { useSelector } from 'react-redux';
 
 const selector = '#payment-widget';
-const clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq'; // 테스트용 클라이언트 키
-const customerKey = 'QcVz7XWxFLQ6r4l3qVgGs';
+// const clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq'; // 테스트용 클라이언트 키
+// const customerKey = 'QcVz7XWxFLQ6r4l3qVgGs';
+
+const getKey = async (key) => {
+  try {
+    const res = await axios.get('dott', { params: { key } });
+    return res.data;
+  } catch (err) {
+    console.error(err);
+    return nell;
+  }
+};
 
 export function Toss_CheckOut() {
   const paymentWidgetRef = useRef(null);
@@ -28,7 +38,12 @@ export function Toss_CheckOut() {
   const productName = importLocalProducts[0].productName;
 
   const initPayment = async () => {
-    const paymentWidget = await loadPaymentWidget(clientKey, customerKey);
+    const client = await getKey('CLIENT_KEY');
+    const customer = await getKey('CUSTOMER_KEY');
+    console.log(client);
+    console.log(customer);
+
+    const paymentWidget = await loadPaymentWidget(client, customer);
 
     const paymentMethodsWidget = paymentWidget.renderPaymentMethods(
       selector,
