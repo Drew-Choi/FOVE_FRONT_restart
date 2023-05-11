@@ -10,10 +10,29 @@ export default function TossApprove() {
   let amountparam = searchParams.get('amount');
   let orderIdparam = searchParams.get('orderId');
   let paymentKeyparam = searchParams.get('paymentKey');
-  const secretKey = 'test_sk_zXLkKEypNArWmo50nX3lmeaxYG5R';
+  // eslint-disable-next-line no-undef
+  const app = process.env.REACT_APP_KEY_API;
+
+  const getKey = async (key) => {
+    try {
+      const res = await axios.get(`http://localhost:4000/${app}`, {
+        params: { key },
+      });
+      return res.data.key;
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  };
 
   const paymentApprov = async () => {
     try {
+      const sKey = await getKey('SECRET_KEY');
+      const encoder = await new TextEncoder();
+      const utf8Array = await encoder.encode(sKey + ':');
+      const encode = await btoa(String.fromCharCode.apply(null, utf8Array));
+      console.log(encode);
+
       const response = await axios.post(
         'https://api.tosspayments.com/v1/payments/confirm',
         {
@@ -23,8 +42,7 @@ export default function TossApprove() {
         },
         {
           headers: {
-            Authorization:
-              'Basic dGVzdF9za196WExrS0V5cE5BcldtbzUwblgzbG1lYXhZRzVSOg==',
+            Authorization: `Basic ${encode}`,
             'Content-Type': 'application/json',
           },
         },
