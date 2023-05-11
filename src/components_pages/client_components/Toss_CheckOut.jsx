@@ -8,22 +8,24 @@ import {
 import { nanoid } from 'nanoid';
 import tossCheckOut from '../../styles/toss_checkOut.module.scss';
 import { useSelector } from 'react-redux';
-
-const selector = '#payment-widget';
-// const clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq'; // 테스트용 클라이언트 키
-// const customerKey = 'QcVz7XWxFLQ6r4l3qVgGs';
-
-const getKey = async (key) => {
-  try {
-    const res = await axios.get('dott', { params: { key } });
-    return res.data;
-  } catch (err) {
-    console.error(err);
-    return nell;
-  }
-};
+import axios from 'axios';
 
 export function Toss_CheckOut() {
+  const selector = '#payment-widget';
+  const app = process.env.REACT_APP_KEY_API;
+
+  const getKey = async (key) => {
+    try {
+      const res = await axios.get(`http://localhost:4000/${app}`, {
+        params: { key },
+      });
+      return res.data.key;
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  };
+
   const paymentWidgetRef = useRef(null);
   const paymentMethodsWidgetRef = useRef(null);
   const [price, setPrice] = useState(0);
@@ -40,8 +42,6 @@ export function Toss_CheckOut() {
   const initPayment = async () => {
     const client = await getKey('CLIENT_KEY');
     const customer = await getKey('CUSTOMER_KEY');
-    console.log(client);
-    console.log(customer);
 
     const paymentWidget = await loadPaymentWidget(client, customer);
 
