@@ -10,7 +10,7 @@ export default function Kakao_final() {
   const [info, setInfo] = useState({});
 
   const getUserInfo = async () => {
-    const access_token = localStorage.getItem('access_token');
+    const access_token = sessionStorage.getItem('access_token');
     if (!access_token) {
       //로그인 되어 있지 않다면, 다시 로그인 페이지로
       navigate('/login');

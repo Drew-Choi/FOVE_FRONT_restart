@@ -35,49 +35,16 @@ import Kakao_redirect from './components_pages/client_components/Kakao_redirect'
 import Kakao_final from './components_pages/client_components/Kakao_final';
 import Kakao_Logout from './components_pages/client_components/Kakao_Logout';
 
-// 팔만대장경 컴포넌트 여기까지 하겠습니다.
-
 function App() {
   const isLogin = useSelector((state) => state.user.isLogin);
-  // const isAdmin = useSelector((state) => state.user.isAdmin);
-  // const reduxName = useSelector((state) => state.user.userName);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // App 시작 시, 브라우저 로컬 스토리지에 저장 되어 있는 토큰이 있는지를 확인 후,
   // 해당 토큰을 백엔드에 검증. 검증이 되면 바로 로그인 처리 / 안 되면 로그인 페이지로 이동
   const tokenLoginCheck = async () => {
-    if (!localStorage.getItem('access_token')) {
-      try {
-        // 검증을 위해, 로컬 스토리지의 토큰 axios로 보내기
-        const resToken = await axios.post('http://localhost:4000/login/token', {
-          token: window.localStorage.getItem('token'),
-        });
-
-        // 토큰 검증 결과를 받아서 처리, 필요 데이터는 data 에 담아서 전송되므로 필요한 정보 세팅
-        console.log(resToken.data.message);
-
-        // 토큰 검증이 성공 적으로 검증이 되었으므로 리덕스에 로그인 처리
-        // 해당 함수로 인하여 토큰이 있는 동안은, 로그인을 하지 않아도 바로 로그인이 처리
-        dispatch(
-          keepLogin({
-            id: resToken.data.id,
-            nameEncoded: resToken.data.nameEncoded,
-            points: resToken.data.points,
-            isAdmin: resToken.data.isAdmin,
-          }),
-        );
-      } catch (err) {
-        console.log('토큰 검증 실패, 알 수 없는 문제 발생', err);
-        return;
-      }
-    } else {
-      const access_token = localStorage.getItem('access_token');
-      if (!access_token) {
-        //로그인 되어 있지 않다면, 다시 로그인 페이지로
-        navigate('/login');
-        return;
-      }
+    const access_token = sessionStorage.getItem('access_token');
+    if (access_token) {
       try {
         // 액세스 토큰을 사용해서 사용자 정보를 가져오는 API 호출
         const response = await axios.get('https://kapi.kakao.com/v2/user/me', {
@@ -87,7 +54,6 @@ function App() {
           },
         });
         // API 호출 결과에서 사용자 정보 추출
-        console.log(response.data);
         const { kakao_account, properties } = response.data;
         dispatch(
           keepLogin({

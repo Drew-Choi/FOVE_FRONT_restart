@@ -51,11 +51,8 @@ export default function Kakao_redirect() {
         //엑세스 토큰 추출
         const { access_token } = await response.data;
         //추출한 엑세스 토큰을 localStorage에 저장
-        localStorage.setItem('access_token', access_token);
+        sessionStorage.setItem('access_token', access_token);
         navigate('/login/kakao/callback/success');
-        console.log(response.data);
-      } else {
-        console.log(response.data);
       }
     } catch (err) {
       console.error(err);
