@@ -1,0 +1,51 @@
+.login_client{
+  position: relative;
+  width: 100vw;
+  height: 700px;
+  // background-color: beige;
+
+  .login_client_container {
+    position: relative;
+    margin: auto;
+    top: 45%;
+    transform: translateY(-50%);
+    width: 100vw;
+    height: 300px;
+    padding: 30px;
+    text-align: center;
+    // background-color: aqua;
+
+    @media screen and (max-width: 460px) {
+    padding: 10px;
+   }
+
+    .login_title{
+    font-size: 18px;
+    }
+
+    .login_desc{
+    font-size: 13px;
+    }
+
+    .kakaoBTN{
+      position: relative;
+      width: 370px;
+      padding: 20px;
+      cursor: pointer;
+      &:hover {
+       opacity: 0.7;
+     }
+      &:active {
+        opacity: 0.2;
+     }
+
+      @media screen and (max-width: 460px) {
+        width: 300px;
+      }
+
+      @media screen and (max-width: 460px) {
+        width: 250px;
+      }
+    }
+  }
+}
