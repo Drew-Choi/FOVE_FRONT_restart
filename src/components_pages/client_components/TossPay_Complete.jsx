@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import tossPayComplete from '../../styles/tossPay_complete.module.scss';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 export default function TossPay_Complete() {
   const navigate = useNavigate();
   const [orderID, setOrderID] = useState('');
   const [orderTime, setOrderTime] = useState('');
+  const userInfo = useSelector((state) => state.user);
 
   useEffect(() => {
     finalOrderPost();
@@ -27,7 +29,7 @@ export default function TossPay_Complete() {
         'http://localhost:4000/store/order',
         {
           //주문자 아이디
-          name: payments.orderName,
+          name: userInfo.userID,
           //상품정보
           products: products,
           //받는 이 정보
@@ -42,6 +44,7 @@ export default function TossPay_Complete() {
           payments: {
             status: payments.status,
             orderId: payments.orderId,
+            orderName: payments.orderName,
             approvedAt: payments.approvedAt,
             discount: payments.discount,
             cancels: payments.cancels,
@@ -55,7 +58,7 @@ export default function TossPay_Complete() {
         console.log('성공');
         localStorage.removeItem('products');
         localStorage.removeItem('recipien');
-        localStorage.removeItem('payments');
+        // localStorage.removeItem('payments');
         console.log(finalOrderData.data);
       } else {
         console.log('실패');
