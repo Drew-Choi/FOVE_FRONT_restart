@@ -9,12 +9,26 @@ export default function Kakao_redirect() {
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
 
-  const REST_API_KEY = '1702fb0670a754fbcf00088a79157ad0';
-  const REDIRECT_URI = 'http://localhost:3000/login/kakao/callback';
+  // eslint-disable-next-line no-undef
+  const app = process.env.REACT_APP_KEY_API;
+
+  const getKey = async (key) => {
+    try {
+      const res = await axios.get(`http://localhost:4000/${app}`, {
+        params: { key },
+      });
+      return res.data.key;
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  };
 
   // 인가 코드(authorization code)를 받아온 후 실행되는 함수
   const handleCode = async () => {
     try {
+      const REST_API_KEY = await getKey('REST_API_KEY');
+      const REDIRECT_URI = 'http://localhost:3000/login/kakao/callback';
       //현재 URL에서 인가 코드 추출
       const code = await searchParams.get('code');
 

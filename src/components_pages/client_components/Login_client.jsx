@@ -24,14 +24,27 @@ const KakaoBTN = styled.img`
 export default function Login_client() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  // eslint-disable-next-line no-undef
+  const app = process.env.REACT_APP_KEY_API;
 
-  const REST_API_KEY = '1702fb0670a754fbcf00088a79157ad0';
-  const REDIRECT_URI = 'http://localhost:3000/login/kakao/callback';
-  const SCOPE =
-    'profile_nickname, profile_image, account_email, gender, age_range, birthday, talk_message, openid';
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${SCOPE}`;
+  const getKey = async (key) => {
+    try {
+      const res = await axios.get(`http://localhost:4000/${app}`, {
+        params: { key },
+      });
+      return res.data.key;
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  };
 
-  const kakoHandleClick = () => {
+  const kakoHandleClick = async () => {
+    const REST_API_KEY = await getKey('REST_API_KEY');
+    const SCOPE = await getKey('SCOPE');
+    const REDIRECT_URI = 'http://localhost:3000/login/kakao/callback';
+    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${SCOPE}`;
+
     window.location.href = KAKAO_AUTH_URL;
   };
 
