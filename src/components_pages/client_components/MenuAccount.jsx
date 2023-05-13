@@ -72,22 +72,28 @@ export default function MenuAccount({ menuAccountRef }) {
   const userName = useSelector((state) => state.user.userName);
   const userPoints = useSelector((state) => state.user.userPoints);
 
-  const YOUR_REST_API_KEY = '1702fb0670a754fbcf00088a79157ad0';
-  const YOUR_LOGOUT_REDIRECT_URI = 'http://localhost:3000/kakao/logout';
+  // eslint-disable-next-line no-undef
+  const app = process.env.REACT_APP_KEY_API;
+
+  const getKey = async (key) => {
+    try {
+      const res = await axios.get(`http://localhost:4000/${app}`, {
+        params: { key },
+      });
+      return res.data.key;
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  };
 
   // 로그아웃
   const logoutUser = async () => {
-    if (!localStorage.getItem('access_token')) {
-      alert('정상적으로 로그아웃 되었습니다!');
-      window.localStorage.clear(); // 로컬 스토리지의 로그인 토큰 삭제
-      dispatch(clickMenu()); // MenuAccount 닫기
-      dispatch(logout()); // 로그아웃 처리
-      dispatch(reset());
-      navigate(`/login`); // 로그인 페이지로 이동
-    } else {
-      dispatch(clickMenu()); // MenuAccount 닫기
-      window.location.href = `https://kauth.kakao.com/oauth/logout?client_id=${YOUR_REST_API_KEY}&logout_redirect_uri=${YOUR_LOGOUT_REDIRECT_URI}`;
-    }
+    const YOUR_REST_API_KEY = await getKey('REST_API_KEY');
+    const YOUR_LOGOUT_REDIRECT_URI = 'http://localhost:3000/kakao/logout';
+
+    dispatch(clickMenu()); // MenuAccount 닫기
+    window.location.href = `https://kauth.kakao.com/oauth/logout?client_id=${YOUR_REST_API_KEY}&logout_redirect_uri=${YOUR_LOGOUT_REDIRECT_URI}`;
   };
 
   return (
