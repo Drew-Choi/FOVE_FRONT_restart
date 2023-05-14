@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,10 +8,9 @@ import styled from 'styled-components';
 import loginCss from '../../styles/login_client.module.scss';
 
 export default function Login_client() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  // eslint-disable-next-line no-undef
   const app = process.env.REACT_APP_KEY_API;
+  const cb = process.env.REACT_APP_KEY_APICB;
+  const tk = process.env.REACT_APP_KEY_API_T;
 
   const getKey = async (key) => {
     try {
@@ -28,7 +28,7 @@ export default function Login_client() {
     try {
       const REST_API_KEY = await getKey('REST_API_KEY');
       const SCOPE = await getKey('SCOPE');
-      const REDIRECT_URI = 'http://localhost:4000/kakaocb';
+      const REDIRECT_URI = `http://localhost:4000/${cb}`;
 
       const res = await axios.get('https://kauth.kakao.com/oauth/authorize', {
         client_id: REST_API_KEY,
@@ -41,7 +41,8 @@ export default function Login_client() {
         data: { code },
       } = res;
       console.log(res);
-      await axios.post('http://localhost:4000/', { code });
+
+      await axios.post(`http://localhost:4000/${tk}`, { code });
     } catch (err) {
       console.error(err);
     }
