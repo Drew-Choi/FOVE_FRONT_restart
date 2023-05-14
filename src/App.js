@@ -31,8 +31,6 @@ import ProductList_admin from './components_pages/admin_components/ProductList_a
 import OrderList_client from './components_pages/client_components/OrderList_client';
 import Store_NewItems from './components_pages/client_components/Store_NewItems';
 import OrderList_admin from './components_pages/admin_components/OrderList_admin';
-import Kakao_redirect from './components_pages/client_components/Kakao_redirect';
-import Kakao_final from './components_pages/client_components/Kakao_final';
 import Kakao_Logout from './components_pages/client_components/Kakao_Logout';
 
 function App() {
@@ -120,11 +118,6 @@ function App() {
           />
           {/* 로그인 */}
           <Route path="/login" element={<Login_client />} />
-          <Route path="/login/kakao/callback" element={<Kakao_redirect />} />
-          <Route
-            path="/login/kakao/callback/success"
-            element={<Kakao_final />}
-          />
           <Route path="/kakao/logout" element={<Kakao_Logout />} />
 
           {/* 로그인 상태여야 이동 가능한 페이지들 */}

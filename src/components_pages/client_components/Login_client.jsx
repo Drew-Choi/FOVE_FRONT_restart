@@ -25,27 +25,11 @@ export default function Login_client() {
   };
 
   const kakoHandleClick = async () => {
-    try {
-      const REST_API_KEY = await getKey('REST_API_KEY');
-      const SCOPE = await getKey('SCOPE');
-      const REDIRECT_URI = `http://localhost:4000/${cb}`;
-
-      const res = await axios.get('https://kauth.kakao.com/oauth/authorize', {
-        client_id: REST_API_KEY,
-        redirect_uri: REDIRECT_URI,
-        response_type: 'code',
-        scope: SCOPE,
-      });
-
-      const {
-        data: { code },
-      } = res;
-      console.log(res);
-
-      await axios.post(`http://localhost:4000/${tk}`, { code });
-    } catch (err) {
-      console.error(err);
-    }
+    const REST_API_KEY = await getKey('REST_API_KEY');
+    const SCOPE = await getKey('SCOPE');
+    const REDIRECT_URI = `http://localhost:4000/${cb}`;
+    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${SCOPE}`;
+    window.location.href = KAKAO_AUTH_URL;
   };
 
   return (
