@@ -5,6 +5,7 @@ const initState = {
   userID: '',
   userName: '', // * 처리된 상태로 들어갈 예정
   userPoints: 0,
+  loginStart: false,
   isAdmin: false,
   isLogin: false, // 로그인 되어있는지 여부
   // 장바구니ID 넣어야 하나??
@@ -16,11 +17,10 @@ const KEEPLOGIN = 'user/KEEPLOGIN';
 const LOGOUT = 'user/LOGOUT';
 
 // 액션 생성 함수. 바깥에서 사용하므로 export.
-export function login(loginInfo) {
+export function login() {
   // 바깥에서 정보를 받아와야.
   return {
     type: LOGIN,
-    payload: loginInfo,
   };
 }
 
@@ -43,17 +43,20 @@ export default function user(state = initState, action) {
     case LOGIN:
       return {
         ...state,
-        userID: action.payload.id,
-        isLogin: true,
+        userID: '',
+        userName: '',
+        userPoints: 0,
+        isAdmin: false,
+        isLogin: false,
       };
     case KEEPLOGIN:
       return {
         ...state,
         userID: action.payload.id,
-        userName: action.payload.nameEncoded,
+        userName: action.payload.nickName,
         userPoints: action.payload.points,
         isAdmin: action.payload.isAdmin,
-        isLogin: true,
+        isLogin: action.payload.isLogin,
       };
     case LOGOUT:
       return {
