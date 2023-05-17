@@ -39,40 +39,50 @@ function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const getCookieValue = (cookieName) => {
+    const cookieString = document.cookie;
+    const cookies = cookieString.split(';');
+
+    for (let i = 0; i < cookies.length; i += 1) {
+      const cookie = cookies[i].trim();
+
+      if (cookie.startsWith(`${cookieName}=`)) {
+        const value = cookie.substring(cookieName.length + 1);
+        return decodeURIComponent(value);
+      }
+    }
+
+    return '';
+  };
+
   // App 시작 시, 브라우저 로컬 스토리지에 저장 되어 있는 토큰이 있는지를 확인 후,
   // 해당 토큰을 백엔드에 검증. 검증이 되면 바로 로그인 처리 / 안 되면 로그인 페이지로 이동
   const tokenLoginCheck = async () => {
-    const cookie = document.cookie;
-    console.log(cookie);
-    const headers = {
-      Cookie: cookie,
-    };
-    if (cookie) {
-      try {
-        const userInfo = await axios.get('http://localhost:4000/islogin', {
-          headers,
-        });
-
-        console.log(userInfo);
-
-        dispatch(
-          keepLogin({
-            nameEncoded: userInfo.name,
-            points: userInfo.points,
-            isAdmin: false,
-          }),
-        );
-      } catch (err) {
-        console.error(err);
+    try {
+      const userInfo = await axios.get('http://localhost:4000/islogin', {
+        withCredentials: true,
+      });
+      if (userInfo.status === 200) {
+        // dispatch(
+        //   keepLogin({
+        //     nameEncoded: userInfo.name,
+        //     points: userInfo.points,
+        //     isAdmin: false,
+        //   }),
+        // );
+        console.log('성공');
+      } else {
+        console.log('인증실패');
       }
-    } else {
-      console.log('검증실패');
+    } catch (err) {
+      console.error(err);
     }
   };
+
   // 리액트 앱이 시작 되면 바로 토큰 검증 로직 실행 -> 토큰 로그인 수행
   useEffect(() => {
     tokenLoginCheck();
-  }, []);
+  }, [isLogin]);
 
   const isAdmin = useSelector((state) => state.user.isAdmin);
 
