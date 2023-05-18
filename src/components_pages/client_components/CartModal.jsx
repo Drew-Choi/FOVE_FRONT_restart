@@ -254,8 +254,12 @@ export default function CartModal({ className, cartModalMenu }) {
   //카트 상품 수량 빼기
   const minersCartItem = async (identity_id) => {
     try {
+      const tokenValue = await getToken();
       const downData = await axios.post(
-        `http://localhost:4000/cart/qtyminus/${userID}/${identity_id}`,
+        `http://localhost:4000/cart/qtyminus/${identity_id}`,
+        {
+          token: tokenValue,
+        },
       );
       if (downData.status === 200) {
         if (downData.data && downData.data.userCart) {
@@ -277,8 +281,12 @@ export default function CartModal({ className, cartModalMenu }) {
   //카트 상품 수량 추가
   const plusCartItem = async (identity_id) => {
     try {
+      const tokenValue = await getToken();
       const upData = await axios.post(
-        `http://localhost:4000/cart/qtyplus/${userID}/${identity_id}`,
+        `http://localhost:4000/cart/qtyplus/${identity_id}`,
+        {
+          token: tokenValue,
+        },
       );
       if (upData.status === 200) {
         if (upData.data && upData.data.userCart) {
@@ -328,7 +336,6 @@ export default function CartModal({ className, cartModalMenu }) {
   const allRemove = async () => {
     try {
       const tokenValue = await getToken();
-      console.log(tokenValue);
       const allRemoveCart = await axios.post(
         `http://localhost:4000/cart/clean`,
         {
