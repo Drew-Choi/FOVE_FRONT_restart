@@ -9,6 +9,8 @@ import ModalContainer_client from './ModalContainer_client';
 import ModalContainer_client2 from './ModalContainer_client2';
 import detailOrderMenu from '../../styles/detail_orderMenu.module.scss';
 import { MdAddShoppingCart } from 'react-icons/md';
+import { openDB } from 'idb';
+import getToken from '../../store/modules/getToken';
 
 export default function Detail_OrderMenu_client({
   productName,
@@ -117,19 +119,17 @@ export default function Detail_OrderMenu_client({
     }
 
     try {
-      const reqData = await axios.post(
-        `http://localhost:4000/cart/add/${userID}`,
-        {
-          productName: datas.productName,
-          img: datas.img[0],
-          price: datas.price,
-          size: sizeCheck,
-          color: datas.color,
-          quantity: count,
-          unitSumPrice: datas.price * count,
-          _id: datas._id,
-        },
-      );
+      const reqData = await axios.post(`http://localhost:4000/cart/add`, {
+        token: await getToken(),
+        productName: datas.productName,
+        img: datas.img[0],
+        price: datas.price,
+        size: sizeCheck,
+        color: datas.color,
+        quantity: count,
+        unitSumPrice: datas.price * count,
+        _id: datas._id,
+      });
       if (reqData.status === 200) {
         // updateCart();
         const datasArr = reqData.data.userCart.products;

@@ -7,6 +7,7 @@ import { offon } from '../../store/modules/cartmodal';
 import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
 import '../../styles/cartModal.scss';
 import { useNavigate, useParams } from 'react-router-dom';
+import getToken from '../../store/modules/getToken';
 
 const CartModal_Layout = styled.div`
   position: fixed;
@@ -299,10 +300,13 @@ export default function CartModal({ className, cartModalMenu }) {
   //개별 상품 삭제
   const deletePD = async (identity_id) => {
     try {
+      const tokenValue = await getToken();
       const deleteID = await axios.post(
-        `http://localhost:4000/cart/remove/${userID}/${identity_id}`,
+        `http://localhost:4000/cart/remove/${identity_id}`,
+        {
+          token: tokenValue,
+        },
       );
-      console.log(deleteID.data);
       if (deleteID.status === 200) {
         if (deleteID.data && deleteID.data.updatedCart) {
           // 'cartObj' 객체가 null이 아니고 'products' 속성이 존재하는 경우에만 실행
@@ -323,8 +327,13 @@ export default function CartModal({ className, cartModalMenu }) {
   //전체 삭제(카트 비움)
   const allRemove = async () => {
     try {
+      const tokenValue = await getToken();
+      console.log(tokenValue);
       const allRemoveCart = await axios.post(
-        `http://localhost:4000/cart/clean/${userID}`,
+        `http://localhost:4000/cart/clean`,
+        {
+          token: tokenValue,
+        },
       );
       if (allRemoveCart.status === 200) {
         if (allRemoveCart.data && allRemoveCart.data.userCart) {

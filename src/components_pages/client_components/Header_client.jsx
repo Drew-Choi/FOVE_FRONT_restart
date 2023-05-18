@@ -61,7 +61,6 @@ export default function Header_client() {
         const transaction = db.transaction(['store'], 'readonly');
         const store = transaction.objectStore('store');
         const value = await store.get('t');
-        console.log(value);
 
         const cartDataGet = await axios.post(
           `http://localhost:4000/cart/list`,
