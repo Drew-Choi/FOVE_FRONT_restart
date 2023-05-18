@@ -33,13 +33,12 @@ import Store_NewItems from './components_pages/client_components/Store_NewItems'
 import OrderList_admin from './components_pages/admin_components/OrderList_admin';
 import Kakao_Logout from './components_pages/client_components/Kakao_Logout';
 import Kakao_final from './components_pages/client_components/Kakao_final';
-import { deleteDB, openDB } from 'idb';
+import { openDB } from 'idb';
+import getToken from './store/modules/getToken';
 
 function App() {
   const isLogin = useSelector((state) => state.user.isLogin);
-  const loginStart = useSelector((state) => state.user.loginStart);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   // 트랜젝션 생성 함수 (빈 키를 하나 만들어서 로그인 과정에서 키에 업데이트 하도록 초기값 세팅)
   const createDatabase = async () => {
@@ -71,14 +70,11 @@ function App() {
 
     //이후 토큰이 있으면 로그인 유지 작업을, 토큰이 없다면 토큰인증실패로 비로그인상태 유지
     try {
-      const db = await openDB('db', 1);
-      const transaction = db.transaction(['store'], 'readonly');
-      const store = transaction.objectStore('store');
-      const value = await store.get('t');
+      const valueKey = await getToken();
 
-      if (value) {
+      if (valueKey) {
         const userInfo = await axios.post('http://localhost:4000/islogin', {
-          token: value,
+          token: valueKey,
         });
 
         dispatch(
@@ -93,7 +89,7 @@ function App() {
         return;
       }
     } catch (err) {
-      console.error(err.response.data.message);
+      console.error;
     }
   };
 
