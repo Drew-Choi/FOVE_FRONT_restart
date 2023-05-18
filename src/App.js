@@ -20,7 +20,6 @@ import Order_client from './components_pages/client_components/Order_client';
 import Store_Categorys from './components_pages/client_components/Store_Categorys';
 import Error404 from './components_pages/client_components/Error404';
 import TossPay_Complete from './components_pages/client_components/TossPay_Complete';
-import TossApprove from './components_pages/client_components/TossApprove';
 import { Toss_CheckOut } from './components_pages/client_components/Toss_CheckOut';
 import { useEffect } from 'react';
 import axios from 'axios';
@@ -122,12 +121,8 @@ function App() {
           <Route path="/store/order" element={<Order_client />} />
           {/* 2. 카트에 담긴 여러 개 상품 */}
           <Route path="/store/cartorder" element={<Order_client />} />
-          <Route path="/store/order/checkout" element={<Toss_CheckOut />} />
           {/* 토스페이먼츠 완성 */}
-          <Route
-            path="/store/order/checkout/approval_order"
-            element={<TossApprove />}
-          />
+          <Route path="/store/order/checkout" element={<Toss_CheckOut />} />
           {/* 토스페이먼츠 결제성공페이지 */}
           <Route path="store/order_success" element={<TossPay_Complete />} />
           {/* account쪽 */}

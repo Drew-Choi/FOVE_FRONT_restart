@@ -3,16 +3,30 @@ import tossPayComplete from '../../styles/tossPay_complete.module.scss';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import getToken from '../../store/modules/getToken';
 
 export default function TossPay_Complete() {
   const navigate = useNavigate();
   const [orderID, setOrderID] = useState('');
   const [orderTime, setOrderTime] = useState('');
-  const userInfo = useSelector((state) => state.user);
 
-  useEffect(() => {
-    finalOrderPost();
-  }, []);
+  const getData = async () => {
+    try {
+      const paymentData = await axios.get('http://localhost:4000/toss/data');
+
+      if (paymentData.status === 200) {
+        localStorage.setItem('payments', JSON.stringify(paymentData.data));
+        return;
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const clear = async () => {
+    const clearMessage = await axios.get('http://localhost:4000/toss/clear');
+    return console.log(clearMessage.data.message);
+  };
 
   const finalOrderPost = async () => {
     //로컬에서 주문내역 뺴서 가공
@@ -25,11 +39,12 @@ export default function TossPay_Complete() {
 
     //백으로 최종 주문내역서 보내기
     try {
+      const userID = await getToken();
       const finalOrderData = await axios.post(
         'http://localhost:4000/store/order',
         {
           //주문자 아이디
-          name: userInfo.userID,
+          name: userID,
           //상품정보
           products: products,
           //받는 이 정보
@@ -58,17 +73,31 @@ export default function TossPay_Complete() {
         console.log('성공');
         localStorage.removeItem('products');
         localStorage.removeItem('recipien');
-        // localStorage.removeItem('payments');
-        console.log(finalOrderData.data);
+        localStorage.removeItem('payments');
+        return;
       } else {
         console.log('실패');
-
-        console.log(finalOrderData.data);
+        return;
       }
     } catch (err) {
       console.error(err);
     }
   };
+
+  useEffect(() => {
+    const array = async () => {
+      try {
+        await getData();
+        await finalOrderPost();
+        await clear();
+        console.log('Both functions executed sequentially.');
+      } catch (error) {
+        console.error('Error occurred:', error);
+      }
+    };
+
+    array();
+  }, []);
 
   return (
     <div className={tossPayComplete.toss_complete_container}>

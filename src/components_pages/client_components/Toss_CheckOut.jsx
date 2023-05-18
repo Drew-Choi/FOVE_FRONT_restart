@@ -91,7 +91,7 @@ export function Toss_CheckOut() {
                 }`,
                 customerName: `${userInfo.userID}`,
                 customerEmail: `${userInfo.userID}`,
-                successUrl: `${window.location.origin}/store/order/checkout/approval_order`,
+                successUrl: `http://localhost:4000/toss/approve?orderPrice=${orderPrice}`,
                 failUrl: `${window.location.origin}/store/order/checkout/fail`,
               });
             } catch (error) {
