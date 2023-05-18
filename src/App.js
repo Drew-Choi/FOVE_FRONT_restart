@@ -41,18 +41,31 @@ function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // App 시작 시, 브라우저 로컬 스토리지에 저장 되어 있는 토큰이 있는지를 확인 후,
-  // 해당 토큰을 백엔드에 검증. 검증이 되면 바로 로그인 처리 / 안 되면 로그인 페이지로 이동
-  const tokenLoginCheck = async () => {
+  const openDatabase = async () => {
     try {
       const db = await openDB('db', 1);
       const transaction = db.transaction('store', 'readonly');
       const store = transaction.objectStore('store');
-      const value = await store.get('t');
+      if (store) {
+        const value = await store.get('t');
+        return value;
+      } else {
+        return console.log('트랜젝션조회실패');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-      if (value) {
+  // App 시작 시, 브라우저 로컬 스토리지에 저장 되어 있는 토큰이 있는지를 확인 후,
+  // 해당 토큰을 백엔드에 검증. 검증이 되면 바로 로그인 처리 / 안 되면 로그인 페이지로 이동
+  const tokenLoginCheck = async () => {
+    try {
+      const tokenValue = openDatabase();
+
+      if (tokenValue) {
         const userInfo = await axios.post('http://localhost:4000/islogin', {
-          token: value,
+          token: tokenValue,
         });
 
         dispatch(
@@ -65,7 +78,6 @@ function App() {
         );
         console.log('성공');
       } else {
-        await deleteDB('db');
         console.log('인증실패');
       }
     } catch (err) {

@@ -22,12 +22,11 @@ export default function Kakao_final() {
   // indexedDB 생성 함수
   const saveToIndexedDB = async (token) => {
     if (token) {
-      await deleteDB('db');
       await createDatabase();
       const db = await openDB('db', 1);
       const transaction = db.transaction(['store'], 'readwrite');
       const store = transaction.objectStore('store');
-      store.put(token, 't');
+      store.add(token, 't');
       await transaction.done;
     }
   };
