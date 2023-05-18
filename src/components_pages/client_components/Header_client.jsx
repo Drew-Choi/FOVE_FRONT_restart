@@ -10,6 +10,7 @@ import MenuAccount from './MenuAccount';
 import { clickMenu, menuClose } from '../../store/modules/menuAccount';
 import { searchinput } from '../../store/modules/search';
 import MediaQuery from 'react-responsive';
+import { openDB } from 'idb';
 
 export default function Header_client() {
   const [reactSearchModal, setReactSearchModal] = useState(false);
@@ -47,7 +48,7 @@ export default function Header_client() {
   const currentURL = location.pathname;
 
   const cartDataReq = async () => {
-    if (!userData.userID) {
+    if (!userData.isLogin) {
       let nullCart = {
         products: [],
         cartQuantity: 0,
@@ -55,14 +56,24 @@ export default function Header_client() {
       dispatch(importdb(nullCart));
     } else {
       try {
+        // indexedDB에서 토큰 받아오기
+        const db = await openDB('db', 1);
+        const transaction = db.transaction(['store'], 'readonly');
+        const store = transaction.objectStore('store');
+        const value = await store.get('t');
+        console.log(value);
+
         const cartDataGet = await axios.post(
-          `http://localhost:4000/cart/list/${userData.userID}`,
+          `http://localhost:4000/cart/list`,
+          {
+            token: value,
+          },
         );
         if (cartDataGet.status === 200) {
           dispatch(importdb(cartDataGet.data));
         } else {
           console.error(cartDataGet.status);
-          console.log(cartDataGet.data.message);
+          // console.log(cartDataGet.data.message);
         }
       } catch (err) {
         console.error(err);
@@ -72,7 +83,7 @@ export default function Header_client() {
 
   useEffect(() => {
     cartDataReq();
-  }, [userData.userID]);
+  }, [userData.userName]);
 
   // 장바구니 버튼(Shopping Bag) - 로그인 상태에서 사용 가능하게
   const clickShoppingBag = () => {

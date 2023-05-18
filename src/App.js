@@ -41,12 +41,38 @@ function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // App 시작 시, 브라우저 로컬 스토리지에 저장 되어 있는 토큰이 있는지를 확인 후,
-  // 해당 토큰을 백엔드에 검증. 검증이 되면 바로 로그인 처리 / 안 되면 로그인 페이지로 이동
+  // 트랜젝션 생성 함수 (빈 키를 하나 만들어서 로그인 과정에서 키에 업데이트 하도록 초기값 세팅)
+  const createDatabase = async () => {
+    const db = await openDB('db', 1, {
+      upgrade(db) {
+        if (!db.objectStoreNames.contains('store')) {
+          db.createObjectStore('store');
+        }
+      },
+    });
+    const transaction = db.transaction(['store'], 'readwrite');
+    const store = transaction.objectStore('store');
+    // 여기서 부터는 Key값의 존재 여부에 따라 초긱값 설정을 할지 아니면 그냥 리턴할지 정하는 곳
+    const key = await store.get('t');
+    if (!key) {
+      store.add('', 't');
+      await transaction.done;
+    } else {
+      return;
+    }
+  };
+
+  // indexedDB에 저장 되어 있는 토큰이 있는지를 확인 후,
+  // 해당 토큰을 백엔드에 검증. 검증이 되면 바로 로그인 처리 / 인증 안되면 아무 반응 안함
   const tokenLoginCheck = async () => {
+    // 홈페이지가 뜨면 indexedDB와 트랜젝션을 바로 생성해서 토큰 받을 준비를 한다.
+    // 키값도 빈값으로 추가해 놓음
+    createDatabase();
+
+    //이후 토큰이 있으면 로그인 유지 작업을, 토큰이 없다면 토큰인증실패로 비로그인상태 유지
     try {
       const db = await openDB('db', 1);
-      const transaction = db.transaction('store', 'readonly');
+      const transaction = db.transaction(['store'], 'readonly');
       const store = transaction.objectStore('store');
       const value = await store.get('t');
 
@@ -63,19 +89,18 @@ function App() {
             isLogin: userInfo.data.isLogin,
           }),
         );
-        console.log('성공');
       } else {
-        console.log('인증실패');
+        return;
       }
     } catch (err) {
-      console.error(err);
+      console.error(err.response.data.message);
     }
   };
 
   // 리액트 앱이 시작 되면 바로 토큰 검증 로직 실행 -> 토큰 로그인 수행
   useEffect(() => {
     tokenLoginCheck();
-  }, [isLogin]);
+  }, []);
 
   const isAdmin = useSelector((state) => state.user.isAdmin);
 

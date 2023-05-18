@@ -1,10 +1,6 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../../store/modules/user';
-import styled from 'styled-components';
+import React from 'react';
 import loginCss from '../../styles/login_client.module.scss';
 
 export default function Login_client() {

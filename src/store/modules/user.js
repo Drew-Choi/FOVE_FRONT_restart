@@ -2,10 +2,8 @@
 
 // 초기 상태 설정
 const initState = {
-  userID: '',
   userName: '', // * 처리된 상태로 들어갈 예정
   userPoints: 0,
-  loginStart: false,
   isAdmin: false,
   isLogin: false, // 로그인 되어있는지 여부
   // 장바구니ID 넣어야 하나??
@@ -43,7 +41,6 @@ export default function user(state = initState, action) {
     case LOGIN:
       return {
         ...state,
-        userID: '',
         userName: '',
         userPoints: 0,
         isAdmin: false,
@@ -52,7 +49,6 @@ export default function user(state = initState, action) {
     case KEEPLOGIN:
       return {
         ...state,
-        userID: action.payload.id,
         userName: action.payload.nickName,
         userPoints: action.payload.points,
         isAdmin: action.payload.isAdmin,
@@ -61,7 +57,6 @@ export default function user(state = initState, action) {
     case LOGOUT:
       return {
         ...state,
-        userID: '',
         userName: '',
         userPoints: 0,
         isAdmin: false,
