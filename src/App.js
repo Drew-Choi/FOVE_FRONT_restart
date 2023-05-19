@@ -75,13 +75,6 @@ function App() {
         const userInfo = await axios.post('http://localhost:4000/islogin', {
           token: valueKey,
         });
-        if (userInfo.status === 401) {
-          const db = await openDB('db', 1);
-          const transaction = db.transaction(['store'], 'readwrite');
-          const store = transaction.objectStore('store');
-          store.put('', 't');
-          return;
-        }
         if (userInfo.status === 200) {
           dispatch(
             keepLogin({
@@ -96,6 +89,10 @@ function App() {
         return;
       }
     } catch (err) {
+      const db = await openDB('db', 1);
+      const transaction = db.transaction(['store'], 'readwrite');
+      const store = transaction.objectStore('store');
+      store.put('', 't');
       console.error;
     }
   };
