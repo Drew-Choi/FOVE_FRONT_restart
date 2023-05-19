@@ -72,7 +72,6 @@
         .older_image{
           width: 100px;
           height: 100px;
-          background-image: url('../../public/product_images/beanie_pd/be10_blk.jpg');
           background-position: center;
           background-repeat: no-repeat;
           background-size: cover;
@@ -88,6 +87,13 @@
           margin: auto 0px;
           margin-left: 10px;
 
+          .pdname {
+            font-weight: 600;
+          }
+
+          .pdprice{
+            font-size: 12px;
+          }
           p{
             margin: 0px;
           }
@@ -95,19 +101,19 @@
       }
       .older_detail_info{
         font-size: 15px;
-        margin-left: 10px;
+        margin-left: 15px;
         margin-top: 10px;
       }
 
       .status{
-        margin-left: 10px;
+        margin-left: 15px;
         font-size: 15px;
         font-weight: 700;
       }
 
       .orderCancle{
         all: unset;
-        margin-left: 10px;
+        margin-left: 15px;
         cursor: pointer;
         padding: 5px 10px;
         border: 0.5px solid black;
