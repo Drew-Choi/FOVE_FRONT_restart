@@ -12,10 +12,16 @@ export default function TossPay_Complete() {
 
   const getData = async () => {
     try {
-      const paymentData = await axios.get('http://localhost:4000/toss/data');
+      const paymentData = await axios.get('http://localhost:4000/toss/data', {
+        withCredentials: true,
+      });
 
       if (paymentData.status === 200) {
-        localStorage.setItem('payments', JSON.stringify(paymentData.data));
+        console.log(paymentData);
+        await localStorage.setItem(
+          'payments',
+          JSON.stringify(paymentData.data),
+        );
         return;
       }
     } catch (err) {
@@ -71,9 +77,7 @@ export default function TossPay_Complete() {
       );
       if (finalOrderData.status === 200) {
         console.log('성공');
-        localStorage.removeItem('products');
-        localStorage.removeItem('recipien');
-        localStorage.removeItem('payments');
+        localStorage.clear();
         return;
       } else {
         console.log('실패');

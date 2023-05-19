@@ -9,8 +9,11 @@ import { nanoid } from 'nanoid';
 import tossCheckOut from '../../styles/toss_checkOut.module.scss';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export function Toss_CheckOut() {
+  const navigate = useNavigate();
+
   const selector = '#payment-widget';
   const app = process.env.REACT_APP_KEY_API;
 
