@@ -2,6 +2,7 @@
   position: relative;
   // background-color: antiquewhite;
   width: 100vw;
+  min-height: 700px;
 
   //타이틀 영역
   .titleArea {
@@ -257,81 +258,81 @@
       }
     }
 
-    .fourBox{
-      margin-bottom: 21px;
-      position: relative;
-      margin-top: 30px;
-      display: grid;
-      // background-color: antiquewhite;
-      grid-template-areas: 
-      'shopmain_order shopmain_profile'
-      'shopmain_address shopmain_mypick';
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(2, 1fr);
-      text-align: center;
-      gap: 20px;
-      font-size: 15px;
+    // .fourBox{
+    //   margin-bottom: 21px;
+    //   position: relative;
+    //   margin-top: 30px;
+    //   display: grid;
+    //   // background-color: antiquewhite;
+    //   grid-template-areas: 
+    //   'shopmain_order shopmain_profile'
+    //   'shopmain_address shopmain_mypick';
+    //   grid-template-columns: repeat(2, 1fr);
+    //   grid-template-rows: repeat(2, 1fr);
+    //   text-align: center;
+    //   gap: 20px;
+    //   font-size: 15px;
 
-      @media screen and (max-Width: 280px) {
-        font-size: 13px;
-      }
+    //   @media screen and (max-Width: 280px) {
+    //     font-size: 13px;
+    //   }
 
-      .shopmain_order{
-        grid-area: shopmain_order;
-        border: 0.5px solid black;
-        padding: 10px;
-        width: 100%;
-        cursor: pointer;
-        &:hover {
-          color: rgb(154, 154, 154);
-        }
-        &:active {
-          color: rgb(224, 224, 224);
-        }
-      }
+    //   .shopmain_order{
+    //     grid-area: shopmain_order;
+    //     border: 0.5px solid black;
+    //     padding: 10px;
+    //     width: 100%;
+    //     cursor: pointer;
+    //     &:hover {
+    //       color: rgb(154, 154, 154);
+    //     }
+    //     &:active {
+    //       color: rgb(224, 224, 224);
+    //     }
+    //   }
 
-      .shopmain_profile{
-        grid-area: shopmain_profile;
-        border: 0.5px solid black;
-        padding: 10px;
-        width: 100%;
-        cursor: pointer;
-        &:hover {
-          color: rgb(154, 154, 154);
-        }
-        &:active {
-          color: rgb(224, 224, 224);
-        }
-      }
+    //   .shopmain_profile{
+    //     grid-area: shopmain_profile;
+    //     border: 0.5px solid black;
+    //     padding: 10px;
+    //     width: 100%;
+    //     cursor: pointer;
+    //     &:hover {
+    //       color: rgb(154, 154, 154);
+    //     }
+    //     &:active {
+    //       color: rgb(224, 224, 224);
+    //     }
+    //   }
 
-      .shopmain_address{
-        grid-area: shopmain_address;
-        border: 0.5px solid black;
-        padding: 10px;
-        width: 100%;
-        cursor: pointer;
-        &:hover {
-          color: rgb(154, 154, 154);
-        }
-        &:active {
-          color: rgb(224, 224, 224);
-        }
-      }
+    //   .shopmain_address{
+    //     grid-area: shopmain_address;
+    //     border: 0.5px solid black;
+    //     padding: 10px;
+    //     width: 100%;
+    //     cursor: pointer;
+    //     &:hover {
+    //       color: rgb(154, 154, 154);
+    //     }
+    //     &:active {
+    //       color: rgb(224, 224, 224);
+    //     }
+    //   }
 
-      .shopmain_mypick{
-        grid-area: shopmain_mypick;
-        border: 0.5px solid black;
-        padding: 10px;
-        width: 100%;
-        cursor: pointer;
-        &:hover {
-          color: rgb(154, 154, 154);
-        }
-        &:active {
-          color: rgb(224, 224, 224);
-        }
-      }
-    }
+    //   .shopmain_mypick{
+    //     grid-area: shopmain_mypick;
+    //     border: 0.5px solid black;
+    //     padding: 10px;
+    //     width: 100%;
+    //     cursor: pointer;
+    //     &:hover {
+    //       color: rgb(154, 154, 154);
+    //     }
+    //     &:active {
+    //       color: rgb(224, 224, 224);
+    //     }
+    //   }
+    // }
 
   }
 

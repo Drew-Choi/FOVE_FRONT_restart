@@ -11,7 +11,7 @@ export default function Mypage_client() {
     <section className={myPage.myPage_container}>
       {/* ACCOUNT 제목 위치 */}
       <div className={myPage.titleArea}>
-        <h5 className={myPage.subtitle}>ACCOUNT</h5>
+        <h5 className={myPage.subtitle}>MY PAGE</h5>
       </div>
       <div className={myPage.account_info_container}>
         {/* 회원 등급 박스 */}
@@ -86,7 +86,7 @@ export default function Mypage_client() {
         </div>
 
         {/* 박스 4개 */}
-        <div className={myPage.fourBox}>
+        {/* <div className={myPage.fourBox}>
           <div
             onClick={() => navigate('/mypage/orderlist')}
             className={myPage.shopmain_order}
@@ -115,7 +115,7 @@ export default function Mypage_client() {
             <p>MY STYLING PICK</p>
             <span className="material-symbols-outlined">favorite</span>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

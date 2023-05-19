@@ -6,7 +6,6 @@ import loginCss from '../../styles/login_client.module.scss';
 export default function Login_client() {
   const app = process.env.REACT_APP_KEY_API;
   const cb = process.env.REACT_APP_KEY_APICB;
-  const tk = process.env.REACT_APP_KEY_API_T;
 
   const getKey = async (key) => {
     try {
