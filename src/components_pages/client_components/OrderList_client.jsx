@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import orderList from '../../styles/orderlist_client.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
+import getToken from '../../store/modules/getToken';
 
 export default function OrderList_client() {
   const navigate = useNavigate();
@@ -10,6 +12,27 @@ export default function OrderList_client() {
   const handleSpanClick = () => {
     setIsSpanClicked(true);
   };
+
+  const getOrderList = async () => {
+    try {
+      const tokenValue = await getToken();
+      const getOrderListData = await axios.post(
+        'http://localhost:4000/order_list/getMemberOrderList',
+        { token: tokenValue },
+      );
+      if (getOrderListData.status === 200) {
+        console.log(getOrderListData.data[0]);
+      } else {
+        console.log('데이터전송안됨');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    getOrderList();
+  }, []);
 
   return (
     <section className={orderList.orderList_container}>
