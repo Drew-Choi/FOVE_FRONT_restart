@@ -75,15 +75,23 @@ function App() {
         const userInfo = await axios.post('http://localhost:4000/islogin', {
           token: valueKey,
         });
-
-        dispatch(
-          keepLogin({
-            nickName: userInfo.data.nickName,
-            points: userInfo.data.points,
-            isAdmin: userInfo.data.isAdmin,
-            isLogin: userInfo.data.isLogin,
-          }),
-        );
+        if (userInfo.status === 401) {
+          const db = await openDB('db', 1);
+          const transaction = db.transaction(['store'], 'readwrite');
+          const store = transaction.objectStore('store');
+          store.put('', 't');
+          return;
+        }
+        if (userInfo.status === 200) {
+          dispatch(
+            keepLogin({
+              nickName: userInfo.data.nickName,
+              points: userInfo.data.points,
+              isAdmin: userInfo.data.isAdmin,
+              isLogin: userInfo.data.isLogin,
+            }),
+          );
+        }
       } else {
         return;
       }

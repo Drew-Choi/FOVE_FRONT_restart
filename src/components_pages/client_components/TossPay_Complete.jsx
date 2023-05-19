@@ -23,10 +23,10 @@ export default function TossPay_Complete() {
     }
   };
 
-  const clear = async () => {
-    const clearMessage = await axios.get('http://localhost:4000/toss/clear');
-    return console.log(clearMessage.data.message);
-  };
+  // const clear = async () => {
+  //   const clearMessage = await axios.get('http://localhost:4000/toss/clear');
+  //   return console.log(clearMessage.data.message);
+  // };
 
   const finalOrderPost = async () => {
     //로컬에서 주문내역 뺴서 가공
@@ -89,7 +89,6 @@ export default function TossPay_Complete() {
       try {
         await getData();
         await finalOrderPost();
-        await clear();
         console.log('Both functions executed sequentially.');
       } catch (error) {
         console.error('Error occurred:', error);
