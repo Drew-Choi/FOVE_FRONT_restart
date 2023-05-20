@@ -3,23 +3,17 @@ import orderList from '../../styles/orderlist_client.module.scss';
 import axios from 'axios';
 import getToken from '../../store/modules/getToken';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const PD_Images = styled.div`
-  /* width: 100px;
-  height: 100px; */
   ${(props) =>
     props.img &&
-    `background-image: url('http://localhost:4000/uploads/${props.img}')`}/* background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover; */
-/* 
-  @media screen and (max-width: 332px) {
-    background-size: contain;
-  } */
+    `background-image: url('http://localhost:4000/uploads/${props.img}')`}
 `;
 
 export default function OrderList_client() {
   const [orderListArray, setOrderListArray] = useState([]);
+  const navigate = useNavigate();
 
   // 해당 회원의 전체 주문내역 가져오기
   const getOrderList = async () => {
@@ -30,7 +24,7 @@ export default function OrderList_client() {
         { token: tokenValue },
       );
       if (getOrderListData.status === 200 && getOrderListData.data.length > 0) {
-        await setOrderListArray(getOrderListData.data);
+        await setOrderListArray((cur) => getOrderListData.data);
         console.log(getOrderListData.data);
       } else {
         console.log('데이터 없음');
@@ -54,8 +48,9 @@ export default function OrderList_client() {
   };
 
   //db Number타입을 스트링으로 바꾸고 천단위 컴마 찍어 프론트에 보내기
-  const country = navigator.language;
+
   const frontPriceComma = (price) => {
+    const country = navigator.language;
     if (price && typeof price.toLocaleString === 'function') {
       return price.toLocaleString(country, {
         currency: 'KRW',
@@ -120,23 +115,37 @@ export default function OrderList_client() {
                   </div>
                 );
               })}
-              <p className={orderList.older_detail_info}>
-                total ={' '}
-                <strong style={{ fontSize: '17px' }}>
-                  {frontPriceComma(el.payments.totalAmount)}{' '}
-                </strong>
-                KRW /{' '}
-                <strong style={{ fontSize: '17px' }}>
-                  {frontPriceComma(
-                    el.products.reduce((acc, cur) => acc + cur.quantity, 0),
-                  )}
-                </strong>{' '}
-                ea
-              </p>
-              <p className={orderList.status}>
-                {el.payments.status === 'DONE' ? '입금완료' : '입금전'}
-              </p>
-              <button className={orderList.orderCancle}>주문취소</button>
+              <div className={orderList.infoCancelContainer}>
+                <p className={orderList.older_detail_info}>
+                  total ={' '}
+                  <strong style={{ fontSize: '17px' }}>
+                    {frontPriceComma(el.payments.totalAmount)}{' '}
+                  </strong>
+                  KRW /{' '}
+                  <strong style={{ fontSize: '17px' }}>
+                    {frontPriceComma(
+                      el.products.reduce((acc, cur) => acc + cur.quantity, 0),
+                    )}
+                  </strong>{' '}
+                  ea
+                </p>
+                <p className={orderList.status}>
+                  {el.payments.status === 'DONE' ? '입금완료' : '입금전'} /{' '}
+                  {'배송전'}
+                </p>
+                <button
+                  className={orderList.orderCancle}
+                  onClick={() => {
+                    navigate(`/mypage/orderlist/cancel/${el.payments.orderId}`);
+                  }}
+                >
+                  주문취소
+                </button>
+                <p className={orderList.orderCancelInfo}>
+                  {' '}
+                  *주문취소는 배송상태가 &#39;배송전&#39;일 경우에 가능합니다.{' '}
+                </p>
+              </div>
             </div>
           );
         })}

@@ -21,9 +21,9 @@ export default function Detail_client() {
     );
     if (selectData.status === 200) {
       await setProductData(selectData.data[0]);
-      return selectData.data;
+      return;
     } else {
-      return selectData.data;
+      return;
     }
   };
 
