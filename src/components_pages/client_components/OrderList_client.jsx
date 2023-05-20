@@ -89,7 +89,7 @@ export default function OrderList_client() {
               {/* 주문 조회 내역 */}
               <p className={orderList.older_date}>
                 <strong>{filterTimeDay(el.payments.approvedAt)}</strong> (
-                {' 나중에 추가 '})
+                {el.payments.orderId})
               </p>
               {el.products.map((pdInfo, index) => {
                 return (
