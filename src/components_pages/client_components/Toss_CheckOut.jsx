@@ -86,7 +86,7 @@ export function Toss_CheckOut() {
 
             try {
               await paymentWidget?.requestPayment({
-                orderId: nanoid(),
+                orderId: nanoid(7),
                 orderName: `${
                   importLocalProducts.length > 1
                     ? '상품명: ' + productName + '외 다수'

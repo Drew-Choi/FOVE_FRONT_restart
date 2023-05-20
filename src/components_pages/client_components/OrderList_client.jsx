@@ -29,11 +29,11 @@ export default function OrderList_client() {
         'http://localhost:4000/order_list/getMemberOrderList',
         { token: tokenValue },
       );
-      if (getOrderListData.status === 200) {
+      if (getOrderListData.status === 200 && getOrderListData.data.length > 0) {
         await setOrderListArray(getOrderListData.data);
         console.log(getOrderListData.data);
       } else {
-        console.log('데이터전송안됨');
+        console.log('데이터 없음');
       }
     } catch (err) {
       console.error(err);

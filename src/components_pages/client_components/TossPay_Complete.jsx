@@ -49,6 +49,8 @@ export default function TossPay_Complete() {
       const finalOrderData = await axios.post(
         'http://localhost:4000/store/order',
         {
+          //주문완료
+          isOrdered: true,
           //주문자 아이디
           name: userID,
           //상품정보
@@ -102,6 +104,16 @@ export default function TossPay_Complete() {
     array();
   }, []);
 
+  const filterUniqueCode = (time) => {
+    const uniqueKey = time.replace(/[-T:]/g, '').replace(/\+.*/, '');
+    return uniqueKey;
+  };
+
+  const timeFix = (time) => {
+    const timeFixed = time.replace(/[T]/g, ' T').replace(/\+.*/, '');
+    return timeFixed;
+  };
+
   return (
     <div className={tossPayComplete.toss_complete_container}>
       <div className={tossPayComplete.wrap}>
@@ -115,10 +127,14 @@ export default function TossPay_Complete() {
             확인가능합니다.
           </p>
           <p className={tossPayComplete.order_info_number}>
-            주문번호: <span className={tossPayComplete.number}>{orderID}</span>
+            주문번호:{' '}
+            <span className={tossPayComplete.number}>
+              {filterUniqueCode(orderTime) + orderID}
+            </span>
           </p>
           <p className={tossPayComplete.order_info_date}>
-            주문일자: <span className={tossPayComplete.date}>{orderTime}</span>
+            주문일자:{' '}
+            <span className={tossPayComplete.date}>{timeFix(orderTime)}</span>
           </p>
         </div>
 
