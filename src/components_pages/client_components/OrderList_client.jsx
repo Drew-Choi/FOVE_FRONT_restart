@@ -25,7 +25,6 @@ export default function OrderList_client() {
       );
       if (getOrderListData.status === 200 && getOrderListData.data.length > 0) {
         setOrderListArray((cur) => getOrderListData.data);
-        console.log(getOrderListData.data);
       } else {
         console.log('데이터 없음');
       }
@@ -48,9 +47,8 @@ export default function OrderList_client() {
   };
 
   //db Number타입을 스트링으로 바꾸고 천단위 컴마 찍어 프론트에 보내기
-
+  const country = navigator.language;
   const frontPriceComma = (price) => {
-    const country = navigator.language;
     if (price && typeof price.toLocaleString === 'function') {
       return price.toLocaleString(country, {
         currency: 'KRW',

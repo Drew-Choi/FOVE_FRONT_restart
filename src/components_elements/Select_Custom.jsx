@@ -7,10 +7,11 @@ export default function Select_Custom({
   classNameOption,
   classNameDiv,
   name,
+  classNameChildren,
 }) {
   return (
     <div className={classNameDiv}>
-      <p>{children}</p>
+      <p className={classNameChildren}>{children}</p>
       <select
         className={classNameSelect}
         ref={inputRef}
