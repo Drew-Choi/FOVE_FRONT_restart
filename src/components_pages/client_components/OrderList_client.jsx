@@ -24,7 +24,7 @@ export default function OrderList_client() {
         { token: tokenValue },
       );
       if (getOrderListData.status === 200 && getOrderListData.data.length > 0) {
-        await setOrderListArray((cur) => getOrderListData.data);
+        setOrderListArray((cur) => getOrderListData.data);
         console.log(getOrderListData.data);
       } else {
         console.log('데이터 없음');
