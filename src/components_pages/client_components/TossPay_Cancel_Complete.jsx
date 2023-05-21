@@ -1,0 +1,178 @@
+import React, { useEffect, useState } from 'react';
+import tossPayComplete from '../../styles/tossPay_complete.module.scss';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import getToken from '../../store/modules/getToken';
+import Loading from './Loading';
+
+export default function TossPay_Cancel_Complete() {
+  const { orderId } = useParams();
+  const { reason } = useParams();
+  const navigate = useNavigate();
+
+  const [cancelInfoData, setCancelInfoData] = useState(null);
+
+  const cancelProgress = async () => {
+    try {
+      const tokenValue = await getToken();
+      const cancelInfo = await axios.post('http://localhost:4000/toss/cancel', {
+        orderId,
+        reason,
+        token: tokenValue,
+      });
+
+      if (cancelInfo.status === 200) {
+        console.log(cancelInfo.data);
+        console.log('성공');
+        setCancelInfoData((cur) => cancelInfo.data);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      cancelProgress();
+    }, 1000);
+  }, []);
+
+  console.log(cancelInfoData);
+
+  const timeFix = (time) => {
+    const timeFixed = time.replace(/[T]/g, ' T').replace(/\+.*/, '');
+    return timeFixed;
+  };
+
+  const filterUniqueCode = (time) => {
+    const uniqueKey = time.replace(/[-T:]/g, '').replace(/\+.*/, '');
+    return uniqueKey;
+  };
+
+  return (
+    <>
+      {cancelInfoData !== null && Object.keys(cancelInfoData).length > 0 ? (
+        <div className={tossPayComplete.toss_complete_container}>
+          <div className={tossPayComplete.wrap}>
+            <p className={tossPayComplete.complete_title}>Order Complete</p>
+            <div className={tossPayComplete.complete_box}>
+              <p className={tossPayComplete.order_title}>
+                고객님의 주문취소가 완료되었습니다.
+              </p>
+              <p className={tossPayComplete.order_guide}>
+                주문취소내역에 관한 안내는{' '}
+                <span>마이페이지 / 주문취소조회</span>를 통하여 확인가능합니다.
+              </p>
+              <p className={tossPayComplete.order_info_number}>
+                주문번호:{' '}
+                <span className={tossPayComplete.number}>
+                  {filterUniqueCode(cancelInfoData.approvedAt) +
+                    cancelInfoData.orderId}
+                </span>
+              </p>
+              <p className={tossPayComplete.order_info_date}>
+                취소일자:{' '}
+                <span className={tossPayComplete.date}>
+                  {timeFix(cancelInfoData.cancels[0].canceledAt)}
+                </span>
+              </p>
+            </div>
+
+            <div className={tossPayComplete.btn_container}>
+              <button
+                className={tossPayComplete.btn_continue}
+                onClick={() => navigate('/store')}
+              >
+                쇼핑계속하기
+              </button>
+              <button
+                className={tossPayComplete.btn_orderList}
+                onClick={() => navigate('/mypage/orderlist')}
+              >
+                주문취소 확인하기
+              </button>
+            </div>
+
+            <div className={tossPayComplete.notice_wrap}>
+              <div className={tossPayComplete.notice_use}>
+                <p className={tossPayComplete.use_title}>이용안내</p>
+                <p className={tossPayComplete.use_desc}>
+                  배송은 결제완료 후 지역에 따라 3일 ~ 7일 가량이 소요됩니다.{' '}
+                  <br />
+                  상품별 자세한 배송과정은 주문조회를 통하여 조회하실 수
+                  있습니다.
+                  <br />
+                  주문의 취소 및 환불, 교환에 관한 사항은 이용안내의 내용을
+                  참고하십시오.
+                </p>
+              </div>
+              <div className={tossPayComplete.notice_recip}>
+                <p className={tossPayComplete.recip_title}>
+                  세금계산서 발행 안내
+                </p>
+                <p className={tossPayComplete.recip_desc}>
+                  부가가치세법 제 54조에 의거하여 세금계산서는 배송완료일로부터
+                  다음달 10일까지만 요청하실 수 있습니다. <br />
+                  세금계산서는 사업자만 신청하실 수 있습니다.
+                  <br />
+                  배송이 완료된 주문에 한하여 세금계산서 발행신청이 가능합니다.
+                  <br />
+                  [세금계산서 신청]버튼을 눌러 세금계산서 신청양식을 작성한 후
+                  팩스로 사업자등록증사본을 보내셔야 세금계산서 발행이
+                  가능합니다.
+                  <br />
+                  [세금계산서 인쇄]버튼을 누르면 발행된 세금계산서를 인쇄하실 수
+                  있습니다.
+                </p>
+              </div>
+              <div className={tossPayComplete.notice_recip_detail}>
+                <p className={tossPayComplete.recip_detail_title}>
+                  부가가치세법 변경에 따른 신용카드매출전표 및 세금계산서
+                  변경안내
+                </p>
+                <p className={tossPayComplete.recip_detail_desc}>
+                  변경된 부가가치세법에 의거, 2004.07.01 이후 신용카드로
+                  결제하신 주문에 대해서는 세금계산서 발행이 불가하며 <br />
+                  신용카드매출전표로 부가가치세 신고를 하셔야
+                  합니다.(부가가치세법 시행령 57조) <br />
+                  상기 부가가치세법 변경내용에 따라 신용카드 이외의 결제건에
+                  대해서만 세금계산서 발행이 가능함을 양지하여 주시기 바랍니다.
+                </p>
+              </div>
+              <div className={tossPayComplete.notice_cash}>
+                <p className={tossPayComplete.cash_title}>
+                  현금영수증 이용안내
+                </p>
+                <p className={tossPayComplete.cash_desc}>
+                  현금영수증은 1원 이상의 현금성거래(무통장입금, 실시간계좌이체,
+                  에스크로, 예치금)에 대해 발행이 됩니다.
+                  <br />
+                  현금영수증은 발행 금액에는 배송비는 포함되고, 적립금사용액은
+                  포함되지 않습니다.
+                  <br />
+                  발행신청 기간제한 현금영수증은 입금확인일로 부터 48시간 안에
+                  발행을 해야 합니다. <br />
+                  현금영수증 발행 취소의 경우는 시간 제한이 없습니다. (국세청의
+                  정책에 따라 변경 될 수 있습니다.) <br />
+                  현금영수증이나 세금계산서 중 하나만 발행이 가능합니다.
+                </p>
+              </div>
+            </div>
+
+            {/* <div>{`번호: ${searchParams.get("orderId")}`}</div> */}
+            {/* <div>{`주문번호: ${searchParams.get('orderId')}`}</div> */}
+            {/* <div>{}</div>
+        <div>{`결제 금액: ${
+          Number().toLocaleString()
+          searchParams.get('amount'),
+        }원`}</div> */}
+            {/* {/* <div>{`주문일자: ${now}`}</div> */}
+          </div>
+        </div>
+      ) : (
+        <Loading />
+      )}
+    </>
+  );
+}

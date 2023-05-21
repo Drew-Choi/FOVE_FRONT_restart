@@ -35,6 +35,7 @@ import Kakao_final from './components_pages/client_components/Kakao_final';
 import { openDB } from 'idb';
 import getToken from './store/modules/getToken';
 import OrderCancel_client from './components_pages/client_components/OrderCancel_client';
+import TossPay_Cancel_Complete from './components_pages/client_components/TossPay_Cancel_Complete';
 
 function App() {
   const isLogin = useSelector((state) => state.user.isLogin);
@@ -171,6 +172,12 @@ function App() {
           <Route
             path="/mypage/orderlist/cancel/:orderId"
             element={isLogin ? <OrderCancel_client /> : <Login_client />}
+          />
+
+          {/* 취소완료 */}
+          <Route
+            path="/mypage/orderlist/cancel/:orderId/:reason/complete"
+            element={isLogin ? <TossPay_Cancel_Complete /> : <Login_client />}
           />
 
           {/* 배송 주소록 목록 */}

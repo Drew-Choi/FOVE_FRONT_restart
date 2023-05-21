@@ -6,7 +6,6 @@ import orderCancel from '../../styles/orderCancel_client.module.scss';
 import styled from 'styled-components';
 import Loading from './Loading';
 import Select_Custom from '../../components_elements/Select_Custom';
-import TextArea_Custom from '../../components_elements/TextArea_Custom';
 
 const Pd_Images = styled.div`
   ${(props) =>
@@ -16,10 +15,11 @@ const Pd_Images = styled.div`
 
 export default function OrderCancel_client() {
   const [orderCancelItem, setOrderCancelItem] = useState(null);
+  // const [selectReason, setSelectReason] = useState('단순변심');
   const navigate = useNavigate();
   const { orderId } = useParams();
   // 취소사유
-  const cancelReasonSelet = useRef();
+  const cancelReasonSelet = useRef('단순변심');
 
   const getCancelItem = async () => {
     try {
@@ -32,7 +32,7 @@ export default function OrderCancel_client() {
           orderId: orderId,
         },
       );
-      setOrderCancelItem((cur) => getCancelData.data);
+      setOrderCancelItem(getCancelData.data);
     } catch (err) {
       console.error(err);
     }
@@ -131,7 +131,16 @@ export default function OrderCancel_client() {
                 >
                   뒤로가기
                 </button>
-                <button className={orderCancel.orderCancle}>취소진행</button>
+                <button
+                  className={orderCancel.orderCancle}
+                  onClick={() =>
+                    navigate(
+                      `/mypage/orderlist/cancel/${orderCancelItem.payments.orderId}/${cancelReasonSelet.current.value}/complete`,
+                    )
+                  }
+                >
+                  취소진행
+                </button>
                 <p className={orderCancel.caution}>
                   *취소내역을 다시 한번 잘 확인하신 후 취소진행을 눌러주세요.
                 </p>
