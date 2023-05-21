@@ -5,6 +5,7 @@ import axios from 'axios';
 import orderCancel from '../../styles/orderCancel_client.module.scss';
 import styled from 'styled-components';
 import priceComma from '../../store/modules/etcModule';
+import Loading from './Loading';
 
 const Pd_Images = styled.div`
   ${(props) =>
@@ -35,19 +36,19 @@ export default function OrderCancel_client() {
   };
 
   useEffect(() => {
-    getCancelItem();
+    setTimeout(() => {
+      getCancelItem();
+    }, 1000);
   }, []);
-
-  console.log(orderCancelItem);
 
   return (
     <section>
       {orderCancelItem !== null && Object.keys(orderCancelItem).length > 0 ? (
-        <div className={orderCancel.order_info_wrap}>
-          <h1>{orderCancelItem.isOrdered}</h1>
+        <div>
+          <h1>{orderCancelItem.payments.orderId}</h1>
         </div>
       ) : (
-        <div>Loading...</div>
+        <Loading />
       )}
     </section>
   );
