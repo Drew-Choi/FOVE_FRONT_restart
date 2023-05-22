@@ -43,6 +43,7 @@ export default function Header_client() {
   const userData = useSelector((state) => (state.user === 0 ? 0 : state.user));
   //상품정보 state
   const cartInfo = useSelector((state) => (state.cart === 0 ? 0 : state.cart));
+  const [isVisible, setIsVisible] = useState(true);
 
   const location = useLocation();
   const currentURL = location.pathname;
@@ -92,6 +93,12 @@ export default function Header_client() {
     }
     dispatch(offon());
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsVisible(false);
+    }, 500);
+  }, []);
 
   //서칭용 상태관리
   const [searchOnOff, setSearchOnOff] = useState('off');
@@ -368,6 +375,7 @@ export default function Header_client() {
             ) : (
               <>
                 <MediaQuery minWidth={1145}>
+                  {isVisible && <p className="loading">Loading...</p>}
                   <p
                     onClick={() => {
                       navigate(`/login`);

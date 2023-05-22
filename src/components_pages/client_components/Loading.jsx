@@ -20,12 +20,16 @@ const AnimationText = styled.span`
   font-size: 50px;
   font-weight: 600;
   font-style: italic;
+
+  @media screen and (max-width: 991px) {
+    top: 200px;
+  }
 `;
 
 const Container = styled.div`
   position: absolute;
   width: 100vw;
-  height: 690px;
+  height: 100%;
   background-color: white;
   text-align: center;
   z-index: 999;

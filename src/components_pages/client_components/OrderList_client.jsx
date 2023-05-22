@@ -14,6 +14,7 @@ const PD_Images = styled.div`
 export default function OrderList_client() {
   const [orderListArray, setOrderListArray] = useState([]);
   const navigate = useNavigate();
+  const [page, setPage] = useState(true);
 
   // 해당 회원의 전체 주문내역 가져오기
   const getOrderList = async () => {
@@ -76,77 +77,91 @@ export default function OrderList_client() {
             <span>(0)</span>
           </span>
         </div>
-        {orderListArray.map((el, index) => {
-          return (
-            <div key={index} className={orderList.orderlist_Check_wrap}>
-              {/* 주문 조회 내역 */}
-              <p className={orderList.older_date}>
-                <strong>{filterTimeDay(el.payments.approvedAt)}</strong> (
-                {el.payments.orderId})
-              </p>
-              {el.products.map((pdInfo, index) => {
-                return (
-                  <div key={index} className={orderList.older_image_info}>
-                    <PD_Images
-                      img={pdInfo.img}
-                      className={orderList.older_image}
-                    ></PD_Images>
-                    <div className={orderList.pdnameprice}>
-                      <p className={orderList.pdname}>{pdInfo.productName}</p>
-                      <p className={orderList.pdprice}>
-                        <strong style={{ fontSize: '15px' }}>
-                          {frontPriceComma(pdInfo.unitSumPrice)}{' '}
-                        </strong>
-                        KRW /{' '}
-                        <strong style={{ fontSize: '15px' }}>
-                          {frontPriceComma(pdInfo.quantity)}
-                        </strong>{' '}
-                        ea
-                      </p>
-                      <p className={orderList.pdprice}>
-                        SIZE{' '}
-                        <strong style={{ fontSize: '15px' }}>
-                          {pdInfo.size}
-                        </strong>
-                      </p>
-                    </div>
+        {page ? (
+          <>
+            {orderListArray.map((el, index) => {
+              return (
+                <div key={index} className={orderList.orderlist_Check_wrap}>
+                  {/* 주문 조회 내역 */}
+                  <p className={orderList.older_date}>
+                    <strong>{filterTimeDay(el.payments.approvedAt)}</strong> (
+                    {el.payments.orderId})
+                  </p>
+                  {el.products.map((pdInfo, index) => {
+                    return (
+                      <div key={index} className={orderList.older_image_info}>
+                        <PD_Images
+                          img={pdInfo.img}
+                          className={orderList.older_image}
+                        ></PD_Images>
+                        <div className={orderList.pdnameprice}>
+                          <p className={orderList.pdname}>
+                            {pdInfo.productName}
+                          </p>
+                          <p className={orderList.pdprice}>
+                            <strong style={{ fontSize: '15px' }}>
+                              {frontPriceComma(pdInfo.unitSumPrice)}{' '}
+                            </strong>
+                            KRW /{' '}
+                            <strong style={{ fontSize: '15px' }}>
+                              {frontPriceComma(pdInfo.quantity)}
+                            </strong>{' '}
+                            ea
+                          </p>
+                          <p className={orderList.pdprice}>
+                            SIZE{' '}
+                            <strong style={{ fontSize: '15px' }}>
+                              {pdInfo.size}
+                            </strong>
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                  <div className={orderList.infoCancelContainer}>
+                    <p className={orderList.older_detail_info}>
+                      total ={' '}
+                      <strong style={{ fontSize: '17px' }}>
+                        {frontPriceComma(el.payments.totalAmount)}{' '}
+                      </strong>
+                      KRW /{' '}
+                      <strong style={{ fontSize: '17px' }}>
+                        {frontPriceComma(
+                          el.products.reduce(
+                            (acc, cur) => acc + cur.quantity,
+                            0,
+                          ),
+                        )}
+                      </strong>{' '}
+                      ea
+                    </p>
+                    <p className={orderList.status}>
+                      {el.payments.status === 'DONE' ? '입금완료' : '입금전'} /{' '}
+                      {'배송전'}
+                    </p>
+                    <button
+                      className={orderList.orderCancle}
+                      onClick={() => {
+                        navigate(
+                          `/mypage/orderlist/cancel/${el.payments.orderId}`,
+                        );
+                      }}
+                    >
+                      주문취소
+                    </button>
+                    <p className={orderList.orderCancelInfo}>
+                      {' '}
+                      *주문취소는 배송상태가 &#39;배송전&#39;일 경우에
+                      가능합니다.{' '}
+                    </p>
                   </div>
-                );
-              })}
-              <div className={orderList.infoCancelContainer}>
-                <p className={orderList.older_detail_info}>
-                  total ={' '}
-                  <strong style={{ fontSize: '17px' }}>
-                    {frontPriceComma(el.payments.totalAmount)}{' '}
-                  </strong>
-                  KRW /{' '}
-                  <strong style={{ fontSize: '17px' }}>
-                    {frontPriceComma(
-                      el.products.reduce((acc, cur) => acc + cur.quantity, 0),
-                    )}
-                  </strong>{' '}
-                  ea
-                </p>
-                <p className={orderList.status}>
-                  {el.payments.status === 'DONE' ? '입금완료' : '입금전'} /{' '}
-                  {'배송전'}
-                </p>
-                <button
-                  className={orderList.orderCancle}
-                  onClick={() => {
-                    navigate(`/mypage/orderlist/cancel/${el.payments.orderId}`);
-                  }}
-                >
-                  주문취소
-                </button>
-                <p className={orderList.orderCancelInfo}>
-                  {' '}
-                  *주문취소는 배송상태가 &#39;배송전&#39;일 경우에 가능합니다.{' '}
-                </p>
-              </div>
-            </div>
-          );
-        })}
+                </div>
+              );
+            })}
+          </>
+        ) : (
+          <div>취소내역임</div>
+        )}
       </div>
     </section>
   );

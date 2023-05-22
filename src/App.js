@@ -11,7 +11,6 @@ import Store_client from './components_pages/client_components/Store_client';
 import Guide_client from './components_pages/client_components/Guide_client';
 import Detail_client from './components_pages/client_components/Detail_client';
 import Intro_movie_client from './components_pages/client_components/Intro_movie_clinet';
-import Register_client from './components_pages/client_components/Register_client';
 import Mypage_client from './components_pages/client_components/Mypage_client';
 import AdSubmit_client from './components_pages/client_components/AdSubmit_client';
 import Adwrite_client from './components_pages/client_components/Adwrite_client';
@@ -24,7 +23,6 @@ import { Toss_CheckOut } from './components_pages/client_components/Toss_CheckOu
 import React, { useEffect, Suspense } from 'react';
 import axios from 'axios';
 import { keepLogin } from './store/modules/user';
-import RegisterSuccess_client from './components_pages/client_components/RegisterSuccess_client';
 import EditInfo_client from './components_pages/client_components/EditInfo_client';
 import ProductList_admin from './components_pages/admin_components/ProductList_admin';
 import OrderList_client from './components_pages/client_components/OrderList_client';
@@ -139,12 +137,6 @@ function App() {
 
           {/* <Route path="/store/order/checkout/fail" element={<FailPage />} /> */}
 
-          {/* 회원 가입 */}
-          <Route path="/register" element={<Register_client />} />
-          <Route
-            path="/register/success"
-            element={<RegisterSuccess_client />}
-          />
           {/* 로그인 */}
           <Route path="/login" element={<Login_client />} />
           <Route path="/login/kakao/callback" element={<Kakao_final />} />

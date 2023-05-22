@@ -1,11 +1,23 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import loginCss from '../../styles/login_client.module.scss';
+import Loading from './Loading';
 
 export default function Login_client() {
   const app = process.env.REACT_APP_KEY_API;
   const cb = process.env.REACT_APP_KEY_APICB;
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsVisible(false);
+    }, 300);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
 
   const getKey = async (key) => {
     try {
@@ -29,6 +41,7 @@ export default function Login_client() {
 
   return (
     <section className={loginCss.login_client}>
+      {isVisible && <Loading />}
       <div className={loginCss.login_client_container}>
         <p className={loginCss.login_title}>LOG IN</p>
         <p className={loginCss.login_desc}>
