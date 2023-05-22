@@ -75,11 +75,21 @@ export default function OrderCancel_client() {
                 return (
                   <div key={index} className={orderCancel.older_image_info}>
                     <Pd_Images
+                      onClick={() =>
+                        navigate(`/store/detail/${el.productCode}`)
+                      }
                       img={el.img}
                       className={orderCancel.older_image}
                     ></Pd_Images>
                     <div className={orderCancel.pdnameprice}>
-                      <p className={orderCancel.pdname}>{el.productName}</p>
+                      <p
+                        className={orderCancel.pdname}
+                        onClick={() =>
+                          navigate(`/store/detail/${el.productCode}`)
+                        }
+                      >
+                        {el.productName}
+                      </p>
                       <p className={orderCancel.pdprice}>
                         <strong style={{ fontSize: '15px' }}>
                           {frontPriceComma(el.unitSumPrice)}

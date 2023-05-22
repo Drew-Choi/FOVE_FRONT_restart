@@ -145,11 +145,19 @@ export default function OrderList_client() {
                       return (
                         <div key={index} className={orderList.older_image_info}>
                           <PD_Images
+                            onClick={() =>
+                              navigate(`/store/detail/${pdInfo.productCode}`)
+                            }
                             img={pdInfo.img}
                             className={orderList.older_image}
                           ></PD_Images>
                           <div className={orderList.pdnameprice}>
-                            <p className={orderList.pdname}>
+                            <p
+                              className={orderList.pdname}
+                              onClick={() =>
+                                navigate(`/store/detail/${pdInfo.productCode}`)
+                              }
+                            >
                               {pdInfo.productName}
                             </p>
                             <p className={orderList.pdprice}>
@@ -228,11 +236,19 @@ export default function OrderList_client() {
                       return (
                         <div key={index} className={orderList.older_image_info}>
                           <PD_Images
+                            onClick={() =>
+                              navigate(`/store/detail/${pdInfo.productCode}`)
+                            }
                             img={pdInfo.img}
                             className={orderList.older_image}
                           ></PD_Images>
                           <div className={orderList.pdnameprice}>
-                            <p className={orderList.pdname}>
+                            <p
+                              className={orderList.pdname}
+                              onClick={() =>
+                                navigate(`/store/detail/${pdInfo.productCode}`)
+                              }
+                            >
                               {pdInfo.productName}
                             </p>
                             <p className={orderList.pdprice}>

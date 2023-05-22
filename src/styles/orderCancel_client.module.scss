@@ -54,6 +54,7 @@
           background-position: center;
           background-repeat: no-repeat;
           background-size: cover;
+          cursor: pointer;
     
           @media screen and (max-width:332px) {
             background-size: contain;;
@@ -68,6 +69,7 @@
     
           .pdname {
             font-weight: 600;
+            cursor: pointer;
           }
     
           .pdprice{

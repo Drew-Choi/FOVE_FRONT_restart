@@ -20,10 +20,6 @@ export default function Detail_OrderMenu_client({
   datas,
 }) {
   //리덕스 state 모음
-  //유저정보 state
-  const userID = useSelector((state) =>
-    state.user.userID === 0 ? 0 : state.user.userID,
-  );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

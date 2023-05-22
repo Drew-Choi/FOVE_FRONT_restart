@@ -6,10 +6,11 @@ import Detail_OrderMenu_client from './Detail_OrderMenu_client';
 import Detail_SubImage_client from './Detail_SubImage_client';
 import SubNav_client from './SubNav_client';
 import MediaQuery from 'react-responsive';
+import Loading from './Loading';
 
 export default function Detail_client() {
   const { productCode } = useParams();
-  const [productData, setProductData] = useState();
+  const [productData, setProductData] = useState(null);
 
   useEffect(() => {
     getSelectProduct();
@@ -61,50 +62,56 @@ export default function Detail_client() {
 
   return (
     <section className={detailClient.pd_detail}>
-      <MediaQuery minWidth={576}>
-        <SubNav_client
-          onClickEvent1={() => navigate('/store')}
-          onClickEvent2={() => navigate('/store/new')}
-          onClickEvent3={() => navigate('/store/beanie')}
-          onClickEvent4={() => navigate('/store/cap')}
-          onClickEvent5={() => navigate('/store/training')}
-          onClickEvent6={() => navigate('/store/windbreaker')}
-          menu1="VIEW ALL"
-          menu2="NEW ARRIVALS"
-          menu3="BEANIE"
-          menu4="CAP"
-          menu5="TRAINING"
-          menu6="WINDBREAKER"
-          top={'0px'}
-        />
-      </MediaQuery>
+      {productData !== null ? (
+        <>
+          <MediaQuery minWidth={576}>
+            <SubNav_client
+              onClickEvent1={() => navigate('/store')}
+              onClickEvent2={() => navigate('/store/new')}
+              onClickEvent3={() => navigate('/store/beanie')}
+              onClickEvent4={() => navigate('/store/cap')}
+              onClickEvent5={() => navigate('/store/training')}
+              onClickEvent6={() => navigate('/store/windbreaker')}
+              menu1="VIEW ALL"
+              menu2="NEW ARRIVALS"
+              menu3="BEANIE"
+              menu4="CAP"
+              menu5="TRAINING"
+              menu6="WINDBREAKER"
+              top={'0px'}
+            />
+          </MediaQuery>
 
-      <MediaQuery maxWidth={575}>
-        <select
-          className={detailClient.selectCategorys}
-          value="VIEW ALL"
-          onChange={handleCategoryChange}
-        >
-          {categotryMenus_act.map((el) => (
-            <option value={el} key={el}>
-              {el}
-            </option>
-          ))}
-        </select>
-      </MediaQuery>
+          <MediaQuery maxWidth={575}>
+            <select
+              className={detailClient.selectCategorys}
+              value="VIEW ALL"
+              onChange={handleCategoryChange}
+            >
+              {categotryMenus_act.map((el) => (
+                <option value={el} key={el}>
+                  {el}
+                </option>
+              ))}
+            </select>
+          </MediaQuery>
 
-      {/* 비동기 특성으로 map이 아니면 데이터 불러오는데 시간이 걸린다.
+          {/* 비동기 특성으로 map이 아니면 데이터 불러오는데 시간이 걸린다.
       그래서 아래와 같이 데이터가 들어오면 컴포넌트를 띄울 수 있게 순서적으로 처리해줘야함 */}
-      {productData && (
-        <div className={detailClient.image_info_container}>
-          <Detail_SubImage_client datas={productData} />
-          <Detail_OrderMenu_client
-            productName={productData.productName}
-            detail={productData.detail}
-            price={productData.price}
-            datas={productData}
-          />
-        </div>
+          {productData && (
+            <div className={detailClient.image_info_container}>
+              <Detail_SubImage_client datas={productData} />
+              <Detail_OrderMenu_client
+                productName={productData.productName}
+                detail={productData.detail}
+                price={productData.price}
+                datas={productData}
+              />
+            </div>
+          )}
+        </>
+      ) : (
+        <Loading />
       )}
     </section>
   );

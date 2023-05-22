@@ -236,7 +236,7 @@ export default function Store_client() {
                           return (
                             <Col
                               onClick={() =>
-                                navigate(`/store/detail/${el._id}`)
+                                navigate(`/store/detail/${el.productCode}`)
                               }
                               className="store_col"
                               key={el._id}
@@ -261,7 +261,7 @@ export default function Store_client() {
                           return (
                             <Col
                               onClick={() =>
-                                navigate(`/store/detail/${el._id}`)
+                                navigate(`/store/detail/${el.productCode}`)
                               }
                               className="store_col"
                               key={el._id}
@@ -287,7 +287,7 @@ export default function Store_client() {
                           return (
                             <Col
                               onClick={() =>
-                                navigate(`/store/detail/${el._id}`)
+                                navigate(`/store/detail/${el.productCode}`)
                               }
                               className="store_col"
                               key={el._id}
@@ -313,7 +313,7 @@ export default function Store_client() {
                           return (
                             <Col
                               onClick={() =>
-                                navigate(`/store/detail/${el._id}`)
+                                navigate(`/store/detail/${el.productCode}`)
                               }
                               className="store_col"
                               key={el._id}
@@ -341,7 +341,9 @@ export default function Store_client() {
                     {pd_Datas.map((el, index) => {
                       return (
                         <Col
-                          onClick={() => navigate(`/store/detail/${el._id}`)}
+                          onClick={() =>
+                            navigate(`/store/detail/${el.productCode}`)
+                          }
                           className="store_col"
                           key={el._id}
                           onMouseEnter={() => {}}

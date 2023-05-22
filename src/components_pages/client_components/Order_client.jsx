@@ -52,7 +52,6 @@ export default function Order_client() {
     ),
   );
 
-  const userId = useSelector((state) => state.user.userID);
   const userName = useSelector((state) => state.user.userName);
   const userPoints = useSelector((state) => state.user.userPoints);
 
@@ -109,6 +108,7 @@ export default function Order_client() {
     if (currentURL === '/store/order') {
       products.push({
         productName: singleOrder.productName,
+        productCode: singleOrder.productCode,
         price: singleOrder.price,
         img: singleOrder.img,
         size: singleOrder.size,
