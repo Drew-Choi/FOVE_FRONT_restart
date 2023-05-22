@@ -11,6 +11,7 @@ import { clickMenu, menuClose } from '../../store/modules/menuAccount';
 import { searchinput } from '../../store/modules/search';
 import MediaQuery from 'react-responsive';
 import { openDB } from 'idb';
+import getToken from '../../store/modules/getToken';
 
 export default function Header_client() {
   const [reactSearchModal, setReactSearchModal] = useState(false);
@@ -58,21 +59,18 @@ export default function Header_client() {
     } else {
       try {
         // indexedDB에서 토큰 받아오기
-        const db = await openDB('db', 1);
-        const transaction = db.transaction(['store'], 'readonly');
-        const store = transaction.objectStore('store');
-        const value = await store.get('t');
+        const tokenValue = await getToken();
 
         const cartDataGet = await axios.post(
           `http://localhost:4000/cart/list`,
           {
-            token: value,
+            token: tokenValue,
           },
         );
         if (cartDataGet.status === 200) {
           dispatch(importdb(cartDataGet.data));
         } else {
-          console.error(cartDataGet.status);
+          console.log(cartDataGet.data.message);
           // console.log(cartDataGet.data.message);
         }
       } catch (err) {

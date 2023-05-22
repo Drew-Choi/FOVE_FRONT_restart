@@ -431,7 +431,7 @@ export default function CartModal({ className, cartModalMenu }) {
                 <Line3></Line3>
                 <Pd_miners
                   onClick={() => {
-                    minersCartItem(el._id);
+                    minersCartItem(el.productCode);
                   }}
                 >
                   -
@@ -439,7 +439,7 @@ export default function CartModal({ className, cartModalMenu }) {
                 <Pd_count>{el.quantity}</Pd_count>
                 <Pd_plus
                   onClick={() => {
-                    plusCartItem(el._id);
+                    plusCartItem(el.productCode);
                   }}
                 >
                   +
@@ -447,7 +447,7 @@ export default function CartModal({ className, cartModalMenu }) {
               </Pd_quantity_contain>
               <RemoveIcon
                 onClick={() => {
-                  deletePD(el._id);
+                  deletePD(el.productCode);
                 }}
                 className="material-symbols-outlined"
               >

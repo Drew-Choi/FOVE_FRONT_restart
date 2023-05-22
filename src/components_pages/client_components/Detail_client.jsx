@@ -8,16 +8,16 @@ import SubNav_client from './SubNav_client';
 import MediaQuery from 'react-responsive';
 
 export default function Detail_client() {
-  const { id } = useParams();
+  const { productCode } = useParams();
   const [productData, setProductData] = useState();
 
   useEffect(() => {
     getSelectProduct();
-  }, [id]);
+  }, [productCode]);
 
   const getSelectProduct = async () => {
     const selectData = await axios.get(
-      `http://localhost:4000/store/productId/${id}`,
+      `http://localhost:4000/store/productId/${productCode}`,
     );
     if (selectData.status === 200) {
       await setProductData(selectData.data[0]);

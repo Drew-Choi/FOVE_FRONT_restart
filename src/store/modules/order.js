@@ -1,6 +1,7 @@
 // 초기 상태 설정
 const initState = {
   productName: '',
+  productCode: '',
   price: 0,
   quantity: 0,
   size: '',
@@ -35,6 +36,7 @@ export default function order(state = initState, action) {
       return {
         ...state,
         productName: action.payload.productName,
+        productCode: action.payload.productCode,
         price: action.payload.price,
         quantity: action.payload.quantity,
         size: action.payload.size,

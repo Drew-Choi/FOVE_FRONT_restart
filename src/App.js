@@ -120,7 +120,10 @@ function App() {
           {/* 신상품 */}
           <Route path="/store/new" element={<Store_NewItems />} />
           {/* 상품상세페이지 */}
-          <Route path="/store/detail/:id" element={<Detail_client />} />
+          <Route
+            path="/store/detail/:productCode"
+            element={<Detail_client />}
+          />
           {/* 주문서작성 영역 */}
           {/* 1. 싱글상품 */}
           <Route path="/store/order" element={<Order_client />} />

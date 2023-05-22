@@ -122,6 +122,7 @@ export default function Detail_OrderMenu_client({
       const reqData = await axios.post(`http://localhost:4000/cart/add`, {
         token: await getToken(),
         productName: datas.productName,
+        productCode: datas.productCode,
         img: datas.img[0],
         price: datas.price,
         size: sizeCheck,
@@ -153,6 +154,7 @@ export default function Detail_OrderMenu_client({
   const singleDataSum = (datas, count, sizeCheck) => {
     let sumData = {
       productName: datas.productName,
+      productCode: datas.productCode,
       price: datas.price,
       quantity: count,
       size: sizeCheck,
