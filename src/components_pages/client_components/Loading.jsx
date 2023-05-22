@@ -23,11 +23,12 @@ const AnimationText = styled.span`
 `;
 
 const Container = styled.div`
-  position: relative;
+  position: absolute;
   width: 100vw;
-  height: 700px;
-  /* background-color: beige; */
+  height: 690px;
+  background-color: white;
   text-align: center;
+  z-index: 999;
 `;
 
 export default function Loading() {

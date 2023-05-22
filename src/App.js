@@ -21,7 +21,7 @@ import Store_Categorys from './components_pages/client_components/Store_Category
 import Error404 from './components_pages/client_components/Error404';
 import TossPay_Complete from './components_pages/client_components/TossPay_Complete';
 import { Toss_CheckOut } from './components_pages/client_components/Toss_CheckOut';
-import { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import axios from 'axios';
 import { keepLogin } from './store/modules/user';
 import RegisterSuccess_client from './components_pages/client_components/RegisterSuccess_client';

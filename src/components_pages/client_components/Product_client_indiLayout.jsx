@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import Loading from './Loading';
 
 const ImageContainer = styled.div`
   position: relative;
@@ -41,6 +42,7 @@ export default function Product_client_indiLayout({
   imgFileName,
   productName,
   price,
+  onLoadEffect,
 }) {
   //조건부 설정
   const [isHovered, setIsHovered] = useState(false);
@@ -64,7 +66,10 @@ export default function Product_client_indiLayout({
       onMouseLeave={handleMouseLeave}
     >
       {/* 위에서 선별된 이미지를 실제로 쏴준다. */}
-      <ImageLayout src={'http://localhost:4000/uploads/' + image} />
+      <ImageLayout
+        src={'http://localhost:4000/uploads/' + image}
+        onLoad={onLoadEffect}
+      />
       <ProductInfoLayout>
         <ProductName>{productName}</ProductName>
         <ProductPrice>₩ {price}</ProductPrice>

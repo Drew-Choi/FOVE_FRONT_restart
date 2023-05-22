@@ -39,9 +39,7 @@ export default function OrderCancel_client() {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      getCancelItem();
-    }, 500);
+    getCancelItem();
   }, []);
 
   //db Number타입을 스트링으로 바꾸고 천단위 컴마 찍어 프론트에 보내기
