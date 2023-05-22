@@ -385,14 +385,18 @@ export default function Header_client() {
                   </p>
                 </MediaQuery>
                 <MediaQuery maxWidth={1144}>
-                  <span
-                    onClick={() => {
-                      navigate(`/login`);
-                    }}
-                    className="material-symbols-outlined header_login_mediaQ"
-                  >
-                    login
-                  </span>
+                  {isVisible ? (
+                    <p className="loading2">Loading...</p>
+                  ) : (
+                    <span
+                      onClick={() => {
+                        navigate(`/login`);
+                      }}
+                      className="material-symbols-outlined header_login_mediaQ"
+                    >
+                      login
+                    </span>
+                  )}
                 </MediaQuery>
               </>
             )}

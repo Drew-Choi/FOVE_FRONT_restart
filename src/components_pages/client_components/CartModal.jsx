@@ -165,7 +165,7 @@ const Pd_miners = styled.span`
   font-size: 18px;
   font-weight: 550;
   grid-column: 1/1;
-  transform: translateY(-2px);
+  transform: translateY(0px);
   grid-row: 1/1;
   justify-self: center;
   align-self: center;
@@ -215,7 +215,7 @@ const RemoveIcon = styled.span`
   font-size: 25px;
   position: relative;
   left: 260px;
-  bottom: 105px;
+  bottom: 130px;
   cursor: pointer;
   &:hover {
     color: #ff5858;

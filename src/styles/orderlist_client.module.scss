@@ -37,9 +37,56 @@
         font-size: 13px;
       }
 
-      span {
+      .order_list_check {
         margin-right:  20px;
         cursor: pointer;
+        &:hover{
+          color: gray;
+        }
+        &:active{
+          color: rgb(213, 213, 213);
+        }
+
+        @media screen and (max-width:280px) {
+          margin-right: 10px;
+        }
+      }
+
+      .order_list_check.on {
+        margin-right:  20px;
+        cursor: pointer;
+        text-decoration: underline;
+        &:hover{
+          color: gray;
+        }
+        &:active{
+          color: rgb(213, 213, 213);
+        }
+
+        @media screen and (max-width:280px) {
+          margin-right: 10px;
+        }
+      }
+
+        .cancle_list_check {
+        margin-right:  20px;
+        cursor: pointer;
+        &:hover{
+          color: gray;
+        }
+        &:active{
+          color: rgb(213, 213, 213);
+        }
+
+        @media screen and (max-width:280px) {
+          margin-right: 10px;
+        }
+      }
+
+        .cancle_list_check.on {
+        margin-right:  20px;
+        cursor: pointer;
+        text-decoration: underline;
         &:hover{
           color: gray;
         }
