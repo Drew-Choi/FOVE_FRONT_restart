@@ -29,6 +29,7 @@ const AnimationText = styled.span`
 const Container = styled.div`
   position: absolute;
   width: 100vw;
+  min-height: 700px;
   height: 100%;
   background-color: white;
   text-align: center;

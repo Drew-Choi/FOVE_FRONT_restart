@@ -199,22 +199,34 @@ export default function OrderList_client() {
                       </p>
                       <p className={orderList.status}>
                         {el.payments.status === 'DONE' ? '입금완료' : '입금전'}{' '}
-                        / {'배송전'}
+                        / {el.isShipping === false ? '배송준비중' : '배송중'}
                       </p>
-                      <button
-                        className={orderList.orderCancle}
-                        onClick={() => {
-                          navigate(
-                            `/mypage/orderlist/cancel/${el.payments.orderId}`,
-                          );
-                        }}
-                      >
-                        주문취소
-                      </button>
+                      {el.isShipping === false ? (
+                        <button
+                          className={orderList.orderCancle}
+                          onClick={() => {
+                            navigate(
+                              `/mypage/orderlist/cancel/${el.payments.orderId}`,
+                            );
+                          }}
+                        >
+                          주문취소
+                        </button>
+                      ) : (
+                        <>
+                          <button className={orderList.orderCancle}>
+                            반품신청
+                          </button>
+                        </>
+                      )}
+
                       <p className={orderList.orderCancelInfo}>
-                        {' '}
-                        *주문취소는 배송상태가 &#39;배송전&#39;일 경우에
-                        가능합니다.{' '}
+                        * 주문취소는 배송상태가 &#39;배송준비중&#39;일 경우에
+                        가능합니다.
+                      </p>
+                      <p className={orderList.orderCancelInfo2}>
+                        * &#39;배송중&#39;일 경우 &#39;배송완료&#39; 후
+                        &#39;반품신청&#39;을 이용해주세요.
                       </p>
                     </div>
                   </div>

@@ -199,6 +199,16 @@
             font-size: 10px;
           }
         }
+
+        .orderCancelInfo2 {
+          font-size: 12px;
+          margin-top: 5px;
+          margin-bottom: 0px;
+
+          @media screen and (max-width: 280px) {
+            font-size: 10px;
+          }
+        }
       }
       
     }
