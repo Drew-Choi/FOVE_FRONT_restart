@@ -199,9 +199,14 @@ export default function OrderList_client() {
                       </p>
                       <p className={orderList.status}>
                         {el.payments.status === 'DONE' ? '입금완료' : '입금전'}{' '}
-                        / {el.isShipping === false ? '배송준비중' : '배송중'}
+                        / {!el.shippingCode ? '배송준비중' : '배송중'}
                       </p>
-                      {el.isShipping === false ? (
+                      <p className={orderList.shippingCode}>
+                        {!el.shippingCode
+                          ? null
+                          : `송장번호: ${el.shippingCode} (한진)`}
+                      </p>
+                      {!el.shippingCode ? (
                         <button
                           className={orderList.orderCancle}
                           onClick={() => {
