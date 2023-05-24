@@ -2,8 +2,8 @@ import React from 'react';
 
 export default function Test() {
   return (
-    <></>
-    //     html: <html><head><script language="JavaScript" type="text/JavaScript">
+    <>
+      {/* //     html: <html><head><script language="JavaScript" type="text/JavaScript">
     //                 location.href="https://trace.cjlogistics.com/web/detail.jsp?"+"slipno=12312312312";
     //         </script>
 
@@ -224,5 +224,85 @@ export default function Test() {
     // </center>
 
     // </body></html>
+
+    // --> 한진택배 코드 분석
+    // <div class=\"delivery-step\">
+    //   <ul>
+    //     <li>
+    //       <span class=\"ico-wr\">
+    //         <span class=\"ico ico1\"></span>
+    //       </span>
+    //       <span class=\"num\">STEP1</span>
+    //       <span class=\"txt\">
+    //         <span>상품<br>접수</span>
+    //       </span>
+    //     </li>
+
+    //     <li>
+    //       <span class=\"ico-wr\">
+    //         <span class=\"ico ico2\"></span>
+    //       </span>
+    //       <span class=\"num\">STEP2</span>
+    //       <span class=\"txt\">
+    //         <span>터미널<br>입고</span>
+    //       </span>
+    //     </li>
+
+    //     <li>
+    //       <span class=\"ico-wr\">
+    //         <span class=\"ico ico3\"></span>
+    //       </span>
+    //       <span class=\"num\">STEP3</span>
+    //       <span class=\"txt\">
+    //         <span>상품<br>이동중</span>
+    //       </span>
+    //     </li>
+
+    //     <li>
+    //       <span class=\"ico-wr\">
+    //         <span class=\"ico ico4\"></span>
+    //       </span>
+    //       <span class=\"num\">STEP4</span>
+    //       <span class=\"txt\">
+    //         <span>배송<br>터미널<br>도착</span>
+    //       </span>
+    //     </li>
+
+    //     <li>
+    //       <span class=\"ico-wr\">
+    //         <span class=\"ico ico5\"></span>
+    //       </span>
+    //       <span class=\"num\">STEP5</span>
+    //       <span class=\"txt\">
+    //         <span>배송<br>출발</span>
+    //       </span>
+    //     </li>
+
+    //     <li class=\"on\">
+    //       <span class=\"ico-wr\">
+    //         <span class=\"ico ico6\"></span>
+    //       </span>
+    //       <span class=\"num\">STEP6</span>
+    //       <span class=\"txt\">
+    //         <span>배송<br>완료</span>
+    //       </span>
+    //     </li>
+    //   </ul>
+    // </div>
+
+    // <span class=\"stateDesc\"> 고객님 상품을  <strong>접수</strong>하였습니다. </span> */}
+
+      {/* 
+    <div class="delivery-time">
+      <p class="cal-sec">
+        <span class="date">2023-05-23</span>
+        <span class="time">13:26</span>
+      </p>
+        <p class="comm-sec">
+          <span class="comm-ico comm-ico06"></span>
+          <strong>배송완료</strong> 되었습니다.
+        </p>
+    </div> */}
+    </>
   );
 }
