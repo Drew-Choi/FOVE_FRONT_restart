@@ -20,10 +20,9 @@ export default function Mypage_client() {
         { token: tokenValue },
       );
       if (getOrderListData.status === 200 && getOrderListData.data.length > 0) {
-        setOrderListArray((cur) => getOrderListData.data);
-        console.log(getOrderListData.data);
+        return setOrderListArray((cur) => getOrderListData.data);
       } else {
-        console.log('데이터 없음');
+        return setOrderListArray((cur) => []);
       }
     } catch (err) {
       console.error(err);
@@ -43,9 +42,9 @@ export default function Mypage_client() {
         getCancelListData.status === 200 &&
         getCancelListData.data.length > 0
       ) {
-        setCancelListArray((cur) => getCancelListData.data);
+        return setCancelListArray((cur) => getCancelListData.data);
       } else {
-        console.log('데이터 없음');
+        return setCancelListArray((cur) => []);
       }
     } catch (err) {
       console.error(err);
@@ -59,10 +58,7 @@ export default function Mypage_client() {
 
   return (
     <section className={myPage.myPage_container}>
-      {orderListArray !== null &&
-      orderListArray.length > 0 &&
-      cancelListArray !== null &&
-      cancelListArray.length > 0 ? (
+      {orderListArray !== null && cancelListArray !== null ? (
         <>
           {/* ACCOUNT 제목 위치 */}
           <div className={myPage.titleArea}>
@@ -154,7 +150,8 @@ export default function Mypage_client() {
                     {orderListArray.reduce((acc, cur) => {
                       if (
                         cur.payments.status === 'DONE' &&
-                        cur.shippingCode !== 0
+                        cur.shippingCode !== 0 &&
+                        cur.isDelivered === false
                       ) {
                         return acc + 1;
                       }
