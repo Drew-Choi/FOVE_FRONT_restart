@@ -10,6 +10,7 @@ export default function Mypage_client() {
   const navigate = useNavigate();
   const userNameEncoded = useSelector((state) => state.user.userName);
   const [orderListArray, setOrderListArray] = useState(null);
+  const [cancelListArray, setCancelListArray] = useState(null);
 
   const getOrderList = async () => {
     try {
@@ -29,13 +30,39 @@ export default function Mypage_client() {
     }
   };
 
+  const getCancelList = async () => {
+    try {
+      const tokenValue = await getToken();
+      const getCancelListData = await axios.post(
+        'http://localhost:4000/order_list/getCancelList',
+        {
+          token: tokenValue,
+        },
+      );
+      if (
+        getCancelListData.status === 200 &&
+        getCancelListData.data.length > 0
+      ) {
+        setCancelListArray((cur) => getCancelListData.data);
+      } else {
+        console.log('데이터 없음');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     getOrderList();
+    getCancelList();
   }, []);
 
   return (
     <section className={myPage.myPage_container}>
-      {orderListArray !== null && orderListArray.length > 0 ? (
+      {orderListArray !== null &&
+      orderListArray.length > 0 &&
+      cancelListArray !== null &&
+      cancelListArray.length > 0 ? (
         <>
           {/* ACCOUNT 제목 위치 */}
           <div className={myPage.titleArea}>
@@ -107,7 +134,10 @@ export default function Mypage_client() {
                   <p>배송준비중</p>
                   <p>
                     {orderListArray.reduce((acc, cur) => {
-                      if (cur.payments.status === 'DONE' && !cur.shippingCode) {
+                      if (
+                        cur.payments.status === 'DONE' &&
+                        cur.shippingCode === 0
+                      ) {
                         return acc + 1;
                       }
                       return acc;
@@ -122,7 +152,10 @@ export default function Mypage_client() {
                   <p>배송중</p>
                   <p>
                     {orderListArray.reduce((acc, cur) => {
-                      if (cur.payments.status === 'DONE' && cur.shippingCode) {
+                      if (
+                        cur.payments.status === 'DONE' &&
+                        cur.shippingCode !== 0
+                      ) {
                         return acc + 1;
                       }
                       return acc;
@@ -152,23 +185,37 @@ export default function Mypage_client() {
                   onClick={() => navigate('/mypage/orderlist')}
                 >
                   <p>취소 :</p>
-                  <p>0</p>
+                  <p>
+                    {cancelListArray.reduce((acc, cur) => {
+                      if (cur.isCancel) {
+                        return acc + 1;
+                      }
+                      return acc;
+                    }, 0)}
+                  </p>
                 </a>
 
-                <a
+                {/* <a
                   className={myPage.change}
                   onClick={() => navigate('/mypage/orderlist')}
                 >
                   <p>교환 :</p>
                   <p>0</p>
-                </a>
+                </a> */}
 
                 <a
                   className={myPage.refund}
                   onClick={() => navigate('/mypage/orderlist')}
                 >
                   <p>반품 :</p>
-                  <p>0</p>
+                  <p>
+                    {cancelListArray.reduce((acc, cur) => {
+                      if (cur.isReturn) {
+                        return acc + 1;
+                      }
+                      return acc;
+                    }, 0)}
+                  </p>
                 </a>
               </div>
             </div>

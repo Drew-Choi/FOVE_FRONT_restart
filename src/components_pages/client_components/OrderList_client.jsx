@@ -16,7 +16,7 @@ export default function OrderList_client() {
   const [orderListArray, setOrderListArray] = useState([]);
   const [cancelListArray, setCancelListArray] = useState([]);
   const navigate = useNavigate();
-  const [page, setPage] = useState(true);
+  const [page, setPage] = useState(1);
 
   // 해당 회원의 전체 주문내역 가져오기
   const getOrderList = async () => {
@@ -110,28 +110,39 @@ export default function OrderList_client() {
           <div className={orderList.order_info_category}>
             <span
               className={
-                page
+                page === 1
                   ? `${orderList.order_list_check} ${orderList.on}`
                   : orderList.order_list_check
               }
-              onClick={() => setPage((cur) => true)}
+              onClick={() => setPage((cur) => 1)}
             >
               주문내역조회
               <span>({orderListArray.length})</span>
             </span>
             <span
               className={
-                !page
+                page === 2
                   ? `${orderList.order_list_check} ${orderList.on}`
                   : orderList.order_list_check
               }
-              onClick={() => setPage((cur) => false)}
+              onClick={() => setPage((cur) => 2)}
             >
-              취소/반품/교환 내역
+              취소내역
+              <span>({cancelListArray.length})</span>
+            </span>
+            <span
+              className={
+                page === 3
+                  ? `${orderList.order_list_check} ${orderList.on}`
+                  : orderList.order_list_check
+              }
+              onClick={() => setPage((cur) => 3)}
+            >
+              교환내역
               <span>({cancelListArray.length})</span>
             </span>
           </div>
-          {page ? (
+          {page === 1 ? (
             <>
               {orderListArray.map((el, index) => {
                 return (
@@ -199,14 +210,14 @@ export default function OrderList_client() {
                       </p>
                       <p className={orderList.status}>
                         {el.payments.status === 'DONE' ? '입금완료' : '입금전'}{' '}
-                        / {!el.shippingCode ? '배송준비중' : '배송중'}
+                        / {el.shippingCode === 0 ? '배송준비중' : '배송중'}
                       </p>
                       <p className={orderList.shippingCode}>
-                        {!el.shippingCode
+                        {el.shippingCode === 0
                           ? null
                           : `송장번호: ${el.shippingCode} (한진)`}
                       </p>
-                      {!el.shippingCode ? (
+                      {el.shippingCode === 0 ? (
                         <button
                           className={orderList.orderCancle}
                           onClick={() => {
@@ -217,12 +228,19 @@ export default function OrderList_client() {
                         >
                           주문취소
                         </button>
-                      ) : (
+                      ) : el.shippingCode !== 0 &&
+                        el.isOrdered &&
+                        el.isShipping &&
+                        !el.isDelivered ? (
                         <>
                           <button className={orderList.orderCancle}>
                             반품신청
                           </button>
                         </>
+                      ) : (
+                        <p style={{ fontSize: '15px', fontWeight: '600' }}>
+                          배송완료
+                        </p>
                       )}
 
                       <p className={orderList.orderCancelInfo}>
@@ -238,7 +256,7 @@ export default function OrderList_client() {
                 );
               })}
             </>
-          ) : (
+          ) : page === 2 ? (
             <>
               {cancelListArray.map((el, index) => {
                 return (
@@ -309,7 +327,11 @@ export default function OrderList_client() {
                         취소사유: {el.cancels.cancelReason}
                       </p>
                       <p className={orderList.status}>
-                        {el.payments.status === 'CANCELED' ? '취소완료' : <></>}
+                        {el.payments.status === 'CANCELED' && el.isCancel ? (
+                          '취소완료'
+                        ) : (
+                          <></>
+                        )}
                       </p>
                       <p className={orderList.orderCancelInfo}></p>
                     </div>
@@ -317,6 +339,8 @@ export default function OrderList_client() {
                 );
               })}
             </>
+          ) : (
+            <div>교환내역 따로 만들거임</div>
           )}
         </div>
       </section>
