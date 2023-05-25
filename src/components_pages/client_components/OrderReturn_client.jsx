@@ -30,9 +30,29 @@ const Preview = styled.img`
 
 export default function OrderReturn_client() {
   const [orderCancelItem, setOrderCancelItem] = useState(null);
-  // const [selectReason, setSelectReason] = useState('단순변심');
   const navigate = useNavigate();
   const { orderId } = useParams();
+  const desc = useRef();
+
+  const submitReturnInfo = async () => {
+    try {
+      const tokenValue = await getToken();
+      const message = desc.current.value;
+      const reason = reasonChange;
+
+      const submitRes = await axios.post(
+        'http://localhost:4000/admin//return_list',
+        {
+          token: tokenValue,
+          orderId,
+          message,
+          reason,
+        },
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const getCancelItem = async () => {
     try {
@@ -222,6 +242,7 @@ export default function OrderReturn_client() {
                 </Select_Custom>
                 {reasonChange === '기타' && (
                   <textarea
+                    ref={desc}
                     rows="5"
                     wrap="hard"
                     maxLength="200"
