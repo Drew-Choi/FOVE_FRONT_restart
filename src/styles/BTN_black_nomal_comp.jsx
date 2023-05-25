@@ -11,8 +11,9 @@ const Btn_blakc_nomal = styled.span`
   transform-origin: center;
   transition: 0.2s ease;
   text-align: center;
+  border: 0.5px solid black;
   &:hover {
-    background-color: #97979728;
+    background-color: #ffffff;
     color: black;
   }
   &:active {

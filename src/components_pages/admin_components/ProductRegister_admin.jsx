@@ -144,7 +144,6 @@ export default function ProductRegister_admin() {
     }
     setImageFile((cur) => copy);
     pd_img.current = fileList;
-    console.log(pd_img.current);
   };
 
   //이미지 뿌려주기, 유즈 메모로 image파일이 업로드 될때만 반응하도록

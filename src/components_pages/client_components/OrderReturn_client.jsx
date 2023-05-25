@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import getToken from '../../store/modules/getToken';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -6,11 +6,26 @@ import orderReturn from '../../styles/orderReturn_client.module.scss';
 import styled from 'styled-components';
 import Loading from './Loading';
 import Select_Custom from '../../components_elements/Select_Custom';
+import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
 
 const Pd_Images = styled.div`
   ${(props) =>
     props.img &&
     `background-image: url('http://localhost:4000/uploads/${props.img}')`}
+`;
+
+const Preview = styled.img`
+  position: relative;
+  display: block;
+  box-sizing: content-box;
+  width: 40vw;
+  height: auto;
+  border-bottom: 0.5px solid black;
+  padding: 10px;
+  margin: 5px;
+  margin-right: 10px;
+  src: (${(props) => props.thumbnail});
+  cursor: pointer;
 `;
 
 export default function OrderReturn_client() {
@@ -61,6 +76,71 @@ export default function OrderReturn_client() {
       return setReasonChange((cur) => '기타');
     return setReasonChange((cur) => '상품파손');
   };
+
+  // 반품 사유가 되는 사진 업로드 ------
+  // 이미지 정보 Ref
+  const pd_img = useRef();
+  //이미지 파일 업로드용 Ref
+  const fileInputRef = useRef();
+  //이미지 url접근값 저장 state
+  const [imageFile, setImageFile] = useState(null);
+
+  // 이미지 업로드 팝업 클릭용
+  const handleClickFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
+  //이미지 접근하여 state를 이미지 값으로 변경
+  //및 이미지 숫자를 5개로 제한
+  //이미지 갯수 상태 보관
+  const [files, setFiles] = useState([]);
+  //Array.from은 배열과 유사한 것을 배열화 시킴, 이미지 갯수 대문에 배열화
+
+  const uploadProfile = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    if (selectedFiles.length > 3) {
+      alert('최대 3개까지 업로드 가능합니다.');
+    } else {
+      setFiles(selectedFiles);
+    }
+    const fileList = e.target.files;
+    const length = fileList.length;
+    let copy = [];
+    if (fileList) {
+      for (let i = 0; i < length; i += 1) {
+        const imgInfo = {
+          file: fileList[i],
+          thumbnail: URL.createObjectURL(fileList[i]),
+          type: fileList[i].type.slice(0, 5),
+        };
+        copy.push(imgInfo);
+      }
+    }
+    setImageFile((cur) => copy);
+    pd_img.current = fileList;
+  };
+
+  //이미지 뿌려주기, 유즈 메모로 image파일이 업로드 될때만 반응하도록
+  const showImage = useMemo(() => {
+    if (!imageFile && imageFile === null) {
+      return <></>;
+    }
+    return imageFile.map((el, index) => (
+      <Preview
+        // thumbnail={el.thumbnail}
+        key={index}
+        onClick={handleClickFileInput}
+        src={el.thumbnail}
+      ></Preview>
+    ));
+  }, [imageFile]);
+
+  // 업로드 초기화
+  const handleImageReset = () => {
+    setImageFile((cur) => null);
+  };
+
+  //----- 이미지 끝-------
 
   return (
     <>
@@ -150,6 +230,41 @@ export default function OrderReturn_client() {
                     placeholder="기타 사유를 남겨주시면 검토 후 연락드리겠습니다. (최대 200자)"
                   />
                 )}
+                <div className={orderReturn.line}></div>
+                <input
+                  style={{ display: 'none' }}
+                  type="file"
+                  accept="image/jpg, image/jpeg, image/png"
+                  ref={fileInputRef}
+                  onChange={uploadProfile}
+                  name="img"
+                  multiple
+                />
+                <div className={orderReturn.imagePreview_container}>
+                  <div className={orderReturn.imageShow}>{showImage}</div>
+                </div>
+
+                <p className={orderReturn.caution}>
+                  * 문제되신 부분의 사진을 업로드 해주세요.(최대 3개)
+                </p>
+                <div className={orderReturn.BTNwrap}>
+                  <BTN_black_nomal_comp
+                    borderRadius="0px"
+                    className={orderReturn.imageUplaod_BTN}
+                    onClickEvent={handleClickFileInput}
+                    fontSize="12px"
+                  >
+                    파일선택
+                  </BTN_black_nomal_comp>
+                  <BTN_black_nomal_comp
+                    borderRadius="0px"
+                    className={orderReturn.imageReset}
+                    onClickEvent={handleImageReset}
+                    fontSize="12px"
+                  >
+                    초기화
+                  </BTN_black_nomal_comp>
+                </div>
 
                 <button
                   className={orderReturn.orderBack}

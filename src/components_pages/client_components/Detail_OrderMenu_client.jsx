@@ -9,7 +9,6 @@ import ModalContainer_client from './ModalContainer_client';
 import ModalContainer_client2 from './ModalContainer_client2';
 import detailOrderMenu from '../../styles/detail_orderMenu.module.scss';
 import { MdAddShoppingCart } from 'react-icons/md';
-import { openDB } from 'idb';
 import getToken from '../../store/modules/getToken';
 
 export default function Detail_OrderMenu_client({

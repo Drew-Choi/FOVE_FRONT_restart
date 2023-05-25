@@ -91,7 +91,7 @@
         position: relative;
         margin: 0px auto;
         margin-top: 10px;
-        background-color: beige;
+        // background-color: beige;
         padding: 15px 40px;
         text-align: center;
 
@@ -121,6 +121,48 @@
             width: 35vw;
             resize: none;
           }
+
+          .line{
+            position: relative;
+            margin: auto;
+            // background-color: aqua;
+            width: 41vw;
+            height: 10px;
+            border-bottom: 0.5px solid black;
+          }
+
+        .imagePreview_container{
+          position: relative;
+          display: flex;
+          justify-content: center;
+          // background-color: red;
+          width: 100%;
+
+          .imageShow{
+            position: relative;
+          }
+        }
+
+        .BTNwrap {
+          display: flex;
+          justify-content: center;
+          margin: 10px;
+          margin-bottom: 30px;
+          gap: 10px;
+
+          .imageUplaod_BTN{
+            position: relative;
+            display: block;
+            width: 100px;
+          }
+
+          .imageReset{
+            position: relative;
+            display: block;
+            width: 60px;
+          }
+        }
+      
 
         .orderBack {
           all: unset;
