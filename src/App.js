@@ -20,7 +20,7 @@ import Store_Categorys from './components_pages/client_components/Store_Category
 import Error404 from './components_pages/client_components/Error404';
 import TossPay_Complete from './components_pages/client_components/TossPay_Complete';
 import { Toss_CheckOut } from './components_pages/client_components/Toss_CheckOut';
-import React, { useEffect, Suspense } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import { keepLogin } from './store/modules/user';
 import EditInfo_client from './components_pages/client_components/EditInfo_client';
@@ -34,6 +34,7 @@ import { openDB } from 'idb';
 import getToken from './store/modules/getToken';
 import OrderCancel_client from './components_pages/client_components/OrderCancel_client';
 import TossPay_Cancel_Complete from './components_pages/client_components/TossPay_Cancel_Complete';
+import OrderReturn_client from './components_pages/client_components/OrderReturn_client';
 
 function App() {
   const isLogin = useSelector((state) => state.user.isLogin);
@@ -167,6 +168,12 @@ function App() {
           <Route
             path="/mypage/orderlist/cancel/:orderId"
             element={isLogin ? <OrderCancel_client /> : <Login_client />}
+          />
+
+          {/* 반품신청 */}
+          <Route
+            path="/mypage/orderlist/return/:orderId"
+            element={isLogin ? <OrderReturn_client /> : <Login_client />}
           />
 
           {/* 취소완료 */}

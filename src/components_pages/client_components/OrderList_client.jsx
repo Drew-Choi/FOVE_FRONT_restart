@@ -134,7 +134,16 @@ export default function OrderList_client() {
                   onClick={() => setPage((cur) => 2)}
                 >
                   취소내역
-                  <span>({cancelListArray.length})</span>
+                  <span>
+                    (
+                    {cancelListArray.reduce((acc, cur) => {
+                      if (cur.isCancel) {
+                        return acc + 1;
+                      }
+                      return acc;
+                    }, 0)}
+                    )
+                  </span>
                 </span>
                 <span
                   className={
@@ -145,7 +154,16 @@ export default function OrderList_client() {
                   onClick={() => setPage((cur) => 3)}
                 >
                   교환내역
-                  <span>({cancelListArray.length})</span>
+                  <span>
+                    (
+                    {cancelListArray.reduce((acc, cur) => {
+                      if (cur.isReturn) {
+                        return acc + 1;
+                      }
+                      return acc;
+                    }, 0)}
+                    )
+                  </span>
                 </span>
               </div>
               {page === 1 ? (
@@ -258,7 +276,14 @@ export default function OrderList_client() {
                             el.isShipping &&
                             !el.isDelivered ? (
                             <>
-                              <button className={orderList.orderCancle}>
+                              <button
+                                className={orderList.orderCancle}
+                                onClick={() => {
+                                  navigate(
+                                    `/mypage/orderlist/return/${el.payments.orderId}`,
+                                  );
+                                }}
+                              >
                                 반품신청
                               </button>
                             </>
@@ -284,97 +309,98 @@ export default function OrderList_client() {
               ) : page === 2 ? (
                 <>
                   {cancelListArray.map((el, index) => {
-                    return (
-                      <div
-                        key={index}
-                        className={orderList.orderlist_Check_wrap}
-                      >
-                        {/* 주문 조회 내역 */}
-                        <p className={orderList.older_date}>
-                          취소날짜:{' '}
-                          <strong>
-                            {filterTimeDay(el.cancels.canceledAt)}
-                          </strong>{' '}
-                          ({el.payments.orderId})
-                        </p>
-                        {el.products.map((pdInfo, index) => {
-                          return (
-                            <div
-                              key={index}
-                              className={orderList.older_image_info}
-                            >
-                              <PD_Images
-                                onClick={() =>
-                                  navigate(
-                                    `/store/detail/${pdInfo.productCode}`,
-                                  )
-                                }
-                                img={pdInfo.img}
-                                className={orderList.older_image}
-                              ></PD_Images>
-                              <div className={orderList.pdnameprice}>
-                                <p
-                                  className={orderList.pdname}
+                    if (el.isCancel)
+                      return (
+                        <div
+                          key={index}
+                          className={orderList.orderlist_Check_wrap}
+                        >
+                          {/* 주문 조회 내역 */}
+                          <p className={orderList.older_date}>
+                            취소날짜:{' '}
+                            <strong>
+                              {filterTimeDay(el.cancels.canceledAt)}
+                            </strong>{' '}
+                            ({el.payments.orderId})
+                          </p>
+                          {el.products.map((pdInfo, index) => {
+                            return (
+                              <div
+                                key={index}
+                                className={orderList.older_image_info}
+                              >
+                                <PD_Images
                                   onClick={() =>
                                     navigate(
                                       `/store/detail/${pdInfo.productCode}`,
                                     )
                                   }
-                                >
-                                  {pdInfo.productName}
-                                </p>
-                                <p className={orderList.pdprice}>
-                                  <strong style={{ fontSize: '15px' }}>
-                                    {frontPriceComma(pdInfo.unitSumPrice)}{' '}
-                                  </strong>
-                                  KRW /{' '}
-                                  <strong style={{ fontSize: '15px' }}>
-                                    {frontPriceComma(pdInfo.quantity)}
-                                  </strong>{' '}
-                                  ea
-                                </p>
-                                <p className={orderList.pdprice}>
-                                  SIZE{' '}
-                                  <strong style={{ fontSize: '15px' }}>
-                                    {pdInfo.size}
-                                  </strong>
-                                </p>
+                                  img={pdInfo.img}
+                                  className={orderList.older_image}
+                                ></PD_Images>
+                                <div className={orderList.pdnameprice}>
+                                  <p
+                                    className={orderList.pdname}
+                                    onClick={() =>
+                                      navigate(
+                                        `/store/detail/${pdInfo.productCode}`,
+                                      )
+                                    }
+                                  >
+                                    {pdInfo.productName}
+                                  </p>
+                                  <p className={orderList.pdprice}>
+                                    <strong style={{ fontSize: '15px' }}>
+                                      {frontPriceComma(pdInfo.unitSumPrice)}{' '}
+                                    </strong>
+                                    KRW /{' '}
+                                    <strong style={{ fontSize: '15px' }}>
+                                      {frontPriceComma(pdInfo.quantity)}
+                                    </strong>{' '}
+                                    ea
+                                  </p>
+                                  <p className={orderList.pdprice}>
+                                    SIZE{' '}
+                                    <strong style={{ fontSize: '15px' }}>
+                                      {pdInfo.size}
+                                    </strong>
+                                  </p>
+                                </div>
                               </div>
-                            </div>
-                          );
-                        })}
-                        <div className={orderList.infoCancelContainer}>
-                          <p className={orderList.older_detail_info}>
-                            total ={' '}
-                            <strong style={{ fontSize: '17px' }}>
-                              {frontPriceComma(el.payments.totalAmount)}{' '}
-                            </strong>
-                            KRW /{' '}
-                            <strong style={{ fontSize: '17px' }}>
-                              {frontPriceComma(
-                                el.products.reduce(
-                                  (acc, cur) => acc + cur.quantity,
-                                  0,
-                                ),
+                            );
+                          })}
+                          <div className={orderList.infoCancelContainer}>
+                            <p className={orderList.older_detail_info}>
+                              total ={' '}
+                              <strong style={{ fontSize: '17px' }}>
+                                {frontPriceComma(el.payments.totalAmount)}{' '}
+                              </strong>
+                              KRW /{' '}
+                              <strong style={{ fontSize: '17px' }}>
+                                {frontPriceComma(
+                                  el.products.reduce(
+                                    (acc, cur) => acc + cur.quantity,
+                                    0,
+                                  ),
+                                )}
+                              </strong>{' '}
+                              ea
+                            </p>
+                            <p style={{ fontSize: '15px' }}>
+                              취소사유: {el.cancels.cancelReason}
+                            </p>
+                            <p className={orderList.status}>
+                              {el.payments.status === 'CANCELED' &&
+                              el.isCancel ? (
+                                '취소완료'
+                              ) : (
+                                <></>
                               )}
-                            </strong>{' '}
-                            ea
-                          </p>
-                          <p style={{ fontSize: '15px' }}>
-                            취소사유: {el.cancels.cancelReason}
-                          </p>
-                          <p className={orderList.status}>
-                            {el.payments.status === 'CANCELED' &&
-                            el.isCancel ? (
-                              '취소완료'
-                            ) : (
-                              <></>
-                            )}
-                          </p>
-                          <p className={orderList.orderCancelInfo}></p>
+                            </p>
+                            <p className={orderList.orderCancelInfo}></p>
+                          </div>
                         </div>
-                      </div>
-                    );
+                      );
                   })}
                 </>
               ) : (
