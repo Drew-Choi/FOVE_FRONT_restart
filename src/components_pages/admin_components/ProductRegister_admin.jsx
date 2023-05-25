@@ -104,7 +104,6 @@ export default function ProductRegister_admin() {
   const pd_sizeL = useRef();
   const pd_detail = useRef();
   const pd_img = useRef();
-  const pd_newArrival = useRef();
 
   //--------이미지 영역 특수해서 따로 분리----------
   //이미지 파일 업로드용 Ref

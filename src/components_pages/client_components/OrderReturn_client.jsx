@@ -34,26 +34,6 @@ export default function OrderReturn_client() {
   const { orderId } = useParams();
   const desc = useRef();
 
-  const submitReturnInfo = async () => {
-    try {
-      const tokenValue = await getToken();
-      const message = desc.current.value;
-      const reason = reasonChange;
-
-      const submitRes = await axios.post(
-        'http://localhost:4000/admin//return_list',
-        {
-          token: tokenValue,
-          orderId,
-          message,
-          reason,
-        },
-      );
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   const getCancelItem = async () => {
     try {
       const tokenValue = await getToken();
@@ -70,10 +50,6 @@ export default function OrderReturn_client() {
       console.error(err);
     }
   };
-
-  useEffect(() => {
-    getCancelItem();
-  }, []);
 
   //db Number타입을 스트링으로 바꾸고 천단위 컴마 찍어 프론트에 보내기
   const country = navigator.language;
@@ -114,14 +90,14 @@ export default function OrderReturn_client() {
   //및 이미지 숫자를 5개로 제한
   //이미지 갯수 상태 보관
   const [files, setFiles] = useState([]);
-  //Array.from은 배열과 유사한 것을 배열화 시킴, 이미지 갯수 대문에 배열화
+  //Array.from은 배열과 유사한 것을 배열화 시킴, 이미지 갯수 때문에 배열화
 
   const uploadProfile = (e) => {
     const selectedFiles = Array.from(e.target.files);
     if (selectedFiles.length > 3) {
       alert('최대 3개까지 업로드 가능합니다.');
     } else {
-      setFiles(selectedFiles);
+      setFiles((cur) => selectedFiles);
     }
     const fileList = e.target.files;
     const length = fileList.length;
@@ -162,10 +138,82 @@ export default function OrderReturn_client() {
 
   //----- 이미지 끝-------
 
+  // 반품 제출이 성공적이면 complete화면으로 이동
+  // fetch요청으로 받은 데이터를 사용할거라 컴포넌트 내에서 처리
+  const [completeStatus, setCompleteStatus] = useState(false);
+  const [returnSubmitData, setReturnSubmitData] = useState(null);
+
+  // 반품 신청서 제출
+  const submitReturnInfo = async () => {
+    try {
+      const tokenValue = await getToken();
+      // const message = desc.current.value || '';
+      const reason = reasonChange;
+      const formData = new FormData();
+      // 이미지가 여러개라 for문으로 담아줌
+      for (let i = 0; i < pd_img.current.length; i += 1) {
+        formData.append('img_return', pd_img.current[i]);
+      }
+
+      // 이미지외 자료들 담아주기
+      formData.append(
+        'data',
+        JSON.stringify({
+          token: tokenValue,
+          orderId,
+          message: '',
+          reason,
+        }),
+      );
+
+      formData.append('orderId', orderId);
+
+      console.log(orderId);
+
+      // multer이용으로 fetch 사용
+      const submitRes = await fetch(
+        'http://localhost:4000/admin//return_list',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: formData,
+        },
+      );
+      if (submitRes.status === 200) {
+        console.log('성공');
+        const dataParse = await submitRes.json();
+        setReturnSubmitData((cur) => dataParse);
+        setCompleteStatus((cur) => true);
+      } else {
+        console.log('전송실패');
+      }
+    } catch (err) {
+      console.error(err);
+      console.log('전송실패 콘솔에러');
+    }
+  };
+
+  useEffect(() => {
+    getCancelItem();
+  }, []);
+
+  // 조건부 렌더링, submit이 완료되면 컴플릿트 페이지로 넘어감
+  if (completeStatus)
+    return (
+      <section className={orderReturn.orderList_container}>
+        {returnSubmitData !== null &&
+        Object.keys(returnSubmitData).length > 0 ? (
+          <div> 컴플릿트 </div>
+        ) : (
+          <Loading />
+        )}
+      </section>
+    );
+
   return (
-    <>
+    <section className={orderReturn.orderList_container}>
       {orderCancelItem !== null && Object.keys(orderCancelItem).length > 0 ? (
-        <section className={orderReturn.orderList_container}>
+        <>
           <div className={orderReturn.titleArea}>
             <h5 className={orderReturn.subtitle}>RETURN</h5>
           </div>
@@ -293,7 +341,10 @@ export default function OrderReturn_client() {
                 >
                   뒤로가기
                 </button>
-                <button className={orderReturn.orderCancle}>
+                <button
+                  className={orderReturn.orderCancle}
+                  onClick={() => submitReturnInfo()}
+                >
                   반품신청 진행
                 </button>
                 <p className={orderReturn.caution}>
@@ -303,10 +354,10 @@ export default function OrderReturn_client() {
               </div>
             </div>
           </div>
-        </section>
+        </>
       ) : (
         <Loading />
       )}
-    </>
+    </section>
   );
 }
