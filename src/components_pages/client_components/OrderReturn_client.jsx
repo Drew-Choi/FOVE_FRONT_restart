@@ -18,8 +18,6 @@ export default function OrderReturn_client() {
   // const [selectReason, setSelectReason] = useState('단순변심');
   const navigate = useNavigate();
   const { orderId } = useParams();
-  // 취소사유
-  const cancelReasonSelet = useRef('단순변심');
 
   const getCancelItem = async () => {
     try {
@@ -54,8 +52,15 @@ export default function OrderReturn_client() {
     }
   };
 
-  // 취소 사유 리스트
-  const cancelReason = ['단순변심', '다른 상품으로 다시 주문', '기타'];
+  // 반품사유
+  const cancelReasonSelet = useRef('상품파손');
+  const cancelReason = ['상품파손', '기타'];
+  const [reasonChange, setReasonChange] = useState('상품파손');
+  const reasonHandle = () => {
+    if (cancelReasonSelet.current.value === '기타')
+      return setReasonChange((cur) => '기타');
+    return setReasonChange((cur) => '상품파손');
+  };
 
   return (
     <>
@@ -108,49 +113,56 @@ export default function OrderReturn_client() {
                   </div>
                 );
               })}
+              <p className={orderReturn.older_detail_info}>
+                total ={' '}
+                <strong style={{ fontSize: '17px' }}>
+                  {frontPriceComma(orderCancelItem.payments.totalAmount)}{' '}
+                </strong>
+                KRW /{' '}
+                <strong style={{ fontSize: '17px' }}>
+                  {frontPriceComma(
+                    orderCancelItem.products.reduce(
+                      (acc, cur) => acc + cur.quantity,
+                      0,
+                    ),
+                  )}
+                </strong>{' '}
+                ea
+              </p>
               <div className={orderReturn.infoCancelContainer}>
                 <Select_Custom
+                  classNameDiv={orderReturn.reason_div}
                   classNameChildren={orderReturn.reason_children}
                   classNameSelect={orderReturn.reason_select}
                   inputRef={cancelReasonSelet}
                   selectList={cancelReason}
+                  onChangeEvent={reasonHandle}
                 >
-                  * 취소 사유
+                  * 반품 사유
                 </Select_Custom>
-                <p className={orderReturn.older_detail_info}>
-                  total ={' '}
-                  <strong style={{ fontSize: '17px' }}>
-                    {frontPriceComma(orderCancelItem.payments.totalAmount)}{' '}
-                  </strong>
-                  KRW /{' '}
-                  <strong style={{ fontSize: '17px' }}>
-                    {frontPriceComma(
-                      orderCancelItem.products.reduce(
-                        (acc, cur) => acc + cur.quantity,
-                        0,
-                      ),
-                    )}
-                  </strong>{' '}
-                  ea
-                </p>
+                {reasonChange === '기타' && (
+                  <textarea
+                    rows="5"
+                    wrap="hard"
+                    maxLength="200"
+                    className={orderReturn.reason_selfInput}
+                    type="text"
+                    placeholder="기타 사유를 남겨주시면 검토 후 연락드리겠습니다. (최대 200자)"
+                  />
+                )}
+
                 <button
                   className={orderReturn.orderBack}
                   onClick={() => navigate(-1)}
                 >
                   뒤로가기
                 </button>
-                <button
-                  className={orderReturn.orderCancle}
-                  onClick={() =>
-                    navigate(
-                      `/mypage/orderlist/cancel/${orderCancelItem.payments.orderId}/${cancelReasonSelet.current.value}/complete`,
-                    )
-                  }
-                >
-                  취소진행
+                <button className={orderReturn.orderCancle}>
+                  반품신청 진행
                 </button>
                 <p className={orderReturn.caution}>
-                  *취소내역을 다시 한번 잘 확인하신 후 취소진행을 눌러주세요.
+                  *반품신청을 해주시면 검토 후 연락드리도록 하겠습니다.
+                  (카카오톡 or 주문자 전화번호)
                 </p>
               </div>
             </div>

@@ -241,11 +241,21 @@ export default function Header_client() {
         </p>
 
         {/* 관리자 페이지 이동 버튼 */}
-        {userData.isAdmin && (
-          <button className="adminBTN" onClick={() => navigate('/admin')}>
-            👩‍💻 관리자 페이지
-          </button>
-        )}
+        <MediaQuery minWidth={1037}>
+          {userData.isAdmin && (
+            <button className="adminBTN" onClick={() => navigate('/admin')}>
+              👩‍💻 관리자 페이지
+            </button>
+          )}
+        </MediaQuery>
+
+        <MediaQuery maxWidth={1036}>
+          {userData.isAdmin && (
+            <button className="adminBTN" onClick={() => navigate('/admin')}>
+              👩‍💻
+            </button>
+          )}
+        </MediaQuery>
 
         <MediaQuery minWidth={768}>
           <div id="cate">
