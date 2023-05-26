@@ -175,7 +175,7 @@ export default function OrderReturn_client() {
         'http://localhost:4000/admin//return_list',
         {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {},
           body: formData,
         },
       );
