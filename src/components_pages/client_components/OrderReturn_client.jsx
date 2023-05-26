@@ -152,7 +152,7 @@ export default function OrderReturn_client() {
       const formData = new FormData();
       // 이미지가 여러개라 for문으로 담아줌
       for (let i = 0; i < pd_img.current.length; i += 1) {
-        formData.append('img_return', pd_img.current[i]);
+        formData.append('img_return', pd_img.current[i], orderId);
       }
 
       // 이미지외 자료들 담아주기
@@ -165,10 +165,7 @@ export default function OrderReturn_client() {
           reason,
         }),
       );
-
-      formData.append('orderId', orderId);
-
-      console.log(orderId);
+      console.log(formData.get('img_return'));
 
       // multer이용으로 fetch 사용
       const submitRes = await fetch(
@@ -179,6 +176,7 @@ export default function OrderReturn_client() {
           body: formData,
         },
       );
+
       if (submitRes.status === 200) {
         console.log('성공');
         const dataParse = await submitRes.json();
