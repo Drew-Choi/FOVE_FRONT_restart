@@ -32,7 +32,7 @@ export default function OrderReturn_client() {
   const [orderCancelItem, setOrderCancelItem] = useState(null);
   const navigate = useNavigate();
   const { orderId } = useParams();
-  const desc = useRef();
+  const desc = useRef('');
 
   const getCancelItem = async () => {
     try {
@@ -125,7 +125,6 @@ export default function OrderReturn_client() {
       }
       setImageFile((cur) => copy);
       pd_img.current = copyUpload;
-      console.log(pd_img.current);
     }
   };
 
@@ -147,6 +146,7 @@ export default function OrderReturn_client() {
   // 업로드 초기화
   const handleImageReset = () => {
     setImageFile((cur) => null);
+    pd_img.current = [];
   };
 
   //----- 이미지 끝-------
@@ -173,39 +173,48 @@ export default function OrderReturn_client() {
           '제품의 문제가 되는 부분의 사진을 최소 1장은 올려주세요.(필수사항)',
         );
       } else {
-        for (let i = 0; i < pd_img.current.length; i += 1) {
-          formData.append('img_return', pd_img.current[i].file);
-        }
-
-        // 이미지외 자료들 담아주기
-        formData.append(
-          'data',
-          JSON.stringify({
-            token: tokenValue,
-            orderId,
-            message: '',
-            reason,
-          }),
-        );
-        console.log(formData.get('img_return'));
-
-        // multer이용으로 fetch 사용
-        const submitRes = await fetch(
-          'http://localhost:4000/admin//return_list',
-          {
-            method: 'POST',
-            headers: {},
-            body: formData,
-          },
-        );
-        console.log(formData);
-        if (submitRes.status === 200) {
-          console.log('성공');
-          const dataParse = await submitRes.json();
-          setReturnSubmitData((cur) => dataParse);
-          setCompleteStatus((cur) => true);
+        if (
+          reasonChange === '기타' &&
+          (desc.current.value === '' ||
+            desc.current.value === null ||
+            desc.current.value === undefined)
+        ) {
+          return alert('기타사유를 입력해주세요.');
         } else {
-          console.log('전송실패');
+          for (let i = 0; i < pd_img.current.length; i += 1) {
+            formData.append('img_return', pd_img.current[i].file);
+          }
+
+          // 이미지외 자료들 담아주기
+          formData.append(
+            'data',
+            JSON.stringify({
+              token: tokenValue,
+              orderId,
+              message: reasonChange === '상품파손' ? '' : desc.current.value,
+              reason,
+            }),
+          );
+          console.log(formData.get('img_return'));
+
+          // multer이용으로 fetch 사용
+          const submitRes = await fetch(
+            'http://localhost:4000/admin//return_list',
+            {
+              method: 'POST',
+              headers: {},
+              body: formData,
+            },
+          );
+          console.log(formData);
+          if (submitRes.status === 200) {
+            console.log('성공');
+            const dataParse = await submitRes.json();
+            setReturnSubmitData((cur) => dataParse);
+            setCompleteStatus((cur) => true);
+          } else {
+            console.log('전송실패');
+          }
         }
       }
     } catch (err) {

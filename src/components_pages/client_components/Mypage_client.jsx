@@ -167,7 +167,7 @@ export default function Mypage_client() {
                   <p>배송완료</p>
                   <p>
                     {orderListArray.reduce((acc, cur) => {
-                      if (cur.isDelivered) {
+                      if (cur.isDelivered && !cur.isReturnSubmit) {
                         return acc + 1;
                       }
                       return acc;
@@ -206,8 +206,8 @@ export default function Mypage_client() {
                 >
                   <p>반품 :</p>
                   <p>
-                    {cancelListArray.reduce((acc, cur) => {
-                      if (cur.isReturn) {
+                    {orderListArray.reduce((acc, cur) => {
+                      if (cur.isReturnSubmit && cur.isDelivered) {
                         return acc + 1;
                       }
                       return acc;
