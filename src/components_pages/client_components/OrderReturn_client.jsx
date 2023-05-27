@@ -86,34 +86,47 @@ export default function OrderReturn_client() {
     fileInputRef.current?.click();
   };
 
-  //이미지 접근하여 state를 이미지 값으로 변경
-  //및 이미지 숫자를 5개로 제한
-  //이미지 갯수 상태 보관
-  const [files, setFiles] = useState([]);
+  //및 이미지 숫자를 3개로 제한
   //Array.from은 배열과 유사한 것을 배열화 시킴, 이미지 갯수 때문에 배열화
-
-  const uploadProfile = (e) => {
+  const uploadProfile = async (e) => {
     const selectedFiles = Array.from(e.target.files);
     if (selectedFiles.length > 3) {
-      alert('최대 3개까지 업로드 가능합니다.');
+      return alert('최대 3개까지 업로드 가능합니다.');
     } else {
-      setFiles((cur) => selectedFiles);
-    }
-    const fileList = e.target.files;
-    const length = fileList.length;
-    let copy = [];
-    if (fileList) {
-      for (let i = 0; i < length; i += 1) {
-        const imgInfo = {
-          file: fileList[i],
-          thumbnail: URL.createObjectURL(fileList[i]),
-          type: fileList[i].type.slice(0, 5),
-        };
-        copy.push(imgInfo);
+      const fileList = e.target.files;
+      const length = fileList.length;
+      // 파일리스트 2번 가공함
+      // 첫 번째 가공배열 담을 배열
+      let copy = [];
+      // 두 번째 가공배열 담을 배열
+      let copyUpload = [];
+
+      if (fileList) {
+        for (let i = 0; i < length; i += 1) {
+          // 파일리스트 첫 번째 가공: 프레뷰용으로 저장
+          const imgInfo = {
+            file: fileList[i],
+            thumbnail: URL.createObjectURL(fileList[i]),
+            type: fileList[i].type.slice(0, 5),
+          };
+          copy.push(imgInfo);
+          // 파일리스트 두 번째 가공: 업로드 백엔드 요청용으로 가공. 여기서 파일명을 주문번호(orderId)로 넣어주고 '_1,_2_,3'으로 정의해 주어
+          // 추후 어드민에서 해당 orderId의 고유번호로 찾을 수 있도록 한다. 그래서 오데이터를 없앤다.
+          const uploadInfo = {
+            file: new File(
+              [fileList[i]],
+              `${orderId}_${i + 1}.${fileList[i].name.split('.').pop()}`,
+              { type: fileList[i].type },
+            ),
+            orderId,
+          };
+          copyUpload.push(uploadInfo);
+        }
       }
+      setImageFile((cur) => copy);
+      pd_img.current = copyUpload;
+      console.log(pd_img.current);
     }
-    setImageFile((cur) => copy);
-    pd_img.current = fileList;
   };
 
   //이미지 뿌려주기, 유즈 메모로 image파일이 업로드 될때만 반응하도록
@@ -151,39 +164,49 @@ export default function OrderReturn_client() {
       const reason = reasonChange;
       const formData = new FormData();
       // 이미지가 여러개라 for문으로 담아줌
-      for (let i = 0; i < pd_img.current.length; i += 1) {
-        formData.append('img_return', pd_img.current[i], orderId);
-      }
-
-      // 이미지외 자료들 담아주기
-      formData.append(
-        'data',
-        JSON.stringify({
-          token: tokenValue,
-          orderId,
-          message: '',
-          reason,
-        }),
-      );
-      console.log(formData.get('img_return'));
-
-      // multer이용으로 fetch 사용
-      const submitRes = await fetch(
-        'http://localhost:4000/admin//return_list',
-        {
-          method: 'POST',
-          headers: {},
-          body: formData,
-        },
-      );
-
-      if (submitRes.status === 200) {
-        console.log('성공');
-        const dataParse = await submitRes.json();
-        setReturnSubmitData((cur) => dataParse);
-        setCompleteStatus((cur) => true);
+      if (
+        pd_img.current === undefined ||
+        pd_img.current === null ||
+        pd_img.current.length === 0
+      ) {
+        return alert(
+          '제품의 문제가 되는 부분의 사진을 최소 1장은 올려주세요.(필수사항)',
+        );
       } else {
-        console.log('전송실패');
+        for (let i = 0; i < pd_img.current.length; i += 1) {
+          formData.append('img_return', pd_img.current[i].file);
+        }
+
+        // 이미지외 자료들 담아주기
+        formData.append(
+          'data',
+          JSON.stringify({
+            token: tokenValue,
+            orderId,
+            message: '',
+            reason,
+          }),
+        );
+        console.log(formData.get('img_return'));
+
+        // multer이용으로 fetch 사용
+        const submitRes = await fetch(
+          'http://localhost:4000/admin//return_list',
+          {
+            method: 'POST',
+            headers: {},
+            body: formData,
+          },
+        );
+        console.log(formData);
+        if (submitRes.status === 200) {
+          console.log('성공');
+          const dataParse = await submitRes.json();
+          setReturnSubmitData((cur) => dataParse);
+          setCompleteStatus((cur) => true);
+        } else {
+          console.log('전송실패');
+        }
       }
     } catch (err) {
       console.error(err);
