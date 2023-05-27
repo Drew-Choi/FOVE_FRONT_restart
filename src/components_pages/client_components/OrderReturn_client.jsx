@@ -24,7 +24,6 @@ const Preview = styled.img`
   padding: 10px;
   margin: 5px;
   margin-right: 10px;
-  src: (${(props) => props.thumbnail});
   cursor: pointer;
 `;
 
@@ -142,12 +141,6 @@ export default function OrderReturn_client() {
       ></Preview>
     ));
   }, [imageFile]);
-
-  // 업로드 초기화
-  const handleImageReset = () => {
-    setImageFile((cur) => null);
-    pd_img.current = [];
-  };
 
   //----- 이미지 끝-------
 
@@ -354,14 +347,6 @@ export default function OrderReturn_client() {
                     fontSize="12px"
                   >
                     파일선택
-                  </BTN_black_nomal_comp>
-                  <BTN_black_nomal_comp
-                    borderRadius="0px"
-                    className={orderReturn.imageReset}
-                    onClickEvent={handleImageReset}
-                    fontSize="12px"
-                  >
-                    초기화
                   </BTN_black_nomal_comp>
                 </div>
 

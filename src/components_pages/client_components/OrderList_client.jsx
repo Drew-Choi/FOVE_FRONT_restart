@@ -290,7 +290,14 @@ export default function OrderList_client() {
                             !el.isShipping &&
                             el.isDelivered &&
                             el.isReturnSubmit ? (
-                            <button className={orderList.orderCancle}>
+                            <button
+                              className={orderList.orderCancle}
+                              onClick={() => {
+                                navigate(
+                                  `/mypage/orderlist/return_check/${el.payments.orderId}`,
+                                );
+                              }}
+                            >
                               반품신청내역 확인
                             </button>
                           ) : (

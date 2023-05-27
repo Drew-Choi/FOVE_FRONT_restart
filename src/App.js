@@ -35,6 +35,7 @@ import getToken from './store/modules/getToken';
 import OrderCancel_client from './components_pages/client_components/OrderCancel_client';
 import TossPay_Cancel_Complete from './components_pages/client_components/TossPay_Cancel_Complete';
 import OrderReturn_client from './components_pages/client_components/OrderReturn_client';
+import OrderReturnCheck_client from './components_pages/client_components/OrderReturnCheck_client';
 
 function App() {
   const isLogin = useSelector((state) => state.user.isLogin);
@@ -87,13 +88,28 @@ function App() {
           );
         }
       } else {
-        return;
+        dispatch(
+          keepLogin({
+            nickName: '',
+            points: 0,
+            isAdmin: false,
+            isLogin: false,
+          }),
+        );
       }
     } catch (err) {
       const db = await openDB('db', 1);
       const transaction = db.transaction(['store'], 'readwrite');
       const store = transaction.objectStore('store');
       store.put('', 't');
+      dispatch(
+        keepLogin({
+          nickName: '',
+          points: 0,
+          isAdmin: false,
+          isLogin: false,
+        }),
+      );
       console.error;
     }
   };
@@ -174,6 +190,12 @@ function App() {
           <Route
             path="/mypage/orderlist/return/:orderId"
             element={isLogin ? <OrderReturn_client /> : <Login_client />}
+          />
+
+          {/* 반품내역확인 */}
+          <Route
+            path="/mypage/orderlist/return_check/:orderId"
+            element={isLogin ? <OrderReturnCheck_client /> : <Login_client />}
           />
 
           {/* 취소완료 */}
