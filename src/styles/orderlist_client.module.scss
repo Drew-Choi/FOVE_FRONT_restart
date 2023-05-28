@@ -158,6 +158,10 @@
         text-align: right;
         padding: 0px 15px;
 
+         @media screen and (max-width: 280px) {
+          padding: 0px 10px;
+          }
+
         .older_detail_info{
           font-size: 15px;
           margin-left: 15px;

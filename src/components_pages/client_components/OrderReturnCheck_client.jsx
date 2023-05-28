@@ -18,11 +18,23 @@ const Preview = styled.img`
   box-sizing: content-box;
   width: 40vw;
   height: auto;
-  border-bottom: 0.5px solid black;
   padding: 10px;
-  margin: 5px;
-  margin-right: 10px;
+  margin: 0px 0px 10px 0px;
+  border-bottom: 0.5px solid black;
   cursor: pointer;
+
+  @media screen and (max-width: 1000px) {
+    width: 65vw;
+  }
+
+  @media screen and (max-width: 510px) {
+    width: 80vw;
+  }
+
+  @media screen and (max-width: 280px) {
+    width: 85vw;
+    padding: 10px 0px;
+  }
 `;
 
 export default function OrderReturnCheck_client() {

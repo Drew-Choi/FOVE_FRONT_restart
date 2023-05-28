@@ -111,10 +111,13 @@
       .infoCancelContainer {
         position: relative;
         margin: 0px auto;
-        margin-top: 10px;
         // background-color: beige;
         padding: 15px 40px;
         text-align: center;
+
+        @media screen and (max-width:1000px) {
+        padding: 15px 10px;
+        }
 
           .reason_div {
             position: relative;
@@ -145,11 +148,24 @@
 
           .line{
             position: relative;
-            margin: auto;
+            left: 50%;
+            transform: translateX(-50%);
             // background-color: aqua;
             width: 41vw;
             height: 10px;
             border-bottom: 0.5px solid black;
+
+            @media screen and (max-width: 1000px) {
+              width: 67vw;
+            }
+            
+            @media screen and (max-width: 510px) {
+              width: 83vw;
+            }
+
+                  @media screen and (max-width: 280px) {
+              width: 85vw;
+            }
           }
 
         .imagePreview_container{

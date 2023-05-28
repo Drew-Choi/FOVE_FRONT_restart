@@ -20,11 +20,23 @@ const Preview = styled.img`
   box-sizing: content-box;
   width: 40vw;
   height: auto;
-  border-bottom: 0.5px solid black;
   padding: 10px;
-  margin: 5px;
-  margin-right: 10px;
+  margin: 0px 0px 10px 0px;
+  border-bottom: 0.5px solid black;
   cursor: pointer;
+
+  @media screen and (max-width: 1000px) {
+    width: 65vw;
+  }
+
+  @media screen and (max-width: 510px) {
+    width: 80vw;
+  }
+
+  @media screen and (max-width: 280px) {
+    width: 85vw;
+    padding: 10px 0px;
+  }
 `;
 
 export default function OrderReturn_client() {
@@ -220,13 +232,66 @@ export default function OrderReturn_client() {
     getCancelItem();
   }, []);
 
+  const dateSlice = (date) => {
+    const sliceDate = date.substring(0, 19);
+    return sliceDate;
+  };
+
   // 조건부 렌더링, submit이 완료되면 컴플릿트 페이지로 넘어감
   if (completeStatus)
     return (
       <section className={orderReturn.orderList_container}>
         {returnSubmitData !== null &&
         Object.keys(returnSubmitData).length > 0 ? (
-          <div> 컴플릿트 </div>
+          <div className={orderReturn.wrap}>
+            <p className={orderReturn.complete_title}>Return Complete</p>
+            <div className={orderReturn.complete_box}>
+              <p className={orderReturn.order_title}>
+                고객님의 반품신청이 완료되었습니다.
+              </p>
+              <p className={orderReturn.order_guide}>
+                반품신청내역에 관한 안내는{' '}
+                <span>마이페이지 / 주문취소조회</span>를 통하여 확인가능합니다.
+              </p>
+              <p className={orderReturn.order_info_number}>
+                주문번호:{' '}
+                <span className={orderReturn.number}>
+                  {returnSubmitData.payments.orderId}
+                </span>
+              </p>
+              <p className={orderReturn.order_info_date}>
+                반품신청일자:{' '}
+                <span className={orderReturn.date}>
+                  {dateSlice(returnSubmitData.submitReturn.submitAt)}
+                </span>
+              </p>
+            </div>
+
+            <div className={orderReturn.btn_container}>
+              <button
+                className={orderReturn.btn_continue}
+                onClick={() => navigate('/store')}
+              >
+                쇼핑계속하기
+              </button>
+              <button
+                className={orderReturn.btn_orderList}
+                onClick={() => navigate('/mypage/orderlist')}
+              >
+                반품신청 확인하기
+              </button>
+            </div>
+
+            <div className={orderReturn.notice_wrap}>
+              <div className={orderReturn.notice_use}>
+                <p className={orderReturn.use_title}>이용안내</p>
+                <p className={orderReturn.use_desc}>
+                  상품별 자세한 배송과정은 주문조회를 통하여 조회하실 수
+                  있습니다.
+                </p>
+              </div>
+            </div>
+          </div>
         ) : (
           <Loading />
         )}
