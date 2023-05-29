@@ -10,15 +10,33 @@ import axios from 'axios';
 const Preview = styled.div`
   position: relative;
   display: block;
-  width: 150px;
-  height: 150px;
-  margin: 5px;
-  margin-right: 10px;
+  width: 600px;
+  height: 600px;
+  margin: 0px auto;
+  margin-top: 20px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   background-image: url(${(props) => props.thumbnail});
   cursor: pointer;
+
+  @media screen and (max-width: 968px) {
+    width: 480px;
+    height: 480px;
+  }
+
+  @media screen and (max-width: 755px) {
+    width: 380px;
+    height: 380px;
+  }
+`;
+
+const ImageOrder = styled.p`
+  position: relative;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 60px;
 `;
 
 export default function ProductRegister_admin() {
@@ -137,17 +155,19 @@ export default function ProductRegister_admin() {
 
   //이미지 뿌려주기, 유즈 메모로 image파일이 업로드 될때만 반응하도록
   const showImage = useMemo(() => {
-    if (!imageFile && imageFile === null) {
-      return <></>;
+    if (imageFile === null || imageFile === [] || imageFile.length === 0) {
+      return <p className={productRegister.previewDesc}>Image Preview Area</p>;
     }
     return imageFile.map((el, index) => (
-      <>
+      <div key={index}>
         <Preview
           thumbnail={el.thumbnail}
-          key={index}
           onClick={handleClickFileInput}
         ></Preview>
-      </>
+        <ImageOrder>
+          {index === 0 ? `--- Main ---` : `--- Sub_${index} ---`}
+        </ImageOrder>
+      </div>
     ));
   }, [imageFile]);
   //----- 이미지 끝-------
@@ -316,9 +336,6 @@ export default function ProductRegister_admin() {
     productCodeCreat();
   }, [selectCategory]);
 
-  // 사진 인풋 정렬
-  const subText = ['MAIN', 'Sub_1', 'Sub_2', 'Sub_3', 'Sub_4'];
-
   return (
     <div className={productRegister.productRegister_admin}>
       <div className={productRegister.register_container}>
@@ -385,7 +402,7 @@ export default function ProductRegister_admin() {
         </div>
 
         {/* 사이즈 별 수량 */}
-        <p style={{ marginLeft: '20px', fontSize: '12px' }}>
+        <p className={productRegister.sizeDesc}>
           → * 재고는 최소 1개 사이즈 입력 필수
         </p>
         <div className={productRegister.indi_container}>
@@ -474,12 +491,6 @@ export default function ProductRegister_admin() {
             </span>
           </p>
           <div className={productRegister.previewContainer}>{showImage}</div>
-          {subText.map((el, index) => (
-            <span className={productRegister.subText} key={index}>
-              {el}
-            </span>
-          ))}
-
           <input
             style={{ display: 'none' }}
             type="file"
@@ -502,6 +513,7 @@ export default function ProductRegister_admin() {
           <div className={productRegister.detail_desc_container}>
             <p className={productRegister.detail_desc_title}>상품상세설명</p>
             <TextArea_Custom
+              textAreaClassName={productRegister.textArea}
               inputref={pd_detail}
               type="text"
               name="detail"
@@ -510,8 +522,6 @@ export default function ProductRegister_admin() {
             Acrylic 100% (혼용률)
             Made in China (제조국) --> 200자 내"
               maxLength={200}
-              cols={128}
-              rows={5}
             />
           </div>
 

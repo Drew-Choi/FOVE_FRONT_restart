@@ -19,5 +19,17 @@ nav.navbar_admin {
       color: grey;
     }
    }
+
+   li.on {
+    margin-bottom: 30px;
+    text-decoration: underline;
+    text-underline-offset: 4px; // 텍스트와 밑줄 사이의 간격
+    text-decoration-thickness: 1px; // 밑줄의 굵기
+    text-decoration-color: black;
+    cursor: pointer;
+    &:hover {
+      color: grey;
+    }
+   }
   }
 }
