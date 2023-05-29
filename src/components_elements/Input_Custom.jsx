@@ -11,9 +11,10 @@ export default function Input_Custom({
   accept,
   disabled,
   classNameNew,
+  classNameDiv,
 }) {
   return (
-    <div>
+    <div className={classNameDiv}>
       <p>{children}</p>
       <input
         // input 값을 ref로 보내기

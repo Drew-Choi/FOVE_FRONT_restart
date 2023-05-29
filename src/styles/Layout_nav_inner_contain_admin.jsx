@@ -13,7 +13,7 @@ const Layout_inner = styled.section`
   right: 0px;
   top: 60px;
   width: 91vw;
-  border-bottom: 0.5px solid black;
+  /* border-bottom: 0.5px solid black; */
 `;
 
 export default function Layout_nav_inner_contain_admin({ children }) {

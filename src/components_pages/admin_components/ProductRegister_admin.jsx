@@ -7,15 +7,6 @@ import TextArea_Custom from '../../components_elements/TextArea_Custom';
 import styled from 'styled-components';
 import axios from 'axios';
 
-const Container = styled.div`
-  display: block !important;
-  position: relative !important;
-`;
-
-const Layout = styled.div`
-  display: flex;
-`;
-
 const Preview = styled.div`
   position: relative;
   display: block;
@@ -28,14 +19,6 @@ const Preview = styled.div`
   background-size: cover;
   background-image: url(${(props) => props.thumbnail});
   cursor: pointer;
-`;
-
-const Text = styled.span`
-  position: relative;
-  left: 60px;
-  padding: 10px;
-  margin-right: 110px;
-  margin-bottom: 20px;
 `;
 
 export default function ProductRegister_admin() {
@@ -158,11 +141,13 @@ export default function ProductRegister_admin() {
       return <></>;
     }
     return imageFile.map((el, index) => (
-      <Preview
-        thumbnail={el.thumbnail}
-        key={index}
-        onClick={handleClickFileInput}
-      ></Preview>
+      <>
+        <Preview
+          thumbnail={el.thumbnail}
+          key={index}
+          onClick={handleClickFileInput}
+        ></Preview>
+      </>
     ));
   }, [imageFile]);
   //----- 이미지 끝-------
@@ -331,114 +316,166 @@ export default function ProductRegister_admin() {
     productCodeCreat();
   }, [selectCategory]);
 
+  // 사진 인풋 정렬
+  const subText = ['MAIN', 'Sub_1', 'Sub_2', 'Sub_3', 'Sub_4'];
+
   return (
     <section className={productRegister.productRegister_admin}>
       <div className={productRegister.register_container}>
         {/* 종류인풋(셀렉터) */}
-        <Select_Custom
-          selectList={kindArr}
-          inputRef={pd_category}
-          name="category"
-          onChangeEvent={(cur) => setSeloectCategory(pd_category.current.value)}
-        >
-          종류&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </Select_Custom>
+        <div className={productRegister.indi_container}>
+          <p className={productRegister.kind_title}>종류 *</p>
+          <Select_Custom
+            classNameDiv={productRegister.kind_selectBox}
+            classNameSelect={productRegister.selectBoxContent}
+            selectList={kindArr}
+            inputRef={pd_category}
+            name="category"
+            onChangeEvent={(cur) =>
+              setSeloectCategory(pd_category.current.value)
+            }
+          />
+        </div>
 
         {/* 상품고유번호 인풋 */}
-        <Input_Custom
-          inputref={pd_code}
-          type="text"
-          name="productCode"
-          value={pdCode}
-          //백에서 DB추가될때 마다 숫자 추가해주면 될듯
-          disabled
-        >
-          상품고유번호
-        </Input_Custom>
+        <div className={productRegister.indi_container}>
+          <p className={productRegister.pd_uniqueCode_title}>
+            상품고유번호<span style={{ fontSize: '12px' }}>(자동생성)</span> *
+          </p>
+          <Input_Custom
+            classNameDiv={productRegister.pd_uniqueCode_input}
+            inputref={pd_code}
+            type="text"
+            name="productCode"
+            value={pdCode}
+            disabled
+          />
+        </div>
 
         {/* 상품명 인풋 */}
-        <Input_Custom
-          inputref={pd_productName}
-          type="text"
-          name="productName"
-          placeholder="상품이름을 입력해주세요."
-        >
-          상품명 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </Input_Custom>
+        <div className={productRegister.indi_container}>
+          <p className={productRegister.pd_name_title}>상품명 *</p>
+          <Input_Custom
+            classNameDiv={productRegister.pd_name_input}
+            inputref={pd_productName}
+            type="text"
+            name="productName"
+            placeholder="상품이름을 입력해주세요."
+          />
+        </div>
 
         {/* 가격인풋 */}
-        <Input_Custom
-          inputref={pd_price}
-          type="text"
-          placeholder="가격을 입력해주세요."
-          name="price"
-          value={enterNumPrice}
-          onChangeEvent={() =>
-            setEnterNumPrice(changeEnteredNumComma(pd_price.current.value))
-          }
-        >
-          가격 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </Input_Custom>
+        <div className={productRegister.indi_container}>
+          <p className={productRegister.pd_price_title}>가격 *</p>
+          <Input_Custom
+            classNameDiv={productRegister.pd_price_input}
+            inputref={pd_price}
+            type="text"
+            name="price"
+            placeholder="가격을 입력해주세요."
+            value={enterNumPrice}
+            onChangeEvent={() =>
+              setEnterNumPrice(changeEnteredNumComma(pd_price.current.value))
+            }
+          />
+        </div>
 
         {/* 사이즈 별 수량 */}
-        <Input_Custom
-          inputref={pd_sizeOS}
-          type="text"
-          placeholder="OS 사이즈 재고수량을 입력해주세요."
-          name="size[OS]"
-          value={enterNumQuantity1}
-          onChangeEvent={() =>
-            setEnterNumQuantity1(changeEnteredNumComma(pd_sizeOS.current.value))
-          }
-        >
-          재고수량 <strong>OS</strong>&nbsp;&nbsp;
-        </Input_Custom>
-        <Input_Custom
-          inputref={pd_sizeS}
-          type="text"
-          placeholder="S 사이즈 재고수량을 입력해주세요."
-          name="size[M]"
-          value={enterNumQuantity2}
-          onChangeEvent={() =>
-            setEnterNumQuantity2(changeEnteredNumComma(pd_sizeS.current.value))
-          }
-        >
-          재고수량 <strong>S </strong>&nbsp;&nbsp;&nbsp;&nbsp;
-        </Input_Custom>
-        <Input_Custom
-          inputref={pd_sizeM}
-          type="text"
-          placeholder="M 사이즈 재고수량을 입력해주세요."
-          name="size[M]"
-          value={enterNumQuantity3}
-          onChangeEvent={() =>
-            setEnterNumQuantity3(changeEnteredNumComma(pd_sizeM.current.value))
-          }
-        >
-          재고수량 <strong>M </strong>&nbsp;&nbsp;&nbsp;
-        </Input_Custom>
-        <Input_Custom
-          inputref={pd_sizeL}
-          type="text"
-          placeholder="L 사이즈 재고수량을 입력해주세요."
-          name="stock"
-          value={enterNumQuantity4}
-          onChangeEvent={() =>
-            setEnterNumQuantity4(changeEnteredNumComma(pd_sizeL.current.value))
-          }
-        >
-          재고수량 <strong>L </strong>&nbsp;&nbsp;&nbsp;&nbsp;
-        </Input_Custom>
+        <p style={{ marginLeft: '20px', fontSize: '12px' }}>
+          → 재고는 최소 1개 사이즈 입력 필수
+        </p>
+        <div className={productRegister.indi_container}>
+          <p className={productRegister.pd_OS_title}>
+            재고수량 <strong style={{ fontSize: '18px' }}>OS</strong>
+          </p>
+          <Input_Custom
+            classNameDiv={productRegister.pd_OS_Input}
+            inputref={pd_sizeOS}
+            type="text"
+            placeholder="OS 사이즈 재고수량을 입력해주세요."
+            name="size[OS]"
+            value={enterNumQuantity1}
+            onChangeEvent={() =>
+              setEnterNumQuantity1(
+                changeEnteredNumComma(pd_sizeOS.current.value),
+              )
+            }
+          />
+        </div>
+
+        <div className={productRegister.indi_container}>
+          <p className={productRegister.pd_S_title}>
+            재고수량 <strong style={{ fontSize: '18px' }}>S</strong>
+          </p>
+          <Input_Custom
+            classNameDiv={productRegister.pd_S_Input}
+            inputref={pd_sizeS}
+            type="text"
+            placeholder="S 사이즈 재고수량을 입력해주세요."
+            name="size[S]"
+            value={enterNumQuantity2}
+            onChangeEvent={() =>
+              setEnterNumQuantity2(
+                changeEnteredNumComma(pd_sizeS.current.value),
+              )
+            }
+          />
+        </div>
+
+        <div className={productRegister.indi_container}>
+          <p className={productRegister.pd_M_title}>
+            재고수량 <strong style={{ fontSize: '18px' }}>M</strong>
+          </p>
+          <Input_Custom
+            classNameDiv={productRegister.pd_M_Input}
+            inputref={pd_sizeM}
+            type="text"
+            placeholder="M 사이즈 재고수량을 입력해주세요."
+            name="size[M]"
+            value={enterNumQuantity3}
+            onChangeEvent={() =>
+              setEnterNumQuantity3(
+                changeEnteredNumComma(pd_sizeM.current.value),
+              )
+            }
+          />
+        </div>
+
+        <div className={productRegister.indi_container}>
+          <p className={productRegister.pd_L_title}>
+            재고수량 <strong style={{ fontSize: '18px' }}>L</strong>
+          </p>
+          <Input_Custom
+            classNameDiv={productRegister.pd_L_Input}
+            inputref={pd_sizeL}
+            type="text"
+            placeholder="L 사이즈 재고수량을 입력해주세요."
+            name="size[L]"
+            value={enterNumQuantity4}
+            onChangeEvent={() =>
+              setEnterNumQuantity4(
+                changeEnteredNumComma(pd_sizeL.current.value),
+              )
+            }
+          />
+        </div>
 
         {/* 상품이미지 등록 */}
-        <Container>
-          <Layout>{showImage}</Layout>
-          <Text>메인</Text>
-          <Text>서브1</Text>
-          <Text>서브2</Text>
-          <Text>서브3</Text>
-          <Text>서브4</Text>
+        <div className={productRegister.imgWrap}>
+          <p className={productRegister.imgTitle}>
+            IMAGES <br />
+            <span className={productRegister.subDesc}>
+              * 상품 사진 2장 필수 / 비율은 1:1을 유지해주세요. 그렇지 않으면
+              사진이 잘립니다.
+            </span>
+          </p>
+          <div className={productRegister.previewContainer}>{showImage}</div>
+          {subText.map((el, index) => (
+            <span className={productRegister.subText} key={index}>
+              {el}
+            </span>
+          ))}
+
           <input
             style={{ display: 'none' }}
             type="file"
@@ -448,6 +485,7 @@ export default function ProductRegister_admin() {
             name="img"
             multiple
           />
+
           <BTN_black_nomal_comp
             className={productRegister.select_btn}
             onClickEvent={handleClickFileInput}
@@ -455,34 +493,36 @@ export default function ProductRegister_admin() {
           >
             파일선택
           </BTN_black_nomal_comp>
-        </Container>
-        {/* 상품상세설명 인풋 */}
-        <TextArea_Custom
-          inputref={pd_detail}
-          type="text"
-          name="detail"
-          placeholder=" ex )
-          Jacquard and embroidery artwork (상품상세설명)
-          Acrylic 100% (혼용률)
-          Made in China (제조국)"
-          maxLength={100}
-          cols={30}
-          rows={10}
-        >
-          상품상세설명
-        </TextArea_Custom>
 
-        {/* 클릭시 axios각 작동할 수 있게 위에 만든 함수를 넣어준다. */}
-        <BTN_black_nomal_comp
-          className="save_btn"
-          fontSize="14px"
-          transFontSize="13px"
-          onClickEvent={() => {
-            newProductPost();
-          }}
-        >
-          등록
-        </BTN_black_nomal_comp>
+          {/* 상품상세설명 인풋 */}
+          <div className={productRegister.detail_desc_container}>
+            <p className={productRegister.detail_desc_title}>상품상세설명</p>
+            <TextArea_Custom
+              inputref={pd_detail}
+              type="text"
+              name="detail"
+              placeholder=" ex )
+            Jacquard and embroidery artwork (상품상세설명)
+            Acrylic 100% (혼용률)
+            Made in China (제조국) --> 200자 내"
+              maxLength={200}
+              cols={128}
+              rows={5}
+            />
+          </div>
+
+          {/* 클릭시 axios각 작동할 수 있게 위에 만든 함수를 넣어준다. */}
+          <BTN_black_nomal_comp
+            className={productRegister.save_btn}
+            fontSize="14px"
+            transFontSize="13px"
+            onClickEvent={() => {
+              newProductPost();
+            }}
+          >
+            등록
+          </BTN_black_nomal_comp>
+        </div>
       </div>
     </section>
   );

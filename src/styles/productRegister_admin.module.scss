@@ -1,115 +1,202 @@
 section.productRegister_admin {
   position: relative;
-  width: 100%;
-  height: 2000px;
-  margin-top: 56px;
+  width: 100vw;
 
   .register_container {
     position: relative;
-    padding: 30px;
-    width: 1000px;
-    height: auto;
+    padding: 30px 0px 0px 50px;
+    width: 100vw;
+    // background-color: beige;
 
-    div {
+    input {
+      display: block;    
+      width: 300px;
+      height: 27px;
+      border: 1px solid black; 
+      font-size: 12px;
+      padding-left: 10px;
+    }
+    
+    // 각 셀렉터 및 인풋 컨트롤
+    .indi_container { 
+      width: 450px;
+      position: relative;
       display: flex;
+      margin-bottom: 30px;
+      margin-left: 20px;
       align-items: center;
-      padding: 11px;
+      justify-content: space-between;
+      // background-color: aqua;
+    }
+
+      .kind_title {
+        margin-bottom: 0px;
+      }
+      .kind_selectBox{
+        p {
+          margin-bottom: 0px;
+        }
+        .selectBoxContent{
+          width: 300px;
+          height: 27px;
+          border: 1px solid black; 
+          font-size: 12px;
+          padding-left: 5px;
+        }
+      }
+
+      .pd_uniqueCode_title{
+       margin-bottom: 0px;
+      }
+      .pd_uniqueCode_input {
+        p{
+          margin-bottom: 0px;
+        }
+      }
+    
+      .pd_name_title{
+       margin-bottom: 0px;
+      }
+      .pd_name_input {
+        p{
+          margin-bottom: 0px;
+        }  
+      }
+
+      .pd_price_title{
+       margin-bottom: 0px;
+      }
+      .pd_price_input {
+        p{
+          margin-bottom: 0px;
+        }    
+      }
+
+      .pd_OS_title{
+        margin-bottom: 0px;
+       }
+       .pd_OS_Input {
+         p{
+           margin-bottom: 0px;
+         }    
+       }
+
       
-      p {
-        display: block;
-        margin-right: 20px;
-        margin-top: auto;
-        margin-bottom: auto;
-      }
+       .pd_S_title{
+        margin-bottom: 0px;
+       }
+       .pd_S_Input {
+         p{
+           margin-bottom: 0px;
+         }    
+       }
 
-      input {
-        display: block;    
-        width: 300px;
-        height: 27px;
-        border: 1px solid black; 
-        font-size: 12px;
-        padding-left: 10px;
+       .pd_M_title{
+        margin-bottom: 0px;
+       }
+       .pd_M_Input {
+         p{
+           margin-bottom: 0px;
+         }    
+       }
 
-        
-      }
+       .pd_L_title{
+        margin-bottom: 0px;
+       }
+       .pd_L_Input {
+         p{
+           margin-bottom: 0px;
+         }    
+       }
 
-      textarea {
-       font-size: 11.5px;
-       padding: 8px;   
-       width: 300px;
-       height: 150px;
-       border: 1px solid black;
-      }
 
-      select {
-        background-color: rgba(158, 158, 158, 0.174);
-        width: 300px;
-        height: 27px;
-        border: 1px solid black;
-        font-size: 13px;
-        padding-left: 7px;
-      }
-
-      strong{
-        font-size: 13px;
-      }
-
-      .select_btn {
-        margin-top: 30px;
+      .imgWrap{
         position: relative;
-        right: 20px;
-        width: 430px;
-        height: 30px;
-        border: 1.5px solid black;
-        background-color: white;
-        color: black;
-        border-radius: 60px;
-        line-height: 20px;
-        display: block;
-        
-        &:hover {
+        padding: 0px 20px;
+        padding-bottom: 70px;
+        width: 865px;
+        // background-color: aqua;
+
+        .imgTitle{
+          position: relative;
+          font-size: 18px;
+          text-align: center;
+          letter-spacing: 5px;
+
+          .subDesc{
+            font-size: 13px;
+            letter-spacing: normal
+          }
+        }
+  
+        .previewContainer {
+          position: relative;
+          display: flex;
+          width: 825px;
+          height: 180px;
+          padding: 10px;
+          // background-color: aqua;
+          border: 0.5px solid black;
+        }
+  
+        .subText {
+          padding: 0px 63px;
+        }
+  
+  
+        .select_btn {
+          margin: 0px auto;
+          margin-top: 20px;
+          position: relative;
+          display: block;
+          width: 800px;
+          border: 1.5px solid black;
+          background-color: white;
+          color: black;
+          border-radius: 60px;
+          line-height: 20px;
+          
+          &:hover {
+            background-color: black;
+            color: white;
+          } 
+        }
+
+        .detail_desc_container{
+          position: relative;
+          margin: 0px auto;
+          margin-top: 50px;
+          margin-bottom: 30px;
+      
+          .detail_desc_title{
+            margin-bottom: 0px;
+          }
+      
+          textarea {
+            resize: none;
+            font-size: 13px;
+            padding: 8px;   
+            border: 1px solid black;
+            }  
+        }
+
+        .save_btn {
+          position: relative;
+          display: block;
+          width: 820px;
+          margin: 0px auto;
+          margin-top: 20px;
+          border: 1.5px solid black;
+          border-radius: 60px;
           background-color: black;
           color: white;
-}
-}
-}
-
-.save_btn {
-  position: absolute;
-  width: 420px;
-  height: 32px;
-  border: 1.5px solid black;
-  border-radius: 60px;
-  margin-top: 5px;
-  background-color: black;
-  color: white;
-  line-height: 20px;
-  
-  &:hover {
-    background-color: white;
-    color: black;
-}
-}
-}
-}
-
-.new_Item {
-  position: relative;
-  top: 0px;
-  left: px;
-  width: 10px;
-  font-size: 10px;
-  padding: 10px;
-}
-
-#newArrival {
-  position: relative;
-  left: 75px;
-  width: 20px;
-  height: 20px;
-}
-
-#checkLabel {
-position: relative;
-left: 10px;
+          line-height: 20px;
+          
+          &:hover {
+            background-color: white;
+            color: black;
+           }
+          }
+      }
+  }
 }
