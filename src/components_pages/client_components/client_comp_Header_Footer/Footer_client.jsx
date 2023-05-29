@@ -1,6 +1,6 @@
 import React from 'react';
-import '../../styles/footer_client.scss';
-import { Link, useNavigate } from 'react-router-dom';
+import '../../../styles/footer_client.scss';
+import { useNavigate } from 'react-router-dom';
 
 export default function Footer_client() {
   const navigate = useNavigate();

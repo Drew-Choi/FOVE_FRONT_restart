@@ -11,7 +11,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import SwiperPaginationBTN from '../../../styles/SwiperPaginationBTN';
 import SwiperPaginationContainer from '../../../styles/SwiperPaginationContainer';
-import SubNav_client from '../../client_components/SubNav_client';
+import SubNav_client from '../client_comp_Header_Footer/SubNav_client';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import MediaQuery from 'react-responsive';

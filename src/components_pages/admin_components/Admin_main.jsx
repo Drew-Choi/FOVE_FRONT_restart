@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Header_admin from './Header_admin';
 import Layout_nav_inner_contain_admin from '../../styles/Layout_nav_inner_contain_admin';
-import Footer_client from '../client_components/Footer_client';
+import Footer_client from '../client_components/client_comp_Header_Footer/Footer_client';
 
 export default function Admin_main() {
   return (
