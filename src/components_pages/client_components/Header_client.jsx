@@ -10,7 +10,6 @@ import MenuAccount from './MenuAccount';
 import { clickMenu, menuClose } from '../../store/modules/menuAccount';
 import { searchinput } from '../../store/modules/search';
 import MediaQuery from 'react-responsive';
-import { openDB } from 'idb';
 import getToken from '../../store/modules/getToken';
 
 export default function Header_client() {

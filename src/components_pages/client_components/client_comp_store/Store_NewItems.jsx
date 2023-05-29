@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState, Suspense } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
-import '../../styles/store_client.scss';
-import Product_client_indiLayout from './Product_client_indiLayout';
+import '../../../styles/store_client.scss';
+import Product_client_indiLayout from '../Product_client_indiLayout';
 import { Container, Row, Col } from 'react-bootstrap';
 import SwiperCore, { Navigation, Pagination, A11y, Mousewheel } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -9,24 +9,23 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import SwiperPaginationBTN from '../../styles/SwiperPaginationBTN';
-import SwiperPaginationContainer from '../../styles/SwiperPaginationContainer';
-import SubNav_client from './SubNav_client';
+import SwiperPaginationBTN from '../../../styles/SwiperPaginationBTN';
+import SwiperPaginationContainer from '../../../styles/SwiperPaginationContainer';
+import SubNav_client from '../../client_components/SubNav_client';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import MediaQuery from 'react-responsive';
-import Loading from './Loading';
+import Loading2 from '../Loading2';
 
 SwiperCore.use([Navigation]);
 
-export default function Store_client() {
-  const searchText = useSelector((state) => state.search.searchData);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isVisible, setIsVisible] = useState(true);
-  const orignData = useRef([]);
-
+export default function Store_NewItems() {
   //네비게이트 리액트Dom 설정
   const navigate = useNavigate();
+  const searchText = useSelector((state) => state.search.searchData);
+  const orignData = useRef([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
 
   //스와이퍼 커스텀
   const [swiperEl, setSwiperEl] = useState(null);
@@ -36,12 +35,12 @@ export default function Store_client() {
   const [pagination4, setPagination4] = useState('off');
   const [pagination5, setPagination5] = useState('off');
 
-  //All상품데이터 get
-  const [pd_Datas, setPd_Datas] = useState([]);
+  //카테고리 상품데이터 get
+  const [pd_New_Items, setPd_New_Items] = useState([]);
 
   //상품검색
   const searchProducts = (text) => {
-    setPd_Datas((cur) => {
+    setPd_New_Items((cur) => {
       const newData = [...orignData.current];
       const lowercaseText = text.toLowerCase();
       if (lowercaseText !== '') {
@@ -56,15 +55,17 @@ export default function Store_client() {
   };
 
   //엑시오스로 모든 상품 정보 요청
-  const getAllProducts = async () => {
+  const getCategoryProducts = async () => {
     try {
-      const productsData = await axios.get('http://localhost:4000/store/all');
-      if (productsData.status === 200) {
-        orignData.current = productsData.data;
-        await setPd_Datas(productsData.data);
+      const newProductsData = await axios.get(
+        `http://localhost:4000/store/new`,
+      );
+      if (newProductsData.status === 200) {
+        await setPd_New_Items(newProductsData.data);
         setIsLoading(false);
+        return;
       } else {
-        console.log('데이터 전송 실패');
+        return console.log('데이터 오류');
       }
     } catch (err) {
       console.error(err);
@@ -73,13 +74,11 @@ export default function Store_client() {
 
   //상품데이터 db에서 가져오기
   useEffect(() => {
-    getAllProducts();
+    getCategoryProducts();
   }, []);
 
   useEffect(() => {
-    getAllProducts().then(() => {
-      searchProducts(searchText);
-    });
+    searchProducts(searchText);
   }, [searchText]);
 
   useEffect(() => {
@@ -118,59 +117,65 @@ export default function Store_client() {
   //반응형 셀렉터 핸들
   const handleCategoryChange = (e) => {
     let eValue = e.target.value;
-
     if (eValue === 'VIEW ALL') {
       navigate('/store');
+      return;
     } else if (eValue === 'NEW ARRIVALS') {
       navigate('/store/new');
+      return;
     } else if (eValue === 'BEANIE') {
       navigate('/store/beanie');
+      return;
     } else if (eValue === 'CAP') {
       navigate('/store/cap');
+      return;
     } else if (eValue === 'TRAINING') {
       navigate('/store/training');
+      return;
     } else if (eValue === 'WINDBREAKER') {
       navigate('/store/windbreaker');
+      return;
     }
   };
 
   return (
     <main className="store_main">
+      <MediaQuery minWidth={576}>
+        <SubNav_client
+          onClickEvent1={() => navigate('/store')}
+          onClickEvent2={() => navigate('/store/new')}
+          onClickEvent3={() => navigate('/store/beanie')}
+          onClickEvent4={() => navigate('/store/cap')}
+          onClickEvent5={() => navigate('/store/training')}
+          onClickEvent6={() => navigate('/store/windbreaker')}
+          menu1="VIEW ALL"
+          menu2="NEW ARRIVALS"
+          menu3="BEANIE"
+          menu4="CAP"
+          menu5="TRAINING"
+          menu6="WINDBREAKER"
+        />
+      </MediaQuery>
+
+      <MediaQuery maxWidth={575}>
+        <select
+          className="selectCategorys"
+          value="NEW ARRIVALS"
+          onChange={handleCategoryChange}
+        >
+          {categotryMenus_act.map((el) => (
+            <option value={el} key={el}>
+              {el}
+            </option>
+          ))}
+        </select>
+      </MediaQuery>
+
       {isLoading ? (
-        <Loading />
+        <Loading2 />
       ) : (
         <>
-          {isVisible && <Loading />}
-          <MediaQuery minWidth={576}>
-            <SubNav_client
-              onClickEvent1={() => navigate('/store')}
-              onClickEvent2={() => navigate('/store/new')}
-              onClickEvent3={() => navigate('/store/beanie')}
-              onClickEvent4={() => navigate('/store/cap')}
-              onClickEvent5={() => navigate('/store/training')}
-              onClickEvent6={() => navigate('/store/windbreaker')}
-              menu1="VIEW ALL"
-              menu2="NEW ARRIVALS"
-              menu3="BEANIE"
-              menu4="CAP"
-              menu5="TRAINING"
-              menu6="WINDBREAKER"
-            />
-          </MediaQuery>
-
-          <MediaQuery maxWidth={575}>
-            <select
-              className="selectCategorys"
-              value="VIEW ALL"
-              onChange={handleCategoryChange}
-            >
-              {categotryMenus_act.map((el) => (
-                <option value={el} key={el}>
-                  {el}
-                </option>
-              ))}
-            </select>
-          </MediaQuery>
+          {isVisible && <Loading2 />}
 
           <section className="product_display">
             <MediaQuery minWidth={576}>
@@ -206,7 +211,7 @@ export default function Store_client() {
                 <SwiperSlide className="swiper_slide">
                   <Container>
                     <Row xs={1} sm={2} md={4} lg={5}>
-                      {pd_Datas.map((el, index) => {
+                      {pd_New_Items.map((el, index) => {
                         if (index < 10 && index >= 0)
                           return (
                             <Col
@@ -231,7 +236,7 @@ export default function Store_client() {
                 <SwiperSlide className="swiper_slide">
                   <Container>
                     <Row xs={1} sm={2} md={4} lg={5}>
-                      {pd_Datas.map((el, index) => {
+                      {pd_New_Items.map((el, index) => {
                         if (index < 20 && index >= 10)
                           return (
                             <Col
@@ -256,7 +261,7 @@ export default function Store_client() {
                 <SwiperSlide className="swiper_slide">
                   <Container>
                     <Row xs={1} sm={2} md={4} lg={5}>
-                      {pd_Datas.map((el, index) => {
+                      {pd_New_Items.map((el, index) => {
                         if (index < 30 && index >= 20)
                           return (
                             <Col
@@ -282,7 +287,7 @@ export default function Store_client() {
                 <SwiperSlide className="swiper_slide">
                   <Container>
                     <Row xs={1} sm={2} md={4} lg={5}>
-                      {pd_Datas.map((el, index) => {
+                      {pd_New_Items.map((el, index) => {
                         if (index < 40 && index >= 30)
                           return (
                             <Col
@@ -308,7 +313,7 @@ export default function Store_client() {
                 <SwiperSlide className="swiper_slide">
                   <Container>
                     <Row xs={1} sm={2} md={4} lg={5}>
-                      {pd_Datas.map((el, index) => {
+                      {pd_New_Items.map((el, index) => {
                         if (index < 50 && index >= 40)
                           return (
                             <Col
@@ -338,7 +343,7 @@ export default function Store_client() {
               {
                 <Container>
                   <Row xs={1}>
-                    {pd_Datas.map((el, index) => {
+                    {pd_New_Items.map((el, index) => {
                       return (
                         <Col
                           onClick={() =>

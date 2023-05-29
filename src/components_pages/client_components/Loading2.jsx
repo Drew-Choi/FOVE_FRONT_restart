@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 
 const fadeIn = keyframes`
@@ -29,14 +30,29 @@ const AnimationText = styled.span`
 const Container = styled.div`
   position: absolute;
   width: 100vw;
-  min-height: 700px;
-  height: 100%;
+  min-height: 630px;
+  height: 92%;
   background-color: white;
   text-align: center;
   z-index: 5;
+
+  @media screen and (max-width: 991px) {
+    height: 94%;
+  }
+
+  @media screen and (max-width: 767px) {
+    height: 96%;
+  }
+
+  @media screen and (max-width: 575px) {
+    height: 99%;
+  }
 `;
 
-export default function Loading() {
+export default function Loading2() {
+  const location = useLocation();
+  const currentURL = location.pathname;
+
   const text = 'FOVE...';
 
   return (

@@ -7,7 +7,7 @@ import Agreement_client from './components_pages/client_components/Agreement_cli
 import Privacy_client from './components_pages/client_components/Privacy_client';
 import Client_main from './components_pages/client_components/Client_main';
 import AboutUs_client from './components_pages/client_components/AboutUs_client';
-import Store_client from './components_pages/client_components/Store_client';
+import Store_client from './components_pages/client_components/client_comp_store/Store_client';
 import Guide_client from './components_pages/client_components/Guide_client';
 import Detail_client from './components_pages/client_components/Detail_client';
 import Intro_movie_client from './components_pages/client_components/Intro_movie_clinet';
@@ -16,7 +16,7 @@ import AdSubmit_client from './components_pages/client_components/AdSubmit_clien
 import Adwrite_client from './components_pages/client_components/Adwrite_client';
 import Login_client from './components_pages/client_components/Login_client';
 import Order_client from './components_pages/client_components/Order_client';
-import Store_Categorys from './components_pages/client_components/Store_Categorys';
+import Store_Categorys from './components_pages/client_components/client_comp_store/Store_Categorys';
 import Error404 from './components_pages/client_components/Error404';
 import TossPay_Complete from './components_pages/client_components/TossPay_Complete';
 import { Toss_CheckOut } from './components_pages/client_components/Toss_CheckOut';
@@ -26,7 +26,7 @@ import { keepLogin } from './store/modules/user';
 import EditInfo_client from './components_pages/client_components/EditInfo_client';
 import ProductList_admin from './components_pages/admin_components/ProductList_admin';
 import OrderList_client from './components_pages/client_components/OrderList_client';
-import Store_NewItems from './components_pages/client_components/Store_NewItems';
+import Store_NewItems from './components_pages/client_components/client_comp_store/Store_NewItems';
 import OrderList_admin from './components_pages/admin_components/OrderList_admin';
 import Kakao_Logout from './components_pages/client_components/Kakao_Logout';
 import Kakao_final from './components_pages/client_components/Kakao_final';
