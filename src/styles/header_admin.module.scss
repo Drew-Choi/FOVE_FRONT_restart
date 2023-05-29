@@ -4,10 +4,10 @@ header.header_admin {
   position: relative;
   border-bottom: solid 0.5px black;
   height: 70px;
-  width: 100%;
+  width: 100vw;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content:space-between;
   white-space: nowrap;
   padding: 0 50px;
   top: 0px;
@@ -21,10 +21,15 @@ header.header_admin {
     margin-top: 0.8%;
   }
 
-  .admin {
-    margin-left: auto;
-    margin-right: auto;
-    transform: translateX(-55px);
-    cursor: pointer;
+  .adminPage {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+
+    .adminName {
+      position: relative;
+      margin-bottom: 0px;
+      font-size: 15px;
+    }
   }
 }

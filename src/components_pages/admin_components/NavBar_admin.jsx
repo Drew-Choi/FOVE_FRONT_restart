@@ -1,11 +1,11 @@
 import React from 'react';
-import '../../styles/navBar_admin.scss';
+import navBarAdmin from '../../styles/navBar_admin.module.scss';
 import { useNavigate } from 'react-router-dom';
 
 export default function NavBar_admin() {
   const navigate = useNavigate();
   return (
-    <nav className="navbar_admin">
+    <nav className={navBarAdmin.navbar_admin}>
       <ul>
         <li onClick={() => navigate('/admin')}>상품등록</li>
         <li onClick={() => navigate('/admin/list')}>등록상품 조회</li>

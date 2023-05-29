@@ -63,9 +63,6 @@ const Content = styled.p`
 export default function MenuAccount({ menuAccountRef }) {
   //리덕스
   //유저정보 state
-  const userID = useSelector((state) =>
-    state.user.userID === 0 ? 0 : state.user.userID,
-  );
 
   const navigate = useNavigate();
   const dispatch = useDispatch();

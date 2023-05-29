@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import '../../styles/productRegister_admin.scss';
+import productRegister from '../../styles/productRegister_admin.module.scss';
 import RadioGroup from '../../components_elements/RadioGroup';
 import RadioEl from '../../components_elements/RadioEl';
 import Input_Custom from '../../components_elements/Input_Custom';
@@ -9,7 +9,6 @@ import TextArea_Custom from '../../components_elements/TextArea_Custom';
 import { Tab } from 'react-bootstrap';
 import styled from 'styled-components';
 import axios from 'axios';
-import { redirect } from 'react-router-dom';
 
 const Container = styled.div`
   display: block !important;
@@ -45,17 +44,12 @@ const Text = styled.span`
 export default function ProductRegister_admin() {
   const [pd_Datas, setPd_Datas] = useState(null);
 
-  useEffect(() => {
-    getAllProducts();
-  }, []);
-
   //모든 요청
   //엑시오스로 모든 상품 정보 요청
   const getAllProducts = async () => {
     const productsData = await axios.get('http://localhost:4000/store/all');
     if (productsData.status === 200) {
       await setPd_Datas(productsData.data.length);
-      console.log(productsData.data.length);
       return productsData.data.message;
     } else {
       return productsData.data.message;
@@ -226,34 +220,57 @@ export default function ProductRegister_admin() {
 
   //고유번호를 위해 ref값을 실식간 렌더링
   const [selectCategory, setSeloectCategory] = useState('BEANIE');
+
+  //상품고유코드 저장하는 곳
+  const [pdCode, setPdCode] = useState('');
+
   //고유번호 자동생성 함수
-  console.log(selectCategory);
-  const productCodeCreat = () => {
-    const today = new Date();
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-    const date = today
-      .toLocaleDateString('ko-KR', options)
-      .replace(/[\s.-]/g, '');
+  const productCodeCreat = async () => {
+    try {
+      let code = 'F';
 
-    let code = 'F';
+      if (selectCategory === 'BEANIE') {
+        code += 'BE_';
+      } else if (selectCategory === 'CAP') {
+        code += 'CA_';
+      } else if (selectCategory === 'TRAINING') {
+        code += 'TR_';
+      } else if (selectCategory === 'WINDBREAKER') {
+        code += 'WI_';
+      } else {
+        return;
+      }
 
-    if (selectCategory === 'BEANIE') {
-      code += 'BE';
-    } else if (selectCategory === 'CAP') {
-      code += 'CA';
-    } else if (selectCategory === 'TRAINING') {
-      code += 'TR';
-    } else if (selectCategory === 'WINDBREAKER') {
-      code += 'WI';
+      const getUniqueCode = await axios.get(
+        'http://localhost:4000/admin/register-product/uniqueCheck',
+      );
+
+      const uniqueCode = getUniqueCode.data;
+
+      if (getUniqueCode.status === 200 && uniqueCode.uniqueNumber) {
+        code += await uniqueCode.uniqueNumber;
+        setPdCode((cur) => code);
+        return;
+      } else {
+        return;
+      }
+    } catch (err) {
+      console.error(err);
+      return;
     }
-    code += date;
-
-    return code;
   };
 
+  useEffect(() => {
+    getAllProducts();
+  }, []);
+
+  useEffect(() => {
+    productCodeCreat();
+  }, [selectCategory]);
+
   return (
-    <section className="productRegister_admin">
-      <div className="register_container">
+    <section className={productRegister.productRegister_admin}>
+      <div className={productRegister.register_container}>
         {/* 종류인풋(셀렉터) */}
         <Select_Custom
           selectList={kindArr}
@@ -269,8 +286,9 @@ export default function ProductRegister_admin() {
           inputref={pd_code}
           type="text"
           name="productCode"
-          // value={productCodeCreat()}
+          value={pdCode}
           //백에서 DB추가될때 마다 숫자 추가해주면 될듯
+          disabled
         >
           상품고유번호
         </Input_Custom>
@@ -368,7 +386,7 @@ export default function ProductRegister_admin() {
             multiple
           />
           <BTN_black_nomal_comp
-            className="select_btn"
+            className={productRegister.select_btn}
             onClickEvent={handleClickFileInput}
             fontSize="12px"
           >

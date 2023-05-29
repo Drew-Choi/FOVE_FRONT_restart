@@ -1,11 +1,11 @@
 import React from 'react';
-import '../../styles/header_admin.scss';
+import headerAdmin from '../../styles/header_admin.module.scss';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 const Home = styled.span`
   position: relative;
-  left: 325px;
   font-size: 13px;
   cursor: pointer;
   &:hover {
@@ -16,23 +16,28 @@ const Home = styled.span`
   }
 `;
 
-const Emogy = styled.span`
-  font-size: 20px;
+const Emogy = styled.p`
+  position: relative;
+  margin-bottom: 0px;
+  font-size: 30px;
   cursor: pointer;
 `;
 
 export default function Header_admin() {
   const navigate = useNavigate();
+  const adminName = useSelector((state) =>
+    state.user.userName === '' ? '' : state.user.userName,
+  );
+
   return (
-    <header className="header_admin">
-      <p className="logo" onClick={() => navigate('/admin')}>
+    <header className={headerAdmin.header_admin}>
+      <p className={headerAdmin.logo} onClick={() => navigate('/admin')}>
         FOVE Admin
       </p>
-      <strong style={{ position: 'relative', left: '600px' }}>
-        관리자 페이지
-      </strong>
-      <Home onClick={() => navigate('/')}> STORE HOME </Home>
-      <Emogy>⇥</Emogy>
+      <div className={headerAdmin.adminPage}>
+        <p className={headerAdmin.adminName}>Manager: &nbsp;{adminName}</p>
+        <Emogy>⇥</Emogy>
+      </div>
     </header>
   );
 }
