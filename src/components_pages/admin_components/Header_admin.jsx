@@ -36,7 +36,7 @@ export default function Header_admin() {
       </p>
       <div className={headerAdmin.adminPage}>
         <p className={headerAdmin.adminName}>Manager: &nbsp;{adminName}</p>
-        <Emogy>⇥</Emogy>
+        <Emogy onClick={() => navigate('/store')}>⇥</Emogy>
       </div>
     </header>
   );

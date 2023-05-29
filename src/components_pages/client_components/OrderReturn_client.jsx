@@ -129,7 +129,6 @@ export default function OrderReturn_client() {
               `${orderId}_${i + 1}.${fileList[i].name.split('.').pop()}`,
               { type: fileList[i].type },
             ),
-            orderId,
           };
           copyUpload.push(uploadInfo);
         }
@@ -168,7 +167,7 @@ export default function OrderReturn_client() {
       // const message = desc.current.value || '';
       const reason = reasonChange;
       const formData = new FormData();
-      // 이미지가 여러개라 for문으로 담아줌
+      // 이미지 체크 및 form에 담기
       if (
         pd_img.current === undefined ||
         pd_img.current === null ||
@@ -186,6 +185,7 @@ export default function OrderReturn_client() {
         ) {
           return alert('기타사유를 입력해주세요.');
         } else {
+          // 이미지가 여러개라 for문으로 담아줌
           for (let i = 0; i < pd_img.current.length; i += 1) {
             formData.append('img_return', pd_img.current[i].file);
           }
@@ -204,7 +204,7 @@ export default function OrderReturn_client() {
 
           // multer이용으로 fetch 사용
           const submitRes = await fetch(
-            'http://localhost:4000/admin//return_list',
+            'http://localhost:4000/admin/return_submit',
             {
               method: 'POST',
               headers: {},

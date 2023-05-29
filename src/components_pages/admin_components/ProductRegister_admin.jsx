@@ -1,12 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import productRegister from '../../styles/productRegister_admin.module.scss';
-import RadioGroup from '../../components_elements/RadioGroup';
-import RadioEl from '../../components_elements/RadioEl';
 import Input_Custom from '../../components_elements/Input_Custom';
 import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
 import Select_Custom from '../../components_elements/Select_Custom';
 import TextArea_Custom from '../../components_elements/TextArea_Custom';
-import { Tab } from 'react-bootstrap';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -42,19 +39,23 @@ const Text = styled.span`
 `;
 
 export default function ProductRegister_admin() {
-  const [pd_Datas, setPd_Datas] = useState(null);
+  // 한국시간 구하기
+  // UTC기준 시간을 한국 시간으로 바꾸기 시차 9시간
+  const nowDayTime = () => {
+    const utcTimeNow = Date.now();
+    // 9시간 더하기
+    const kstTimeStamp = utcTimeNow + 9 * 60 * 60 * 1000;
+    // 9시간 더한 밀리세컨드를 Date로 생성
+    const kstData = new Date(kstTimeStamp);
 
-  //모든 요청
-  //엑시오스로 모든 상품 정보 요청
-  const getAllProducts = async () => {
-    const productsData = await axios.get('http://localhost:4000/store/all');
-    if (productsData.status === 200) {
-      await setPd_Datas(productsData.data.length);
-      return productsData.data.message;
-    } else {
-      return productsData.data.message;
-    }
+    return kstData;
   };
+
+  //고유번호를 위해 ref값을 실식간 렌더링
+  const [selectCategory, setSeloectCategory] = useState('BEANIE');
+
+  //상품고유코드 저장하는 곳
+  const [pdCode, setPdCode] = useState('');
 
   //-------
   //가격 콤마용
@@ -111,8 +112,6 @@ export default function ProductRegister_admin() {
 
   //이미지 접근하여 state를 이미지 값으로 변경
   //및 이미지 숫자를 5개로 제한
-  //이미지 갯수 상태 보관
-  const [files, setFiles] = useState([]);
   //Array.from은 배열과 유사한 것을 배열화 시킴, 이미지 갯수 대문에 배열화
 
   const uploadProfile = (e) => {
@@ -120,23 +119,37 @@ export default function ProductRegister_admin() {
     if (selectedFiles.length > 5) {
       alert('최대 5개까지 업로드 가능합니다.');
     } else {
-      setFiles(selectedFiles);
-    }
-    const fileList = e.target.files;
-    const length = fileList.length;
-    let copy = [];
-    if (fileList) {
-      for (let i = 0; i < length; i += 1) {
-        const imgInfo = {
-          file: fileList[i],
-          thumbnail: URL.createObjectURL(fileList[i]),
-          type: fileList[i].type.slice(0, 5),
-        };
-        copy.push(imgInfo);
+      const fileList = e.target.files;
+      const length = fileList.length;
+      // 파일리스트 2번 가공함
+      // 첫 번째 가공배열 담을 배열
+      let copy = [];
+      // 두 번째 가공배열 담을 배열
+      let copyUpload = [];
+
+      if (fileList) {
+        for (let i = 0; i < length; i += 1) {
+          const imgInfo = {
+            file: fileList[i],
+            thumbnail: URL.createObjectURL(fileList[i]),
+            type: fileList[i].type.slice(0, 5),
+          };
+          copy.push(imgInfo);
+          // 파일리스트 두 번째 가공: 업로드 백엔드 요청용으로 가공.
+          // 파일명을 상품코드로 작성하여 정리함
+          const uploadPdInfo = {
+            file: new File(
+              [fileList[i]],
+              `${pdCode}_${i + 1}.${fileList[i].name.split('.').pop()}`,
+              { type: fileList[i].type },
+            ),
+          };
+          copyUpload.push(uploadPdInfo);
+        }
       }
+      setImageFile((cur) => copy);
+      pd_img.current = copyUpload;
     }
-    setImageFile((cur) => copy);
-    pd_img.current = fileList;
   };
 
   //이미지 뿌려주기, 유즈 메모로 image파일이 업로드 될때만 반응하도록
@@ -160,69 +173,123 @@ export default function ProductRegister_admin() {
   //express에서는 이 값을 req.body.data / 혹은 req.files로 받는다.
 
   const newProductPost = async () => {
-    //이미지 외 자료들 남기
-    let productCode = pd_code.current.value;
-    // let newArrival = pd_newArrival.current.checked === !true ? '' : '신상품';
-    let productName = pd_productName.current.value;
-    let price = resultCommaRemove(pd_price.current.value);
-    let sizeOS = resultCommaRemove(pd_sizeOS.current.value);
-    let sizeS = resultCommaRemove(pd_sizeS.current.value);
-    let sizeM = resultCommaRemove(pd_sizeM.current.value);
-    let sizeL = resultCommaRemove(pd_sizeL.current.value);
-    let category = pd_category.current.value;
-    let detail = pd_detail.current.value;
+    try {
+      //이미지 외 자료들 남기
+      let productCode = pd_code.current.value;
+      let productName = pd_productName.current.value;
+      let price = resultCommaRemove(pd_price.current.value);
+      let sizeOS = resultCommaRemove(pd_sizeOS.current.value);
+      let sizeS = resultCommaRemove(pd_sizeS.current.value);
+      let sizeM = resultCommaRemove(pd_sizeM.current.value);
+      let sizeL = resultCommaRemove(pd_sizeL.current.value);
+      let category = pd_category.current.value;
+      let detail = pd_detail.current.value;
 
-    //이미지 폼데이터 만들기
-    const formData = new FormData();
-    //여러 이미지라 formdata에 담아줌
-    for (let i = 0; i < pd_img.current.length; i += 1) {
-      formData.append('img', pd_img.current[i]);
-    }
-    //이미지 외 자료들 formdata에 담음
-    formData.append(
-      'data',
-      //제이슨 형식으로 바꿔줘야함
-      JSON.stringify({
-        productCode: productCode,
-        productName: productName,
-        price: price,
-        category: category,
-        detail: detail,
-        size: {
-          OS: sizeOS,
-          S: sizeS,
-          M: sizeM,
-          L: sizeL,
-        },
-      }),
-    );
+      //이미지 폼데이터 만들기
+      const formData = new FormData();
+      //이미지 체크 및 form에 담기
+      if (
+        pd_img.current === undefined ||
+        pd_img.current === null ||
+        pd_img.current.length < 2
+      ) {
+        return alert('제품 사진을 최소 2개 이상 올려주세요.(필수사항)');
+      } else {
+        if (
+          productCode === undefined ||
+          productCode === null ||
+          productCode === '' ||
+          productName === undefined ||
+          productName === null ||
+          productName === '' ||
+          price === undefined ||
+          price === null ||
+          price === '' ||
+          price === 0 ||
+          category === undefined ||
+          category === null ||
+          category === ''
+        ) {
+          return alert('상품 필수 정보를 모두 입력해주세요.');
+        } else {
+          if (
+            (sizeOS === 0 ||
+              sizeOS === undefined ||
+              sizeOS === null ||
+              sizeOS === '') &&
+            (sizeS === 0 ||
+              sizeS === undefined ||
+              sizeS === null ||
+              sizeS === '') &&
+            (sizeM === 0 ||
+              sizeM === undefined ||
+              sizeM === null ||
+              sizeM === '') &&
+            (sizeL === 0 ||
+              sizeL === undefined ||
+              sizeL === null ||
+              sizeL === '')
+          ) {
+            return alert('최소 1개의 사이즈의 재고를 입력해주세요.');
+          } else {
+            //여러 이미지라 formdata에 담아줌
+            for (let i = 0; i < pd_img.current.length; i += 1) {
+              formData.append('img', pd_img.current[i].file);
+            }
+            //이미지 외 자료들 formdata에 담음
+            formData.append(
+              'data',
+              //제이슨 형식으로 바꿔줘야함
+              JSON.stringify({
+                productCode: productCode,
+                productName: productName,
+                price: price,
+                category: category,
+                size: {
+                  OS: sizeOS,
+                  S: sizeS,
+                  M: sizeM,
+                  L: sizeL,
+                },
+                createAt: nowDayTime(),
+                detail: detail,
+              }),
+            );
 
-    //async/await를 이용해 fetch 구현
-    const newPdPostData = await fetch(
-      //요청할 페이지 날림 -> 이 서버 라우터에서 몽고디비에 인설트 하는 컨트롤을 가지고 있음
-      'http://localhost:4000/admin/register-product',
-      {
-        method: 'POST',
-        headers: {},
-        //여기가 데이터 담아 보내는 것
-        body: formData,
-      },
-    );
-    window.location.reload();
-    //페이지 요청 성공하면 200번, 아니면 오류표시
-    if (newPdPostData.status !== 200) {
-      //json형식으로 불러들임
-      return alert(await newPdPostData.json());
-    } else {
-      return alert(await newPdPostData.json());
+            console.log(formData.get('img'));
+
+            //async/await를 이용해 fetch 구현
+            const newPdPostData = await fetch(
+              //요청할 페이지 날림 -> 이 서버 라우터에서 몽고디비에 인설트 하는 컨트롤을 가지고 있음
+              'http://localhost:4000/admin/register-product',
+              {
+                method: 'POST',
+                headers: {},
+                //여기가 데이터 담아 보내는 것
+                body: formData,
+              },
+            );
+            //페이지 요청 성공하면 200번, 아니면 오류표시
+
+            switch (newPdPostData.status) {
+              case 200:
+                alert(await newPdPostData.json());
+                return window.location.reload();
+
+              case 400:
+                return alert(await newPdPostData.json());
+
+              case 500:
+                return alert(await newPdPostData.json());
+            }
+          }
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      return;
     }
   };
-
-  //고유번호를 위해 ref값을 실식간 렌더링
-  const [selectCategory, setSeloectCategory] = useState('BEANIE');
-
-  //상품고유코드 저장하는 곳
-  const [pdCode, setPdCode] = useState('');
 
   //고유번호 자동생성 함수
   const productCodeCreat = async () => {
@@ -259,10 +326,6 @@ export default function ProductRegister_admin() {
       return;
     }
   };
-
-  useEffect(() => {
-    getAllProducts();
-  }, []);
 
   useEffect(() => {
     productCodeCreat();
