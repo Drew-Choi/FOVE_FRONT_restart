@@ -223,7 +223,6 @@ function App() {
           path="/admin"
           element={!isAdmin ? <Error404 /> : isAdmin && <Admin_main />}
         >
-          {/* <Route path="" element={<Home_admin />} /> */}
           <Route
             path=""
             element={
@@ -231,12 +230,12 @@ function App() {
             }
           />
           <Route
-            path="list"
+            path="/admin/list"
             element={!isAdmin ? <Error404 /> : isAdmin && <ProductList_admin />}
           />
 
           <Route
-            path="orderlist"
+            path="/admin/orderlist"
             element={!isAdmin ? <Error404 /> : isAdmin && <OrderList_admin />}
           />
         </Route>

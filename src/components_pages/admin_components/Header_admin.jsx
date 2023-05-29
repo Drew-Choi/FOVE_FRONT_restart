@@ -30,14 +30,16 @@ export default function Header_admin() {
   );
 
   return (
-    <header className={headerAdmin.header_admin}>
-      <p className={headerAdmin.logo} onClick={() => navigate('/admin')}>
-        FOVE Admin
-      </p>
-      <div className={headerAdmin.adminPage}>
-        <p className={headerAdmin.adminName}>Manager: &nbsp;{adminName}</p>
-        <Emogy onClick={() => navigate('/store')}>⇥</Emogy>
-      </div>
-    </header>
+    <>
+      <header className={headerAdmin.header_admin}>
+        <p className={headerAdmin.logo} onClick={() => navigate('/admin')}>
+          FOVE Admin
+        </p>
+        <div className={headerAdmin.adminPage}>
+          <p className={headerAdmin.adminName}>Manager: &nbsp;{adminName}</p>
+          <Emogy onClick={() => navigate('/store')}>⇥</Emogy>
+        </div>
+      </header>
+    </>
   );
 }

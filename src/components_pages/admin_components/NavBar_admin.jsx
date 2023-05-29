@@ -1,8 +1,10 @@
 import React from 'react';
 import navBarAdmin from '../../styles/navBar_admin.module.scss';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function NavBar_admin() {
+  const location = useLocation();
+  const currentURL = location.pathname;
   const navigate = useNavigate();
   return (
     <nav className={navBarAdmin.navbar_admin}>

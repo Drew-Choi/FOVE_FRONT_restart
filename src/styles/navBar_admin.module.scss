@@ -1,13 +1,17 @@
 nav.navbar_admin {
+  position: relative;
   border-right: solid 0.5px black;
   width: 200px;
-  display: inline-block;
+  flex-shrink: 0;
+  display: block;
+  min-height: 700px;
   // background-color: blue;
   // border-bottom: 0.5px solid black;
 
   ul {
     list-style: none;
     padding: 100px 40px;
+    
     li{
     margin-bottom: 30px;
     cursor: pointer;

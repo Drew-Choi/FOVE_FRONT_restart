@@ -320,8 +320,12 @@ export default function ProductRegister_admin() {
   const subText = ['MAIN', 'Sub_1', 'Sub_2', 'Sub_3', 'Sub_4'];
 
   return (
-    <section className={productRegister.productRegister_admin}>
+    <div className={productRegister.productRegister_admin}>
       <div className={productRegister.register_container}>
+        <div className={productRegister.indi_container_title}>
+          <p className={productRegister.mainTitle}>Product Register</p>
+        </div>
+
         {/* 종류인풋(셀렉터) */}
         <div className={productRegister.indi_container}>
           <p className={productRegister.kind_title}>종류 *</p>
@@ -382,7 +386,7 @@ export default function ProductRegister_admin() {
 
         {/* 사이즈 별 수량 */}
         <p style={{ marginLeft: '20px', fontSize: '12px' }}>
-          → 재고는 최소 1개 사이즈 입력 필수
+          → * 재고는 최소 1개 사이즈 입력 필수
         </p>
         <div className={productRegister.indi_container}>
           <p className={productRegister.pd_OS_title}>
@@ -463,7 +467,7 @@ export default function ProductRegister_admin() {
         {/* 상품이미지 등록 */}
         <div className={productRegister.imgWrap}>
           <p className={productRegister.imgTitle}>
-            IMAGES <br />
+            *IMAGES <br />
             <span className={productRegister.subDesc}>
               * 상품 사진 2장 필수 / 비율은 1:1을 유지해주세요. 그렇지 않으면
               사진이 잘립니다.
@@ -524,6 +528,6 @@ export default function ProductRegister_admin() {
           </BTN_black_nomal_comp>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

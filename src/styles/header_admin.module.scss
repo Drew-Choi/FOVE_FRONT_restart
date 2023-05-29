@@ -9,16 +9,18 @@ header.header_admin {
   align-items: center;
   justify-content:space-between;
   white-space: nowrap;
-  padding: 0 50px;
-  top: 0px;
+  padding: 0px 50px;
+  background-color: white;
+
 
   .logo {
     position: relative;
+    flex-shrink: 0;
     cursor: pointer;
-    font-size: 283%;
+    font-size: 50px;
     font-weight: 600;
     font-style: italic;
-    margin-top: 0.8%;
+    margin-bottom: 0px;
   }
 
   .adminPage {
