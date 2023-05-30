@@ -33,3 +33,14 @@ nav.navbar_admin {
    }
   }
 }
+
+// 반응형 영역
+.navbar_admin_react{
+  position: relative;
+  width: 100vw;
+  height: 50px;
+  background-color: beige;
+  border-bottom: 0.5px solid black;
+  border-left: 0.5px solid black;
+  border-right: 0.5px solid black;
+}

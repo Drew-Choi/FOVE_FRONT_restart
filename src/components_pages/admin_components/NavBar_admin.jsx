@@ -38,7 +38,7 @@ export default function NavBar_admin() {
       </MediaQuery>
 
       <MediaQuery maxWidth={667}>
-        <nav className={navBarAdmin.navbar_admin_react}>다시 해야함</nav>
+        <nav className={navBarAdmin.navbar_admin_react}></nav>
       </MediaQuery>
     </>
   );

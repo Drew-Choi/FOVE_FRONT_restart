@@ -8,6 +8,12 @@ div.productRegister_admin {
     position: relative;
     // background-color: aqua;
     margin-left: 50px;
+
+    @media screen and (max-width: 667px) {
+      margin-left: 0px;
+      left: 50%;
+      transform: translateX(-50%);;
+    }
     
     // 각 셀렉터 및 인풋 컨트롤
     .indi_container { 

@@ -10,6 +10,10 @@ const Section = styled.section`
   display: flex;
   flex-wrap: nowrap;
   /* background-color: red; */
+
+  @media screen and (max-width: 667px) {
+    display: block;
+  }
 `;
 
 export default function Admin_main() {
