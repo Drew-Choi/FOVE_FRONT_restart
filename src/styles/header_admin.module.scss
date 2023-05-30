@@ -29,6 +29,10 @@ header.header_admin {
     @media screen and (max-width:425px) {
       font-size: 35px;
     }
+
+    @media screen and (max-width:280px) {
+      font-size: 25px;
+    }
   }
 
   .adminPage {

@@ -21,6 +21,10 @@ const Emogy = styled.p`
   margin-bottom: 0px;
   font-size: 30px;
   cursor: pointer;
+
+  @media screen and (max-width: 280px) {
+    font-size: 25px;
+  }
 `;
 
 export default function Header_admin() {

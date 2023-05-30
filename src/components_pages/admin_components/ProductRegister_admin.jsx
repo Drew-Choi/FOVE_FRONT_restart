@@ -6,6 +6,7 @@ import Select_Custom from '../../components_elements/Select_Custom';
 import TextArea_Custom from '../../components_elements/TextArea_Custom';
 import styled from 'styled-components';
 import axios from 'axios';
+import MediaQuery from 'react-responsive';
 
 const Preview = styled.div`
   position: relative;
@@ -28,6 +29,13 @@ const Preview = styled.div`
   @media screen and (max-width: 755px) {
     width: 380px;
     height: 380px;
+  }
+
+  @media screen and (max-width: 425px) {
+    width: 230px;
+    height: 230px;
+    margin-left: auto;
+    margin-right: auto;
   }
 `;
 
@@ -156,7 +164,20 @@ export default function ProductRegister_admin() {
   //이미지 뿌려주기, 유즈 메모로 image파일이 업로드 될때만 반응하도록
   const showImage = useMemo(() => {
     if (imageFile === null || imageFile === [] || imageFile.length === 0) {
-      return <p className={productRegister.previewDesc}>Image Preview Area</p>;
+      return (
+        <>
+          <MediaQuery minWidth={426}>
+            <p className={productRegister.previewDesc}>Image Preview Area</p>
+          </MediaQuery>
+
+          <MediaQuery maxWidth={425}>
+            <p className={productRegister.previewDesc}>
+              Image Preview Area <br />* 상품 사진 2장 필수 / 비율은 1:1을
+              유지해주세요. 그렇지 않으면 사진이 잘립니다.
+            </p>
+          </MediaQuery>
+        </>
+      );
     }
     return imageFile.map((el, index) => (
       <div key={index}>
@@ -260,8 +281,6 @@ export default function ProductRegister_admin() {
                 detail: detail,
               }),
             );
-
-            console.log(formData.get('img'));
 
             //async/await를 이용해 fetch 구현
             const newPdPostData = await fetch(
@@ -485,10 +504,12 @@ export default function ProductRegister_admin() {
         <div className={productRegister.imgWrap}>
           <p className={productRegister.imgTitle}>
             *IMAGES <br />
-            <span className={productRegister.subDesc}>
-              * 상품 사진 2장 필수 / 비율은 1:1을 유지해주세요. 그렇지 않으면
-              사진이 잘립니다.
-            </span>
+            <MediaQuery minWidth={426}>
+              <span className={productRegister.subDesc}>
+                * 상품 사진 2장 필수 / 비율은 1:1을 유지해주세요. 그렇지 않으면
+                사진이 잘립니다.
+              </span>
+            </MediaQuery>
           </p>
           <div className={productRegister.previewContainer}>{showImage}</div>
           <input
