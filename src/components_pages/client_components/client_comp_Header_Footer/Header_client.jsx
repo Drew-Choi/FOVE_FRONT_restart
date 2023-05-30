@@ -22,6 +22,8 @@ export default function Header_client() {
   const cartModalRef = useRef(null);
   const cartModalRef2 = useRef(null);
   const cartModalMenu = useRef(null);
+  const burgerBTNref = useRef(null);
+  const burgerRef = useRef(null);
 
   //반응형 햄버거 메뉴 커서
   const [burger, setBurger] = useState('on');
@@ -185,7 +187,7 @@ export default function Header_client() {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside2);
     };
-  }, []);
+  }, [accountRef || accountRef2]);
 
   const handleClickOutside3 = (event) => {
     if (
@@ -209,6 +211,26 @@ export default function Header_client() {
       document.removeEventListener('mousedown', handleClickOutside3);
     };
   }, [cartModalRef] || [cartModalRef2]);
+
+  // 버거 메뉴 외부 클릭 핸들러
+  const handleOutsideBurger = (e) => {
+    if (
+      burgerBTNref.current &&
+      !burgerBTNref.current.contains(e.target) &&
+      burgerRef.current &&
+      !burgerRef.current.contains(e.target)
+    ) {
+      burherHandler();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleOutsideBurger);
+
+    return () => {
+      document.addEventListener('mousedown', handleOutsideBurger);
+    };
+  }, [burgerBTNref]);
 
   return (
     <>
@@ -283,6 +305,7 @@ export default function Header_client() {
                 menu
               </span>
               <span
+                ref={burgerBTNref}
                 onClick={burherHandler}
                 className={`material-symbols-sharp burgerClose ${burgerClose}`}
               >
@@ -469,7 +492,7 @@ export default function Header_client() {
 
       {/* 반응형 버거 모달 */}
       {burger === 'off' ? (
-        <ul className="burger_menu_list">
+        <ul ref={burgerRef} className="burger_menu_list">
           <li>
             <p
               onClick={() => {

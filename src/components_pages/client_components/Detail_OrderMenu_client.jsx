@@ -1,8 +1,8 @@
 import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { add } from '../../store/modules/cart';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { single } from '../../store/modules/order';
 import Shipping_client from './Shipping_client';
 import ModalContainer_client from './ModalContainer_client';

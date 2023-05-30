@@ -37,10 +37,84 @@ nav.navbar_admin {
 // 반응형 영역
 .navbar_admin_react{
   position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 30px;
   width: 100vw;
   height: 50px;
-  background-color: beige;
+  // background-color: beige;
   border-bottom: 0.5px solid black;
-  border-left: 0.5px solid black;
-  border-right: 0.5px solid black;
+
+  ul {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100vw;
+    height: 50px;
+    list-style: none;
+    margin-bottom: 0px;
+    padding-left: 0px;
+    
+    li{
+    font-size: 15px;
+    cursor: pointer;
+    &:hover {
+      color: grey;
+    }
+   }
+
+   li.on {
+    font-size: 15px;
+    text-decoration: underline;
+    text-underline-offset: 4px; // 텍스트와 밑줄 사이의 간격
+    text-decoration-thickness: 1px; // 밑줄의 굵기
+    text-decoration-color: black;
+    cursor: pointer;
+    &:hover {
+      color: grey;
+    }
+   }
+  }
+
+  .adminName {
+    flex-shrink: 0;
+    position: relative;
+    margin-bottom: 0px;
+    font-size: 15px;
+  }
+
+  //버거메뉴영역
+  .burger_menu_container {
+    
+    .burger_icon{
+      font-size: 30px;
+      cursor: pointer;
+    }
+
+    .close_icon {
+      font-size: 30px;
+      cursor: pointer;
+    }
+  }
+
+  .burger_modal_container {
+    position: absolute;
+    display: block;
+    top: 49.5px;
+    left: 0px;
+
+    background-color: white;
+    width: 120px;
+    height: auto;
+    padding: 10px 15px;
+    z-index: 7;
+    border: 0.5px solid black;
+    border-top: none;
+
+    li {
+      margin-bottom: 5px;
+    }
+  }
 }
