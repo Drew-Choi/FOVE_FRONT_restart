@@ -380,7 +380,7 @@ export default function ProductRegister_admin() {
         {/* 상품고유번호 인풋 */}
         <div className={productRegister.indi_container}>
           <p className={productRegister.pd_uniqueCode_title}>
-            상품고유번호<span style={{ fontSize: '12px' }}>(자동생성)</span> *
+            상품코드<span style={{ fontSize: '12px' }}>(자동생성)</span> *
           </p>
           <Input_Custom
             classNameDiv={productRegister.pd_uniqueCode_input}

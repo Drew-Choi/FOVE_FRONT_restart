@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Btn_blakc_nomal = styled.span`
+const Btn_white_nomal = styled.span`
   cursor: pointer;
-  background-color: black;
-  color: white;
+  background-color: #ffffff;
+  color: #000000;
   padding: ${(props) => props.padding};
   font-size: ${(props) => props.fontSize};
   border-radius: ${(props) => props.borderRadius};
@@ -13,17 +13,17 @@ const Btn_blakc_nomal = styled.span`
   text-align: center;
   border: 0.5px solid black;
   &:hover {
-    background-color: #ffffff;
-    color: black;
+    background-color: #000000;
+    color: #ffffff;
   }
   &:active {
     font-size: ${(props) => props.transFontSize};
     text-align: center;
-    background-color: #848484;
+    background-color: white;
   }
 `;
 
-export default function BTN_black_nomal_comp({
+export default function BTN_white_nomal_comp({
   children,
   onClickEvent,
   fontSize,
@@ -34,7 +34,7 @@ export default function BTN_black_nomal_comp({
   borderRadius,
 }) {
   return (
-    <Btn_blakc_nomal
+    <Btn_white_nomal
       transFontSize={transFontSize}
       fontSize={fontSize}
       onClick={onClickEvent}
@@ -44,11 +44,11 @@ export default function BTN_black_nomal_comp({
       borderRadius={borderRadius}
     >
       {children}
-    </Btn_blakc_nomal>
+    </Btn_white_nomal>
   );
 }
 
-BTN_black_nomal_comp.defaultProps = {
+BTN_white_nomal_comp.defaultProps = {
   fontSize: '15px',
   padding: '4px 10px',
   borderRadius: '5px',

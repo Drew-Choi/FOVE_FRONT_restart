@@ -2,14 +2,12 @@
   position: relative;
   width: 100vw;
   min-height: 700px;
-  background-color: beige;
-
-  .pdList_wrap{
+  // background-color: beige;
 
     .indi_Pd_list_container {
       padding: 20px 40px;
-    // background-color: aqua;
-    border-bottom: 0.5px solid black;
+      // background-color: aqua;
+      border-bottom: 0.5px solid black;
 
       .imgList {
         display: flex;
@@ -33,9 +31,72 @@
  
       }
 
+      .pd_InfoText_list_Row1 {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 10px;
+
+        p{
+          font-size: 15px;
+          margin-bottom: 0px;
+        }
+
+        input {
+          font-size: 13px;
+          margin-right: 20px;
+        }
+      }
+
+      .pd_InfoText_list_Row2 {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        gap: 10px;
+
+        p{
+          font-size: 15px;
+          margin-bottom: 0px;
+        }
+
+        input {
+          font-size: 13px;
+          margin-right: 11px;
+        }
+      }
+
+      .pd_InfoText_list_Row3 {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 10px;
+
+        p{
+          margin-bottom: 0px;
+          font-size: 15px;
+        }
+
+        .detilTextArea {
+          font-size: 13px;
+          resize: none;
+          width: 760px;
+        }
+      }
+
+      .updateDesc{
+        font-size: 12px;
+        padding-left: 60px;
+      }
+
+      .BTN_Wrap {
+        position: relative;
+        left: 667px;
+        width: 150px;
+        text-align: right;
+        // background-color: beige;
+      }
     }
 
   }
-}
 
 

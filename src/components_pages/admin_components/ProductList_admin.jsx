@@ -1,11 +1,15 @@
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import adminPdList from '../../styles/productList_admin.module.scss';
+import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
+import BTN_white_nomal_comp from '../../styles/BTN_white_nomal_comp';
 
 export default function ProductList_admin() {
   const [data, setData] = useState([]);
-  const [disa, setDisa] = useState([]);
+  const [disableControll, setDisableControll] = useState([]);
   const [redirect, setRedirect] = useState(false);
+
+  console.log(data);
 
   const productName = useRef([]);
   const os = useRef([]);
@@ -13,15 +17,34 @@ export default function ProductList_admin() {
   const m = useRef([]);
   const l = useRef([]);
   const price = useRef([]);
+  const detail = useRef([]);
 
   // 수정 버튼 누를시
-  const productUpdate = async (index) => {
-    setDisa((prevState) => {
+  const productUpdate = (index) => {
+    setDisableControll((prevState) => {
       const newState = [...prevState];
       for (let i = 0; i < newState.length; i++) {
         newState[i] = true;
       }
       newState[index] = false;
+      return newState;
+    });
+  };
+
+  // 수정 취소시
+  const productUpdateCancel = (index) => {
+    setDisableControll((prevState) => {
+      const newState = [...prevState];
+      for (let i = 0; i < newState.length; i++) {
+        newState[i] = true;
+      }
+      productName.current[index].value = [];
+      os.current[index].value = [];
+      s.current[index].value = [];
+      m.current[index].value = [];
+      l.current[index].value = [];
+      price.current[index].value = [];
+      detail.current[index].value = [];
       return newState;
     });
   };
@@ -39,24 +62,33 @@ export default function ProductList_admin() {
   };
 
   // 수정이후 확인
-  const updateSubmit = async (prodCode, index) => {
+  const updateSubmit = async (productCode, index) => {
+    const updateConfirm = confirm('수정을 하시겠습니까?');
+
+    if (!updateConfirm)
+      return (
+        productUpdateCancel(index),
+        setRedirect((cur) => !cur),
+        alert('수정 취소')
+      );
+    // 만약 사용자가 확인을 눌렀다면
     try {
       const result = () => {
         console.log('data[index]', data[index]);
         return {
-          os:
+          OS:
             os.current[index].value === ''
               ? data[index].size.OS
               : os.current[index].value,
-          s:
+          S:
             s.current[index].value === ''
               ? data[index].size.S
               : s.current[index].value,
-          m:
+          M:
             m.current[index].value === ''
               ? data[index].size.M
               : m.current[index].value,
-          l:
+          L:
             l.current[index].value === ''
               ? data[index].size.L
               : l.current[index].value,
@@ -68,26 +100,22 @@ export default function ProductList_admin() {
             price.current[index].value === ''
               ? data[index].price
               : price.current[index].value,
+          detail:
+            detail.current[index].value === ''
+              ? data[index].detail
+              : detail.current[index].value,
         };
-        // formData.append('image', imageFile); // 이미지 파일
       };
+      // 업데이트 자료 담기
+      const updateResult = await result();
+      console.log('hihihiihihihi', updateResult);
 
-      const Result = await result();
-      console.log('hihihiihihihi', Result);
-      // handelSubmit(Result);
-
-      // alert(Result);
-      console.log('아라라라랄ㄹㄹ', Result);
-      console.log(1);
-
-      // 객체로 stock 받음
-
-      // //이미지 외 자료들 formdata에 담음
+      // 이미지 외 자료들 formdata에 담음
       const size = {
-        OS: Result.os,
-        S: Result.s,
-        M: Result.m,
-        L: Result.l,
+        OS: updateResult.OS,
+        S: updateResult.S,
+        M: updateResult.M,
+        L: updateResult.L,
       };
 
       const formData = new FormData();
@@ -96,15 +124,16 @@ export default function ProductList_admin() {
         'data',
         //제이슨 형식으로 바꿔줘야함
         JSON.stringify({
-          productName: Result.productName,
+          productName: updateResult.productName,
           size: size,
-          price: Result.price,
+          price: updateResult.price,
+          detail: updateResult.detail,
         }),
       );
 
       const response = await fetch(
         //요청할 페이지 날림 -> 이 서버 라우터에서 몽고디비에 인설트 하는 컨트롤을 가지고 있음
-        `http://localhost:4000/admin/productlist/modify/${prodCode}`,
+        `http://localhost:4000/admin/productlist/modify/${productCode}`,
         {
           method: 'POST',
           headers: {},
@@ -113,17 +142,23 @@ export default function ProductList_admin() {
         },
       );
 
-      setData((prevState) => {
-        const newData = [...prevState];
-        newData[index] = response.data;
-        return newData;
-      });
-      alert('수정되었습니다');
-      setRedirect((cur) => !cur);
-    } catch (error) {
-      // alert('실패');
+      if (!response.status === 200)
+        return (
+          productUpdateCancel(index),
+          setRedirect((cur) => !cur),
+          alert('수정실패')
+        );
 
+      console.log(response.data);
+      productUpdateCancel(index), setRedirect((cur) => !cur);
+      return alert('수정 완료');
+    } catch (error) {
       console.error(error);
+      return (
+        productUpdateCancel(index),
+        setRedirect((cur) => !cur),
+        alert('수정오류, 서버오류')
+      );
     }
   };
 
@@ -136,7 +171,7 @@ export default function ProductList_admin() {
         );
 
         setData(response.data);
-        setDisa(new Array(response.data.length).fill(true));
+        setDisableControll(new Array(response.data.length).fill(true));
       } catch (error) {
         console.error(error);
       }
@@ -146,7 +181,7 @@ export default function ProductList_admin() {
 
   const productList = data.map((item, index) => (
     // 이미지 포함하여 모든 내용 뿌려주는 곳
-    <ul className={adminPdList.indi_Pd_list_container} key={item._id}>
+    <div className={adminPdList.indi_Pd_list_container} key={item._id}>
       <div className={adminPdList.imgList}>
         {/* 이미지 배열 뿌려주는 영역 */}
         {item.img.map((el, index) => (
@@ -162,98 +197,125 @@ export default function ProductList_admin() {
           </div>
         ))}
       </div>
-
-      <li>
-        상품번호 :{' '}
+      <div className={adminPdList.pd_InfoText_list_Row1}>
+        <p>상품코드</p>
         <input
           type="text"
-          name={name}
+          name="productCode"
           placeholder={item?.productCode}
-          style={{ fontSize: '12px' }}
-          disabled={disa[index]}
+          disabled
         />
-        {'  '}
-        상품 이름 :{' '}
+        <p>상품명</p>
         <input
           ref={(el) => (productName.current[index] = el)}
           key={item?.id}
           type="text"
-          name={name}
+          name="productName"
           placeholder={item?.productName}
-          style={{ fontSize: '12px' }}
-          disabled={disa[index]}
-        />{' '}
-        가격 :
+          disabled={disableControll[index]}
+        />
+        <p>가격 &nbsp;&nbsp;&nbsp;</p>
         <input
           ref={(el) => (price.current[index] = el)}
           key={item?.id}
           type="text"
-          name={name}
+          name="price"
           placeholder={item?.price}
-          style={{ fontSize: '12px' }}
-          disabled={disa[index]}
-        />{' '}
-        <br />
-        OS수량 :{'   '}
-        {'   '}
+          disabled={disableControll[index]}
+        />
+      </div>
+      <div className={adminPdList.pd_InfoText_list_Row2}>
+        <p>OS 재고</p>
         <input
           ref={(el) => (os.current[index] = el)}
           key={item?.id}
           type="text"
-          name={name}
+          name="sizeOS"
           placeholder={item?.size.OS}
-          style={{ fontSize: '12px' }}
-          disabled={disa[index]}
+          disabled={disableControll[index]}
         />
-        {'  '}
-        S수량 :{' '}
+        <p>S 재고</p>
         <input
           ref={(el) => (s.current[index] = el)}
           key={item.id}
           type="text"
-          name={name}
+          name="sizeS"
           placeholder={item?.size.S}
-          style={{ fontSize: '12px' }}
-          disabled={disa[index]}
-        />{' '}
-        M수량 :{' '}
+          disabled={disableControll[index]}
+        />
+        <p>M 재고</p>
         <input
           ref={(el) => (m.current[index] = el)}
           key={item.id}
           type="text"
-          name={name}
+          name="sizeM"
           placeholder={item?.size.M}
-          style={{ fontSize: '12px' }}
-          disabled={disa[index]}
-        />{' '}
-        L수량 :{' '}
+          disabled={disableControll[index]}
+        />
+        <p>L 재고</p>
         <input
           ref={(el) => (l.current[index] = el)}
           key={item?.id}
           type="text"
-          name={name}
+          name="sizeL"
           placeholder={item?.size.L}
-          style={{ fontSize: '12px' }}
-          disabled={disa[index]}
-        />{' '}
-        <button onClick={() => productUpdate(index)}>수정</button>{' '}
-        <button
-          onClick={() => {
-            const result = updateSubmit(item._id, index);
-            alert(item._id);
-          }}
-        >
-          {' '}
-          완료
-        </button>{' '}
-        <button onClick={() => productDelete(item._id)}>삭제</button>
-      </li>
-    </ul>
+          disabled={disableControll[index]}
+        />
+      </div>
+
+      <div className={adminPdList.pd_InfoText_list_Row3}>
+        <p>상세설명</p>
+        <textarea
+          type="text"
+          name="detail"
+          rows="5"
+          maxLength="200"
+          ref={(el) => (detail.current[index] = el)}
+          placeholder={item?.detail}
+          key={item?.id}
+          disabled={disableControll[index]}
+          className={adminPdList.detilTextArea}
+        />
+      </div>
+
+      {disableControll.includes(false) && (
+        <p className={adminPdList.updateDesc}>
+          * 수정시 입력되지 않은 사항은 수정 전 내용이 보존됩니다.
+        </p>
+      )}
+
+      <div className={adminPdList.BTN_Wrap}>
+        {disableControll.includes(false) ? (
+          <>
+            <BTN_white_nomal_comp
+              onClickEvent={() => productUpdateCancel(index)}
+            >
+              취소
+            </BTN_white_nomal_comp>
+            <BTN_black_nomal_comp
+              onClickEvent={() => {
+                updateSubmit(item.productCode, index);
+              }}
+            >
+              등록
+            </BTN_black_nomal_comp>
+          </>
+        ) : (
+          <>
+            <BTN_white_nomal_comp onClickEvent={() => productUpdate(index)}>
+              수정
+            </BTN_white_nomal_comp>
+
+            <BTN_black_nomal_comp
+            // onClickEvent={() => productDelete(item._id)}
+            >
+              삭제
+            </BTN_black_nomal_comp>
+          </>
+        )}
+      </div>
+    </div>
   ));
 
-  return (
-    <div className={adminPdList.whol_container}>
-      <div className={adminPdList.pdList_wrap}>{productList}</div>
-    </div>
-  );
+  return <div className={adminPdList.whol_container}>{productList}</div>;
 }
