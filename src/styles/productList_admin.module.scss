@@ -1,0 +1,41 @@
+.whol_container {
+  position: relative;
+  width: 100vw;
+  min-height: 700px;
+  background-color: beige;
+
+  .pdList_wrap{
+
+    .indi_Pd_list_container {
+      padding: 20px 40px;
+    // background-color: aqua;
+    border-bottom: 0.5px solid black;
+
+      .imgList {
+        display: flex;
+        gap: 20px;
+        
+        // 이 랩은 key용 의미없음
+        .imgWrap{
+          margin-bottom: 10px;
+
+          .origianl_img{
+          width: 150px;
+          height: 150px;
+          border: 0.5px solid rgb(129, 129, 129);
+        }
+
+          .imgTitle{
+            margin-bottom: 0px;
+            text-align: center;
+          }
+        }
+ 
+      }
+
+    }
+
+  }
+}
+
+

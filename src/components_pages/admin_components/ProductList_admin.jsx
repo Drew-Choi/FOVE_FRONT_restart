@@ -1,13 +1,6 @@
 import axios from 'axios';
-import { relative } from 'path-browserify';
-// import '../../styles/productList_admin.scss';
-
 import { useEffect, useRef, useState } from 'react';
-axios;
-import { useMemo } from 'react';
-import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
-// import '../../styles/productRegister_admin.scss';
-import styled from 'styled-components';
+import adminPdList from '../../styles/productList_admin.module.scss';
 
 export default function ProductList_admin() {
   const [data, setData] = useState([]);
@@ -21,8 +14,6 @@ export default function ProductList_admin() {
   const l = useRef([]);
   const price = useRef([]);
 
-  console.log('data.index', data.index);
-
   // 수정 버튼 누를시
   const productUpdate = async (index) => {
     setDisa((prevState) => {
@@ -34,8 +25,6 @@ export default function ProductList_admin() {
       return newState;
     });
   };
-
-  console.log('hi');
 
   // 삭제기능
   const productDelete = async (id) => {
@@ -124,14 +113,11 @@ export default function ProductList_admin() {
         },
       );
 
-      console.log(2);
-
       setData((prevState) => {
         const newData = [...prevState];
         newData[index] = response.data;
         return newData;
       });
-      console.log('prev');
       alert('수정되었습니다');
       setRedirect((cur) => !cur);
     } catch (error) {
@@ -149,8 +135,6 @@ export default function ProductList_admin() {
           'http://localhost:4000/admin/productlist',
         );
 
-        console.log('$$$$$$$$$$$$$$$$$$', response.data);
-
         setData(response.data);
         setDisa(new Array(response.data.length).fill(true));
       } catch (error) {
@@ -161,108 +145,115 @@ export default function ProductList_admin() {
   }, [redirect]);
 
   const productList = data.map((item, index) => (
-    <>
-      <div key={item?._id} className="pdlist_wrap">
-        <li>
-          <div style={{}}></div>
-          <div></div>
-          {/* {index + 1} */}
-          상품번호 :{' '}
-          <input
-            type="text"
-            name={name}
-            // placeholder={item.productCode}
-            style={{ fontSize: '12px' }}
-            disabled={disa[index]}
-          />
-          {'  '}
-          상품 이름 :{' '}
-          <input
-            ref={(el) => (productName.current[index] = el)}
-            key={item?.id}
-            type="text"
-            name={name}
-            placeholder={item?.productName}
-            style={{ fontSize: '12px' }}
-            disabled={disa[index]}
-          />{' '}
-          가격 :
-          <input
-            ref={(el) => (price.current[index] = el)}
-            key={item?.id}
-            type="text"
-            name={name}
-            placeholder={item?.price}
-            style={{ fontSize: '12px' }}
-            disabled={disa[index]}
-          />{' '}
-          <div></div>
-          OS수량 :{'   '}
-          {'   '}
-          <input
-            ref={(el) => (os.current[index] = el)}
-            key={item?.id}
-            type="text"
-            name={name}
-            placeholder={item?.size.OS}
-            style={{ fontSize: '12px' }}
-            disabled={disa[index]}
-          />
-          {'  '}
-          S수량 :{' '}
-          <input
-            ref={(el) => (s.current[index] = el)}
-            key={item?.id}
-            type="text"
-            name={name}
-            placeholder={item?.size.S}
-            style={{ fontSize: '12px' }}
-            disabled={disa[index]}
-          />{' '}
-          M수량 :{' '}
-          <input
-            ref={(el) => (m.current[index] = el)}
-            key={item?.id}
-            type="text"
-            name={name}
-            placeholder={item?.size.M}
-            style={{ fontSize: '12px' }}
-            disabled={disa[index]}
-          />{' '}
-          L수량 :{' '}
-          <input
-            ref={(el) => (l.current[index] = el)}
-            key={item?.id}
-            type="text"
-            name={name}
-            placeholder={item?.size.L}
-            style={{ fontSize: '12px' }}
-            disabled={disa[index]}
-          />{' '}
-          <button onClick={() => productUpdate(index)}>수정</button>{' '}
-          <button
-            onClick={() => {
-              const result = updateSubmit(item?._id, index);
-              alert(item._id);
-            }}
-          >
-            {' '}
-            완료
-          </button>{' '}
-          <button onClick={() => productDelete(item?._id)}>삭제</button>
-          <div></div>
-          <div
-            style={{ border: '0.1px solid black ', margin: '10px 0px' }}
-          ></div>
-        </li>
+    // 이미지 포함하여 모든 내용 뿌려주는 곳
+    <ul className={adminPdList.indi_Pd_list_container} key={item._id}>
+      <div className={adminPdList.imgList}>
+        {/* 이미지 배열 뿌려주는 영역 */}
+        {item.img.map((el, index) => (
+          <div className={adminPdList.imgWrap} key={index}>
+            <img
+              className={adminPdList.origianl_img}
+              src={`http://localhost:4000/uploads/${el}`}
+              alt="register Img"
+            />
+            <p className={adminPdList.imgTitle}>
+              {index === 0 ? 'Main' : `Sub_${index}`}
+            </p>
+          </div>
+        ))}
       </div>
-      <div> </div>
-    </>
+
+      <li>
+        상품번호 :{' '}
+        <input
+          type="text"
+          name={name}
+          placeholder={item?.productCode}
+          style={{ fontSize: '12px' }}
+          disabled={disa[index]}
+        />
+        {'  '}
+        상품 이름 :{' '}
+        <input
+          ref={(el) => (productName.current[index] = el)}
+          key={item?.id}
+          type="text"
+          name={name}
+          placeholder={item?.productName}
+          style={{ fontSize: '12px' }}
+          disabled={disa[index]}
+        />{' '}
+        가격 :
+        <input
+          ref={(el) => (price.current[index] = el)}
+          key={item?.id}
+          type="text"
+          name={name}
+          placeholder={item?.price}
+          style={{ fontSize: '12px' }}
+          disabled={disa[index]}
+        />{' '}
+        <br />
+        OS수량 :{'   '}
+        {'   '}
+        <input
+          ref={(el) => (os.current[index] = el)}
+          key={item?.id}
+          type="text"
+          name={name}
+          placeholder={item?.size.OS}
+          style={{ fontSize: '12px' }}
+          disabled={disa[index]}
+        />
+        {'  '}
+        S수량 :{' '}
+        <input
+          ref={(el) => (s.current[index] = el)}
+          key={item.id}
+          type="text"
+          name={name}
+          placeholder={item?.size.S}
+          style={{ fontSize: '12px' }}
+          disabled={disa[index]}
+        />{' '}
+        M수량 :{' '}
+        <input
+          ref={(el) => (m.current[index] = el)}
+          key={item.id}
+          type="text"
+          name={name}
+          placeholder={item?.size.M}
+          style={{ fontSize: '12px' }}
+          disabled={disa[index]}
+        />{' '}
+        L수량 :{' '}
+        <input
+          ref={(el) => (l.current[index] = el)}
+          key={item?.id}
+          type="text"
+          name={name}
+          placeholder={item?.size.L}
+          style={{ fontSize: '12px' }}
+          disabled={disa[index]}
+        />{' '}
+        <button onClick={() => productUpdate(index)}>수정</button>{' '}
+        <button
+          onClick={() => {
+            const result = updateSubmit(item._id, index);
+            alert(item._id);
+          }}
+        >
+          {' '}
+          완료
+        </button>{' '}
+        <button onClick={() => productDelete(item._id)}>삭제</button>
+      </li>
+    </ul>
   ));
 
   return (
-    <div style={{ position: 'relative', top: '100px' }}>
-      <ul>{productList}</ul>
+    <div className={adminPdList.whol_container}>
+      <div className={adminPdList.pdList_wrap}>{productList}</div>
     </div>
   );
 }
