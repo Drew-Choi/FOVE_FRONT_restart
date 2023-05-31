@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import adminPdList from '../../styles/productList_admin.module.scss';
 import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
 import BTN_white_nomal_comp from '../../styles/BTN_white_nomal_comp';
@@ -9,8 +9,6 @@ export default function ProductList_admin() {
   const [disableControll, setDisableControll] = useState([]);
   const [redirect, setRedirect] = useState(false);
 
-  console.log(data);
-
   const productName = useRef([]);
   const os = useRef([]);
   const s = useRef([]);
@@ -18,36 +16,6 @@ export default function ProductList_admin() {
   const l = useRef([]);
   const price = useRef([]);
   const detail = useRef([]);
-
-  // 수정 버튼 누를시
-  const productUpdate = (index) => {
-    setDisableControll((prevState) => {
-      const newState = [...prevState];
-      for (let i = 0; i < newState.length; i++) {
-        newState[i] = true;
-      }
-      newState[index] = false;
-      return newState;
-    });
-  };
-
-  // 수정 취소시
-  const productUpdateCancel = (index) => {
-    setDisableControll((prevState) => {
-      const newState = [...prevState];
-      for (let i = 0; i < newState.length; i++) {
-        newState[i] = true;
-      }
-      productName.current[index].value = [];
-      os.current[index].value = [];
-      s.current[index].value = [];
-      m.current[index].value = [];
-      l.current[index].value = [];
-      price.current[index].value = [];
-      detail.current[index].value = [];
-      return newState;
-    });
-  };
 
   // 삭제기능
   const productDelete = async (id) => {
@@ -179,21 +147,195 @@ export default function ProductList_admin() {
     fetchData();
   }, [redirect]);
 
+  // 이미지 파일 업로드 영역은 따로 정리 -----------------------
+  // 클릭용 Ref
+  const imgClick = useRef([]);
+  // 실제 업로드 파일 저장하는 Ref
+  // const imgFile = useRef();
+  // 해당 key ref에 클릭 접근
+  const imgInputClick = (num) => {
+    imgClick.current[num]?.click();
+  };
+  // 프레뷰 이미지 URL 담는 곳
+  const [previewShow, setPreviewShow] = useState([
+    null,
+    null,
+    null,
+    null,
+    null,
+  ]);
+
+  //이미지배열을 위한 임의적 배열생성. 데이터가 없는 요소는 undefined임
+  const generateArr = (item) => {
+    const imageArray = Array.from({ length: 5 }, (_, index) =>
+      item[index] === undefined ? 'upload.png' : item[index],
+    );
+
+    return imageArray;
+  };
+
+  // 단일 파일 업로드 최대 1개 사진을 하나씩 변경 가능한 것으로 진행
+  const uploadImgFile = (e, num, productCode) => {
+    const selectFile = Array.from(e.target.files);
+    if (selectFile.length > 1) {
+      alert('1개의 사진만 업로드 가능합니다');
+    } else {
+      const uploadFileList = e.target.files;
+      const length = uploadFileList.length;
+      // 파일리스트 2번 가공함
+      // 첫 번째 가공배열 담을 배열
+      let copy = [...previewShow];
+      // 두 번째 가공배열 담을 배열
+      // let copyUpload = [];
+
+      // 가공 1. 프레뷰용
+      if (uploadFileList && length === 1) {
+        const imgInfo = {
+          file: uploadFileList[0],
+          thumbnail: URL.createObjectURL(uploadFileList[0]),
+          type: uploadFileList[0].type.slice(0, 5),
+        };
+        copy[num] = imgInfo;
+
+        // 파일리스트 두 번째 가공: 업로드 백엔드 요청용으로 가공.
+        // 파일명을 상품코드로 작성 하지만, 이번에는 단일 전소이기 때문에,
+        // 매개변수로 index를 받아서 그것으로 _순번 을 정함
+        // 그리고 백엔드 uploads 파일에 덮어쓰기
+        // const uploadModifyImgFile = {
+        //   file: new File(
+        //     [uploadFileList[0]],
+        //     `${productCode}_${index + 1}.${uploadFileList[0].name
+        //       .split('.')
+        //       .pop()}`,
+        //     { type: uploadFileList[0].type },
+        //   ),
+        // };
+        // copyUpload.push(uploadModifyImgFile);
+      }
+      setPreviewShow((cur) => copy);
+    }
+  };
+
+  // 프레뷰이미지 뿌려주는 곳
+  const showImage = useCallback(
+    (num) => {
+      if (
+        previewShow[num] === null ||
+        previewShow[num] === undefined ||
+        previewShow[num] === {} ||
+        previewShow[num] === ''
+      )
+        return <></>;
+
+      // 해당 배열 요소가 비어있지 않다면 프레뷰 쇼를 해준다.
+      return (
+        <>
+          <img
+            className={adminPdList.origianl_img_on}
+            src={previewShow[num].thumbnail}
+            alt="modify preview Img"
+            onClick={() => imgInputClick(num)}
+          />
+          <p className={adminPdList.imgTitle}>
+            {num === 0 ? 'Main' : `Sub_${num}`}
+          </p>
+        </>
+      );
+    },
+    [previewShow],
+  );
+
+  // 이미지 프레뷰 업로드 등 끝  -------------------------
+
+  // 핸들 모음
+  // 수정 버튼 누를시 핸들
+  const productUpdate = (index) => {
+    let copy = [...previewShow];
+    copy = [null, null, null, null, null];
+    setPreviewShow((cur) => copy);
+
+    setDisableControll((prevState) => {
+      const newState = [...prevState];
+      for (let i = 0; i < newState.length; i++) {
+        productName.current[i].value = [];
+        os.current[i].value = [];
+        s.current[i].value = [];
+        m.current[i].value = [];
+        l.current[i].value = [];
+        price.current[i].value = [];
+        detail.current[i].value = [];
+        newState[i] = true;
+      }
+      newState[index] = false;
+      return newState;
+    });
+  };
+
+  // 수정 취소시 핸들
+  const productUpdateCancel = (index) => {
+    setDisableControll((prevState) => {
+      const newState = [...prevState];
+      for (let i = 0; i < newState.length; i++) {
+        newState[i] = true;
+      }
+      productName.current[index].value = [];
+      os.current[index].value = [];
+      s.current[index].value = [];
+      m.current[index].value = [];
+      l.current[index].value = [];
+      price.current[index].value = [];
+      detail.current[index].value = [];
+      let copy = [...previewShow];
+      copy = [null, null, null, null, null];
+      setPreviewShow((cur) => copy);
+      return newState;
+    });
+  };
+
   const productList = data.map((item, index) => (
     // 이미지 포함하여 모든 내용 뿌려주는 곳
     <div className={adminPdList.indi_Pd_list_container} key={item._id}>
       <div className={adminPdList.imgList}>
         {/* 이미지 배열 뿌려주는 영역 */}
-        {item.img.map((el, index) => (
-          <div className={adminPdList.imgWrap} key={index}>
-            <img
-              className={adminPdList.origianl_img}
-              src={`http://localhost:4000/uploads/${el}`}
-              alt="register Img"
+        {/* 수정 모드일 때만 5개 임의 배열 쓰기 */}
+        {(disableControll[index] === true
+          ? item.img
+          : generateArr(item.img)
+        ).map((el, num) => (
+          <div className={adminPdList.imgWrap} key={num}>
+            {disableControll[index] === true || previewShow[num] === null ? (
+              <>
+                <img
+                  className={
+                    disableControll[index] === true
+                      ? adminPdList.origianl_img
+                      : adminPdList.origianl_img_on
+                  }
+                  src={`http://localhost:4000/uploads/${el}`}
+                  alt="register Img"
+                  onClick={
+                    disableControll[index] === true
+                      ? () => null
+                      : () => imgInputClick(num)
+                  }
+                />
+                <p className={adminPdList.imgTitle}>
+                  {num === 0 ? 'Main' : `Sub_${num}`}
+                </p>
+              </>
+            ) : (
+              <>{showImage(num)}</>
+            )}
+
+            <input
+              style={{ display: 'none' }}
+              type="file"
+              accept="image/jpg, image/jpeg, image/png"
+              ref={(e) => (imgClick.current[num] = e)}
+              // onChange={uploadProfile}
+              name="img"
+              onChange={(e) => uploadImgFile(e, num)}
             />
-            <p className={adminPdList.imgTitle}>
-              {index === 0 ? 'Main' : `Sub_${index}`}
-            </p>
           </div>
         ))}
       </div>
@@ -278,14 +420,14 @@ export default function ProductList_admin() {
         />
       </div>
 
-      {disableControll.includes(false) && (
+      {disableControll[index] === false && (
         <p className={adminPdList.updateDesc}>
           * 수정시 입력되지 않은 사항은 수정 전 내용이 보존됩니다.
         </p>
       )}
 
       <div className={adminPdList.BTN_Wrap}>
-        {disableControll.includes(false) ? (
+        {disableControll[index] === false ? (
           <>
             <BTN_white_nomal_comp
               onClickEvent={() => productUpdateCancel(index)}

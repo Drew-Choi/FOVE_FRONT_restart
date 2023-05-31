@@ -23,6 +23,17 @@
           border: 0.5px solid rgb(129, 129, 129);
         }
 
+        .origianl_img_on{
+          width: 150px;
+          height: 150px;
+          border: 0.5px solid rgb(129, 129, 129);
+          cursor: pointer;
+          
+          &:hover {
+            opacity: 0.5;
+          }
+        }
+
           .imgTitle{
             margin-bottom: 0px;
             text-align: center;
