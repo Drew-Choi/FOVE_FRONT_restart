@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import adminPdList from '../../styles/productList_admin.module.scss';
 import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
 import BTN_white_nomal_comp from '../../styles/BTN_white_nomal_comp';
+import { check } from 'prettier';
 
 export default function ProductList_admin() {
   const [data, setData] = useState([]);
@@ -41,85 +42,115 @@ export default function ProductList_admin() {
       );
     // 만약 사용자가 확인을 눌렀다면
     try {
-      const result = () => {
-        console.log('data[index]', data[index]);
-        return {
-          OS:
-            os.current[index].value === ''
-              ? data[index].size.OS
-              : os.current[index].value,
-          S:
-            s.current[index].value === ''
-              ? data[index].size.S
-              : s.current[index].value,
-          M:
-            m.current[index].value === ''
-              ? data[index].size.M
-              : m.current[index].value,
-          L:
-            l.current[index].value === ''
-              ? data[index].size.L
-              : l.current[index].value,
-          productName:
-            productName.current[index].value === ''
-              ? data[index].productName
-              : productName.current[index].value,
-          price:
-            price.current[index].value === ''
-              ? data[index].price
-              : price.current[index].value,
-          detail:
-            detail.current[index].value === ''
-              ? data[index].detail
-              : detail.current[index].value,
+      const checkImageData = (data) => {
+        let count = 0;
+        for (let i = 0; i < data.length; i += 1) {
+          data[i] === null ? (count += 1) : null;
+        }
+        return count === 5 ? false : true;
+      };
+
+      if (
+        os.current[index].value === '' &&
+        s.current[index].value === '' &&
+        m.current[index].value === '' &&
+        l.current[index].value === '' &&
+        productName.current[index].value === '' &&
+        price.current[index].value === '' &&
+        detail.current[index].value === '' &&
+        checkImageData(imgFile.current) === false
+      ) {
+        return alert('변경사항 없음');
+      } else {
+        // 유효성 체크 업데이트 진행
+        const result = () => {
+          console.log('data[index]', data[index]);
+          return {
+            OS:
+              os.current[index].value === ''
+                ? data[index].size.OS
+                : os.current[index].value,
+            S:
+              s.current[index].value === ''
+                ? data[index].size.S
+                : s.current[index].value,
+            M:
+              m.current[index].value === ''
+                ? data[index].size.M
+                : m.current[index].value,
+            L:
+              l.current[index].value === ''
+                ? data[index].size.L
+                : l.current[index].value,
+            productName:
+              productName.current[index].value === ''
+                ? data[index].productName
+                : productName.current[index].value,
+            price:
+              price.current[index].value === ''
+                ? data[index].price
+                : price.current[index].value,
+            detail:
+              detail.current[index].value === ''
+                ? data[index].detail
+                : detail.current[index].value,
+          };
         };
-      };
-      // 업데이트 자료 담기
-      const updateResult = await result();
-      console.log('hihihiihihihi', updateResult);
+        // 업데이트 자료 담기
+        const updateResult = await result();
+        console.log('hihihiihihihi', updateResult);
 
-      // 이미지 외 자료들 formdata에 담음
-      const size = {
-        OS: updateResult.OS,
-        S: updateResult.S,
-        M: updateResult.M,
-        L: updateResult.L,
-      };
+        // 이미지 외 자료들 formdata에 담음
+        const size = {
+          OS: updateResult.OS,
+          S: updateResult.S,
+          M: updateResult.M,
+          L: updateResult.L,
+        };
 
-      const formData = new FormData();
+        const formData = new FormData();
 
-      formData.append(
-        'data',
-        //제이슨 형식으로 바꿔줘야함
-        JSON.stringify({
-          productName: updateResult.productName,
-          size: size,
-          price: updateResult.price,
-          detail: updateResult.detail,
-        }),
-      );
+        const filterImageArr = imgFile.current.filter((el) => el !== null);
 
-      const response = await fetch(
-        //요청할 페이지 날림 -> 이 서버 라우터에서 몽고디비에 인설트 하는 컨트롤을 가지고 있음
-        `http://localhost:4000/admin/productlist/modify/${productCode}`,
-        {
-          method: 'POST',
-          headers: {},
-          //여기가 데이터 담아 보내는 것
-          body: formData,
-        },
-      );
+        for (let i = 0; i < filterImageArr.length; i += 1) {
+          formData.append('img', filterImageArr[i].file);
+        }
 
-      if (!response.status === 200)
-        return (
-          productUpdateCancel(index),
-          setRedirect((cur) => !cur),
-          alert('수정실패')
+        console.log(formData.get('img'));
+
+        formData.append(
+          'data',
+          //제이슨 형식으로 바꿔줘야함
+          JSON.stringify({
+            productName: updateResult.productName,
+            size: size,
+            price: updateResult.price,
+            detail: updateResult.detail,
+          }),
         );
 
-      console.log(response.data);
-      productUpdateCancel(index), setRedirect((cur) => !cur);
-      return alert('수정 완료');
+        const response = await fetch(
+          //요청할 페이지 날림 -> 이 서버 라우터에서 몽고디비에 인설트 하는 컨트롤을 가지고 있음
+          `http://localhost:4000/admin/productlist/modify/${productCode}`,
+          {
+            method: 'POST',
+            headers: {},
+            //여기가 데이터 담아 보내는 것
+            body: formData,
+          },
+        );
+
+        if (!response.status === 200)
+          return (
+            productUpdateCancel(index),
+            setRedirect((cur) => !cur),
+            alert('수정실패')
+          );
+
+        console.log(response.data);
+        productUpdateCancel(index), setRedirect((cur) => !cur);
+        return alert('수정 완료');
+      }
     } catch (error) {
       console.error(error);
       return (
@@ -151,7 +182,8 @@ export default function ProductList_admin() {
   // 클릭용 Ref
   const imgClick = useRef([]);
   // 실제 업로드 파일 저장하는 Ref
-  // const imgFile = useRef();
+  const imgFile = useRef([null, null, null, null, null]);
+  console.log(imgFile);
   // 해당 key ref에 클릭 접근
   const imgInputClick = (num) => {
     imgClick.current[num]?.click();
@@ -186,7 +218,6 @@ export default function ProductList_admin() {
       // 첫 번째 가공배열 담을 배열
       let copy = [...previewShow];
       // 두 번째 가공배열 담을 배열
-      // let copyUpload = [];
 
       // 가공 1. 프레뷰용
       if (uploadFileList && length === 1) {
@@ -201,16 +232,16 @@ export default function ProductList_admin() {
         // 파일명을 상품코드로 작성 하지만, 이번에는 단일 전소이기 때문에,
         // 매개변수로 index를 받아서 그것으로 _순번 을 정함
         // 그리고 백엔드 uploads 파일에 덮어쓰기
-        // const uploadModifyImgFile = {
-        //   file: new File(
-        //     [uploadFileList[0]],
-        //     `${productCode}_${index + 1}.${uploadFileList[0].name
-        //       .split('.')
-        //       .pop()}`,
-        //     { type: uploadFileList[0].type },
-        //   ),
-        // };
-        // copyUpload.push(uploadModifyImgFile);
+        const uploadModifyImgFile = {
+          file: new File(
+            [uploadFileList[0]],
+            `${productCode}_${num + 1}.${uploadFileList[0].name
+              .split('.')
+              .pop()}`,
+            { type: uploadFileList[0].type },
+          ),
+        };
+        imgFile.current[num] = uploadModifyImgFile;
       }
       setPreviewShow((cur) => copy);
     }
@@ -245,14 +276,24 @@ export default function ProductList_admin() {
     [previewShow],
   );
 
+  // 이미지 리셋
+  const imageReset = () => {
+    let copy = [...previewShow];
+    copy = [null, null, null, null, null];
+    setPreviewShow((cur) => copy);
+    imgFile.current = copy;
+  };
+
   // 이미지 프레뷰 업로드 등 끝  -------------------------
 
   // 핸들 모음
   // 수정 버튼 누를시 핸들
   const productUpdate = (index) => {
+    // 다른 곳에서 수정된 사항이 있어서 초기화 해주고 수정작업 해야함
     let copy = [...previewShow];
     copy = [null, null, null, null, null];
     setPreviewShow((cur) => copy);
+    imgFile.current = copy;
 
     setDisableControll((prevState) => {
       const newState = [...prevState];
@@ -288,6 +329,7 @@ export default function ProductList_admin() {
       let copy = [...previewShow];
       copy = [null, null, null, null, null];
       setPreviewShow((cur) => copy);
+      imgFile.current = copy;
       return newState;
     });
   };
@@ -311,7 +353,11 @@ export default function ProductList_admin() {
                       ? adminPdList.origianl_img
                       : adminPdList.origianl_img_on
                   }
-                  src={`http://localhost:4000/uploads/${el}`}
+                  src={
+                    el !== null
+                      ? `http://localhost:4000/uploads/${el}`
+                      : `http://localhost:4000/uploads/upload.png`
+                  }
                   alt="register Img"
                   onClick={
                     disableControll[index] === true
@@ -332,9 +378,15 @@ export default function ProductList_admin() {
               type="file"
               accept="image/jpg, image/jpeg, image/png"
               ref={(e) => (imgClick.current[num] = e)}
-              // onChange={uploadProfile}
               name="img"
-              onChange={(e) => uploadImgFile(e, num)}
+              onChange={(e) =>
+                uploadImgFile(
+                  e,
+                  num,
+                  data[disableControll.findIndex((el) => el === false)]
+                    .productCode,
+                )
+              }
             />
           </div>
         ))}
@@ -423,12 +475,16 @@ export default function ProductList_admin() {
       {disableControll[index] === false && (
         <p className={adminPdList.updateDesc}>
           * 수정시 입력되지 않은 사항은 수정 전 내용이 보존됩니다.
+          <br />* 이미지는 1:1 비율을 유지해주세요. 그렇지 않으면 잘립니다.
         </p>
       )}
 
       <div className={adminPdList.BTN_Wrap}>
         {disableControll[index] === false ? (
           <>
+            <BTN_white_nomal_comp onClickEvent={() => imageReset()}>
+              이미지 초기화
+            </BTN_white_nomal_comp>
             <BTN_white_nomal_comp
               onClickEvent={() => productUpdateCancel(index)}
             >

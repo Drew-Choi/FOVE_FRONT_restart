@@ -101,10 +101,14 @@
 
       .BTN_Wrap {
         position: relative;
-        left: 667px;
-        width: 150px;
+        left: 520px;
+        width: 300px;
         text-align: right;
         // background-color: beige;
+
+        span {
+          margin-left: 5px;
+        }
       }
     }
 
