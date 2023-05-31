@@ -3,7 +3,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import adminPdList from '../../styles/productList_admin.module.scss';
 import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
 import BTN_white_nomal_comp from '../../styles/BTN_white_nomal_comp';
-import { check } from 'prettier';
 
 export default function ProductList_admin() {
   const [data, setData] = useState([]);
@@ -17,6 +16,34 @@ export default function ProductList_admin() {
   const l = useRef([]);
   const price = useRef([]);
   const detail = useRef([]);
+
+  // 가격 설정 컴마 및 숫자만 입력을 위한 것-----------
+  const [enterNum, setEnterNum] = useState(null);
+
+  // value를 얻기위한 핸들
+  const handleChange = (index, value, key) => {
+    setEnterNum((pre) =>
+      pre.map((el, num) => (num === index ? { ...el, [key]: value } : el)),
+    );
+  };
+
+  //천단위 콤마생성
+  const changeEnteredNumComma = (el) => {
+    const comma = (el) => {
+      el = String(el);
+      return el.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+    };
+    const uncomma = (el) => {
+      el = String(el);
+      return el.replace(/[^\d]+/g, '');
+    };
+    return comma(uncomma(el));
+  };
+
+  //콤마제거하고 연산 가능한 숫자로 바꾸기
+  const resultCommaRemove = (el) => {
+    return Number(el.split(',').reduce((curr, acc) => curr + acc, ''));
+  };
 
   // 삭제기능
   const productDelete = async (id) => {
@@ -69,19 +96,19 @@ export default function ProductList_admin() {
             OS:
               os.current[index].value === ''
                 ? data[index].size.OS
-                : os.current[index].value,
+                : resultCommaRemove(os.current[index].value),
             S:
               s.current[index].value === ''
                 ? data[index].size.S
-                : s.current[index].value,
+                : resultCommaRemove(s.current[index].value),
             M:
               m.current[index].value === ''
                 ? data[index].size.M
-                : m.current[index].value,
+                : resultCommaRemove(m.current[index].value),
             L:
               l.current[index].value === ''
                 ? data[index].size.L
-                : l.current[index].value,
+                : resultCommaRemove(l.current[index].value),
             productName:
               productName.current[index].value === ''
                 ? data[index].productName
@@ -89,7 +116,7 @@ export default function ProductList_admin() {
             price:
               price.current[index].value === ''
                 ? data[index].price
-                : price.current[index].value,
+                : resultCommaRemove(price.current[index].value),
             detail:
               detail.current[index].value === ''
                 ? data[index].detail
@@ -115,8 +142,6 @@ export default function ProductList_admin() {
         for (let i = 0; i < filterImageArr.length; i += 1) {
           formData.append('img', filterImageArr[i].file);
         }
-
-        console.log(formData.get('img'));
 
         formData.append(
           'data',
@@ -171,6 +196,16 @@ export default function ProductList_admin() {
 
         setData(response.data);
         setDisableControll(new Array(response.data.length).fill(true));
+        // 숫자 입풋 설정 위한 초기상태
+        // 숫자입력 및 컴마
+        const initialPrice = response.data.map(() => ({
+          value: '',
+          OS: '',
+          S: '',
+          M: '',
+          L: '',
+        }));
+        setEnterNum(initialPrice);
       } catch (error) {
         console.error(error);
       }
@@ -183,7 +218,6 @@ export default function ProductList_admin() {
   const imgClick = useRef([]);
   // 실제 업로드 파일 저장하는 Ref
   const imgFile = useRef([null, null, null, null, null]);
-  console.log(imgFile);
   // 해당 key ref에 클릭 접근
   const imgInputClick = (num) => {
     imgClick.current[num]?.click();
@@ -307,7 +341,17 @@ export default function ProductList_admin() {
         detail.current[i].value = [];
         newState[i] = true;
       }
+      setEnterNum((cur) => []);
       newState[index] = false;
+      const initialPrice = data.map(() => ({
+        value: '',
+        OS: '',
+        S: '',
+        M: '',
+        L: '',
+      }));
+      setEnterNum(initialPrice);
+
       return newState;
     });
   };
@@ -329,7 +373,17 @@ export default function ProductList_admin() {
       let copy = [...previewShow];
       copy = [null, null, null, null, null];
       setPreviewShow((cur) => copy);
+      setEnterNum((cur) => []);
       imgFile.current = copy;
+      const initialPrice = data.map(() => ({
+        value: '',
+        OS: '',
+        S: '',
+        M: '',
+        L: '',
+      }));
+      setEnterNum(initialPrice);
+
       return newState;
     });
   };
@@ -411,10 +465,18 @@ export default function ProductList_admin() {
         <p>가격 &nbsp;&nbsp;&nbsp;</p>
         <input
           ref={(el) => (price.current[index] = el)}
+          value={enterNum[index].value}
+          onChange={() =>
+            handleChange(
+              index,
+              changeEnteredNumComma(price.current[index].value),
+              'value',
+            )
+          }
           key={item?.id}
           type="text"
           name="price"
-          placeholder={item?.price}
+          placeholder={changeEnteredNumComma(item?.price)}
           disabled={disableControll[index]}
         />
       </div>
@@ -422,37 +484,69 @@ export default function ProductList_admin() {
         <p>OS 재고</p>
         <input
           ref={(el) => (os.current[index] = el)}
+          value={enterNum[index].OS}
+          onChange={() =>
+            handleChange(
+              index,
+              changeEnteredNumComma(os.current[index].value),
+              'OS',
+            )
+          }
           key={item?.id}
           type="text"
           name="sizeOS"
-          placeholder={item?.size.OS}
+          placeholder={changeEnteredNumComma(item?.size.OS)}
           disabled={disableControll[index]}
         />
         <p>S 재고</p>
         <input
           ref={(el) => (s.current[index] = el)}
+          value={enterNum[index].S}
+          onChange={() =>
+            handleChange(
+              index,
+              changeEnteredNumComma(s.current[index].value),
+              'S',
+            )
+          }
           key={item.id}
           type="text"
           name="sizeS"
-          placeholder={item?.size.S}
+          placeholder={changeEnteredNumComma(item?.size.S)}
           disabled={disableControll[index]}
         />
         <p>M 재고</p>
         <input
           ref={(el) => (m.current[index] = el)}
+          value={enterNum[index].M}
+          onChange={() =>
+            handleChange(
+              index,
+              changeEnteredNumComma(m.current[index].value),
+              'M',
+            )
+          }
           key={item.id}
           type="text"
           name="sizeM"
-          placeholder={item?.size.M}
+          placeholder={changeEnteredNumComma(item?.size.M)}
           disabled={disableControll[index]}
         />
         <p>L 재고</p>
         <input
           ref={(el) => (l.current[index] = el)}
+          value={enterNum[index].L}
+          onChange={() =>
+            handleChange(
+              index,
+              changeEnteredNumComma(l.current[index].value),
+              'L',
+            )
+          }
           key={item?.id}
           type="text"
           name="sizeL"
-          placeholder={item?.size.L}
+          placeholder={changeEnteredNumComma(item?.size.L)}
           disabled={disableControll[index]}
         />
       </div>
