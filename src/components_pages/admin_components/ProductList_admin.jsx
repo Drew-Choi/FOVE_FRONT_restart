@@ -47,149 +47,6 @@ export default function ProductList_admin() {
     return Number(el.split(',').reduce((curr, acc) => curr + acc, ''));
   };
 
-  // 삭제기능
-  const productDelete = async (id) => {
-    // alert(id);
-    try {
-      await axios.post(`http://localhost:4000/admin/productlist/delete/${id}`);
-      alert('삭제되었습니다');
-      setRedirect((cur) => !cur);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // 수정이후 확인
-  const updateSubmit = async (productCode, index) => {
-    const updateConfirm = confirm('수정을 하시겠습니까?');
-
-    if (!updateConfirm)
-      return (
-        productUpdateCancel(index),
-        setRedirect((cur) => !cur),
-        alert('수정 취소')
-      );
-    // 만약 사용자가 확인을 눌렀다면
-    try {
-      const checkImageData = (data) => {
-        let count = 0;
-        for (let i = 0; i < data.length; i += 1) {
-          data[i] === null ? (count += 1) : null;
-        }
-        return count === 5 ? false : true;
-      };
-
-      if (
-        category.current[index].value === data[index].category &&
-        os.current[index].value === '' &&
-        s.current[index].value === '' &&
-        m.current[index].value === '' &&
-        l.current[index].value === '' &&
-        productName.current[index].value === '' &&
-        price.current[index].value === '' &&
-        detail.current[index].value === '' &&
-        checkImageData(imgFile.current) === false
-      ) {
-        return alert('변경사항 없음');
-      } else {
-        // 유효성 체크 업데이트 진행
-        const result = () => {
-          return {
-            OS:
-              os.current[index].value === ''
-                ? data[index].size.OS
-                : resultCommaRemove(os.current[index].value),
-            S:
-              s.current[index].value === ''
-                ? data[index].size.S
-                : resultCommaRemove(s.current[index].value),
-            M:
-              m.current[index].value === ''
-                ? data[index].size.M
-                : resultCommaRemove(m.current[index].value),
-            L:
-              l.current[index].value === ''
-                ? data[index].size.L
-                : resultCommaRemove(l.current[index].value),
-            productName:
-              productName.current[index].value === ''
-                ? data[index].productName
-                : productName.current[index].value,
-            price:
-              price.current[index].value === ''
-                ? data[index].price
-                : resultCommaRemove(price.current[index].value),
-            detail:
-              detail.current[index].value === ''
-                ? data[index].detail
-                : detail.current[index].value,
-            category:
-              category.current[index].value === data[index].category
-                ? data[index].category
-                : category.current[index].value,
-          };
-        };
-        // 업데이트 자료 담기
-        const updateResult = await result();
-
-        // 이미지 외 자료들 formdata에 담음
-        const size = {
-          OS: updateResult.OS,
-          S: updateResult.S,
-          M: updateResult.M,
-          L: updateResult.L,
-        };
-
-        const formData = new FormData();
-
-        const filterImageArr = imgFile.current.filter((el) => el !== null);
-
-        for (let i = 0; i < filterImageArr.length; i += 1) {
-          formData.append('img', filterImageArr[i].file);
-        }
-
-        formData.append(
-          'data',
-          //제이슨 형식으로 바꿔줘야함
-          JSON.stringify({
-            productName: updateResult.productName,
-            size: size,
-            price: updateResult.price,
-            detail: updateResult.detail,
-            category: updateResult.category,
-          }),
-        );
-
-        const response = await fetch(
-          //요청할 페이지 날림 -> 이 서버 라우터에서 몽고디비에 인설트 하는 컨트롤을 가지고 있음
-          `http://localhost:4000/admin/productlist/modify/${productCode}`,
-          {
-            method: 'POST',
-            headers: {},
-            //여기가 데이터 담아 보내는 것
-            body: formData,
-          },
-        );
-
-        if (!response.status === 200)
-          return (
-            productUpdateCancel(index),
-            setRedirect((cur) => !cur),
-            alert('수정실패')
-          );
-        productUpdateCancel(index), setRedirect((cur) => !cur);
-        return alert('수정 완료');
-      }
-    } catch (error) {
-      console.error(error);
-      return (
-        productUpdateCancel(index),
-        setRedirect((cur) => !cur),
-        alert('수정오류, 서버오류')
-      );
-    }
-  };
-
   // 컴포넌트가 마운트될때 API 요청을 보냄
   useEffect(() => {
     async function fetchData() {
@@ -307,6 +164,7 @@ export default function ProductList_admin() {
           />
           <p className={adminPdList.imgTitle}>
             {num === 0 ? 'Main' : `Sub_${num}`}
+            <span style={{ fontSize: '13px' }}>new</span>
           </p>
         </>
       );
@@ -324,7 +182,158 @@ export default function ProductList_admin() {
 
   // 이미지 프레뷰 업로드 등 끝  -------------------------
 
+  // 카테고리 모음
+  const kindArr = ['BEANIE', 'CAP', 'TRAINING', 'WINDBREAKER'];
+
   // 핸들 모음
+  // 수정이후 확인, 수정 진행 핸들
+  const updateSubmit = async (productCode, index) => {
+    const updateConfirm = confirm('수정을 하시겠습니까?');
+
+    if (!updateConfirm)
+      return (
+        productUpdateCancel(index),
+        setRedirect((cur) => !cur),
+        alert('수정 취소')
+      );
+    // 만약 사용자가 확인을 눌렀다면
+    try {
+      const checkImageData = (data) => {
+        let count = 0;
+        for (let i = 0; i < data.length; i += 1) {
+          data[i] === null ? (count += 1) : null;
+        }
+        return count === 5 ? false : true;
+      };
+
+      if (
+        // 변경사항 있는지 체크, 변경사항 모든 항목이 없으면 그냥 끝냄
+        category.current[index].value === data[index].category &&
+        os.current[index].value === '' &&
+        s.current[index].value === '' &&
+        m.current[index].value === '' &&
+        l.current[index].value === '' &&
+        productName.current[index].value === '' &&
+        price.current[index].value === '' &&
+        detail.current[index].value === '' &&
+        checkImageData(imgFile.current) === false
+      ) {
+        return alert('변경사항 없음');
+      } else {
+        // 이름 유효성 한번 더 검사
+        if (productName.current[index].value !== '') {
+          let result = 0;
+          for (let i = 0; i < data.length; i += 1) {
+            data[i].productName === productName.current[index].value
+              ? (result += 1)
+              : null;
+          }
+          result > 0
+            ? alert(
+                `상품명이 존재합니다.\n중복상품명: ${productName.current[index].value} \n다른 이름을 사용해주세요.`,
+              )
+            : null;
+          return;
+        } else {
+          // Ref값 가져오기
+          const result = () => {
+            return {
+              OS:
+                os.current[index].value === ''
+                  ? data[index].size.OS
+                  : resultCommaRemove(os.current[index].value),
+              S:
+                s.current[index].value === ''
+                  ? data[index].size.S
+                  : resultCommaRemove(s.current[index].value),
+              M:
+                m.current[index].value === ''
+                  ? data[index].size.M
+                  : resultCommaRemove(m.current[index].value),
+              L:
+                l.current[index].value === ''
+                  ? data[index].size.L
+                  : resultCommaRemove(l.current[index].value),
+              productName:
+                productName.current[index].value === ''
+                  ? data[index].productName
+                  : productName.current[index].value,
+              price:
+                price.current[index].value === ''
+                  ? data[index].price
+                  : resultCommaRemove(price.current[index].value),
+              detail:
+                detail.current[index].value === ''
+                  ? data[index].detail
+                  : detail.current[index].value,
+              category:
+                category.current[index].value === data[index].category
+                  ? data[index].category
+                  : category.current[index].value,
+            };
+          };
+          // 업데이트 자료 담기
+          const updateResult = await result();
+
+          // 이미지 외 자료들 formdata에 담음
+          const size = {
+            OS: updateResult.OS,
+            S: updateResult.S,
+            M: updateResult.M,
+            L: updateResult.L,
+          };
+
+          const formData = new FormData();
+
+          const filterImageArr = imgFile.current.filter((el) => el !== null);
+
+          for (let i = 0; i < filterImageArr.length; i += 1) {
+            formData.append('img', filterImageArr[i].file);
+          }
+
+          formData.append(
+            'data',
+            //제이슨 형식으로 바꿔줘야함
+            JSON.stringify({
+              productName: updateResult.productName,
+              size: size,
+              price: updateResult.price,
+              detail: updateResult.detail,
+              category: updateResult.category,
+            }),
+          );
+
+          const response = await fetch(
+            //요청할 페이지 날림 -> 이 서버 라우터에서 몽고디비에 인설트 하는 컨트롤을 가지고 있음
+            `http://localhost:4000/admin/productlist/modify/${productCode}`,
+            {
+              method: 'POST',
+              headers: {},
+              //여기가 데이터 담아 보내는 것
+              body: formData,
+            },
+          );
+
+          if (!response.status === 200)
+            return (
+              productUpdateCancel(index),
+              setRedirect((cur) => !cur),
+              alert('수정실패')
+            );
+          productUpdateCancel(index), setRedirect((cur) => !cur);
+          return alert('수정 완료');
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      return (
+        productUpdateCancel(index),
+        setRedirect((cur) => !cur),
+        alert('수정오류, 서버오류')
+      );
+    }
+  };
+
   // 수정 버튼 누를시 핸들
   const productUpdate = (index) => {
     // 다른 곳에서 수정된 사항이 있어서 초기화 해주고 수정작업 해야함
@@ -392,8 +401,70 @@ export default function ProductList_admin() {
     });
   };
 
-  // 카테고리 모음
-  const kindArr = ['BEANIE', 'CAP', 'TRAINING', 'WINDBREAKER'];
+  // 삭제기능 핸들
+  const productDelete = async (productCode, productName) => {
+    // 클라이언트 체크 한번 더
+    const upadatConfirm = confirm(
+      `삭제 후 복구가 어렵습니다.\n상품명: ${productName}\n상품코드: ${productCode}\n정말 삭제하시겠습니까?`,
+    );
+
+    if (!upadatConfirm) return alert('삭제 취소');
+
+    // confirm이 true이면 아래 진행
+    try {
+      const response = await axios.post(
+        `http://localhost:4000/admin/productlist/delete/${productCode}`,
+      );
+
+      if (response.status === 200)
+        return (
+          setRedirect((cur) => !cur),
+          alert(
+            `상품명: ${productName}\n상품코드: ${productCode}\n삭제되었습니다`,
+          )
+        );
+
+      // status코드 200이 아니면
+      return alert('수정오류');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // Sub_2~4번까지 개별 사진 삭제
+  const imgIndiDelete = async (productCode, imgURL, num) => {
+    const updateConfirm = confirm(`Sub_${num}\n사진을 삭제하시겠습니까?`);
+
+    if (!updateConfirm) return alert('삭제 취소');
+    // confirm이 true라면 아래 실행
+    if (
+      imgURL === null ||
+      imgURL === '' ||
+      imgURL === undefined ||
+      imgURL === 'upload.png'
+    )
+      return alert('삭제 할 이미지가 없습니다.');
+    // null이 아니라면,
+    try {
+      console.log(productCode);
+      console.log(imgURL);
+
+      const response = await axios.post(
+        'http://localhost:4000/admin/productlist/imgDelete',
+        { productCode: productCode, imgURL: imgURL },
+      );
+
+      if (response.status === 200) {
+        setRedirect((cur) => !cur);
+        return alert('이미지 삭제 완료');
+      } else {
+        return alert('삭제오류');
+      }
+    } catch (err) {
+      console.error(err);
+      return alert('서버오류');
+    }
+  };
 
   const productList = data.map((item, index) => (
     // 이미지 포함하여 모든 내용 뿌려주는 곳
@@ -428,6 +499,21 @@ export default function ProductList_admin() {
                 />
                 <p className={adminPdList.imgTitle}>
                   {num === 0 ? 'Main' : `Sub_${num}`}
+                  {!disableControll[index] && num > 1 && (
+                    <span
+                      className={adminPdList.img_indi_delete}
+                      onClick={() =>
+                        imgIndiDelete(
+                          data[disableControll.findIndex((el) => el === false)]
+                            .productCode,
+                          el,
+                          num,
+                        )
+                      }
+                    >
+                      &nbsp;(삭제)
+                    </span>
+                  )}
                 </p>
               </>
             ) : (
@@ -603,6 +689,8 @@ export default function ProductList_admin() {
         <p className={adminPdList.updateDesc}>
           * 수정시 입력되지 않은 사항은 수정 전 내용이 보존됩니다.
           <br />* 이미지는 1:1 비율을 유지해주세요. 그렇지 않으면 잘립니다.
+          <br />* Main이미지와 Sub_1이미지는 삭제가 불가하며 교체만
+          가능합니다.(필수 사진 2개)
         </p>
       )}
 
@@ -632,7 +720,9 @@ export default function ProductList_admin() {
             </BTN_white_nomal_comp>
 
             <BTN_black_nomal_comp
-            // onClickEvent={() => productDelete(item._id)}
+              onClickEvent={() =>
+                productDelete(item.productCode, item.productName)
+              }
             >
               삭제
             </BTN_black_nomal_comp>

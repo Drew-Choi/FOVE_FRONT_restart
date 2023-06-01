@@ -37,6 +37,15 @@
           .imgTitle{
             margin-bottom: 0px;
             text-align: center;
+
+            .img_indi_delete {
+              font-size: 13px;
+              cursor: pointer;
+
+              &:hover {
+                color: red;
+              }
+            }
           }
         }
  
