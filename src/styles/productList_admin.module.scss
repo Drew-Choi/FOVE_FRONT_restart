@@ -45,8 +45,9 @@
       .pd_InfoText_list_Row1 {
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 2px;
         margin-bottom: 10px;
+        // background-color: beige;
 
         p{
           font-size: 15px;
@@ -57,13 +58,23 @@
           font-size: 13px;
           margin-right: 20px;
         }
+
+        .kind_selectBox {
+          // background-color: rebeccapurple;
+          margin-right: 20px;
+          .selectBoxContent {
+            font-size: 13px;
+            width: 137px;
+            padding: 2px 0px;
+          }
+        }
       }
 
       .pd_InfoText_list_Row2 {
         display: flex;
         align-items: center;
         margin-bottom: 10px;
-        gap: 10px;
+        gap: 4.5px;
 
         p{
           font-size: 15px;
@@ -72,7 +83,7 @@
 
         input {
           font-size: 13px;
-          margin-right: 11px;
+          margin-right: 13px;
         }
       }
 

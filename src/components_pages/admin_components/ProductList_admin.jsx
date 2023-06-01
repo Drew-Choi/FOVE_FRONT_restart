@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import adminPdList from '../../styles/productList_admin.module.scss';
 import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
 import BTN_white_nomal_comp from '../../styles/BTN_white_nomal_comp';
+import Select_Custom from '../../components_elements/Select_Custom';
 
 export default function ProductList_admin() {
   const [data, setData] = useState([]);
@@ -16,6 +17,7 @@ export default function ProductList_admin() {
   const l = useRef([]);
   const price = useRef([]);
   const detail = useRef([]);
+  const category = useRef([]);
 
   // 가격 설정 컴마 및 숫자만 입력을 위한 것-----------
   const [enterNum, setEnterNum] = useState(null);
@@ -53,7 +55,7 @@ export default function ProductList_admin() {
       alert('삭제되었습니다');
       setRedirect((cur) => !cur);
     } catch (error) {
-      console.log('hi');
+      console.error(error);
     }
   };
 
@@ -78,6 +80,7 @@ export default function ProductList_admin() {
       };
 
       if (
+        category.current[index].value === data[index].category &&
         os.current[index].value === '' &&
         s.current[index].value === '' &&
         m.current[index].value === '' &&
@@ -91,7 +94,6 @@ export default function ProductList_admin() {
       } else {
         // 유효성 체크 업데이트 진행
         const result = () => {
-          console.log('data[index]', data[index]);
           return {
             OS:
               os.current[index].value === ''
@@ -121,11 +123,14 @@ export default function ProductList_admin() {
               detail.current[index].value === ''
                 ? data[index].detail
                 : detail.current[index].value,
+            category:
+              category.current[index].value === data[index].category
+                ? data[index].category
+                : category.current[index].value,
           };
         };
         // 업데이트 자료 담기
         const updateResult = await result();
-        console.log('hihihiihihihi', updateResult);
 
         // 이미지 외 자료들 formdata에 담음
         const size = {
@@ -151,6 +156,7 @@ export default function ProductList_admin() {
             size: size,
             price: updateResult.price,
             detail: updateResult.detail,
+            category: updateResult.category,
           }),
         );
 
@@ -171,8 +177,6 @@ export default function ProductList_admin() {
             setRedirect((cur) => !cur),
             alert('수정실패')
           );
-
-        console.log(response.data);
         productUpdateCancel(index), setRedirect((cur) => !cur);
         return alert('수정 완료');
       }
@@ -388,6 +392,9 @@ export default function ProductList_admin() {
     });
   };
 
+  // 카테고리 모음
+  const kindArr = ['BEANIE', 'CAP', 'TRAINING', 'WINDBREAKER'];
+
   const productList = data.map((item, index) => (
     // 이미지 포함하여 모든 내용 뿌려주는 곳
     <div className={adminPdList.indi_Pd_list_container} key={item._id}>
@@ -446,6 +453,32 @@ export default function ProductList_admin() {
         ))}
       </div>
       <div className={adminPdList.pd_InfoText_list_Row1}>
+        <p>카테고리</p>
+        {disableControll[index] ? (
+          <input
+            key={item?.id}
+            type="text"
+            name="category"
+            placeholder={item?.category}
+            disabled
+          />
+        ) : (
+          <div className={adminPdList.kind_selectBox}>
+            <select
+              className={adminPdList.selectBoxContent}
+              ref={(el) => (category.current[index] = el)}
+              name="category"
+              defaultValue={item.category}
+            >
+              {kindArr.map((el, index) => (
+                <option value={el} key={index}>
+                  {el}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
         <p>상품코드</p>
         <input
           type="text"
@@ -498,7 +531,7 @@ export default function ProductList_admin() {
           placeholder={changeEnteredNumComma(item?.size.OS)}
           disabled={disableControll[index]}
         />
-        <p>S 재고</p>
+        <p>S 재고 &nbsp; &nbsp;</p>
         <input
           ref={(el) => (s.current[index] = el)}
           value={enterNum[index].S}
@@ -532,7 +565,7 @@ export default function ProductList_admin() {
           placeholder={changeEnteredNumComma(item?.size.M)}
           disabled={disableControll[index]}
         />
-        <p>L 재고</p>
+        <p>L 재고 &nbsp;</p>
         <input
           ref={(el) => (l.current[index] = el)}
           value={enterNum[index].L}
