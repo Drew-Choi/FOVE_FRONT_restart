@@ -215,6 +215,7 @@ function App() {
             path="/mypage/editAddress"
             element={isLogin ? <Adwrite_client /> : <Login_client />}
           />
+          <Route path="*" element={<Error404 />} />
         </Route>
 
         {/* admin 영역 */}
