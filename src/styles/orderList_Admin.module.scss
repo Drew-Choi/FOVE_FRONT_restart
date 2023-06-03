@@ -2,13 +2,7 @@
   position: relative;
   // background-color: beige;
   width: 100vw;
-
-  .section_Wrap{
-    position: relative;
-    width: 80vw;
-    min-height: 700px;
-    // background-color: aqua;
-    margin: 0px auto;
+  overflow: hidden;
 
     .mainTitle{
       position: relative;
@@ -17,30 +11,78 @@
       font-size: 20px;
       font-weight: 600;
       padding: 30px;
+      // background-color: aqua;
+      width: 90vw;
     }
 
-    .totalOrderCount {
+    .subMenu {
       position: relative;
-      width: 75vw;
-      margin: 0px auto;
-      text-align: right;
-      font-size: 15px;
-      font-weight: 600;
+      // background-color: beige;
+      width: 87vw;
+      display: flex;
+      justify-content: space-between;
+      padding: 0px 20px;
+
+      .selector {
+        .selector_order {
+          cursor: pointer;
+
+          &:hover {
+            color: rgb(149, 149, 149);
+          }
+        }
+        .selector_order_on {
+          cursor: pointer;
+          text-decoration: underline;
+          text-underline-offset: 3px;
+          text-decoration-thickness: 1px;
+
+          &:hover {
+            color: rgb(149, 149, 149);
+          }
+        }
+
+        .selector_cancel {
+          cursor: pointer;
+
+          &:hover {
+            color: rgb(149, 149, 149);
+          }
+        }
+        .selector_cancel_on {
+          cursor: pointer;
+          text-decoration: underline;
+          text-underline-offset: 3px;
+          text-decoration-thickness: 1px;
+
+          &:hover {
+            color: rgb(149, 149, 149);
+          }
+        }
+      }
+
+      .totalOrderCount {
+        position: relative;
+        font-size: 15px;
+        font-weight: 600;
+        // background-color: antiquewhite;
+      }
+
     }
+    
 
     .list_ul_wrap{
     position: relative;
     // background-color: orange;
-    width: 75vw;
+    width: 88.5vw;
     margin: 0px auto;
-    margin-top: 10px;
     // border: 0.5px solid black;
     padding: 0px 20px;
 
       .list_li{
         display: grid;
         gap: 10px;
-        grid-template-columns: 70px 300px 1.5fr 1fr 1fr;
+        grid-template-columns: 50px 1fr 1.1fr 0.8fr 0.6fr 0.5fr;
         font-size: 15px;
         padding: 5px 0px;
         list-style: none;
@@ -54,28 +96,36 @@
         p{
           margin-bottom: 0px;
           border-right: 0.5px solid rgb(132, 132, 132);
-          
-          &:nth-child(1) {
-            grid-column: 1/2;
-          }
-          &:nth-child(2) {
-            grid-column: 2/3;
-          }
-          &:nth-child(3) {
-            grid-column: 3/4;
-          }
-          &:nth-child(4) {
-            grid-column: 4/5;
-          }
-          &:nth-child(5) {
-            grid-column: 5/6;
-          }
         }
       }
     }
-  }
 
+    .list_ul_wrap_Cancel{
+      position: relative;
+      // background-color: orange;
+      width: 88.5vw;
+      margin: 0px auto;
+      // border: 0.5px solid black;
+      padding: 0px 20px;
   
-
-
+        .list_li{
+          display: grid;
+          gap: 10px;
+          grid-template-columns: 50px 0.6fr 1fr 0.55fr 0.3fr 0.8fr;
+          font-size: 15px;
+          padding: 5px 0px;
+          list-style: none;
+          border-bottom: 0.5px solid rgb(132, 132, 132);
+          cursor: pointer;
+  
+          &:hover {
+            background-color: rgb(210, 210, 210);
+          }
+  
+          p{
+            margin-bottom: 0px;
+            border-right: 0.5px solid rgb(132, 132, 132);
+          }
+        }
+      }
 }

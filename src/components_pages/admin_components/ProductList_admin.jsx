@@ -4,6 +4,7 @@ import adminPdList from '../../styles/productList_admin.module.scss';
 import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
 import BTN_white_nomal_comp from '../../styles/BTN_white_nomal_comp';
 import MediaQuery from 'react-responsive';
+import LoadingAdmin from '../client_components/LoadingAdmin';
 
 export default function ProductList_admin() {
   const [data, setData] = useState([]);
@@ -753,7 +754,16 @@ export default function ProductList_admin() {
   return (
     <div className={adminPdList.whol_container}>
       <p className={adminPdList.mainTitle}>Product Display List</p>
-      {productList}
+      {(enterNum === null ||
+        enterNum === undefined ||
+        enterNum.length === 0 ||
+        enterNum === []) &&
+      data.length === 0 &&
+      disableControll.length === 0 ? (
+        <LoadingAdmin />
+      ) : (
+        productList
+      )}
     </div>
   );
 }
