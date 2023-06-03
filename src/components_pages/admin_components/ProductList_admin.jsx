@@ -750,5 +750,10 @@ export default function ProductList_admin() {
     </div>
   ));
 
-  return <div className={adminPdList.whol_container}>{productList}</div>;
+  return (
+    <div className={adminPdList.whol_container}>
+      <p className={adminPdList.mainTitle}>Product Display List</p>
+      {productList}
+    </div>
+  );
 }
