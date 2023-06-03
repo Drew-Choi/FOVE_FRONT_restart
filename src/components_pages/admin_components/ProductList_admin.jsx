@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import adminPdList from '../../styles/productList_admin.module.scss';
 import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
 import BTN_white_nomal_comp from '../../styles/BTN_white_nomal_comp';
-import Select_Custom from '../../components_elements/Select_Custom';
+import MediaQuery from 'react-responsive';
 
 export default function ProductList_admin() {
   const [data, setData] = useState([]);
@@ -538,136 +538,154 @@ export default function ProductList_admin() {
           </div>
         ))}
       </div>
-      <div className={adminPdList.pd_InfoText_list_Row1}>
-        <p>카테고리</p>
-        {disableControll[index] ? (
+      <div className={adminPdList.reactContainer}>
+        <div className={adminPdList.pd_InfoText_list_Row1}>
+          <p>카테고리</p>
+          {disableControll[index] ? (
+            <input
+              key={item?.id}
+              type="text"
+              name="category"
+              placeholder={item?.category}
+              disabled
+            />
+          ) : (
+            <div className={adminPdList.kind_selectBox}>
+              <select
+                className={adminPdList.selectBoxContent}
+                ref={(el) => (category.current[index] = el)}
+                name="category"
+                defaultValue={item.category}
+              >
+                {kindArr.map((el, index) => (
+                  <option value={el} key={index}>
+                    {el}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <p>상품코드</p>
           <input
-            key={item?.id}
             type="text"
-            name="category"
-            placeholder={item?.category}
+            name="productCode"
+            placeholder={item?.productCode}
             disabled
           />
-        ) : (
-          <div className={adminPdList.kind_selectBox}>
-            <select
-              className={adminPdList.selectBoxContent}
-              ref={(el) => (category.current[index] = el)}
-              name="category"
-              defaultValue={item.category}
-            >
-              {kindArr.map((el, index) => (
-                <option value={el} key={index}>
-                  {el}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
+          <p>상품명</p>
+          <input
+            ref={(el) => (productName.current[index] = el)}
+            key={item?.id}
+            type="text"
+            name="productName"
+            placeholder={item?.productName}
+            disabled={disableControll[index]}
+          />
 
-        <p>상품코드</p>
-        <input
-          type="text"
-          name="productCode"
-          placeholder={item?.productCode}
-          disabled
-        />
-        <p>상품명</p>
-        <input
-          ref={(el) => (productName.current[index] = el)}
-          key={item?.id}
-          type="text"
-          name="productName"
-          placeholder={item?.productName}
-          disabled={disableControll[index]}
-        />
-        <p>가격 &nbsp;&nbsp;&nbsp;</p>
-        <input
-          ref={(el) => (price.current[index] = el)}
-          value={enterNum[index].value}
-          onChange={() =>
-            handleChange(
-              index,
-              changeEnteredNumComma(price.current[index].value),
-              'value',
-            )
-          }
-          key={item?.id}
-          type="text"
-          name="price"
-          placeholder={changeEnteredNumComma(item?.price)}
-          disabled={disableControll[index]}
-        />
-      </div>
-      <div className={adminPdList.pd_InfoText_list_Row2}>
-        <p>OS 재고</p>
-        <input
-          ref={(el) => (os.current[index] = el)}
-          value={enterNum[index].OS}
-          onChange={() =>
-            handleChange(
-              index,
-              changeEnteredNumComma(os.current[index].value),
-              'OS',
-            )
-          }
-          key={item?.id}
-          type="text"
-          name="sizeOS"
-          placeholder={changeEnteredNumComma(item?.size.OS)}
-          disabled={disableControll[index]}
-        />
-        <p>S 재고 &nbsp; &nbsp;</p>
-        <input
-          ref={(el) => (s.current[index] = el)}
-          value={enterNum[index].S}
-          onChange={() =>
-            handleChange(
-              index,
-              changeEnteredNumComma(s.current[index].value),
-              'S',
-            )
-          }
-          key={item.id}
-          type="text"
-          name="sizeS"
-          placeholder={changeEnteredNumComma(item?.size.S)}
-          disabled={disableControll[index]}
-        />
-        <p>M 재고</p>
-        <input
-          ref={(el) => (m.current[index] = el)}
-          value={enterNum[index].M}
-          onChange={() =>
-            handleChange(
-              index,
-              changeEnteredNumComma(m.current[index].value),
-              'M',
-            )
-          }
-          key={item.id}
-          type="text"
-          name="sizeM"
-          placeholder={changeEnteredNumComma(item?.size.M)}
-          disabled={disableControll[index]}
-        />
-        <p>L 재고 &nbsp;</p>
-        <input
-          ref={(el) => (l.current[index] = el)}
-          value={enterNum[index].L}
-          onChange={() =>
-            handleChange(
-              index,
-              changeEnteredNumComma(l.current[index].value),
-              'L',
-            )
-          }
-          key={item?.id}
-          type="text"
-          name="sizeL"
-          placeholder={changeEnteredNumComma(item?.size.L)}
-          disabled={disableControll[index]}
-        />
+          <MediaQuery minWidth={491}>
+            <p>가격 &nbsp;&nbsp;&nbsp;</p>
+          </MediaQuery>
+          <MediaQuery maxWidth={490}>
+            <p>가격</p>
+          </MediaQuery>
+          <input
+            ref={(el) => (price.current[index] = el)}
+            value={enterNum[index].value}
+            onChange={() =>
+              handleChange(
+                index,
+                changeEnteredNumComma(price.current[index].value),
+                'value',
+              )
+            }
+            key={item?.id}
+            type="text"
+            name="price"
+            placeholder={changeEnteredNumComma(item?.price)}
+            disabled={disableControll[index]}
+          />
+        </div>
+        <div className={adminPdList.pd_InfoText_list_Row2}>
+          <p>OS 재고</p>
+          <input
+            ref={(el) => (os.current[index] = el)}
+            value={enterNum[index].OS}
+            onChange={() =>
+              handleChange(
+                index,
+                changeEnteredNumComma(os.current[index].value),
+                'OS',
+              )
+            }
+            key={item?.id}
+            type="text"
+            name="sizeOS"
+            placeholder={changeEnteredNumComma(item?.size.OS)}
+            disabled={disableControll[index]}
+          />
+          <MediaQuery minWidth={491}>
+            <p>S 재고 &nbsp; &nbsp;</p>
+          </MediaQuery>
+          <MediaQuery maxWidth={490}>
+            <p>S 재고</p>
+          </MediaQuery>
+          <input
+            ref={(el) => (s.current[index] = el)}
+            value={enterNum[index].S}
+            onChange={() =>
+              handleChange(
+                index,
+                changeEnteredNumComma(s.current[index].value),
+                'S',
+              )
+            }
+            key={item.id}
+            type="text"
+            name="sizeS"
+            placeholder={changeEnteredNumComma(item?.size.S)}
+            disabled={disableControll[index]}
+          />
+          <p>M 재고</p>
+          <input
+            ref={(el) => (m.current[index] = el)}
+            value={enterNum[index].M}
+            onChange={() =>
+              handleChange(
+                index,
+                changeEnteredNumComma(m.current[index].value),
+                'M',
+              )
+            }
+            key={item.id}
+            type="text"
+            name="sizeM"
+            placeholder={changeEnteredNumComma(item?.size.M)}
+            disabled={disableControll[index]}
+          />
+          <MediaQuery minWidth={491}>
+            <p>L 재고 &nbsp;</p>
+          </MediaQuery>
+          <MediaQuery maxWidth={490}>
+            <p>L 재고</p>
+          </MediaQuery>
+          <input
+            ref={(el) => (l.current[index] = el)}
+            value={enterNum[index].L}
+            onChange={() =>
+              handleChange(
+                index,
+                changeEnteredNumComma(l.current[index].value),
+                'L',
+              )
+            }
+            key={item?.id}
+            type="text"
+            name="sizeL"
+            placeholder={changeEnteredNumComma(item?.size.L)}
+            disabled={disableControll[index]}
+          />
+        </div>
       </div>
 
       <div className={adminPdList.pd_InfoText_list_Row3}>

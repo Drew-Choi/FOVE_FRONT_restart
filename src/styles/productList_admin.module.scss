@@ -2,6 +2,7 @@
   position: relative;
   width: 100vw;
   min-height: 700px;
+  overflow: hidden;
   // background-color: beige;
 
     .indi_Pd_list_container {
@@ -9,9 +10,25 @@
       // background-color: aqua;
       border-bottom: 0.5px solid black;
 
+      @media screen and (max-width: 1115px) {
+        padding: 20px 10px 20px 20px;
+      }
+
+      @media screen and (max-width: 667px) {
+        padding: 10px 20px;
+      }
+
       .imgList {
+        position: relative;
         display: flex;
         gap: 20px;
+        // background-color: aqua;
+
+        @media screen and (max-width: 667px) {
+          display: block;
+          text-align: center;
+          margin: 0px auto;
+        }
         
         // 이 랩은 key용 의미없음
         .imgWrap{
@@ -21,6 +38,31 @@
           width: 150px;
           height: 150px;
           border: 0.5px solid rgb(129, 129, 129);
+
+          @media screen and (max-width:1160px) {
+            width: 13vw;
+            height: 13vw;
+          }
+
+          @media screen and (max-width:920px) {
+            width: 12.5vw;
+            height: 12.5vw;
+          }
+
+          @media screen and (max-width: 855px) {
+            width: 12vw;
+            height: 12vw;
+          }
+
+          @media screen and (max-width: 815px) {
+            width: 10vw;
+            height: 10vw;
+          }
+
+          @media screen and (max-width: 667px) {
+            width: 200px;
+            height: 200px;
+          }
         }
 
         .origianl_img_on{
@@ -31,6 +73,31 @@
           
           &:hover {
             opacity: 0.5;
+          }
+
+          @media screen and (max-width:1160px) {
+            width: 13vw;
+            height: 13vw;
+          }
+
+          @media screen and (max-width:920px) {
+            width: 12.5vw;
+            height: 12.5vw;
+          }
+
+          @media screen and (max-width: 855px) {
+            width: 12vw;
+            height: 12vw;
+          }
+
+          @media screen and (max-width: 815px) {
+            width: 10vw;
+            height: 10vw;
+          }
+
+          @media screen and (max-width: 667px) {
+            width: 200px;
+            height: 200px;
           }
         }
 
@@ -51,56 +118,144 @@
  
       }
 
-      .pd_InfoText_list_Row1 {
-        display: flex;
-        align-items: center;
-        gap: 2px;
-        margin-bottom: 10px;
-        // background-color: beige;
-
-        p{
-          font-size: 15px;
-          margin-bottom: 0px;
+      .reactContainer{
+        @media screen and (max-width: 1050px) {
+          display: flex;
         }
 
-        input {
-          font-size: 13px;
-          margin-right: 20px;
+        @media screen and (max-width: 667px) {
+          display: flex;
+          justify-content: center;
         }
 
-        .kind_selectBox {
-          // background-color: rebeccapurple;
-          margin-right: 20px;
-          .selectBoxContent {
+        @media screen and (max-width: 490px) {
+          display: block;
+          text-align: center;
+        }
+
+        .pd_InfoText_list_Row1 {
+          display:  flex;
+          align-items: center;
+          gap: 2px;
+          margin-bottom: 10px;
+          // background-color: beige;
+
+          @media screen and (max-width: 1050px) {
+            display: block;
+          }
+
+          @media screen and (max-width:667px) {
+            margin-left: 30px
+          }
+
+          @media screen and (max-width:490px) {
+            margin-left: 0px
+          }
+  
+          p{
+            font-size: 15px;
+            margin-bottom: 0px;
+          }
+  
+          input {
             font-size: 13px;
-            width: 137px;
-            padding: 2px 0px;
+            margin-right: 20px;
+
+            @media screen and (max-width: 1050px) {
+              width: 35vw
+            }
+
+            @media screen and (max-width: 855px) {
+              width: 200px
+            }
+
+            @media screen and (max-width: 490px) {
+              margin-right: 0px;
+              width: 250px;
+            }
+          }
+  
+          .kind_selectBox {
+            // background-color: rebeccapurple;
+            margin-right: 20px;
+
+            @media screen and (max-width: 490px) {
+              margin-right: 0px;
+            }
+  
+            .selectBoxContent {
+              font-size: 13px;
+              width: 137px;
+              padding: 2px 0px;
+
+              @media screen and (max-width: 1050px) {
+                width: 35vw
+              }
+  
+              @media screen and (max-width: 855px) {
+                width: 200px
+              }
+
+              @media screen and (max-width: 490px) {
+                width: 250px;
+              }
+            }
           }
         }
-      }
+  
+        .pd_InfoText_list_Row2 {
+          display: flex;
+          align-items: center;
+          margin-bottom: 10px;
+          gap: 4.5px;
 
-      .pd_InfoText_list_Row2 {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-        gap: 4.5px;
+          @media screen and (max-width: 1050px) {
+            display: block;
+          }
+  
+          p{
+            font-size: 15px;
+            margin-bottom: 0px;
+          }
+  
+          input {
+            font-size: 13px;
+            margin-right: 13px;
 
-        p{
-          font-size: 15px;
-          margin-bottom: 0px;
+            @media screen and (max-width: 1050px) {
+              width: 35vw
+            }
+
+            @media screen and (max-width: 855px) {
+              width: 200px
+            }
+
+            @media screen and (max-width: 490px) {
+              width: 250px;
+              margin-right: 0px;
+            }
+          }
         }
 
-        input {
-          font-size: 13px;
-          margin-right: 13px;
-        }
       }
+
+     
 
       .pd_InfoText_list_Row3 {
+        position: relative;
         display: flex;
         align-items: center;
         gap: 5px;
         margin-bottom: 10px;
+
+        @media screen and (max-width:667px) {
+          justify-content: center;
+        }
+
+        @media screen and (max-width:490px) {
+          display: block;
+          text-align: center;
+        }
 
         p{
           margin-bottom: 0px;
@@ -108,26 +263,89 @@
         }
 
         .detilTextArea {
+          position: relative;
           font-size: 13px;
           resize: none;
-          width: 760px;
+          width: 751px;
+          // background-color: aqua;
+
+          @media screen and (max-width:1050px) {
+            width: 66vw;
+          }
+
+          @media screen and (max-width: 855px) {
+            width: 364px
+          }
+
+          @media screen and (max-width: 667px) {
+            width: 380px
+          }
+
+          @media screen and (max-width: 490px) {
+            width: 250px
+          }
         }
       }
 
       .updateDesc{
         font-size: 12px;
         padding-left: 60px;
+
+        @media screen and (max-width: 667px) {
+          padding-left: 40px;
+        }
+
+        @media screen and (max-width: 490px) {
+          padding: 10px;
+        }
       }
 
       .BTN_Wrap {
         position: relative;
-        left: 520px;
+        left: 510px;
         width: 300px;
         text-align: right;
         // background-color: beige;
 
+        @media screen and (max-width: 1050px) {
+          width: 73vw;
+          left: 0px;
+        }
+
+        @media screen and (max-width: 855px) {
+          width: 422px;
+          left: 0px;
+        }
+
+        @media screen and (max-width: 667px) {
+          width: 350px;
+          text-align: center;
+          left: 0px;
+          margin: 0px auto;
+        }
+
+        @media screen and (max-width: 410px) {
+          width: 300px;
+          text-align: center;
+          left: 0px;
+          margin: 0px auto;
+        }
+
+        @media screen and (max-width: 280px) {
+          width: 245px;
+        }
+
         span {
           margin-left: 5px;
+
+          @media screen and (max-width: 667px) {
+           margin-left: 0px;
+           margin-right: 5px;
+          }
+
+          @media screen and (max-width: 280px) {
+            font-size: 13px;
+           }
         }
       }
     }
