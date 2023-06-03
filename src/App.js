@@ -36,6 +36,7 @@ import OrderCancel_client from './components_pages/client_components/OrderCancel
 import TossPay_Cancel_Complete from './components_pages/client_components/TossPay_Cancel_Complete';
 import OrderReturn_client from './components_pages/client_components/OrderReturn_client';
 import OrderReturnCheck_client from './components_pages/client_components/OrderReturnCheck_client';
+import OrderList_Indi_Admin from './components_pages/admin_components/OrderList_Indi_Admin';
 
 function App() {
   const isLogin = useSelector((state) => state.user.isLogin);
@@ -234,10 +235,15 @@ function App() {
             path="/admin/list"
             element={!isAdmin ? <Error404 /> : isAdmin && <ProductList_admin />}
           />
-
           <Route
             path="/admin/orderlist"
             element={!isAdmin ? <Error404 /> : isAdmin && <OrderList_admin />}
+          />
+          <Route
+            path="/admin/orderlist/detali/:orderId"
+            element={
+              !isAdmin ? <Error404 /> : isAdmin && <OrderList_Indi_Admin />
+            }
           />
         </Route>
         <Route path="*" element={<Error404 />} />

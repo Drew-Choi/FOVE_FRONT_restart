@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import admin_orderList from '../../styles/orderList_Admin.module.scss';
 import axios from 'axios';
 import LoadingAdmin from '../client_components/LoadingAdmin';
+import { useNavigate } from 'react-router-dom';
 
 export default function OrderList_admin() {
   const [orderData, setOrderData] = useState([]);
   const [cancelData, setCancelData] = useState([]);
   const [selector, setSelector] = useState('order');
+  const navigate = useNavigate();
 
   const getOrderListInfo = async () => {
     try {
@@ -91,63 +93,67 @@ export default function OrderList_admin() {
         <ul className={admin_orderList.list_ul_wrap}>
           {orderData.map((el, index) => {
             return (
-              <div key={index}>
-                <li className={admin_orderList.list_li}>
-                  <p>No. {index}</p>
-                  <p>OrderID : {el.payments.orderId}</p>
-                  <p>OrderName : {el.payments.orderName}</p>
-                  <p>User : {el.user}</p>
-                  <p>Recipient : {el.recipient.recipientName}</p>
-                  <p>
-                    Status :{' '}
-                    {el.payments.status !== 'DONE' &&
+              <li
+                className={admin_orderList.list_li}
+                key={index}
+                onClick={() =>
+                  navigate(`/admin/orderlist/detali/${el.payments.orderId}`)
+                }
+              >
+                <p>No. {index}</p>
+                <p>OrderID : {el.payments.orderId}</p>
+                <p>OrderName : {el.payments.orderName}</p>
+                <p>User : {el.user}</p>
+                <p>Recipient : {el.recipient.recipientName}</p>
+                <p>
+                  Status :{' '}
+                  {el.payments.status !== 'DONE' &&
+                  !el.isShipping &&
+                  !el.isDelivered &&
+                  !el.isCancel &&
+                  !el.isReturnSubmit &&
+                  !el.isReturn ? (
+                    '결제 전'
+                  ) : el.payments.status === 'DONE' &&
                     !el.isShipping &&
                     !el.isDelivered &&
                     !el.isCancel &&
                     !el.isReturnSubmit &&
                     !el.isReturn ? (
-                      '결제 전'
-                    ) : el.payments.status === 'DONE' &&
-                      !el.isShipping &&
-                      !el.isDelivered &&
-                      !el.isCancel &&
-                      !el.isReturnSubmit &&
-                      !el.isReturn ? (
-                      '결제완료'
-                    ) : el.payments.status === 'DONE' &&
-                      el.isShipping &&
-                      !el.isDelivered &&
-                      !el.isCancel &&
-                      !el.isReturnSubmit &&
-                      !el.isReturn ? (
-                      '배송중'
-                    ) : el.payments.status === 'DONE' &&
-                      !el.isShipping &&
-                      el.isDelivered &&
-                      !el.isCancel &&
-                      !el.isReturnSubmit &&
-                      !el.isReturn ? (
-                      '배달완료'
-                    ) : el.payments.status === 'DONE' &&
-                      !el.isShipping &&
-                      el.isDelivered &&
-                      !el.isCancel &&
-                      el.isReturnSubmit &&
-                      !el.isReturn ? (
-                      '반품신청'
-                    ) : el.payments.status === 'DONE' &&
-                      !el.isShipping &&
-                      el.isDelivered &&
-                      !el.isCancel &&
-                      !el.isReturnSubmit &&
-                      el.isReturn ? (
-                      '교환완료'
-                    ) : (
-                      <></>
-                    )}
-                  </p>
-                </li>
-              </div>
+                    '결제완료'
+                  ) : el.payments.status === 'DONE' &&
+                    el.isShipping &&
+                    !el.isDelivered &&
+                    !el.isCancel &&
+                    !el.isReturnSubmit &&
+                    !el.isReturn ? (
+                    '배송중'
+                  ) : el.payments.status === 'DONE' &&
+                    !el.isShipping &&
+                    el.isDelivered &&
+                    !el.isCancel &&
+                    !el.isReturnSubmit &&
+                    !el.isReturn ? (
+                    '배달완료'
+                  ) : el.payments.status === 'DONE' &&
+                    !el.isShipping &&
+                    el.isDelivered &&
+                    !el.isCancel &&
+                    el.isReturnSubmit &&
+                    !el.isReturn ? (
+                    '반품신청'
+                  ) : el.payments.status === 'DONE' &&
+                    !el.isShipping &&
+                    el.isDelivered &&
+                    !el.isCancel &&
+                    !el.isReturnSubmit &&
+                    el.isReturn ? (
+                    '교환완료'
+                  ) : (
+                    <></>
+                  )}
+                </p>
+              </li>
             );
           })}
         </ul>
@@ -155,21 +161,27 @@ export default function OrderList_admin() {
         <ul className={admin_orderList.list_ul_wrap_Cancel}>
           {cancelData.map((el, index) => {
             return (
-              <div key={index}>
-                <li className={admin_orderList.list_li}>
-                  <p>No. {index}</p>
-                  <p>OrderID : {el.payments.orderId}</p>
-                  <p>OrderName : {el.payments.orderName}</p>
-                  <p>User : {el.user}</p>
-                  <p>
-                    Status :{' '}
-                    {el.payments.status === 'CANCELED' && el.isCancel
-                      ? '결제취소'
-                      : '오류'}
-                  </p>
-                  <p>Reason : {el.cancels.cancelReason}</p>
-                </li>
-              </div>
+              <li
+                className={admin_orderList.list_li}
+                key={index}
+                // onClick={() =>
+                //   navigate(
+                //     `/admin/orderlist/detaliCancel/${el.payments.orderId}`,
+                //   )
+                // }
+              >
+                <p>No. {index}</p>
+                <p>OrderID : {el.payments.orderId}</p>
+                <p>OrderName : {el.payments.orderName}</p>
+                <p>User : {el.user}</p>
+                <p>
+                  Status :{' '}
+                  {el.payments.status === 'CANCELED' && el.isCancel
+                    ? '결제취소'
+                    : '오류'}
+                </p>
+                <p>Reason : {el.cancels.cancelReason}</p>
+              </li>
             );
           })}
         </ul>
