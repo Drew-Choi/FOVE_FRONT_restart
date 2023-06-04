@@ -240,7 +240,7 @@ function App() {
             element={!isAdmin ? <Error404 /> : isAdmin && <OrderList_admin />}
           />
           <Route
-            path="/admin/orderlist/detali/:orderId"
+            path="/admin/orderlist/detail/:orderId"
             element={
               !isAdmin ? <Error404 /> : isAdmin && <OrderList_Indi_Admin />
             }

@@ -10,6 +10,7 @@ export default function ProductList_admin() {
   const [data, setData] = useState([]);
   const [disableControll, setDisableControll] = useState([]);
   const [redirect, setRedirect] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
   const productName = useRef([]);
   const os = useRef([]);
@@ -74,6 +75,12 @@ export default function ProductList_admin() {
     }
     fetchData();
   }, [redirect]);
+
+  useEffect(() => {
+    const time = setTimeout(() => {
+      setIsVisible((cur) => false);
+    }, 500);
+  }, []);
 
   // 이미지 파일 업로드 영역은 따로 정리 -----------------------
   // 클릭용 Ref
@@ -754,6 +761,7 @@ export default function ProductList_admin() {
   return (
     <div className={adminPdList.whol_container}>
       <p className={adminPdList.mainTitle}>PRODUCT DISPLAY LIST</p>
+      {isVisible && <LoadingAdmin />}
       {(enterNum === null ||
         enterNum === undefined ||
         enterNum.length === 0 ||

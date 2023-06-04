@@ -5,10 +5,9 @@ import LoadingAdmin from '../client_components/LoadingAdmin';
 import { useNavigate } from 'react-router-dom';
 
 export default function OrderList_admin() {
-  const [orderData, setOrderData] = useState([]);
-  const [cancelData, setCancelData] = useState([]);
+  const [orderData, setOrderData] = useState(null);
+  const [cancelData, setCancelData] = useState(null);
   const [selector, setSelector] = useState('order');
-  const [isVisible, setIsVisible] = useState(true);
   const navigate = useNavigate();
 
   const getOrderListInfo = async () => {
@@ -48,16 +47,6 @@ export default function OrderList_admin() {
     getCancelList();
   }, []);
 
-  useEffect(() => {
-    const time = setTimeout(() => {
-      setIsVisible((cur) => false);
-    }, 500);
-
-    return () => {
-      clearTimeout(time);
-    };
-  });
-
   // 핸들모음
   const handleSelector = () => {
     if (selector === 'order') {
@@ -67,6 +56,9 @@ export default function OrderList_admin() {
     }
   };
 
+  console.log(orderData);
+  console.log(cancelData);
+
   // 랜더링 부분
   return (
     <div className={admin_orderList.whol_Container}>
@@ -74,133 +66,171 @@ export default function OrderList_admin() {
         ORDER INDEX &nbsp;{' '}
         <span style={{ fontSize: '15px', fontWeight: '400' }}>Admin</span>
       </p>
-      <div className={admin_orderList.subMenu}>
-        <p className={admin_orderList.selector}>
-          <span
-            className={
-              selector === 'order'
-                ? admin_orderList.selector_order_on
-                : admin_orderList.selector_order
-            }
-            onClick={handleSelector}
-          >
-            주문내역
-          </span>
-          &nbsp;&nbsp;/&nbsp;&nbsp;
-          <span
-            className={
-              selector === 'cancel'
-                ? admin_orderList.selector_cancel_on
-                : admin_orderList.selector_cancel
-            }
-            onClick={handleSelector}
-          >
-            취소내역
-          </span>
-        </p>
-        <p className={admin_orderList.totalOrderCount}>
-          Total : {selector === 'order' ? orderData.length : cancelData.length}
-        </p>
-      </div>
-      {isVisible && <LoadingAdmin />}
-      {orderData.length === 0 || cancelData.length === 0 ? (
+
+      {orderData === null || cancelData === null ? (
         <LoadingAdmin />
       ) : selector === 'order' ? (
-        <ul className={admin_orderList.list_ul_wrap}>
-          {orderData.map((el, index) => {
-            return (
-              <li
-                className={admin_orderList.list_li}
-                key={index}
-                onClick={() =>
-                  navigate(`/admin/orderlist/detali/${el.payments.orderId}`)
+        <>
+          <div className={admin_orderList.subMenu}>
+            <p className={admin_orderList.selector}>
+              <span
+                className={
+                  selector === 'order'
+                    ? admin_orderList.selector_order_on
+                    : admin_orderList.selector_order
                 }
+                onClick={handleSelector}
               >
-                <p>No. {index}</p>
-                <p>OrderID : {el.payments.orderId}</p>
-                <p>OrderName : {el.payments.orderName}</p>
-                <p>User : {el.user}</p>
-                <p>Recipient : {el.recipient.recipientName}</p>
-                <p>
-                  Status :{' '}
-                  {el.payments.status !== 'DONE' &&
-                  !el.isShipping &&
-                  !el.isDelivered &&
-                  !el.isCancel &&
-                  !el.isReturnSubmit &&
-                  !el.isReturn ? (
-                    '결제 전'
-                  ) : el.payments.status === 'DONE' &&
+                주문내역
+              </span>
+              &nbsp;&nbsp;/&nbsp;&nbsp;
+              <span
+                className={
+                  selector === 'cancel'
+                    ? admin_orderList.selector_cancel_on
+                    : admin_orderList.selector_cancel
+                }
+                onClick={handleSelector}
+              >
+                취소내역
+              </span>
+            </p>
+            <p className={admin_orderList.totalOrderCount}>
+              Total :{' '}
+              {selector === 'order' && orderData !== null && cancelData !== null
+                ? orderData.length
+                : cancelData.length}
+            </p>
+          </div>
+          <ul className={admin_orderList.list_ul_wrap}>
+            {orderData.map((el, index) => {
+              return (
+                <li
+                  className={admin_orderList.list_li}
+                  key={index}
+                  onClick={() =>
+                    navigate(`/admin/orderlist/detail/${el.payments.orderId}`)
+                  }
+                >
+                  <p>No. {index}</p>
+                  <p>OrderID : {el.payments.orderId}</p>
+                  <p>OrderName : {el.payments.orderName}</p>
+                  <p>User : {el.user}</p>
+                  <p>Recipient : {el.recipient.recipientName}</p>
+                  <p>
+                    Status :{' '}
+                    {el.payments.status !== 'DONE' &&
                     !el.isShipping &&
                     !el.isDelivered &&
                     !el.isCancel &&
                     !el.isReturnSubmit &&
                     !el.isReturn ? (
-                    '결제완료'
-                  ) : el.payments.status === 'DONE' &&
-                    el.isShipping &&
-                    !el.isDelivered &&
-                    !el.isCancel &&
-                    !el.isReturnSubmit &&
-                    !el.isReturn ? (
-                    '배송중'
-                  ) : el.payments.status === 'DONE' &&
-                    !el.isShipping &&
-                    el.isDelivered &&
-                    !el.isCancel &&
-                    !el.isReturnSubmit &&
-                    !el.isReturn ? (
-                    '배송완료'
-                  ) : el.payments.status === 'DONE' &&
-                    !el.isShipping &&
-                    el.isDelivered &&
-                    !el.isCancel &&
-                    el.isReturnSubmit &&
-                    !el.isReturn ? (
-                    '반품신청'
-                  ) : el.payments.status === 'DONE' &&
-                    !el.isShipping &&
-                    el.isDelivered &&
-                    !el.isCancel &&
-                    !el.isReturnSubmit &&
-                    el.isReturn ? (
-                    '교환완료'
-                  ) : (
-                    <></>
-                  )}
-                </p>
-              </li>
-            );
-          })}
-        </ul>
+                      '결제 전'
+                    ) : el.payments.status === 'DONE' &&
+                      !el.isShipping &&
+                      !el.isDelivered &&
+                      !el.isCancel &&
+                      !el.isReturnSubmit &&
+                      !el.isReturn ? (
+                      '결제완료'
+                    ) : el.payments.status === 'DONE' &&
+                      el.isShipping &&
+                      !el.isDelivered &&
+                      !el.isCancel &&
+                      !el.isReturnSubmit &&
+                      !el.isReturn ? (
+                      '배송중'
+                    ) : el.payments.status === 'DONE' &&
+                      !el.isShipping &&
+                      el.isDelivered &&
+                      !el.isCancel &&
+                      !el.isReturnSubmit &&
+                      !el.isReturn ? (
+                      '배송완료'
+                    ) : el.payments.status === 'DONE' &&
+                      !el.isShipping &&
+                      el.isDelivered &&
+                      !el.isCancel &&
+                      el.isReturnSubmit &&
+                      !el.isReturn ? (
+                      '반품신청 중'
+                    ) : el.payments.status === 'DONE' &&
+                      !el.isShipping &&
+                      el.isDelivered &&
+                      !el.isCancel &&
+                      !el.isReturnSubmit &&
+                      el.isReturn ? (
+                      '교환완료'
+                    ) : (
+                      <></>
+                    )}
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
+        </>
       ) : (
-        <ul className={admin_orderList.list_ul_wrap_Cancel}>
-          {cancelData.map((el, index) => {
-            return (
-              <li
-                className={admin_orderList.list_li}
-                key={index}
-                // onClick={() =>
-                //   navigate(
-                //     `/admin/orderlist/detaliCancel/${el.payments.orderId}`,
-                //   )
-                // }
+        <>
+          <div className={admin_orderList.subMenu}>
+            <p className={admin_orderList.selector}>
+              <span
+                className={
+                  selector === 'order'
+                    ? admin_orderList.selector_order_on
+                    : admin_orderList.selector_order
+                }
+                onClick={handleSelector}
               >
-                <p>No. {index}</p>
-                <p>OrderID : {el.payments.orderId}</p>
-                <p>OrderName : {el.payments.orderName}</p>
-                <p>User : {el.user}</p>
-                <p>
-                  Status :{' '}
-                  {el.payments.status === 'CANCELED' && el.isCancel
-                    ? '결제취소'
-                    : '오류'}
-                </p>
-                <p>Reason : {el.cancels.cancelReason}</p>
-              </li>
-            );
-          })}
-        </ul>
+                주문내역
+              </span>
+              &nbsp;&nbsp;/&nbsp;&nbsp;
+              <span
+                className={
+                  selector === 'cancel'
+                    ? admin_orderList.selector_cancel_on
+                    : admin_orderList.selector_cancel
+                }
+                onClick={handleSelector}
+              >
+                취소내역
+              </span>
+            </p>
+            <p className={admin_orderList.totalOrderCount}>
+              Total :{' '}
+              {selector === 'order' && orderData !== null && cancelData !== null
+                ? orderData.length
+                : cancelData.length}
+            </p>
+          </div>
+          <ul className={admin_orderList.list_ul_wrap_Cancel}>
+            {cancelData.map((el, index) => {
+              return (
+                <li
+                  className={admin_orderList.list_li}
+                  key={index}
+                  // onClick={() =>
+                  //   navigate(
+                  //     `/admin/orderlist/detaliCancel/${el.payments.orderId}`,
+                  //   )
+                  // }
+                >
+                  <p>No. {index}</p>
+                  <p>OrderID : {el.payments.orderId}</p>
+                  <p>OrderName : {el.payments.orderName}</p>
+                  <p>User : {el.user}</p>
+                  <p>
+                    Status :{' '}
+                    {el.payments.status === 'CANCELED' && el.isCancel
+                      ? '결제취소'
+                      : '오류'}
+                  </p>
+                  <p>Reason : {el.cancels.cancelReason}</p>
+                </li>
+              );
+            })}
+          </ul>
+        </>
       )}
     </div>
   );

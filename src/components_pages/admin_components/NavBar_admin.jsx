@@ -9,6 +9,8 @@ import { AiOutlineClose } from 'react-icons/ai';
 export default function NavBar_admin() {
   const location = useLocation();
   const currentURL = location.pathname;
+  // 파라미터를 위한 주소
+  const hasOrderId = currentURL.includes('/admin/orderlist/detail/');
   const navigate = useNavigate();
 
   const adminName = useSelector((state) =>
@@ -65,7 +67,11 @@ export default function NavBar_admin() {
             </li>
             <li
               className={
-                currentURL === '/admin/orderlist' ? navBarAdmin.on : <></>
+                currentURL === '/admin/orderlist' || hasOrderId ? (
+                  navBarAdmin.on
+                ) : (
+                  <></>
+                )
               }
               onClick={() => navigate('/admin/orderlist')}
             >
@@ -92,7 +98,11 @@ export default function NavBar_admin() {
             </li>
             <li
               className={
-                currentURL === '/admin/orderlist' ? navBarAdmin.on : <></>
+                currentURL === '/admin/orderlist' || hasOrderId ? (
+                  navBarAdmin.on
+                ) : (
+                  <></>
+                )
               }
               onClick={() => navigate('/admin/orderlist')}
             >
@@ -150,7 +160,11 @@ export default function NavBar_admin() {
               </li>
               <li
                 className={
-                  currentURL === '/admin/orderlist' ? navBarAdmin.on : <></>
+                  currentURL === '/admin/orderlist' || hasOrderId ? (
+                    navBarAdmin.on
+                  ) : (
+                    <></>
+                  )
                 }
                 onClick={() => {
                   handleBurger(), navigate('/admin/orderlist');
