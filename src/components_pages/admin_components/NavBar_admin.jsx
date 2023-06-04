@@ -75,7 +75,7 @@ export default function NavBar_admin() {
               }
               onClick={() => navigate('/admin/orderlist')}
             >
-              주문내역
+              주문관리
             </li>
           </ul>
         </nav>
@@ -106,7 +106,7 @@ export default function NavBar_admin() {
               }
               onClick={() => navigate('/admin/orderlist')}
             >
-              주문내역
+              주문관리
             </li>
           </ul>
 
@@ -170,7 +170,7 @@ export default function NavBar_admin() {
                   handleBurger(), navigate('/admin/orderlist');
                 }}
               >
-                주문내역
+                주문관리
               </li>
             </ul>
           )}

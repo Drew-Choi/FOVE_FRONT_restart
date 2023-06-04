@@ -225,14 +225,24 @@ export default function OrderList_client() {
                             ea
                           </p>
                           <p className={orderList.status}>
-                            {el.payments.status === 'DONE' && !el.isReturnSubmit
-                              ? '입금완료 / '
-                              : el.payments.status === 'DONE' &&
-                                el.isReturnSubmit
-                              ? ''
-                              : '입금전 / '}
+                            {el.payments.status === 'DONE' &&
+                            !el.isReturnSubmit &&
+                            !el.isReturn ? (
+                              '입금완료 / '
+                            ) : el.payments.status !== 'DONE' &&
+                              !el.isReturnSubmit &&
+                              !el.isShipping &&
+                              !el.isCancel &&
+                              !el.isReturn &&
+                              !el.isDelivered &&
+                              !el.shippingCode ? (
+                              '입금 전'
+                            ) : (
+                              <></>
+                            )}
 
                             {el.shippingCode === 0 &&
+                            !el.isReturn &&
                             !el.isShipping &&
                             !el.isDelivered &&
                             !el.isReturnSubmite ? (
@@ -240,18 +250,27 @@ export default function OrderList_client() {
                             ) : el.shippingCode !== 0 &&
                               el.isShipping &&
                               !el.isDelivered &&
+                              !el.isReturn &&
                               !el.isReturnSubmit ? (
                               '배송중'
                             ) : el.shippingCode !== 0 &&
                               !el.isShipping &&
                               el.isDelivered &&
+                              !el.isReturn &&
                               !el.isReturnSubmit ? (
                               '배송완료'
                             ) : el.shippingCode !== 0 &&
                               !el.isShipping &&
                               el.isDelivered &&
+                              !el.isReturn &&
                               el.isReturnSubmit ? (
                               '반품신청완료'
+                            ) : el.shippingCode === 0 &&
+                              !el.isShipping &&
+                              !el.isDelivered &&
+                              el.isReturn &&
+                              !el.isReturnSubmit ? (
+                              '교환진행 중'
                             ) : (
                               <></>
                             )}
@@ -261,7 +280,7 @@ export default function OrderList_client() {
                               ? null
                               : `송장번호: ${el.shippingCode} (한진)`}
                           </p>
-                          {el.shippingCode === 0 ? (
+                          {el.shippingCode === 0 && !el.isReturn ? (
                             <button
                               className={orderList.orderCancle}
                               onClick={() => {
@@ -275,6 +294,7 @@ export default function OrderList_client() {
                           ) : el.shippingCode !== 0 &&
                             !el.isShipping &&
                             el.isDelivered &&
+                            !el.isReturn &&
                             !el.isReturnSubmit ? (
                             <button
                               className={orderList.orderCancle}
@@ -286,10 +306,16 @@ export default function OrderList_client() {
                             >
                               반품신청
                             </button>
-                          ) : el.shippingCode !== 0 &&
-                            !el.isShipping &&
-                            el.isDelivered &&
-                            el.isReturnSubmit ? (
+                          ) : (el.shippingCode !== 0 &&
+                              !el.isShipping &&
+                              !el.isReturn &&
+                              el.isDelivered &&
+                              el.isReturnSubmit) ||
+                            (el.shippingCode === 0 &&
+                              !el.isShipping &&
+                              el.isReturn &&
+                              !el.isDelivered &&
+                              !el.isReturnSubmit) ? (
                             <button
                               className={orderList.orderCancle}
                               onClick={() => {
@@ -311,6 +337,10 @@ export default function OrderList_client() {
                           <p className={orderList.orderCancelInfo2}>
                             * &#39;배송중&#39;일 경우 &#39;배송완료&#39; 후
                             &#39;반품신청&#39;을 이용해주세요.
+                          </p>
+                          <p className={orderList.orderCancelInfo2}>
+                            * &#39;교환진행 중&#39;일 경우 배송 전이며, 교환상품
+                            발송시 &#39;배송 중&#39;으로 진행됩니다.
                           </p>
                         </div>
                       </div>

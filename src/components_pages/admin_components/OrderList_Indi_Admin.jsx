@@ -88,7 +88,7 @@ export default function OrderList_Indi_Admin() {
       !data.isReturn &&
       !data.isReturnSubmit
     ) {
-      return setStatus((cur) => '결제완료');
+      return setStatus((cur) => '결제완료 (배송 전)');
     } else if (
       data.payments.status === 'DONE' &&
       data.isShipping &&
@@ -124,7 +124,7 @@ export default function OrderList_Indi_Admin() {
       data.isReturn &&
       !data.isReturnSubmit
     ) {
-      return setStatus((cur) => '교환완료');
+      return setStatus((cur) => '교환 중');
     } else if (
       data.payments.status === 'DONE' &&
       !data.isShipping &&
@@ -162,6 +162,7 @@ export default function OrderList_Indi_Admin() {
     }
   };
 
+  // 반품신청 취소
   const cancelSubmit = async () => {
     const updateConfirm = confirm(
       `상품코드: ${orderId}\n반품신청 철회를 진행하시겠습니까?`,
@@ -178,10 +179,55 @@ export default function OrderList_Indi_Admin() {
       if (response.status !== 200) return alert('철회진행 실패');
       // 200번대 성공이면
       alert(`상품코드: ${orderId}\n반품신청철회 완료`);
+      setRedirect((cur) => !cur);
+      return;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // 강제주문취소
+  const forceDelete = async () => {
+    const updateConfirm = confirm('입금 전, 강제주문취소를 진행하시겠습니까?');
+
+    if (!updateConfirm) return alert('주문내역 삭제 진행 취소');
+    //true라면,
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/admin/orderlist/detail/order_delete/${orderId}`,
+      );
+
+      if (response.status !== 200) return alert('진행 오류');
+      //200번대 잘 들어온다면,
+      alert(`상품코드: ${orderId}\n입금 전 강제주문취소 완료`);
       navigate('/admin/orderlist');
       return;
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  // 교환신청
+  const adminPdChange = async () => {
+    const updateConfirm = confirm(
+      `상품코드: ${orderId}\n상품교환을 진행하시겠습니까?`,
+    );
+
+    if (!updateConfirm) return alert('교환진행 취소');
+    // true라면,
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/admin/orderlist/detail/order_return/${orderId}`,
+      );
+
+      if (response.status !== 200) return alert('교환신청 실패');
+      // 200번대 성공이라면,
+      alert(`상품코드: ${orderId}\n교환진행 완료`);
+      setRedirect((cur) => !cur);
+      return;
+    } catch (err) {
+      console.error(err);
+      return;
     }
   };
 
@@ -206,7 +252,7 @@ export default function OrderList_Indi_Admin() {
       </p>
       {!data ? (
         <LoadingAdmin />
-      ) : status === '반품신청 중' ? (
+      ) : (
         <div className={orderListIndi.order_info_wrap}>
           <div className={orderListIndi.orderlist_Check_wrap}>
             <p className={orderListIndi.older_date}>
@@ -253,42 +299,43 @@ export default function OrderList_Indi_Admin() {
               </strong>{' '}
               ea
             </p>
+            {status === '반품신청 중' ? (
+              <>
+                <p className={orderListIndi.return_title}>반품신청내역</p>
+                <p className={orderListIndi.return_reason}>
+                  reason:{' '}
+                  <span className={orderListIndi.reason_text}>
+                    {data.submitReturn.reason}
+                  </span>
+                </p>
+                <p className={orderListIndi.return_etc}>
+                  message:{' '}
+                  <span className={orderListIndi.reason_etc_text}>
+                    {data.submitReturn.return_message}
+                  </span>
+                </p>
+              </>
+            ) : (
+              <></>
+            )}
+
             <p className={orderListIndi.return_reason}>
-              reason:{' '}
-              <span className={orderListIndi.reason_text}>
-                {data.submitReturn.reason}
-              </span>
-            </p>
-            <p className={orderListIndi.return_etc}>
-              message:{' '}
-              <span className={orderListIndi.reason_etc_text}>
-                {data.submitReturn.return_message}
-              </span>
-            </p>
-            <p className={orderListIndi.return_reason}>
-              stage:{' '}
-              <span className={orderListIndi.reason_text}>
-                {!data.isCancel && !data.isReturn && data.isReturnSubmit ? (
-                  '검토 중'
-                ) : !data.isCancel && data.isReturn && data.isReturnSubmit ? (
-                  '교환'
-                ) : data.isCancel && !data.isReturn && data.isReturnSubmit ? (
-                  '환불'
-                ) : (
-                  <></>
-                )}
-              </span>
+              stage: <span className={orderListIndi.reason_text}>{status}</span>
             </p>
             <div className={orderListIndi.infoCancelContainer}>
               <div className={orderListIndi.line}></div>
-              {data.submitReturn.return_img.map((el, index) => {
-                return (
-                  <Preview
-                    key={index}
-                    src={`http://localhost:4000/uploads/${data.payments.orderId}/${el}`}
-                  ></Preview>
-                );
-              })}
+              {status === '반품신청 중' ? (
+                data.submitReturn.return_img.map((el, index) => {
+                  return (
+                    <Preview
+                      key={index}
+                      src={`http://localhost:4000/uploads/${data.payments.orderId}/${el}`}
+                    ></Preview>
+                  );
+                })
+              ) : (
+                <></>
+              )}
               <div className={orderListIndi.detailInfoWrap}>
                 <p className={orderListIndi.cashTitle}>결제정보</p>
                 <div className={orderListIndi.cashInfo}>
@@ -350,9 +397,13 @@ export default function OrderList_Indi_Admin() {
                   <p className={orderListIndi.recipient_message}>
                     배송메시지: {data.recipient.message}
                   </p>
+
+                  <p className={orderListIndi.shipping_code}>
+                    송장번호: {data.shippingCode} (한진)
+                  </p>
                 </div>
+                <div className={orderListIndi.line}></div>
               </div>
-              <div className={orderListIndi.line}></div>
 
               <button
                 className={orderListIndi.orderBack}
@@ -360,32 +411,51 @@ export default function OrderList_Indi_Admin() {
               >
                 뒤로가기
               </button>
-              <button
-                className={orderListIndi.cancelSubmit}
-                onClick={() => cancelSubmit()}
-              >
-                반품철회 *
-              </button>
-              <button
-                className={orderListIndi.orderChange}
-                // onClick={() => pdChange()}
-              >
-                교환신청*
-              </button>
-              <button
-                className={orderListIndi.orderCancel}
-                onClick={() => pdCancel()}
-              >
-                환불 (결제취소)
-              </button>
+              {status === '반품신청 중' ? (
+                <button
+                  className={orderListIndi.cancelSubmit}
+                  onClick={() => cancelSubmit()}
+                >
+                  반품철회 *
+                </button>
+              ) : (
+                <></>
+              )}
+              {status === '배송완료' || status === '반품신청 중' ? (
+                <button
+                  className={orderListIndi.orderChange}
+                  onClick={() => adminPdChange()}
+                >
+                  교환신청*
+                </button>
+              ) : (
+                <></>
+              )}
+
+              {status === '결제 전' ? (
+                <button
+                  className={orderListIndi.orderCancel}
+                  onClick={() => forceDelete()}
+                >
+                  주문강제취소
+                </button>
+              ) : status === '배송 중' ? (
+                <></>
+              ) : (
+                <button
+                  className={orderListIndi.orderCancel}
+                  onClick={() => pdCancel()}
+                >
+                  환불 (결제취소)
+                </button>
+              )}
+
               <p className={orderListIndi.caution}>
                 *검토 후 전산처리 또는 연락드리기
               </p>
             </div>
           </div>
         </div>
-      ) : (
-        <></>
       )}
     </div>
   );

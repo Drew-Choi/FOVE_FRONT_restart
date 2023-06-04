@@ -129,7 +129,7 @@ export default function OrderList_admin() {
                       !el.isCancel &&
                       !el.isReturnSubmit &&
                       !el.isReturn ? (
-                      '결제완료'
+                      '결제완료 (배송 전)'
                     ) : el.payments.status === 'DONE' &&
                       el.isShipping &&
                       !el.isDelivered &&
@@ -153,11 +153,11 @@ export default function OrderList_admin() {
                       '반품신청 중'
                     ) : el.payments.status === 'DONE' &&
                       !el.isShipping &&
-                      el.isDelivered &&
+                      !el.isDelivered &&
                       !el.isCancel &&
                       !el.isReturnSubmit &&
                       el.isReturn ? (
-                      '교환완료'
+                      '교환 중'
                     ) : (
                       <></>
                     )}

@@ -183,14 +183,13 @@ export default function OrderReturnCheck_client() {
                   !orderCancelItem.isReturn &&
                   orderCancelItem.isReturnSubmit ? (
                     '검토 중'
-                  ) : !orderCancelItem.isCancel &&
+                  ) : orderCancelItem.shippingCode === 0 &&
+                    !orderCancelItem.isCancel &&
+                    !orderCancelItem.isDelivered &&
+                    !orderCancelItem.isShipping &&
                     orderCancelItem.isReturn &&
-                    orderCancelItem.isReturnSubmit ? (
-                    '교환'
-                  ) : orderCancelItem.isCancel &&
-                    !orderCancelItem.isReturn &&
-                    orderCancelItem.isReturnSubmit ? (
-                    '환불'
+                    !orderCancelItem.isReturnSubmit ? (
+                    '교환진행'
                   ) : (
                     <></>
                   )}
@@ -212,16 +211,38 @@ export default function OrderReturnCheck_client() {
                 >
                   뒤로가기
                 </button>
-                <button
-                  className={orderReturnCheck.orderCancle}
-                  onClick={() => cancelSubmit()}
-                >
-                  반품신청철회
-                </button>
-                <p className={orderReturnCheck.caution}>
-                  *검토 후 연락드리도록 하겠습니다. (카카오톡 or 주문자
-                  전화번호)
-                </p>
+                {orderCancelItem.shippingCode === 0 &&
+                !orderCancelItem.isCancel &&
+                !orderCancelItem.isDelivered &&
+                !orderCancelItem.isShipping &&
+                orderCancelItem.isReturn &&
+                !orderCancelItem.isReturnSubmit ? (
+                  <></>
+                ) : (
+                  <button
+                    className={orderReturnCheck.orderCancle}
+                    onClick={() => cancelSubmit()}
+                  >
+                    반품신청철회
+                  </button>
+                )}
+
+                {orderCancelItem.shippingCode === 0 &&
+                !orderCancelItem.isCancel &&
+                !orderCancelItem.isDelivered &&
+                !orderCancelItem.isShipping &&
+                orderCancelItem.isReturn &&
+                !orderCancelItem.isReturnSubmit ? (
+                  <p className={orderReturnCheck.caution}>
+                    * 교환하실 상품을 준비 중 입니다. 배송이 시작되면 &#39;배송
+                    중&#39;으로 진행됩니다.
+                  </p>
+                ) : (
+                  <p className={orderReturnCheck.caution}>
+                    *검토 후 연락드리도록 하겠습니다. (카카오톡 or 주문자
+                    전화번호)
+                  </p>
+                )}
               </div>
             </div>
           </div>

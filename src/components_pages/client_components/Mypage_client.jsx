@@ -132,7 +132,8 @@ export default function Mypage_client() {
                     {orderListArray.reduce((acc, cur) => {
                       if (
                         cur.payments.status === 'DONE' &&
-                        cur.shippingCode === 0
+                        cur.shippingCode === 0 &&
+                        !cur.isReturn
                       ) {
                         return acc + 1;
                       }
@@ -192,19 +193,26 @@ export default function Mypage_client() {
                   </p>
                 </a>
 
-                {/* <a
+                <a
                   className={myPage.change}
                   onClick={() => navigate('/mypage/orderlist')}
                 >
-                  <p>교환 :</p>
-                  <p>0</p>
-                </a> */}
+                  <p>교환 중 :</p>
+                  <p>
+                    {orderListArray.reduce((acc, cur) => {
+                      if (cur.isReturn && cur.shippingCode === 0) {
+                        return acc + 1;
+                      }
+                      return acc;
+                    }, 0)}
+                  </p>
+                </a>
 
                 <a
                   className={myPage.refund}
                   onClick={() => navigate('/mypage/orderlist')}
                 >
-                  <p>반품 :</p>
+                  <p>반품신청 :</p>
                   <p>
                     {orderListArray.reduce((acc, cur) => {
                       if (cur.isReturnSubmit && cur.isDelivered) {
