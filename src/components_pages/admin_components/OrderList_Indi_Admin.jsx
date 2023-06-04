@@ -162,6 +162,29 @@ export default function OrderList_Indi_Admin() {
     }
   };
 
+  const cancelSubmit = async () => {
+    const updateConfirm = confirm(
+      `상품코드: ${orderId}\n반품신청 철회를 진행하시겠습니까?`,
+    );
+
+    if (!updateConfirm) return alert('철회진행 취소');
+    // true이면 아래 진행
+    try {
+      const response = await axios.post(
+        'http://localhost:4000/admin/orderlist/detail/cancel_return_submit',
+        { orderId },
+      );
+
+      if (response.status !== 200) return alert('철회진행 실패');
+      // 200번대 성공이면
+      alert(`상품코드: ${orderId}\n반품신청철회 완료`);
+      navigate('/admin/orderlist');
+      return;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     getOrderIdInfo();
   }, []);
@@ -336,6 +359,12 @@ export default function OrderList_Indi_Admin() {
                 onClick={() => navigate(-1)}
               >
                 뒤로가기
+              </button>
+              <button
+                className={orderListIndi.cancelSubmit}
+                onClick={() => cancelSubmit()}
+              >
+                반품철회 *
               </button>
               <button
                 className={orderListIndi.orderChange}

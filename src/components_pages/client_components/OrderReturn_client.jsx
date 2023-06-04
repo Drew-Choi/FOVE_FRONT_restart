@@ -162,6 +162,10 @@ export default function OrderReturn_client() {
 
   // 반품 신청서 제출
   const submitReturnInfo = async () => {
+    const updateConfirm = confirm('반품신청을 진행하시겠습니까?');
+
+    if (!updateConfirm) return alert('반품신청 취소');
+    // true이면 아래 진행
     try {
       const tokenValue = await getToken();
       // const message = desc.current.value || '';

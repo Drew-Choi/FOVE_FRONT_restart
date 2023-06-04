@@ -75,8 +75,24 @@ export default function OrderReturnCheck_client() {
     getCancelItem();
   }, []);
 
-  console.log(orderCancelItem);
-  console.log(orderId);
+  const cancelSubmit = async () => {
+    try {
+      const tokenValue = await getToken();
+
+      const response = await axios.post(
+        'http://localhost:4000/admin/return_submit/submit_cancel',
+        { token: tokenValue, orderId },
+      );
+
+      if (response.status !== 200) return alert('철회 오류');
+      // 200번대 성공이면,
+      alert('반품신청 철회 완료');
+      return navigate('/mypage/orderlist');
+    } catch (err) {
+      console.error(err);
+      return;
+    }
+  };
 
   return (
     <section className={orderReturnCheck.orderList_container}>
@@ -195,6 +211,12 @@ export default function OrderReturnCheck_client() {
                   onClick={() => navigate(-1)}
                 >
                   뒤로가기
+                </button>
+                <button
+                  className={orderReturnCheck.orderCancle}
+                  onClick={() => cancelSubmit()}
+                >
+                  반품신청철회
                 </button>
                 <p className={orderReturnCheck.caution}>
                   *검토 후 연락드리도록 하겠습니다. (카카오톡 or 주문자

@@ -56,9 +56,6 @@ export default function OrderList_admin() {
     }
   };
 
-  console.log(orderData);
-  console.log(cancelData);
-
   // 랜더링 부분
   return (
     <div className={admin_orderList.whol_Container}>
