@@ -1,0 +1,29 @@
+.wholContainer{
+  overflow: hidden;
+  position: relative;
+  width: 100vw;
+  min-height: 700px;
+  background-color: beige;
+
+  .mainWrap{
+    width: 70vw;
+    min-height: 700px;
+    background-color: aqua;
+    margin: 0px auto;
+
+    .mainTitle{
+      text-align: center;
+      padding: 30px 0px 5px 0px;
+      margin-bottom: 0px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .subTitle{
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 13px;
+      font-weight: 400;
+    }
+  }
+}

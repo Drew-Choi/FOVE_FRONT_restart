@@ -8,6 +8,7 @@ export default function OrderList_admin() {
   const [orderData, setOrderData] = useState([]);
   const [cancelData, setCancelData] = useState([]);
   const [selector, setSelector] = useState('order');
+  const [isVisible, setIsVisible] = useState(true);
   const navigate = useNavigate();
 
   const getOrderListInfo = async () => {
@@ -47,6 +48,16 @@ export default function OrderList_admin() {
     getCancelList();
   }, []);
 
+  useEffect(() => {
+    const time = setTimeout(() => {
+      setIsVisible((cur) => false);
+    }, 500);
+
+    return () => {
+      clearTimeout(time);
+    };
+  });
+
   // 핸들모음
   const handleSelector = () => {
     if (selector === 'order') {
@@ -56,9 +67,13 @@ export default function OrderList_admin() {
     }
   };
 
+  // 랜더링 부분
   return (
     <div className={admin_orderList.whol_Container}>
-      <p className={admin_orderList.mainTitle}>Order List (Admin)</p>
+      <p className={admin_orderList.mainTitle}>
+        ORDER INDEX &nbsp;{' '}
+        <span style={{ fontSize: '15px', fontWeight: '400' }}>Admin</span>
+      </p>
       <div className={admin_orderList.subMenu}>
         <p className={admin_orderList.selector}>
           <span
@@ -87,6 +102,7 @@ export default function OrderList_admin() {
           Total : {selector === 'order' ? orderData.length : cancelData.length}
         </p>
       </div>
+      {isVisible && <LoadingAdmin />}
       {orderData.length === 0 || cancelData.length === 0 ? (
         <LoadingAdmin />
       ) : selector === 'order' ? (
@@ -134,7 +150,7 @@ export default function OrderList_admin() {
                     !el.isCancel &&
                     !el.isReturnSubmit &&
                     !el.isReturn ? (
-                    '배달완료'
+                    '배송완료'
                   ) : el.payments.status === 'DONE' &&
                     !el.isShipping &&
                     el.isDelivered &&

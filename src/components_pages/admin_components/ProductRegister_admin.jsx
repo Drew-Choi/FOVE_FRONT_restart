@@ -359,7 +359,7 @@ export default function ProductRegister_admin() {
     <div className={productRegister.productRegister_admin}>
       <div className={productRegister.register_container}>
         <div className={productRegister.indi_container_title}>
-          <p className={productRegister.mainTitle}>Product Register</p>
+          <p className={productRegister.mainTitle}>PRODUCT REGISTRATION</p>
         </div>
 
         {/* 종류인풋(셀렉터) */}

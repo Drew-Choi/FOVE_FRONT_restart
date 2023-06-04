@@ -753,7 +753,7 @@ export default function ProductList_admin() {
 
   return (
     <div className={adminPdList.whol_container}>
-      <p className={adminPdList.mainTitle}>Product Display List</p>
+      <p className={adminPdList.mainTitle}>PRODUCT DISPLAY LIST</p>
       {(enterNum === null ||
         enterNum === undefined ||
         enterNum.length === 0 ||
