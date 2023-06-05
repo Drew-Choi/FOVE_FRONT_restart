@@ -37,6 +37,8 @@ import TossPay_Cancel_Complete from './components_pages/client_components/TossPa
 import OrderReturn_client from './components_pages/client_components/OrderReturn_client';
 import OrderReturnCheck_client from './components_pages/client_components/OrderReturnCheck_client';
 import OrderList_Indi_Admin from './components_pages/admin_components/OrderList_Indi_Admin';
+import OrderCancel_client_onlyOrder from './components_pages/client_components/OrderCancel_client_onlyOrder';
+import TossPay_Cancel_Complete_onlyOrder from './components_pages/client_components/TossPay_Cancel_Complete_onlyOrder';
 
 function App() {
   const isLogin = useSelector((state) => state.user.isLogin);
@@ -155,14 +157,11 @@ function App() {
           <Route path="/agreement" element={<Agreement_client />} />
           <Route path="/privacy" element={<Privacy_client />} />
           <Route path="/guide" element={<Guide_client />} />
-
           {/* <Route path="/store/order/checkout/fail" element={<FailPage />} /> */}
-
           {/* 로그인 */}
           <Route path="/login" element={<Login_client />} />
           <Route path="/login/kakao/callback" element={<Kakao_final />} />
           <Route path="/kakao/logout" element={<Kakao_Logout />} />
-
           {/* 로그인 상태여야 이동 가능한 페이지들 */}
           {/* 마이페이지 메인 */}
           <Route
@@ -174,17 +173,31 @@ function App() {
             path="/mypage/editInfo"
             element={isLogin ? <EditInfo_client /> : <Login_client />}
           />
-
           {/* 주문조회 */}
           <Route
             path="/mypage/orderlist"
             element={isLogin ? <OrderList_client /> : <Login_client />}
           />
-
           {/* 취소 */}
           <Route
             path="/mypage/orderlist/cancel/:orderId"
             element={isLogin ? <OrderCancel_client /> : <Login_client />}
+          />
+
+          {/* 주문내역만 삭제 */}
+          <Route
+            path="/mypage/orderlist/cancel_onlyOrder/:orderId"
+            element={
+              isLogin ? <OrderCancel_client_onlyOrder /> : <Login_client />
+            }
+          />
+
+          {/* 주문내역만 삭제 완료 후 */}
+          <Route
+            path="/mypage/orderlist/cancel_onlyOrder/complete"
+            element={
+              isLogin ? <TossPay_Cancel_Complete_onlyOrder /> : <Login_client />
+            }
           />
 
           {/* 반품신청 */}
@@ -192,25 +205,21 @@ function App() {
             path="/mypage/orderlist/return/:orderId"
             element={isLogin ? <OrderReturn_client /> : <Login_client />}
           />
-
           {/* 반품내역확인 */}
           <Route
             path="/mypage/orderlist/return_check/:orderId"
             element={isLogin ? <OrderReturnCheck_client /> : <Login_client />}
           />
-
           {/* 취소완료 */}
           <Route
             path="/mypage/orderlist/cancel/:orderId/:reason/complete"
             element={isLogin ? <TossPay_Cancel_Complete /> : <Login_client />}
           />
-
           {/* 배송 주소록 목록 */}
           <Route
             path="/mypage/checkAddress"
             element={isLogin ? <AdSubmit_client /> : <Login_client />}
           />
-
           {/* 배송 주소지 수정 */}
           <Route
             path="/mypage/editAddress"

@@ -5,6 +5,7 @@ import getToken from '../../store/modules/getToken';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Loading from './Loading';
+import { BsArrowDownCircle } from 'react-icons/bs';
 
 const PD_Images = styled.div`
   ${(props) =>
@@ -19,6 +20,41 @@ export default function OrderList_client() {
   const [emptyCancelArray, setEmptyCancelArray] = useState(false);
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
+  // 주문상세내역서용 - order
+  const [detailInfo, setDetailInfo] = useState([]);
+  // 주문상세내역서용 - cancel
+  const [detailInfoCancel, setDetailInfoCancel] = useState([]);
+
+  // 주문상세내역서용 핸들 - order
+  const handleArrowDetail = (index) => {
+    if (detailInfo[index] === 'off') {
+      setDetailInfo((cur) => cur.map((el, num) => (num === index ? 'on' : el)));
+    } else {
+      setDetailInfo((cur) =>
+        cur.map((el, num) => (num === index ? 'off' : el)),
+      );
+    }
+  };
+
+  // 주문상세내역서용 핸들 - cancel
+  const handleArrowDetailCancel = (index) => {
+    if (detailInfoCancel[index] === 'off') {
+      setDetailInfoCancel((cur) =>
+        cur.map((el, num) => (num === index ? 'on' : el)),
+      );
+    } else {
+      setDetailInfoCancel((cur) =>
+        cur.map((el, num) => (num === index ? 'off' : el)),
+      );
+    }
+  };
+
+  //날짜 분활
+  const dateSplit = (date) => {
+    const splitData = date.split(/[T+]/);
+    const dataSum = `${splitData[0]}  /  ${splitData[1]}`;
+    return dataSum;
+  };
 
   // 배송정보 DB업데이트 후 해당 회원의 전체 주문내역 가져오기
   const getOrderList = async () => {
@@ -30,6 +66,9 @@ export default function OrderList_client() {
       );
       if (getOrderListData.status === 200 && getOrderListData.data.length > 0) {
         setOrderListArray((cur) => getOrderListData.data);
+        setDetailInfo((cur) =>
+          new Array(getOrderListData.data.length).fill('off'),
+        );
         return;
       } else {
         return setEmptyOrderArray((cur) => true);
@@ -53,6 +92,9 @@ export default function OrderList_client() {
         getCancelListData.data.length > 0
       ) {
         setCancelListArray((cur) => getCancelListData.data);
+        setDetailInfoCancel((cur) =>
+          new Array(getCancelListData.data.length).fill('off'),
+        );
         return;
       } else {
         return setEmptyCancelArray((cur) => true);
@@ -207,6 +249,99 @@ export default function OrderList_client() {
                             </div>
                           );
                         })}
+                        <div
+                          className={orderList.arrowWrap}
+                          onClick={() => handleArrowDetail(index)}
+                        >
+                          <BsArrowDownCircle
+                            className={
+                              detailInfo[index] === 'on'
+                                ? orderList.arrowDown
+                                : orderList.arrowDown_on
+                            }
+                          />
+                          <span>주문상세보기</span>
+                        </div>
+                        <div
+                          className={
+                            detailInfo[index] === 'on'
+                              ? orderList.detailInfoWrap
+                              : `${orderList.detailInfoWrap} ${orderList.off}`
+                          }
+                        >
+                          <div className={orderList.line}></div>
+                          <p className={orderList.cashTitle}>결제정보</p>
+                          <div className={orderList.cashInfo}>
+                            <p className={orderList.payments_date}>
+                              주문일시: {dateSplit(el.payments.approvedAt)}
+                            </p>
+                            <p className={orderList.payments_status}>
+                              결제여부:{' '}
+                              {el.payments.status !== 'DONE' ? (
+                                '결제전'
+                              ) : el.payments.status === 'DONE' ? (
+                                '결제완료'
+                              ) : el.payments.status !== 'CANCELED' ? (
+                                '결제취소'
+                              ) : (
+                                <></>
+                              )}
+                            </p>
+                            <p className={orderList.payments_method}>
+                              결제수단: {el.payments.method}
+                            </p>
+                            <p className={orderList.payments_discount}>
+                              할인:{' '}
+                              {!el.payments.discount
+                                ? '0 ₩'
+                                : `${frontPriceComma(el.payments.discount)} ₩`}
+                            </p>
+                            <p className={orderList.payments_totalAmount}>
+                              결제금액:{' '}
+                              {!el.payments.totalAmount
+                                ? '0 ₩'
+                                : `${frontPriceComma(
+                                    el.payments.totalAmount,
+                                  )} ₩`}
+                            </p>
+                          </div>
+                          <div className={orderList.line}></div>
+
+                          <p className={orderList.cashTitle}>주문정보</p>
+                          <div className={orderList.cashInfo}>
+                            <p className={orderList.userId}>
+                              회원ID: {el.user}
+                            </p>
+
+                            <p className={orderList.recipient_Name}>
+                              받는 분: {el.recipient.recipientName}
+                            </p>
+
+                            <p className={orderList.recipient_zipcode}>
+                              배송우편번호: {el.recipient.recipientZipcode}
+                            </p>
+
+                            <p className={orderList.recipient_address}>
+                              배송주소: {el.recipient.recipientAddress}{' '}
+                              {el.recipient.recipientAddressDetail}
+                            </p>
+
+                            <p className={orderList.recipient_phone}>
+                              연락처: {el.recipient.phoneCode} -{' '}
+                              {el.recipient.phoneMidNum} -{' '}
+                              {el.recipient.phoneLastNum}
+                            </p>
+
+                            <p className={orderList.recipient_message}>
+                              배송메시지: {el.recipient.message}
+                            </p>
+
+                            <p className={orderList.shipping_code}>
+                              송장번호: {el.shippingCode} (한진)
+                            </p>
+                          </div>
+                          <div className={orderList.line}></div>
+                        </div>
                         <div className={orderList.infoCancelContainer}>
                           <p className={orderList.older_detail_info}>
                             total ={' '}
@@ -280,7 +415,9 @@ export default function OrderList_client() {
                               ? null
                               : `송장번호: ${el.shippingCode} (한진)`}
                           </p>
-                          {el.shippingCode === 0 &&
+                          {el.payments.status === 'DONE' &&
+                          !el.isDelivered &&
+                          el.shippingCode === 0 &&
                           !el.isReturn &&
                           !el.isShipping &&
                           !el.isReturnSubmit ? (
@@ -328,6 +465,22 @@ export default function OrderList_client() {
                               }}
                             >
                               반품신청내역 확인
+                            </button>
+                          ) : el.payments.status !== 'DONE' &&
+                            !el.isDelivered &&
+                            el.shippingCode === 0 &&
+                            !el.isReturn &&
+                            !el.isShipping &&
+                            !el.isReturnSubmit ? (
+                            <button
+                              className={orderList.orderCancle}
+                              onClick={() => {
+                                navigate(
+                                  `/mypage/orderlist/cancel_onlyOrder/${el.payments.orderId}`,
+                                );
+                              }}
+                            >
+                              주문취소
                             </button>
                           ) : (
                             <></>
@@ -413,6 +566,108 @@ export default function OrderList_client() {
                               </div>
                             );
                           })}
+
+                          <div
+                            className={orderList.arrowWrap}
+                            onClick={() => handleArrowDetailCancel(index)}
+                          >
+                            <BsArrowDownCircle
+                              className={
+                                detailInfoCancel[index] === 'on'
+                                  ? orderList.arrowDown
+                                  : orderList.arrowDown_on
+                              }
+                            />
+                            <span>주문상세보기</span>
+                          </div>
+                          <div
+                            className={
+                              detailInfoCancel[index] === 'on'
+                                ? orderList.detailInfoWrap
+                                : `${orderList.detailInfoWrap} ${orderList.off}`
+                            }
+                          >
+                            <div className={orderList.line}></div>
+                            <p className={orderList.cashTitle}>결제정보</p>
+                            <div className={orderList.cashInfo}>
+                              <p className={orderList.payments_status}>
+                                결제여부:{' '}
+                                {el.payments.status !== 'DONE' &&
+                                el.payments.status !== 'CANCELED' ? (
+                                  '결제전'
+                                ) : el.payments.status === 'DONE' ? (
+                                  '결제완료'
+                                ) : el.payments.status === 'CANCELED' ? (
+                                  '결제취소'
+                                ) : (
+                                  <></>
+                                )}
+                              </p>
+                              <p className={orderList.payments_date}>
+                                취소일시: {dateSplit(el.cancels.canceledAt)}
+                              </p>
+
+                              <p className={orderList.payments_method}>
+                                결제수단: {el.payments.method}
+                              </p>
+                              <p className={orderList.payments_discount}>
+                                할인:{' '}
+                                {!el.payments.discount
+                                  ? '0 ₩'
+                                  : `${frontPriceComma(
+                                      el.payments.discount,
+                                    )} ₩`}
+                              </p>
+                              <p className={orderList.payments_totalAmount}>
+                                취소금액:{' '}
+                                {!el.cancels.cancelAmount
+                                  ? '0 ₩'
+                                  : `${frontPriceComma(
+                                      el.cancels.cancelAmount,
+                                    )} ₩`}
+                              </p>
+                              <p className={orderList.payments_totalAmount}>
+                                취소이유: {el.cancels.cancelReason}
+                              </p>
+                            </div>
+                            <div className={orderList.line}></div>
+
+                            <p className={orderList.cashTitle}>주문정보</p>
+                            <div className={orderList.cashInfo}>
+                              <p className={orderList.userId}>
+                                회원ID: {el.user}
+                              </p>
+
+                              <p className={orderList.recipient_Name}>
+                                받는 분: {el.recipient.recipientName}
+                              </p>
+
+                              <p className={orderList.recipient_zipcode}>
+                                배송우편번호: {el.recipient.recipientZipcode}
+                              </p>
+
+                              <p className={orderList.recipient_address}>
+                                배송주소: {el.recipient.recipientAddress}{' '}
+                                {el.recipient.recipientAddressDetail}
+                              </p>
+
+                              <p className={orderList.recipient_phone}>
+                                연락처: {el.recipient.phoneCode} -{' '}
+                                {el.recipient.phoneMidNum} -{' '}
+                                {el.recipient.phoneLastNum}
+                              </p>
+
+                              <p className={orderList.recipient_message}>
+                                배송메시지: {el.recipient.message}
+                              </p>
+
+                              <p className={orderList.shipping_code}>
+                                송장번호: {el.shippingCode} (한진)
+                              </p>
+                            </div>
+                            <div className={orderList.line}></div>
+                          </div>
+
                           <div className={orderList.infoCancelContainer}>
                             <p className={orderList.older_detail_info}>
                               total ={' '}
@@ -435,12 +690,29 @@ export default function OrderList_client() {
                             </p>
                             <p className={orderList.status}>
                               {el.payments.status === 'CANCELED' &&
-                              el.isCancel ? (
-                                '취소완료'
-                              ) : (
-                                <></>
-                              )}
+                                el.isCancel &&
+                                !el.isReturn &&
+                                '취소완료'}
+                              {el.payments.status === 'CANCELED' &&
+                                el.isCancel &&
+                                el.isReturn &&
+                                '환불완료'}
                             </p>
+                            {el.payments.status === 'CANCELED' &&
+                              el.isReturn &&
+                              el.isCancel && (
+                                <button
+                                  className={orderList.orderCancle}
+                                  onClick={() => {
+                                    navigate(
+                                      `/mypage/orderlist/return_check/${el.payments.orderId}`,
+                                    );
+                                  }}
+                                >
+                                  반품신청내역 확인
+                                </button>
+                              )}
+
                             <p className={orderList.orderCancelInfo}></p>
                           </div>
                         </div>

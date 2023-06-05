@@ -151,6 +151,88 @@
         }
       }
 
+      .arrowWrap{
+        padding: 10px 30px;
+        cursor: pointer;
+
+        &:active{
+          color: rgb(156, 156, 156);
+        }
+
+        .arrowDown{ 
+          font-size: 25px;
+          transform: rotate(0deg);
+          transition: 0.3s ease-out;
+        }
+        .arrowDown_on{
+          font-size: 25px;
+          transform: rotate(-180deg);
+          transition: 0.3s ease-out;
+        }
+        span{
+          margin-left: 10px;
+          font-size: 15px;
+        }
+      }
+
+      .off {
+        display: none;
+      }
+
+      .detailInfoWrap{
+        position: relative;
+        font-size: 15px;
+        text-align: left;
+        padding: 0px 30px;        
+
+        @media screen and (max-width:280px) {
+          padding: 10px;
+        }
+
+        .cashTitle{
+          margin-top: 10px;
+        }
+        .cashInfo{
+          padding: 5px 15px;
+        }
+
+        p{
+          margin-bottom: 10px;
+        }
+
+
+        .line{
+          position: relative;
+          width: 45vw;
+          height: 10px;
+          border-bottom: 0.5px solid black;
+
+          @media screen and (max-width:1000px) {
+            width: 63vw;
+          }
+
+          @media screen and (max-width:732px) {
+            width: 62vw;
+          }
+
+          @media screen and (max-width:581px) {
+            width: 60vw;
+          }
+
+          @media screen and (max-width:510px) {
+            width: 77vw;
+          }
+
+          @media screen and (max-width:375px) {
+            width: 74vw;
+          }
+
+          @media screen and (max-width:280px) {
+            width: 82vw;
+          }
+        }
+      }
+
       .infoCancelContainer {
         position: relative;
         margin-top: 30px;
