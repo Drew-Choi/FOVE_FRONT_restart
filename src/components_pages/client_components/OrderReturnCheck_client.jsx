@@ -179,11 +179,13 @@ export default function OrderReturnCheck_client() {
               <p className={orderReturnCheck.return_reason}>
                 stage:{' '}
                 <span className={orderReturnCheck.reason_text}>
-                  {!orderCancelItem.isCancel &&
+                  {orderCancelItem.isDelivered &&
+                  !orderCancelItem.isShipping &&
+                  !orderCancelItem.isCancel &&
                   !orderCancelItem.isReturn &&
                   orderCancelItem.isReturnSubmit ? (
                     '검토 중'
-                  ) : orderCancelItem.shippingCode === 0 &&
+                  ) : orderCancelItem.shippingCode !== 0 &&
                     !orderCancelItem.isCancel &&
                     !orderCancelItem.isDelivered &&
                     !orderCancelItem.isShipping &&
@@ -211,23 +213,23 @@ export default function OrderReturnCheck_client() {
                 >
                   뒤로가기
                 </button>
-                {orderCancelItem.shippingCode === 0 &&
+                {orderCancelItem.shippingCode !== 0 &&
                 !orderCancelItem.isCancel &&
-                !orderCancelItem.isDelivered &&
+                orderCancelItem.isDelivered &&
                 !orderCancelItem.isShipping &&
-                orderCancelItem.isReturn &&
-                !orderCancelItem.isReturnSubmit ? (
-                  <></>
-                ) : (
+                !orderCancelItem.isReturn &&
+                orderCancelItem.isReturnSubmit ? (
                   <button
                     className={orderReturnCheck.orderCancle}
                     onClick={() => cancelSubmit()}
                   >
                     반품신청철회
                   </button>
+                ) : (
+                  <></>
                 )}
 
-                {orderCancelItem.shippingCode === 0 &&
+                {orderCancelItem.shippingCode !== 0 &&
                 !orderCancelItem.isCancel &&
                 !orderCancelItem.isDelivered &&
                 !orderCancelItem.isShipping &&

@@ -133,6 +133,10 @@ export default function Mypage_client() {
                       if (
                         cur.payments.status === 'DONE' &&
                         cur.shippingCode === 0 &&
+                        !cur.isShipping &&
+                        !cur.isDelivered &&
+                        !cur.isCancel &&
+                        !cur.isReturnSubmit &&
                         !cur.isReturn
                       ) {
                         return acc + 1;
@@ -152,7 +156,11 @@ export default function Mypage_client() {
                       if (
                         cur.payments.status === 'DONE' &&
                         cur.shippingCode !== 0 &&
-                        cur.isDelivered === false
+                        !cur.isDelivered &&
+                        cur.isShipping &&
+                        !cur.isCancel &&
+                        !cur.isReturn &&
+                        !cur.isReturnSubmit
                       ) {
                         return acc + 1;
                       }
@@ -200,7 +208,14 @@ export default function Mypage_client() {
                   <p>교환 중 :</p>
                   <p>
                     {orderListArray.reduce((acc, cur) => {
-                      if (cur.isReturn && cur.shippingCode === 0) {
+                      if (
+                        cur.isReturn &&
+                        cur.shippingCode !== 0 &&
+                        !cur.isDelivered &&
+                        !cur.isShipping &&
+                        !cur.isCancel &&
+                        !cur.isReturnSubmit
+                      ) {
                         return acc + 1;
                       }
                       return acc;

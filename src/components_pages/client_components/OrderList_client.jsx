@@ -235,8 +235,8 @@ export default function OrderList_client() {
                               !el.isCancel &&
                               !el.isReturn &&
                               !el.isDelivered &&
-                              !el.shippingCode ? (
-                              '입금 전'
+                              el.shippingCode === 0 ? (
+                              '입금 전 / '
                             ) : (
                               <></>
                             )}
@@ -265,7 +265,7 @@ export default function OrderList_client() {
                               !el.isReturn &&
                               el.isReturnSubmit ? (
                               '반품신청완료'
-                            ) : el.shippingCode === 0 &&
+                            ) : el.shippingCode !== 0 &&
                               !el.isShipping &&
                               !el.isDelivered &&
                               el.isReturn &&
@@ -280,7 +280,10 @@ export default function OrderList_client() {
                               ? null
                               : `송장번호: ${el.shippingCode} (한진)`}
                           </p>
-                          {el.shippingCode === 0 && !el.isReturn ? (
+                          {el.shippingCode === 0 &&
+                          !el.isReturn &&
+                          !el.isShipping &&
+                          !el.isReturnSubmit ? (
                             <button
                               className={orderList.orderCancle}
                               onClick={() => {
@@ -311,7 +314,7 @@ export default function OrderList_client() {
                               !el.isReturn &&
                               el.isDelivered &&
                               el.isReturnSubmit) ||
-                            (el.shippingCode === 0 &&
+                            (el.shippingCode !== 0 &&
                               !el.isShipping &&
                               el.isReturn &&
                               !el.isDelivered &&

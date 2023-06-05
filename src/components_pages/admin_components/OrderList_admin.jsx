@@ -121,42 +121,48 @@ export default function OrderList_admin() {
                     !el.isDelivered &&
                     !el.isCancel &&
                     !el.isReturnSubmit &&
-                    !el.isReturn ? (
+                    !el.isReturn &&
+                    el.shippingCode === 0 ? (
                       '결제 전'
                     ) : el.payments.status === 'DONE' &&
                       !el.isShipping &&
                       !el.isDelivered &&
                       !el.isCancel &&
                       !el.isReturnSubmit &&
-                      !el.isReturn ? (
+                      !el.isReturn &&
+                      el.shippingCode === 0 ? (
                       '결제완료 (배송 전)'
                     ) : el.payments.status === 'DONE' &&
                       el.isShipping &&
                       !el.isDelivered &&
                       !el.isCancel &&
                       !el.isReturnSubmit &&
-                      !el.isReturn ? (
+                      !el.isReturn &&
+                      el.shippingCode !== 0 ? (
                       '배송중'
                     ) : el.payments.status === 'DONE' &&
                       !el.isShipping &&
                       el.isDelivered &&
                       !el.isCancel &&
                       !el.isReturnSubmit &&
-                      !el.isReturn ? (
+                      !el.isReturn &&
+                      el.shippingCode !== 0 ? (
                       '배송완료'
                     ) : el.payments.status === 'DONE' &&
                       !el.isShipping &&
                       el.isDelivered &&
                       !el.isCancel &&
                       el.isReturnSubmit &&
-                      !el.isReturn ? (
+                      !el.isReturn &&
+                      el.shippingCode !== 0 ? (
                       '반품신청 중'
                     ) : el.payments.status === 'DONE' &&
                       !el.isShipping &&
                       !el.isDelivered &&
                       !el.isCancel &&
                       !el.isReturnSubmit &&
-                      el.isReturn ? (
+                      el.isReturn &&
+                      el.shippingCode !== 0 ? (
                       '교환 중'
                     ) : (
                       <></>

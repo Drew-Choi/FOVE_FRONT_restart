@@ -77,7 +77,8 @@ export default function OrderList_Indi_Admin() {
       !data.isDelivered &&
       !data.isCancel &&
       !data.isReturn &&
-      !data.isReturnSubmit
+      !data.isReturnSubmit &&
+      data.shippingCode === 0
     ) {
       return setStatus((cur) => '결제 전');
     } else if (
@@ -86,7 +87,8 @@ export default function OrderList_Indi_Admin() {
       !data.isDelivered &&
       !data.isCancel &&
       !data.isReturn &&
-      !data.isReturnSubmit
+      !data.isReturnSubmit &&
+      data.shippingCode === 0
     ) {
       return setStatus((cur) => '결제완료 (배송 전)');
     } else if (
@@ -95,7 +97,8 @@ export default function OrderList_Indi_Admin() {
       !data.isDelivered &&
       !data.isCancel &&
       !data.isReturn &&
-      !data.isReturnSubmit
+      !data.isReturnSubmit &&
+      data.shippingCode !== 0
     ) {
       return setStatus((cur) => '배송 중');
     } else if (
@@ -104,7 +107,8 @@ export default function OrderList_Indi_Admin() {
       data.isDelivered &&
       !data.isCancel &&
       !data.isReturn &&
-      !data.isReturnSubmit
+      !data.isReturnSubmit &&
+      data.shippingCode !== 0
     ) {
       return setStatus((cur) => '배송완료');
     } else if (
@@ -113,7 +117,8 @@ export default function OrderList_Indi_Admin() {
       data.isDelivered &&
       !data.isCancel &&
       !data.isReturn &&
-      data.isReturnSubmit
+      data.isReturnSubmit &&
+      data.shippingCode !== 0
     ) {
       return setStatus((cur) => '반품신청 중');
     } else if (
@@ -122,7 +127,8 @@ export default function OrderList_Indi_Admin() {
       !data.isDelivered &&
       !data.isCancel &&
       data.isReturn &&
-      !data.isReturnSubmit
+      !data.isReturnSubmit &&
+      data.shippingCode !== 0
     ) {
       return setStatus((cur) => '교환 중');
     } else if (
@@ -131,12 +137,14 @@ export default function OrderList_Indi_Admin() {
       !data.isDelivered &&
       data.isCancel &&
       !data.isReturn &&
-      !data.isReturnSubmit
+      !data.isReturnSubmit &&
+      data.shippingCode !== 0
     ) {
       return setStatus((cur) => '결제취소');
     }
   };
 
+  // 배송 전 결제 취소
   const pdCancel = async () => {
     const updateConfirm = confirm(
       `상품코드: ${orderId}\n관리자권환으로 결제취소(환불)를 진행하시겠습니까?`,
@@ -154,6 +162,35 @@ export default function OrderList_Indi_Admin() {
       if (cancelInfo.status !== 200) return alert('결제취소 실패');
       // 200번대 성공이면,
       alert(`상품코드: ${orderId}\n결제취소(환불) 완료`);
+      navigate('/admin/orderlist');
+      return;
+    } catch (err) {
+      console.error(err);
+      return;
+    }
+  };
+
+  // 배송 후 결제취소
+  const pdCancelRefund = async () => {
+    const updateConfirm = confirm(
+      `상품코드: ${orderId}\n관리자권환으로 환불을 진행하시겠습니까?\n환불 후 상품을 회수해야 합니다.`,
+    );
+
+    if (!updateConfirm)
+      return setRedirect((cur) => !cur), alert('환불진행 취소');
+
+    // confirm이 true이면
+    try {
+      const cancelInfo = await axios.post(
+        'http://localhost:4000/admin/orderlist/detail/cancelRefund',
+        { orderId },
+      );
+
+      if (cancelInfo.status !== 200) return alert('환불 실패');
+      // 200번대 성공이면,
+      alert(
+        `상품코드: ${orderId}\n환불을 완료했습니다.\n환불목록을 통해 상품을 회수하십시오.`,
+      );
       navigate('/admin/orderlist');
       return;
     } catch (err) {
@@ -231,9 +268,33 @@ export default function OrderList_Indi_Admin() {
     }
   };
 
+  // 교환철회 관리자만 가능
+  const adminPdChangeCancel = async () => {
+    const updateConfirm = confirm(
+      `상품코드: ${orderId}\n상품교환신청을 철회하시겠습니까?`,
+    );
+
+    if (!updateConfirm) return alert('교환신청철회 취소');
+    // true라면,
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/admin/orderlist/detail/order_return/cancel/${orderId}`,
+      );
+
+      if (response.status !== 200) return alert('철회신청 실패');
+      // 200번대 성공이라면,
+      alert(`상품코드: ${orderId}\n교환 철회 완료`);
+      setRedirect((cur) => !cur);
+      return;
+    } catch (err) {
+      console.error(err);
+      return;
+    }
+  };
+
   useEffect(() => {
     getOrderIdInfo();
-  }, []);
+  }, [redirect]);
 
   const dateSplit = (date) => {
     const splitData = date.split(/[T+]/);
@@ -404,7 +465,6 @@ export default function OrderList_Indi_Admin() {
                 </div>
                 <div className={orderListIndi.line}></div>
               </div>
-
               <button
                 className={orderListIndi.orderBack}
                 onClick={() => navigate(-1)}
@@ -421,6 +481,16 @@ export default function OrderList_Indi_Admin() {
               ) : (
                 <></>
               )}
+              {status === '교환 중' ? (
+                <button
+                  className={orderListIndi.orderChange}
+                  onClick={() => adminPdChangeCancel()}
+                >
+                  교환신청 철회 (관리자권한)
+                </button>
+              ) : (
+                <></>
+              )}
               {status === '배송완료' || status === '반품신청 중' ? (
                 <button
                   className={orderListIndi.orderChange}
@@ -431,7 +501,6 @@ export default function OrderList_Indi_Admin() {
               ) : (
                 <></>
               )}
-
               {status === '결제 전' ? (
                 <button
                   className={orderListIndi.orderCancel}
@@ -439,19 +508,35 @@ export default function OrderList_Indi_Admin() {
                 >
                   주문강제취소
                 </button>
-              ) : status === '배송 중' ? (
-                <></>
               ) : (
+                <></>
+              )}
+              {status === '결제완료 (배송 전)' || status === '배송 중' ? (
                 <button
-                  className={orderListIndi.orderCancel}
+                  className={orderListIndi.orderChange}
                   onClick={() => pdCancel()}
                 >
-                  환불 (결제취소)
+                  결제취소(배송 전)
                 </button>
+              ) : (
+                <></>
               )}
-
+              {status === '배송 중' ||
+              status === '배송완료' ||
+              status === '반품신청 중' ||
+              status === '교환 중' ? (
+                <button
+                  className={orderListIndi.orderCancel}
+                  onClick={() => pdCancelRefund()}
+                >
+                  환불 (배송 후)
+                </button>
+              ) : (
+                <></>
+              )}
               <p className={orderListIndi.caution}>
                 *검토 후 전산처리 또는 연락드리기
+                <br /> *버튼은 신중히 클릭할 것
               </p>
             </div>
           </div>
