@@ -69,9 +69,13 @@ export default function TossPay_Complete() {
       if (finalOrderData.status === 200) {
         localStorage.clear();
         return;
-      } else {
-        alert('주문실패');
+      } else if (finalOrderData.status == 409) {
         navigate('/store');
+        alert('중복된 주문 오류');
+        return;
+      } else {
+        navigate('/store');
+        alert('주문실패');
         return;
       }
     } catch (err) {

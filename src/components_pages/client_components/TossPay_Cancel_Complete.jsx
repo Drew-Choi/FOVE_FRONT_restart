@@ -23,6 +23,15 @@ export default function TossPay_Cancel_Complete() {
 
       if (cancelInfo.status === 200) {
         setCancelInfoData((cur) => cancelInfo.data);
+        return;
+      } else if (cancelInfo.status === 409) {
+        navigate('/store');
+        alert('중복된 취소 오류');
+        return;
+      } else {
+        navigate('/store');
+        alert('결제취소 오류로 실패');
+        return;
       }
     } catch (err) {
       console.error(err);
