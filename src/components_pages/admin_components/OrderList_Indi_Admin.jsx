@@ -42,6 +42,15 @@ export default function OrderList_Indi_Admin() {
   const [status, setStatus] = useState(null);
   const [redirect, setRedirect] = useState(true);
 
+  // 라디오 박스 useState - 관리자 컨트롤 부분 - 배송상태
+  const [adminShippingCondition, setAdminShippingCondition] = useState(null);
+  // 라디오 박스 활성화 - 배송상태
+  const [disableShipping, setDisableShipping] = useState(true);
+  // 라디오 박스 체크시 상태값 변경 - 배송상태
+  const handleAdminShippingCondition = (e) => {
+    setAdminShippingCondition((cur) => e.target.value);
+  };
+
   //db Number타입을 스트링으로 바꾸고 천단위 컴마 찍어 프론트에 보내기
   const country = navigator.language;
   const frontPriceComma = (price) => {
@@ -74,53 +83,72 @@ export default function OrderList_Indi_Admin() {
     if (
       data.payments.status !== 'DONE' &&
       !data.isShipping &&
+      data.shippingCode === 0 &&
       !data.isDelivered &&
       !data.isCancel &&
       !data.isReturn &&
-      !data.isReturnSubmit &&
-      data.shippingCode === 0
+      !data.isRetrieved &&
+      !data.isRefund &&
+      !data.isReturnSubmit
     ) {
-      return setStatus((cur) => '결제 전');
+      setStatus((cur) => '결제 전');
+      setAdminShippingCondition((cur) => '결제 전');
+      return;
     } else if (
       data.payments.status === 'DONE' &&
       !data.isShipping &&
+      data.shippingCode === 0 &&
       !data.isDelivered &&
       !data.isCancel &&
       !data.isReturn &&
-      !data.isReturnSubmit &&
-      data.shippingCode === 0
+      !data.isRetrieved &&
+      !data.isRefund &&
+      !data.isReturnSubmit
     ) {
-      return setStatus((cur) => '결제완료 (배송 전)');
+      setStatus((cur) => '결제완료 (배송 전)');
+      setAdminShippingCondition((cur) => '결제완료 (배송 전)');
+      return;
     } else if (
       data.payments.status === 'DONE' &&
       data.isShipping &&
+      data.shippingCode !== 0 &&
       !data.isDelivered &&
       !data.isCancel &&
       !data.isReturn &&
-      !data.isReturnSubmit &&
-      data.shippingCode !== 0
+      !data.isRetrieved &&
+      !data.isRefund &&
+      !data.isReturnSubmit
     ) {
-      return setStatus((cur) => '배송 중');
+      setStatus((cur) => '배송 중');
+      setAdminShippingCondition((cur) => '배송 중');
+      return;
     } else if (
       data.payments.status === 'DONE' &&
       !data.isShipping &&
+      data.shippingCode !== 0 &&
       data.isDelivered &&
       !data.isCancel &&
       !data.isReturn &&
-      !data.isReturnSubmit &&
-      data.shippingCode !== 0
+      !data.isRetrieved &&
+      !data.isRefund &&
+      !data.isReturnSubmit
     ) {
-      return setStatus((cur) => '배송완료');
+      setStatus((cur) => '배송완료');
+      setAdminShippingCondition((cur) => '배송완료');
+      return;
     } else if (
       data.payments.status === 'DONE' &&
       !data.isShipping &&
+      data.shippingCode !== 0 &&
       data.isDelivered &&
       !data.isCancel &&
       !data.isReturn &&
-      data.isReturnSubmit &&
-      data.shippingCode !== 0
+      !data.isRetrieved &&
+      !data.isRefund &&
+      data.isReturnSubmit
     ) {
-      return setStatus((cur) => '반품신청 중');
+      setStatus((cur) => '반품신청 중');
+      return;
     } else if (
       data.payments.status === 'DONE' &&
       !data.isShipping &&
@@ -130,7 +158,8 @@ export default function OrderList_Indi_Admin() {
       !data.isReturnSubmit &&
       data.shippingCode !== 0
     ) {
-      return setStatus((cur) => '교환 중');
+      setStatus((cur) => '교환 중');
+      return;
     } else if (
       data.payments.status === 'DONE' &&
       !data.isShipping &&
@@ -462,6 +491,85 @@ export default function OrderList_Indi_Admin() {
                   <p className={orderListIndi.shipping_code}>
                     송장번호: {data.shippingCode} (한진)
                   </p>
+                </div>
+                <div className={orderListIndi.line}></div>
+
+                <p className={orderListIndi.adminAreaTitle}>관리자 영역</p>
+                <div className={orderListIndi.adminAreaBox}>
+                  <div className={orderListIndi.adminShippingCondition}>
+                    <div
+                      className={orderListIndi.adminShippingCondition_titleBox}
+                    >
+                      주문진행사항 &nbsp;&nbsp;
+                      {disableShipping ? (
+                        <button
+                          className={orderListIndi.adminShippingConditionBTN}
+                          onClick={() =>
+                            setDisableShipping((cur) =>
+                              cur === true ? false : true,
+                            )
+                          }
+                        >
+                          변경하기
+                        </button>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => {
+                              setDisableShipping((cur) =>
+                                cur === true ? false : true,
+                              );
+                              setAdminShippingCondition((cur) => status);
+                            }}
+                            className={orderListIndi.adminShippingConditionBTN2}
+                          >
+                            취소
+                          </button>
+                          <button
+                            className={orderListIndi.adminShippingConditionBTN}
+                          >
+                            등록
+                          </button>
+                        </>
+                      )}
+                    </div>
+                    <label>결제 전</label>
+                    <input
+                      type="radio"
+                      name="adminShippingCondition"
+                      value="입금 전"
+                      checked={adminShippingCondition === '입금 전'}
+                      onChange={handleAdminShippingCondition}
+                      disabled={disableShipping}
+                    />
+                    <label>결제완료 / 배송 전</label>
+                    <input
+                      type="radio"
+                      name="adminShippingCondition"
+                      value="결제완료 (배송 전)"
+                      checked={adminShippingCondition === '결제완료 (배송 전)'}
+                      onChange={handleAdminShippingCondition}
+                      disabled={disableShipping}
+                    />
+                    <label>배송 중</label>
+                    <input
+                      type="radio"
+                      name="adminShippingCondition"
+                      value="배송 중"
+                      checked={adminShippingCondition === '배송 중'}
+                      onChange={handleAdminShippingCondition}
+                      disabled={disableShipping}
+                    />
+                    <label>배송완료</label>
+                    <input
+                      type="radio"
+                      name="adminShippingCondition"
+                      value="배송완료"
+                      checked={adminShippingCondition === '배송완료'}
+                      onChange={handleAdminShippingCondition}
+                      disabled={disableShipping}
+                    />
+                  </div>
                 </div>
                 <div className={orderListIndi.line}></div>
               </div>
