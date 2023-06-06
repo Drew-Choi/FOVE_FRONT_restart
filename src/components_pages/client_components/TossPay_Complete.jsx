@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import tossPayComplete from '../../styles/tossPay_complete.module.scss';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
 import getToken from '../../store/modules/getToken';
 
 export default function TossPay_Complete() {
@@ -29,11 +28,6 @@ export default function TossPay_Complete() {
     }
   };
 
-  // const clear = async () => {
-  //   const clearMessage = await axios.get('http://localhost:4000/toss/clear');
-  //   return console.log(clearMessage.data.message);
-  // };
-
   const finalOrderPost = async () => {
     //로컬에서 주문내역 뺴서 가공
     const products = await JSON.parse(localStorage.getItem('products'));
@@ -45,14 +39,11 @@ export default function TossPay_Complete() {
 
     //백으로 최종 주문내역서 보내기
     try {
-      const userID = await getToken();
+      const tokenValue = await getToken();
       const finalOrderData = await axios.post(
         'http://localhost:4000/store/order',
         {
-          //주문완료
-          isOrdered: true,
-          //주문자 아이디
-          name: userID,
+          token: tokenValue,
           //상품정보
           products: products,
           //받는 이 정보
@@ -70,19 +61,17 @@ export default function TossPay_Complete() {
             orderName: payments.orderName,
             approvedAt: payments.approvedAt,
             discount: payments.discount,
-            cancels: payments.cancels,
             totalAmount: payments.totalAmount,
-            suppliedAmoint: payments.suppliedAmoint,
             method: payments.method,
           },
         },
       );
       if (finalOrderData.status === 200) {
-        console.log('성공');
         localStorage.clear();
         return;
       } else {
-        console.log('실패');
+        alert('주문실패');
+        navigate('/store');
         return;
       }
     } catch (err) {
@@ -95,7 +84,6 @@ export default function TossPay_Complete() {
       try {
         await getData();
         await finalOrderPost();
-        console.log('Both functions executed sequentially.');
       } catch (error) {
         console.error('Error occurred:', error);
       }

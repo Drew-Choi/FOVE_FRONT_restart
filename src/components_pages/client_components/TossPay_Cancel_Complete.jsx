@@ -22,8 +22,6 @@ export default function TossPay_Cancel_Complete() {
       });
 
       if (cancelInfo.status === 200) {
-        console.log(cancelInfo.data);
-        console.log('성공');
         setCancelInfoData((cur) => cancelInfo.data);
       }
     } catch (err) {
