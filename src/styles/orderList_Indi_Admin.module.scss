@@ -275,9 +275,43 @@
                     }
                   }  
                 }
-               
+
+            
+                .shippingCodeBox {
+                position: relative;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding-top: 10px;
+                 
+                span{
+                  font-size: 15px;
+                }
+                 .shippingCode_input{
+                  height: 25px;
+                  width: 350px;
+                  font-size: 15px;
+                }
               }
+              .shippingCodeBox_Off {
+                position: relative;
+                display: none;
+                align-items: center;
+                gap: 10px;
+                padding-top: 10px;
+                 
+                span{
+                  font-size: 15px;
+                }
+                 .shippingCode_input{
+                  height: 25px;
+                  width: 350px;
+                  font-size: 15px;
+                }
+              }
+              
             }
+          }
   
           .imagePreview_container{
             position: relative;

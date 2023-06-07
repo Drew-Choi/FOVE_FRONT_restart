@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import orderListIndi from '../../styles/orderList_Indi_Admin.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -50,6 +50,50 @@ export default function OrderList_Indi_Admin() {
   const handleAdminShippingCondition = (e) => {
     setAdminShippingCondition((cur) => e.target.value);
   };
+  // 송장번호 입력
+  const [shippingCodeChange, setShippingCodeChange] = useState(0);
+  // 송장번호 수정 핸들
+  const handleShippingCode = (e) => {
+    setShippingCodeChange((cur) => e.target.value);
+  };
+
+  const req_AdminShippingCondition = async () => {
+    try {
+      const response = await axios.post(
+        'http://localhost:4000/admin/orderlist/detail/shippingCondition',
+        {
+          adminShippingCondition,
+          orderId,
+          shippingCode: shippingCodeChange,
+        },
+      );
+
+      // console.log('송장번호', shippingCodeChange);
+      // console.log('상태값', adminShippingCondition);
+      // console.log('결과', response);
+
+      if (response.status === 200) {
+        // 200번대 성공이라면,
+        setRedirect((cur) => !cur);
+        setDisableShipping((cur) => true);
+        alert('변경성공');
+        return;
+      } else if (response.status === 404) {
+        // 404번대 오류라면,
+        setRedirect((cur) => !cur);
+        alert(response.data);
+        return;
+      } else {
+        return alert('변경실패');
+      }
+    } catch (err) {
+      if (err.response.status === 404) {
+        setRedirect((cur) => !cur);
+        alert(err.response.data);
+      }
+      return;
+    }
+  };
 
   //db Number타입을 스트링으로 바꾸고 천단위 컴마 찍어 프론트에 보내기
   const country = navigator.language;
@@ -60,22 +104,6 @@ export default function OrderList_Indi_Admin() {
       });
     } else {
       return price;
-    }
-  };
-
-  const getOrderIdInfo = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:4000/admin/orderlist/detail/${orderId}`,
-        {},
-      );
-
-      if (response.status !== 200) return alert('데이터오류');
-      // 200번대 성공이면
-      statusCheck(response.data);
-      return setData((cur) => response.data);
-    } catch (err) {
-      console.error(err);
     }
   };
 
@@ -170,6 +198,23 @@ export default function OrderList_Indi_Admin() {
       data.shippingCode !== 0
     ) {
       return setStatus((cur) => '결제취소');
+    }
+  };
+
+  const getOrderIdInfo = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/admin/orderlist/detail/${orderId}`,
+        {},
+      );
+
+      if (response.status !== 200) return alert('데이터오류');
+      // 200번대 성공이면
+      statusCheck(response.data);
+      setShippingCodeChange((cur) => response.data.shippingCode);
+      return setData((cur) => response.data);
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -527,6 +572,7 @@ export default function OrderList_Indi_Admin() {
                           </button>
                           <button
                             className={orderListIndi.adminShippingConditionBTN}
+                            onClick={req_AdminShippingCondition}
                           >
                             등록
                           </button>
@@ -537,8 +583,8 @@ export default function OrderList_Indi_Admin() {
                     <input
                       type="radio"
                       name="adminShippingCondition"
-                      value="입금 전"
-                      checked={adminShippingCondition === '입금 전'}
+                      value="결제 전"
+                      checked={adminShippingCondition === '결제 전'}
                       onChange={handleAdminShippingCondition}
                       disabled={disableShipping}
                     />
@@ -567,6 +613,22 @@ export default function OrderList_Indi_Admin() {
                       value="배송완료"
                       checked={adminShippingCondition === '배송완료'}
                       onChange={handleAdminShippingCondition}
+                      disabled={disableShipping}
+                    />
+                  </div>
+                  <div
+                    className={
+                      adminShippingCondition === '배송 중'
+                        ? orderListIndi.shippingCodeBox
+                        : orderListIndi.shippingCodeBox_Off
+                    }
+                  >
+                    <span>송장번호입력 : </span>
+                    <input
+                      className={orderListIndi.shippingCode_input}
+                      value={shippingCodeChange}
+                      type="text"
+                      onChange={handleShippingCode}
                       disabled={disableShipping}
                     />
                   </div>
