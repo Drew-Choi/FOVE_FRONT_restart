@@ -74,6 +74,12 @@ export default function OrderReturn_client() {
     }
   };
 
+  // 날짜 추출
+  const dateSlice = (date) => {
+    const sliceDate = date.substring(0, 19);
+    return sliceDate;
+  };
+
   // 반품사유
   const cancelReasonSelet = useRef('상품파손');
   const cancelReason = ['상품파손', '기타'];
@@ -204,7 +210,6 @@ export default function OrderReturn_client() {
               reason,
             }),
           );
-          console.log(formData.get('img_return'));
 
           // multer이용으로 fetch 사용
           const submitRes = await fetch(
@@ -215,9 +220,8 @@ export default function OrderReturn_client() {
               body: formData,
             },
           );
-          console.log(formData);
+
           if (submitRes.status === 200) {
-            console.log('성공');
             const dataParse = await submitRes.json();
             setReturnSubmitData((cur) => dataParse);
             setCompleteStatus((cur) => true);
@@ -235,11 +239,6 @@ export default function OrderReturn_client() {
   useEffect(() => {
     getCancelItem();
   }, []);
-
-  const dateSlice = (date) => {
-    const sliceDate = date.substring(0, 19);
-    return sliceDate;
-  };
 
   // 조건부 렌더링, submit이 완료되면 컴플릿트 페이지로 넘어감
   if (completeStatus)

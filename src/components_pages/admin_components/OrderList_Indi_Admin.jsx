@@ -57,7 +57,14 @@ export default function OrderList_Indi_Admin() {
     setShippingCodeChange((cur) => e.target.value);
   };
 
+  // 배송상태 백엔드 요청
   const req_AdminShippingCondition = async () => {
+    const updateConfirm = confirm(
+      `주문번호: ${orderId}\n배송상태변경을 진행하시겠습니까?`,
+    );
+
+    if (!updateConfirm) return alert('변경 취소');
+    // true라면 아래 진행
     try {
       const response = await axios.post(
         'http://localhost:4000/admin/orderlist/detail/shippingCondition',
@@ -67,10 +74,6 @@ export default function OrderList_Indi_Admin() {
           shippingCode: shippingCodeChange,
         },
       );
-
-      // console.log('송장번호', shippingCodeChange);
-      // console.log('상태값', adminShippingCondition);
-      // console.log('결과', response);
 
       if (response.status === 200) {
         // 200번대 성공이라면,
@@ -176,17 +179,20 @@ export default function OrderList_Indi_Admin() {
       data.isReturnSubmit
     ) {
       setStatus((cur) => '반품신청 중');
+      setAdminShippingCondition((cur) => '배송완료');
       return;
     } else if (
       data.payments.status === 'DONE' &&
       !data.isShipping &&
-      !data.isDelivered &&
+      data.shippingCode !== 0 &&
+      data.isDelivered &&
       !data.isCancel &&
-      data.isReturn &&
-      !data.isReturnSubmit &&
-      data.shippingCode !== 0
+      !data.isReturn &&
+      !data.isRetrieved &&
+      data.isRefund &&
+      data.isReturnSubmit
     ) {
-      setStatus((cur) => '교환 중');
+      setStatus((cur) => '환불진행 신청');
       return;
     } else if (
       data.payments.status === 'DONE' &&
@@ -244,19 +250,52 @@ export default function OrderList_Indi_Admin() {
     }
   };
 
-  // 배송 후 결제취소
-  const pdCancelRefund = async () => {
+  // 상품 수령 전 환불 진행 신청
+  const submitRefund = async () => {
     const updateConfirm = confirm(
-      `상품코드: ${orderId}\n관리자권환으로 환불을 진행하시겠습니까?\n환불 후 상품을 회수해야 합니다.`,
+      `주문번호: ${orderId}\n환불진행을 신청하시겠습니까?`,
     );
 
-    if (!updateConfirm)
+    if (!updateConfirm) return alert('환불 진행 취소');
+    //true 라면 아래
+    try {
+      const cancelInfo = await axios.post(
+        'http://localhost:4000/admin//orderlist/detail/cancelRefund',
+        { orderId },
+      );
+
+      if (cancelInfo.status !== 200) return alert('환불 실패');
+      // 200번대 성공이면,
+      setRedirect((cur) => !cur);
+      alert(
+        `주문번호: ${orderId}\n환불을 완료했습니다.\n'상품회수 목록'을 통해 상품회수를 진행하십시오.`,
+      );
+      return;
+    } catch (err) {
+      console.error(err);
+      return;
+    }
+  };
+
+  // 상품 수령 후 결제취소
+  const pdCancelRefund = async () => {
+    const updateConfirm1 = confirm(
+      `주문번호: ${orderId}\n상품을 회수하셨습니까?`,
+    );
+
+    if (!updateConfirm1) return alert('상품 회수 후\n진행바랍니다.');
+    // true라면,
+
+    const updateConfirm2 = confirm(
+      `상품코드: ${orderId}\n관리자권환으로 환불을 진행하시겠습니까?`,
+    );
+    if (!updateConfirm2)
       return setRedirect((cur) => !cur), alert('환불진행 취소');
 
     // confirm이 true이면
     try {
       const cancelInfo = await axios.post(
-        'http://localhost:4000/admin/orderlist/detail/cancelRefund',
+        'http://localhost:4000/admin/orderlist/detail/cancelRefund/complete',
         { orderId },
       );
 
@@ -546,7 +585,10 @@ export default function OrderList_Indi_Admin() {
                       className={orderListIndi.adminShippingCondition_titleBox}
                     >
                       주문진행사항 &nbsp;&nbsp;
-                      {disableShipping ? (
+                      {status === '반품신청 중' ||
+                      status === '환불진행 신청' ? (
+                        <></>
+                      ) : disableShipping ? (
                         <button
                           className={orderListIndi.adminShippingConditionBTN}
                           onClick={() =>
@@ -697,9 +739,9 @@ export default function OrderList_Indi_Admin() {
               status === '교환 중' ? (
                 <button
                   className={orderListIndi.orderCancel}
-                  onClick={() => pdCancelRefund()}
+                  onClick={() => submitRefund()}
                 >
-                  환불 (배송 후)
+                  환불진행신청 (배송 후)
                 </button>
               ) : (
                 <></>
