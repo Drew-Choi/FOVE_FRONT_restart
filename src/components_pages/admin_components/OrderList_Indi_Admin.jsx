@@ -98,6 +98,22 @@ export default function OrderList_Indi_Admin() {
     }
   };
 
+  // 라디오 박스 useState - 관리자 컨트롤 부분 - 환불진행상태
+  const [adminSubmitReturnCondition, setAdminSubmitReturnCondition] =
+    useState(null);
+  // 라디오 박스 활성화 - 환불진행상태
+  const [disableReturn, setDisableReturn] = useState(true);
+  // 라디오 박스 체크시 상태값 변경 - 환불진행상태
+  const handleadminSubmitReturnCondition = (e) => {
+    setAdminSubmitReturnCondition((cur) => e.target.value);
+  };
+  // 송장번호 입력-환불진행상태
+  const [returnCodeChange, setReturnCodeChange] = useState(0);
+  // 송장번호 수정 핸들-환불진행상태
+  const handleReturnCodeChange = (e) => {
+    setReturnCodeChange((cur) => e.target.value);
+  };
+
   //db Number타입을 스트링으로 바꾸고 천단위 컴마 찍어 프론트에 보내기
   const country = navigator.language;
   const frontPriceComma = (price) => {
@@ -192,7 +208,55 @@ export default function OrderList_Indi_Admin() {
       data.isRefund &&
       data.isReturnSubmit
     ) {
-      setStatus((cur) => '환불진행 신청');
+      setStatus((cur) => '환불신청완료');
+      setAdminShippingCondition((cur) => '배송완료');
+      setAdminSubmitReturnCondition((cur) => '환불신청완료');
+      return;
+    } else if (
+      data.payments.status === 'DONE' &&
+      data.isShipping &&
+      data.shippingCode !== 0 &&
+      data.isDelivered &&
+      !data.isCancel &&
+      !data.isReturn &&
+      !data.isRetrieved &&
+      data.isRefund &&
+      data.isReturnSubmit
+    ) {
+      setStatus((cur) => '상품회수 중 (환불)');
+      setAdminShippingCondition((cur) => '');
+      setAdminSubmitReturnCondition((cur) => '상품회수 중 (환불)');
+      return;
+    } else if (
+      data.payments.status === 'DONE' &&
+      !data.isShipping &&
+      data.shippingCode !== 0 &&
+      !data.isDelivered &&
+      !data.isCancel &&
+      !data.isReturn &&
+      data.isRetrieved &&
+      data.isRefund &&
+      data.isReturnSubmit
+    ) {
+      setStatus((cur) => '상품회수 완료 (환불)');
+      setAdminShippingCondition((cur) => '');
+      setAdminSubmitReturnCondition((cur) => '상품회수 완료 (환불)');
+      return;
+    } else if (
+      data.payments.status === 'CANCELED' &&
+      !data.isOrdered &&
+      !data.isShipping &&
+      data.shippingCode !== 0 &&
+      !data.isDelivered &&
+      data.isCancel &&
+      !data.isReturn &&
+      data.isRetrieved &&
+      data.isRefund &&
+      data.isReturnSubmit
+    ) {
+      setStatus((cur) => '환불완료');
+      setAdminShippingCondition((cur) => '');
+      setAdminSubmitReturnCondition((cur) => '환불완료');
       return;
     } else if (
       data.payments.status === 'DONE' &&
@@ -218,7 +282,9 @@ export default function OrderList_Indi_Admin() {
       // 200번대 성공이면
       statusCheck(response.data);
       setShippingCodeChange((cur) => response.data.shippingCode);
-      return setData((cur) => response.data);
+      setReturnCodeChange((cur) => response.data.shippingCode);
+      setData((cur) => response.data);
+      return;
     } catch (err) {
       console.error(err);
     }
@@ -584,9 +650,12 @@ export default function OrderList_Indi_Admin() {
                     <div
                       className={orderListIndi.adminShippingCondition_titleBox}
                     >
-                      주문진행사항 &nbsp;&nbsp;
+                      주문 진행사항 &nbsp;&nbsp;
                       {status === '반품신청 중' ||
-                      status === '환불진행 신청' ? (
+                      status === '환불신청완료' ||
+                      status === '상품회수 중 (환불)' ||
+                      status === '상품회수 완료 (환불)' ||
+                      status === '환불완료' ? (
                         <></>
                       ) : disableShipping ? (
                         <button
@@ -674,6 +743,129 @@ export default function OrderList_Indi_Admin() {
                       disabled={disableShipping}
                     />
                   </div>
+
+                  {/* 반품신청 진행사항 */}
+                  {status === '환불신청완료' ||
+                  status === '상품회수 중 (환불)' ||
+                  status === '상품회수 완료 (환불)' ||
+                  status === '환불완료' ? (
+                    <>
+                      <div className={orderListIndi.adminSubmitReturnCondition}>
+                        <div
+                          className={
+                            orderListIndi.adminSubmitReturnCondition_titleBox
+                          }
+                        >
+                          환불신청 진행사항 &nbsp;&nbsp;
+                          {status === '환불완료' ? (
+                            <></>
+                          ) : disableReturn ? (
+                            <button
+                              className={
+                                orderListIndi.adminSubmitReturnConditionBTN
+                              }
+                              onClick={() =>
+                                setDisableReturn((cur) =>
+                                  cur === true ? false : true,
+                                )
+                              }
+                            >
+                              변경하기
+                            </button>
+                          ) : (
+                            <>
+                              <button
+                                onClick={() => {
+                                  setDisableReturn((cur) =>
+                                    cur === true ? false : true,
+                                  );
+                                  setAdminSubmitReturnCondition(
+                                    (cur) => status,
+                                  );
+                                }}
+                                className={
+                                  orderListIndi.adminSubmitReturnConditionBTN2
+                                }
+                              >
+                                취소
+                              </button>
+                              <button
+                                className={
+                                  orderListIndi.adminSubmitReturnConditionBTN
+                                }
+                                // onClick={req_AdminShippingCondition}
+                              >
+                                등록
+                              </button>
+                            </>
+                          )}
+                        </div>
+                        <label>환불신청완료</label>
+                        <input
+                          type="radio"
+                          name="adminSubmitReturnCondition"
+                          value="환불신청완료"
+                          checked={
+                            adminSubmitReturnCondition === '환불신청완료'
+                          }
+                          onChange={handleadminSubmitReturnCondition}
+                          disabled={disableReturn}
+                        />
+                        <label>상품회수 중 (환불)</label>
+                        <input
+                          type="radio"
+                          name="adminSubmitReturnCondition"
+                          value="상품회수 중 (환불)"
+                          checked={
+                            adminSubmitReturnCondition === '상품회수 중 (환불)'
+                          }
+                          onChange={handleadminSubmitReturnCondition}
+                          disabled={disableReturn}
+                        />
+                        <label>상품회수 완료 (환불)</label>
+                        <input
+                          type="radio"
+                          name="adminSubmitReturnCondition"
+                          value="상품회수 완료 (환불)"
+                          checked={
+                            adminSubmitReturnCondition ===
+                            '상품회수 완료 (환불)'
+                          }
+                          onChange={handleadminSubmitReturnCondition}
+                          disabled={disableReturn}
+                        />
+                        <label>환불완료</label>
+                        <input
+                          type="radio"
+                          name="adminSubmitReturnCondition"
+                          value="환불완료"
+                          checked={adminSubmitReturnCondition === '환불완료'}
+                          onChange={handleadminSubmitReturnCondition}
+                          disabled={disableReturn}
+                        />
+                      </div>
+                      <div
+                        className={
+                          adminSubmitReturnCondition === '상품회수 중 (환불)'
+                            ? orderListIndi.SubmitReturnCodeBox
+                            : orderListIndi.SubmitReturnCodeBox_Off
+                        }
+                      >
+                        <span>회수용 송장번호입력 : </span>
+                        <input
+                          className={
+                            orderListIndi.shippingSubmitReturnCode_input
+                          }
+                          value={returnCodeChange}
+                          type="text"
+                          onChange={handleReturnCodeChange}
+                          disabled={disableReturn}
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <></>
+                  )}
                 </div>
                 <div className={orderListIndi.line}></div>
               </div>
