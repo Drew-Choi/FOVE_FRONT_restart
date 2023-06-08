@@ -259,6 +259,27 @@ export default function OrderReturnCheck_client() {
                     !orderCancelItem.isRefund &&
                     orderCancelItem.isReturnSubmit ? (
                     '교환상품 배송 중'
+                  ) : orderCancelItem.payments.status === 'DONE' &&
+                    !orderCancelItem.isShipping &&
+                    orderCancelItem.shippingCode !== 0 &&
+                    orderCancelItem.isDelivered &&
+                    !orderCancelItem.isCancel &&
+                    orderCancelItem.isReturn &&
+                    !orderCancelItem.isRetrieved &&
+                    !orderCancelItem.isRefund &&
+                    !orderCancelItem.isReturnSubmit ? (
+                    '교환상품 배송완료'
+                  ) : orderCancelItem.payments.status === 'CANCELED' &&
+                    !orderCancelItem.isOrdered &&
+                    !orderCancelItem.isShipping &&
+                    orderCancelItem.shippingCode !== 0 &&
+                    !orderCancelItem.isDelivered &&
+                    orderCancelItem.isCancel &&
+                    !orderCancelItem.isReturn &&
+                    orderCancelItem.isRetrieved &&
+                    orderCancelItem.isRefund &&
+                    orderCancelItem.isReturnSubmit ? (
+                    '환불완료'
                   ) : (
                     <></>
                   )}

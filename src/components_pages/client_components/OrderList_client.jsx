@@ -494,6 +494,16 @@ export default function OrderList_client() {
                               !el.isRefund &&
                               el.isReturnSubmit ? (
                               '교환상품 배송 중'
+                            ) : el.payments.status === 'DONE' &&
+                              !el.isShipping &&
+                              el.shippingCode !== 0 &&
+                              el.isDelivered &&
+                              !el.isCancel &&
+                              el.isReturn &&
+                              !el.isRetrieved &&
+                              !el.isRefund &&
+                              !el.isReturnSubmit ? (
+                              '교환상품 배송완료'
                             ) : (
                               <></>
                             )}
@@ -519,10 +529,14 @@ export default function OrderList_client() {
                             >
                               주문취소
                             </button>
-                          ) : el.shippingCode !== 0 &&
+                          ) : el.payments.status === 'DONE' &&
                             !el.isShipping &&
+                            el.shippingCode !== 0 &&
                             el.isDelivered &&
+                            !el.isCancel &&
                             !el.isReturn &&
+                            !el.isRetrieved &&
+                            !el.isRefund &&
                             !el.isReturnSubmit ? (
                             <button
                               className={orderList.orderCancle}
@@ -534,16 +548,78 @@ export default function OrderList_client() {
                             >
                               반품신청
                             </button>
-                          ) : (el.shippingCode !== 0 &&
+                          ) : (el.payments.status === 'DONE' &&
                               !el.isShipping &&
-                              !el.isReturn &&
+                              el.shippingCode !== 0 &&
                               el.isDelivered &&
+                              !el.isCancel &&
+                              !el.isReturn &&
+                              !el.isRetrieved &&
+                              !el.isRefund &&
                               el.isReturnSubmit) ||
-                            (el.shippingCode !== 0 &&
+                            (el.payments.status === 'DONE' &&
                               !el.isShipping &&
+                              el.shippingCode !== 0 &&
+                              el.isDelivered &&
+                              !el.isCancel &&
                               el.isReturn &&
+                              !el.isRetrieved &&
+                              !el.isRefund &&
+                              el.isReturnSubmit) ||
+                            (el.payments.status === 'DONE' &&
+                              el.isShipping &&
+                              el.shippingCode !== 0 &&
+                              el.isDelivered &&
+                              !el.isCancel &&
+                              el.isReturn &&
+                              !el.isRetrieved &&
+                              !el.isRefund &&
+                              el.isReturnSubmit) ||
+                            (el.payments.status === 'DONE' &&
+                              !el.isShipping &&
+                              el.shippingCode !== 0 &&
                               !el.isDelivered &&
-                              !el.isReturnSubmit) ? (
+                              !el.isCancel &&
+                              el.isReturn &&
+                              el.isRetrieved &&
+                              !el.isRefund &&
+                              el.isReturnSubmit) ||
+                            (el.payments.status === 'DONE' &&
+                              el.isShipping &&
+                              el.shippingCode !== 0 &&
+                              !el.isDelivered &&
+                              !el.isCancel &&
+                              el.isReturn &&
+                              el.isRetrieved &&
+                              !el.isRefund &&
+                              el.isReturnSubmit) ||
+                            (el.payments.status === 'DONE' &&
+                              !el.isShipping &&
+                              el.shippingCode !== 0 &&
+                              el.isDelivered &&
+                              !el.isCancel &&
+                              !el.isReturn &&
+                              !el.isRetrieved &&
+                              el.isRefund &&
+                              el.isReturnSubmit) ||
+                            (el.payments.status === 'DONE' &&
+                              el.isShipping &&
+                              el.shippingCode !== 0 &&
+                              el.isDelivered &&
+                              !el.isCancel &&
+                              !el.isReturn &&
+                              !el.isRetrieved &&
+                              el.isRefund &&
+                              el.isReturnSubmit) ||
+                            (el.payments.status === 'DONE' &&
+                              !el.isShipping &&
+                              el.shippingCode !== 0 &&
+                              !el.isDelivered &&
+                              !el.isCancel &&
+                              !el.isReturn &&
+                              el.isRetrieved &&
+                              el.isRefund &&
+                              el.isReturnSubmit) ? (
                             <button
                               className={orderList.orderCancle}
                               onClick={() => {
@@ -570,6 +646,38 @@ export default function OrderList_client() {
                             >
                               주문취소
                             </button>
+                          ) : el.payments.status === 'DONE' &&
+                            !el.isShipping &&
+                            el.shippingCode !== 0 &&
+                            el.isDelivered &&
+                            !el.isCancel &&
+                            el.isReturn &&
+                            !el.isRetrieved &&
+                            !el.isRefund &&
+                            !el.isReturnSubmit ? (
+                            <>
+                              <button
+                                className={orderList.orderCancle}
+                                style={{ marginRight: '10px' }}
+                                onClick={() => {
+                                  navigate(
+                                    `/mypage/orderlist/return_check/${el.payments.orderId}`,
+                                  );
+                                }}
+                              >
+                                반품신청내역 확인
+                              </button>
+                              <button
+                                className={orderList.orderCancle}
+                                onClick={() => {
+                                  navigate(
+                                    `/mypage/orderlist/return/${el.payments.orderId}`,
+                                  );
+                                }}
+                              >
+                                반품신청
+                              </button>
+                            </>
                           ) : (
                             <></>
                           )}

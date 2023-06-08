@@ -117,6 +117,55 @@ export default function OrderList_Indi_Admin() {
     setChangeShippingCodeChagne((cur) => e.target.value);
   };
 
+  const req_AdminChangeCondition = async () => {
+    const updateConfirm = confirm(
+      `주문번호: ${orderId}\n교환진행상태 변경을 진행하시겠습니까?`,
+    );
+
+    if (!updateConfirm) return alert('변경 취소');
+    // true라면 아래 진행
+    try {
+      const response = await axios.post(
+        'http://localhost:4000/admin/orderlist/detail/changeCondition',
+        {
+          adminChangeCondition,
+          orderId,
+          shippingCode: changeShippingCodeChagne,
+        },
+      );
+
+      if (response.status === 200) {
+        // 200번대 성공이라면,
+        setRedirect((cur) => !cur);
+        setDisableChange((cur) => true);
+        alert('변경성공');
+        return;
+      } else if (response.status === 404) {
+        // 404번대 오류라면,
+        setRedirect((cur) => !cur);
+        alert(response.data);
+        return;
+      } else if (response.status === 400) {
+        setRedirect((cur) => !cur);
+        alert(response.data);
+        return;
+      } else {
+        return alert('변경실패');
+      }
+    } catch (err) {
+      if (err.response.status === 404) {
+        setRedirect((cur) => !cur);
+        alert(err.response.data);
+      } else if (err.response.status === 400) {
+        setRedirect((cur) => !cur);
+        alert(err.response.data);
+      } else {
+        return alert('변경실패');
+      }
+      return;
+    }
+  };
+
   // 라디오 박스 useState - 관리자 컨트롤 부분 - 환불진행상태
   const [adminSubmitReturnCondition, setAdminSubmitReturnCondition] =
     useState(null);
@@ -163,7 +212,6 @@ export default function OrderList_Indi_Admin() {
         alert(response.data);
         return;
       } else if (response.status === 400) {
-        // 404번대 오류라면,
         setRedirect((cur) => !cur);
         alert(response.data);
         return;
@@ -329,15 +377,63 @@ export default function OrderList_Indi_Admin() {
       return;
     } else if (
       data.payments.status === 'DONE' &&
-      !data.isShipping &&
-      !data.isDelivered &&
-      data.isCancel &&
-      !data.isReturn &&
-      !data.isReturnSubmit &&
-      data.shippingCode !== 0
+      data.isShipping &&
+      data.shippingCode !== 0 &&
+      data.isDelivered &&
+      !data.isCancel &&
+      data.isReturn &&
+      !data.isRetrieved &&
+      !data.isRefund &&
+      data.isReturnSubmit
     ) {
-      setStatus((cur) => '결제취소');
-      setAdminShippingCondition((cur) => '배송완료');
+      setStatus((cur) => '상품회수 중 (교환)');
+      setAdminShippingCondition((cur) => '');
+      setAdminChangeCondition((cur) => '상품회수 중 (교환)');
+      return;
+    } else if (
+      data.payments.status === 'DONE' &&
+      !data.isShipping &&
+      data.shippingCode !== 0 &&
+      !data.isDelivered &&
+      !data.isCancel &&
+      data.isReturn &&
+      data.isRetrieved &&
+      !data.isRefund &&
+      data.isReturnSubmit
+    ) {
+      setStatus((cur) => '상품회수 완료 (교환)');
+      setAdminShippingCondition((cur) => '');
+      setAdminChangeCondition((cur) => '상품회수 완료 (교환)');
+      return;
+    } else if (
+      data.payments.status === 'DONE' &&
+      data.isShipping &&
+      data.shippingCode !== 0 &&
+      !data.isDelivered &&
+      !data.isCancel &&
+      data.isReturn &&
+      data.isRetrieved &&
+      !data.isRefund &&
+      data.isReturnSubmit
+    ) {
+      setStatus((cur) => '교환상품 배송 중');
+      setAdminShippingCondition((cur) => '');
+      setAdminChangeCondition((cur) => '교환상품 배송 중');
+      return;
+    } else if (
+      data.payments.status === 'DONE' &&
+      !data.isShipping &&
+      data.shippingCode !== 0 &&
+      data.isDelivered &&
+      !data.isCancel &&
+      data.isReturn &&
+      !data.isRetrieved &&
+      !data.isRefund &&
+      !data.isReturnSubmit
+    ) {
+      setStatus((cur) => '교환상품 배송완료');
+      setAdminShippingCondition((cur) => '');
+      setAdminChangeCondition((cur) => '교환상품 배송완료');
       return;
     }
   };
@@ -354,6 +450,7 @@ export default function OrderList_Indi_Admin() {
       statusCheck(response.data);
       setShippingCodeChange((cur) => response.data.shippingCode);
       setReturnCodeChange((cur) => response.data.shippingCode);
+      setChangeShippingCodeChagne((cur) => response.data.shippingCode);
       setData((cur) => response.data);
       return;
     } catch (err) {
@@ -361,7 +458,7 @@ export default function OrderList_Indi_Admin() {
     }
   };
 
-  // 배송 전 결제 취소
+  // 배송 전 결제
   const pdCancel = async () => {
     const updateConfirm = confirm(
       `상품코드: ${orderId}\n관리자권환으로 결제취소(환불)를 진행하시겠습니까?`,
@@ -416,6 +513,17 @@ export default function OrderList_Indi_Admin() {
 
   // 환불신청 철회
   const submitRefundCancel = async () => {
+    const update = confirm(`상품회수 상태를 확인하셨습니까?`);
+
+    if (!update)
+      return alert('철회 취소\n회수상태를 체크 후 철회 신청해주세요.');
+    // true 이면,
+    const updateConfirm = confirm(
+      `주문번호: ${orderId}\n환불신청 철회를 진행하시겠습니까?`,
+    );
+
+    if (!updateConfirm) return alert('철회 취소');
+    // true이면,
     try {
       const cancelInfo = await axios.post(
         'http://localhost:4000/admin//orderlist/detail/cancelRefund/cancel',
@@ -435,6 +543,17 @@ export default function OrderList_Indi_Admin() {
 
   // 교환신청 철회
   const adminPdChangeCancel = async () => {
+    const update = confirm(`상품회수 상태를 확인하셨습니까?`);
+
+    if (!update)
+      return alert('철회 취소\n회수상태를 체크 후 철회 신청해주세요.');
+    // true 이면,
+    const updateConfirm = confirm(
+      `주문번호: ${orderId}\n환불신청 철회를 진행하시겠습니까?`,
+    );
+
+    if (!updateConfirm) return alert('철회 취소');
+    // true이면,
     try {
       const cancelInfo = await axios.post(
         'http://localhost:4000/admin//orderlist/detail/cancelRefund/cancel',
@@ -626,11 +745,13 @@ export default function OrderList_Indi_Admin() {
             </p>
             {status === '반품신청 중' ||
             status === '환불신청완료' ||
-            status === '상품회수 중(환불)' ||
-            status === '상품회수 완료(환불)' ||
+            status === '상품회수 중 (환불)' ||
+            status === '상품회수 완료 (환불)' ||
             status == '교환신청 완료' ||
             status == '상품회수 중 (교환)' ||
-            status === '상품회수 완료(교환)' ? (
+            status === '상품회수 완료 (교환)' ||
+            status === '교환상품 배송 중' ||
+            status === '교환상품 배송완료' ? (
               <>
                 <p className={orderListIndi.return_title}>반품신청내역</p>
                 <p className={orderListIndi.return_reason}>
@@ -657,11 +778,13 @@ export default function OrderList_Indi_Admin() {
               <div className={orderListIndi.line}></div>
               {status === '반품신청 중' ||
               status === '환불신청완료' ||
-              status === '상품회수 중(환불)' ||
-              status === '상품회수 완료(환불)' ||
+              status === '상품회수 중 (환불)' ||
+              status === '상품회수 완료 (환불)' ||
               status == '교환신청 완료' ||
               status == '상품회수 중 (교환)' ||
-              status === '상품회수 완료(교환)' ? (
+              status === '상품회수 완료 (교환)' ||
+              status === '교환상품 배송 중' ||
+              status === '교환상품 배송완료' ? (
                 data.submitReturn.return_img.map((el, index) => {
                   return (
                     <Preview
@@ -747,13 +870,17 @@ export default function OrderList_Indi_Admin() {
                     <div
                       className={orderListIndi.adminShippingCondition_titleBox}
                     >
-                      주문 진행사항 &nbsp;&nbsp;
+                      배송 진행사항 &nbsp;&nbsp;
                       {status === '반품신청 중' ||
                       status === '환불신청완료' ||
                       status === '상품회수 중 (환불)' ||
                       status === '상품회수 완료 (환불)' ||
                       status === '환불완료' ||
-                      status === '교환신청 완료' ? (
+                      status === '교환신청 완료' ||
+                      status === '상품회수 중 (교환)' ||
+                      status === '상품회수 완료 (교환)' ||
+                      status === '교환상품 배송 중' ||
+                      status === '교환상품 배송완료' ? (
                         <></>
                       ) : disableShipping ? (
                         <button
@@ -843,7 +970,11 @@ export default function OrderList_Indi_Admin() {
                   </div>
 
                   {/* 교환진행사항 */}
-                  {status === '교환신청 완료' ? (
+                  {status === '교환신청 완료' ||
+                  status === '상품회수 중 (교환)' ||
+                  status === '상품회수 완료 (교환)' ||
+                  status === '교환상품 배송 중' ||
+                  status === '교환상품 배송완료' ? (
                     <>
                       <div className={orderListIndi.adminChangeCondition}>
                         <div
@@ -852,7 +983,7 @@ export default function OrderList_Indi_Admin() {
                           }
                         >
                           교환신청 진행사항 &nbsp;&nbsp;
-                          {status === '환불완료' ? (
+                          {status === '교환상품 배송완료' ? (
                             <></>
                           ) : disableChange ? (
                             <button
@@ -884,7 +1015,7 @@ export default function OrderList_Indi_Admin() {
                                 className={
                                   orderListIndi.adminChangeConditionBTN
                                 }
-                                // onClick={req_AdminSubmitReturnCondition}
+                                onClick={req_AdminChangeCondition}
                               >
                                 등록
                               </button>
@@ -900,7 +1031,9 @@ export default function OrderList_Indi_Admin() {
                           onChange={handleadminChangeCondition}
                           disabled={
                             status === '상품회수 중 (교환)' ||
-                            status === '상품회수 완료 (교환)'
+                            status === '상품회수 완료 (교환)' ||
+                            status === '교환상품 배송 중' ||
+                            status === '교환상품 배송완료'
                               ? true
                               : disableChange
                           }

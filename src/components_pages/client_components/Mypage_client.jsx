@@ -115,7 +115,17 @@ export default function Mypage_client() {
                   <p>입금전</p>
                   <p>
                     {orderListArray.reduce((acc, cur) => {
-                      if (cur.payments.status !== 'DONE') {
+                      if (
+                        cur.payments.status !== 'DONE' &&
+                        !cur.isShipping &&
+                        cur.shippingCode === 0 &&
+                        !cur.isDelivered &&
+                        !cur.isCancel &&
+                        !cur.isReturn &&
+                        !cur.isRetrieved &&
+                        !cur.isRefund &&
+                        !cur.isReturnSubmit
+                      ) {
                         return acc + 1;
                       }
                       return acc;
@@ -132,12 +142,14 @@ export default function Mypage_client() {
                     {orderListArray.reduce((acc, cur) => {
                       if (
                         cur.payments.status === 'DONE' &&
-                        cur.shippingCode === 0 &&
                         !cur.isShipping &&
+                        cur.shippingCode === 0 &&
                         !cur.isDelivered &&
                         !cur.isCancel &&
-                        !cur.isReturnSubmit &&
-                        !cur.isReturn
+                        !cur.isReturn &&
+                        !cur.isRetrieved &&
+                        !cur.isRefund &&
+                        !cur.isReturnSubmit
                       ) {
                         return acc + 1;
                       }
@@ -154,13 +166,24 @@ export default function Mypage_client() {
                   <p>
                     {orderListArray.reduce((acc, cur) => {
                       if (
-                        cur.payments.status === 'DONE' &&
-                        cur.shippingCode !== 0 &&
-                        !cur.isDelivered &&
-                        cur.isShipping &&
-                        !cur.isCancel &&
-                        !cur.isReturn &&
-                        !cur.isReturnSubmit
+                        (cur.payments.status === 'DONE' &&
+                          cur.isShipping &&
+                          cur.shippingCode !== 0 &&
+                          !cur.isDelivered &&
+                          !cur.isCancel &&
+                          !cur.isReturn &&
+                          !cur.isRetrieved &&
+                          !cur.isRefund &&
+                          !cur.isReturnSubmit) ||
+                        (cur.payments.status === 'DONE' &&
+                          cur.isShipping &&
+                          cur.shippingCode !== 0 &&
+                          !cur.isDelivered &&
+                          !cur.isCancel &&
+                          cur.isReturn &&
+                          cur.isRetrieved &&
+                          !cur.isRefund &&
+                          cur.isReturnSubmit)
                       ) {
                         return acc + 1;
                       }
@@ -176,7 +199,26 @@ export default function Mypage_client() {
                   <p>배송완료</p>
                   <p>
                     {orderListArray.reduce((acc, cur) => {
-                      if (cur.isDelivered && !cur.isReturnSubmit) {
+                      if (
+                        (cur.payments.status === 'DONE' &&
+                          !cur.isShipping &&
+                          cur.shippingCode !== 0 &&
+                          cur.isDelivered &&
+                          !cur.isCancel &&
+                          !cur.isReturn &&
+                          !cur.isRetrieved &&
+                          !cur.isRefund &&
+                          !cur.isReturnSubmit) ||
+                        (cur.payments.status === 'DONE' &&
+                          !cur.isShipping &&
+                          cur.shippingCode !== 0 &&
+                          cur.isDelivered &&
+                          !cur.isCancel &&
+                          cur.isReturn &&
+                          !cur.isRetrieved &&
+                          !cur.isRefund &&
+                          !cur.isReturnSubmit)
+                      ) {
                         return acc + 1;
                       }
                       return acc;
@@ -209,12 +251,33 @@ export default function Mypage_client() {
                   <p>
                     {orderListArray.reduce((acc, cur) => {
                       if (
-                        cur.isReturn &&
-                        cur.shippingCode !== 0 &&
-                        !cur.isDelivered &&
-                        !cur.isShipping &&
-                        !cur.isCancel &&
-                        !cur.isReturnSubmit
+                        (cur.payments.status === 'DONE' &&
+                          !cur.isShipping &&
+                          cur.shippingCode !== 0 &&
+                          cur.isDelivered &&
+                          !cur.isCancel &&
+                          cur.isReturn &&
+                          !cur.isRetrieved &&
+                          !cur.isRefund &&
+                          cur.isReturnSubmit) ||
+                        (cur.payments.status === 'DONE' &&
+                          cur.isShipping &&
+                          cur.shippingCode !== 0 &&
+                          cur.isDelivered &&
+                          !cur.isCancel &&
+                          cur.isReturn &&
+                          !cur.isRetrieved &&
+                          !cur.isRefund &&
+                          cur.isReturnSubmit) ||
+                        (cur.payments.status === 'DONE' &&
+                          !cur.isShipping &&
+                          cur.shippingCode !== 0 &&
+                          !cur.isDelivered &&
+                          !cur.isCancel &&
+                          cur.isReturn &&
+                          cur.isRetrieved &&
+                          !cur.isRefund &&
+                          cur.isReturnSubmit)
                       ) {
                         return acc + 1;
                       }
