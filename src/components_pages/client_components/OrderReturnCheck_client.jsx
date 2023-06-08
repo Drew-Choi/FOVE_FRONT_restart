@@ -179,19 +179,86 @@ export default function OrderReturnCheck_client() {
               <p className={orderReturnCheck.return_reason}>
                 stage:{' '}
                 <span className={orderReturnCheck.reason_text}>
-                  {orderCancelItem.isDelivered &&
+                  {orderCancelItem.payments.status === 'DONE' &&
                   !orderCancelItem.isShipping &&
+                  orderCancelItem.shippingCode !== 0 &&
+                  orderCancelItem.isDelivered &&
                   !orderCancelItem.isCancel &&
                   !orderCancelItem.isReturn &&
+                  !orderCancelItem.isRetrieved &&
+                  !orderCancelItem.isRefund &&
                   orderCancelItem.isReturnSubmit ? (
                     '검토 중'
-                  ) : orderCancelItem.shippingCode !== 0 &&
-                    !orderCancelItem.isCancel &&
-                    !orderCancelItem.isDelivered &&
+                  ) : orderCancelItem.payments.status === 'DONE' &&
                     !orderCancelItem.isShipping &&
+                    orderCancelItem.shippingCode !== 0 &&
+                    orderCancelItem.isDelivered &&
+                    !orderCancelItem.isCancel &&
+                    !orderCancelItem.isReturn &&
+                    !orderCancelItem.isRetrieved &&
+                    orderCancelItem.isRefund &&
+                    orderCancelItem.isReturnSubmit ? (
+                    '환불진행'
+                  ) : orderCancelItem.payments.status === 'DONE' &&
+                    orderCancelItem.isShipping &&
+                    orderCancelItem.shippingCode !== 0 &&
+                    orderCancelItem.isDelivered &&
+                    !orderCancelItem.isCancel &&
+                    !orderCancelItem.isReturn &&
+                    !orderCancelItem.isRetrieved &&
+                    orderCancelItem.isRefund &&
+                    orderCancelItem.isReturnSubmit ? (
+                    '상품회수 중 (환불)'
+                  ) : orderCancelItem.payments.status === 'DONE' &&
+                    !orderCancelItem.isShipping &&
+                    orderCancelItem.shippingCode !== 0 &&
+                    !orderCancelItem.isDelivered &&
+                    !orderCancelItem.isCancel &&
+                    !orderCancelItem.isReturn &&
+                    orderCancelItem.isRetrieved &&
+                    orderCancelItem.isRefund &&
+                    orderCancelItem.isReturnSubmit ? (
+                    '상품회수 완료 (환불)'
+                  ) : orderCancelItem.payments.status === 'DONE' &&
+                    !orderCancelItem.isShipping &&
+                    orderCancelItem.shippingCode !== 0 &&
+                    orderCancelItem.isDelivered &&
+                    !orderCancelItem.isCancel &&
                     orderCancelItem.isReturn &&
-                    !orderCancelItem.isReturnSubmit ? (
+                    !orderCancelItem.isRetrieved &&
+                    !orderCancelItem.isRefund &&
+                    orderCancelItem.isReturnSubmit ? (
                     '교환진행'
+                  ) : orderCancelItem.payments.status === 'DONE' &&
+                    orderCancelItem.isShipping &&
+                    orderCancelItem.shippingCode !== 0 &&
+                    orderCancelItem.isDelivered &&
+                    !orderCancelItem.isCancel &&
+                    orderCancelItem.isReturn &&
+                    !orderCancelItem.isRetrieved &&
+                    !orderCancelItem.isRefund &&
+                    orderCancelItem.isReturnSubmit ? (
+                    '상품회수 중 (교환)'
+                  ) : orderCancelItem.payments.status === 'DONE' &&
+                    !orderCancelItem.isShipping &&
+                    orderCancelItem.shippingCode !== 0 &&
+                    !orderCancelItem.isDelivered &&
+                    !orderCancelItem.isCancel &&
+                    orderCancelItem.isReturn &&
+                    orderCancelItem.isRetrieved &&
+                    !orderCancelItem.isRefund &&
+                    orderCancelItem.isReturnSubmit ? (
+                    '상품회수 완료 (교환)'
+                  ) : orderCancelItem.payments.status === 'DONE' &&
+                    orderCancelItem.isShipping &&
+                    orderCancelItem.shippingCode !== 0 &&
+                    !orderCancelItem.isDelivered &&
+                    !orderCancelItem.isCancel &&
+                    orderCancelItem.isReturn &&
+                    orderCancelItem.isRetrieved &&
+                    !orderCancelItem.isRefund &&
+                    orderCancelItem.isReturnSubmit ? (
+                    '교환상품 배송 중'
                   ) : (
                     <></>
                   )}
@@ -213,11 +280,14 @@ export default function OrderReturnCheck_client() {
                 >
                   뒤로가기
                 </button>
-                {orderCancelItem.shippingCode !== 0 &&
-                !orderCancelItem.isCancel &&
-                orderCancelItem.isDelivered &&
+                {orderCancelItem.payments.status === 'DONE' &&
                 !orderCancelItem.isShipping &&
+                orderCancelItem.shippingCode !== 0 &&
+                orderCancelItem.isDelivered &&
+                !orderCancelItem.isCancel &&
                 !orderCancelItem.isReturn &&
+                !orderCancelItem.isRetrieved &&
+                !orderCancelItem.isRefund &&
                 orderCancelItem.isReturnSubmit ? (
                   <button
                     className={orderReturnCheck.orderCancle}
@@ -229,21 +299,21 @@ export default function OrderReturnCheck_client() {
                   <></>
                 )}
 
-                {orderCancelItem.shippingCode !== 0 &&
-                !orderCancelItem.isCancel &&
-                !orderCancelItem.isDelivered &&
+                {orderCancelItem.payments.status === 'DONE' &&
                 !orderCancelItem.isShipping &&
-                orderCancelItem.isReturn &&
-                !orderCancelItem.isReturnSubmit ? (
-                  <p className={orderReturnCheck.caution}>
-                    * 교환하실 상품을 준비 중 입니다. 배송이 시작되면 &#39;배송
-                    중&#39;으로 진행됩니다.
-                  </p>
-                ) : (
+                orderCancelItem.shippingCode !== 0 &&
+                orderCancelItem.isDelivered &&
+                !orderCancelItem.isCancel &&
+                !orderCancelItem.isReturn &&
+                !orderCancelItem.isRetrieved &&
+                !orderCancelItem.isRefund &&
+                orderCancelItem.isReturnSubmit ? (
                   <p className={orderReturnCheck.caution}>
                     *검토 후 연락드리도록 하겠습니다. (카카오톡 or 주문자
                     전화번호)
                   </p>
+                ) : (
+                  <></>
                 )}
               </div>
             </div>

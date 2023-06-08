@@ -201,7 +201,9 @@ export default function Order_client() {
         </BTN_black_nomal_comp>
       </div>
 
-      <div className={orderClient.memeber_info_contain}>
+      <p className={orderClient.order_title}>ORDER</p>
+
+      {/* <div className={orderClient.memeber_info_contain}>
         <p className={orderClient.memeber_info_membership}>
           {userName}님은, <strong>{'[STANDARD]'}</strong> 회원이십니다.
         </p>
@@ -227,7 +229,7 @@ export default function Order_client() {
             <span className={orderClient.member_coupon}>{'0'} 개</span>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {singleOrder.productName === '' &&
       singleOrder.price === 0 &&
@@ -426,7 +428,7 @@ export default function Order_client() {
 
                 {/* 결제영역 */}
                 <div className={orderClient.payment_contain}>
-                  {/* 할인코드 */}
+                  {/* 할인코드
                   <p className={orderClient.discount_title}>할인</p>
                   <p className={orderClient.discount_apply}>할인코드 적용</p>
                   <div className={orderClient.discount_area}>
@@ -441,7 +443,7 @@ export default function Order_client() {
                       추가할인금액: -
                     </div>
                   </div>
-                  {/* 포인트 */}
+                  포인트
                   <p className={orderClient.point_title}>포인트</p>
                   <div className={orderClient.point}>
                     <input
@@ -458,7 +460,7 @@ export default function Order_client() {
                       포인트 사용: -{' '}
                     </div>
                   </div>
-                  {/* 예치금 */}
+                  예치금
                   <p
                     className={`${orderClient.point_title} ${orderClient.deposit}`}
                   >
@@ -478,7 +480,7 @@ export default function Order_client() {
                     <div className={orderClient.point_price_apply}>
                       예치금 사용: -
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* 결제하기 */}
                   <p
@@ -512,12 +514,12 @@ export default function Order_client() {
                       <p>지역별 배송비</p>
                       <p>+ KRW {'0'}</p>
                     </div>
-                    <div
+                    {/* <div
                       className={`${orderClient.total_discount} ${orderClient.a}`}
                     >
                       <p>총 할인</p>
                       <p>- KRW {'0'}</p>
-                    </div>
+                    </div> */}
                     <div
                       className={`${orderClient.final_sum} ${orderClient.a}`}
                     >

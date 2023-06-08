@@ -230,7 +230,44 @@ export default function Mypage_client() {
                   <p>반품신청 :</p>
                   <p>
                     {orderListArray.reduce((acc, cur) => {
-                      if (cur.isReturnSubmit && cur.isDelivered) {
+                      if (
+                        (cur.payments.status === 'DONE' &&
+                          !cur.isShipping &&
+                          cur.shippingCode !== 0 &&
+                          cur.isDelivered &&
+                          !cur.isCancel &&
+                          !cur.isReturn &&
+                          !cur.isRetrieved &&
+                          !cur.isRefund &&
+                          cur.isReturnSubmit) ||
+                        (cur.payments.status === 'DONE' &&
+                          !cur.isShipping &&
+                          cur.shippingCode !== 0 &&
+                          cur.isDelivered &&
+                          !cur.isCancel &&
+                          !cur.isReturn &&
+                          !cur.isRetrieved &&
+                          cur.isRefund &&
+                          cur.isReturnSubmit) ||
+                        (cur.payments.status === 'DONE' &&
+                          cur.isShipping &&
+                          cur.shippingCode !== 0 &&
+                          cur.isDelivered &&
+                          !cur.isCancel &&
+                          !cur.isReturn &&
+                          !cur.isRetrieved &&
+                          cur.isRefund &&
+                          cur.isReturnSubmit) ||
+                        (cur.payments.status === 'DONE' &&
+                          !cur.isShipping &&
+                          cur.shippingCode !== 0 &&
+                          !cur.isDelivered &&
+                          !cur.isCancel &&
+                          !cur.isReturn &&
+                          cur.isRetrieved &&
+                          cur.isRefund &&
+                          cur.isReturnSubmit)
+                      ) {
                         return acc + 1;
                       }
                       return acc;

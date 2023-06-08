@@ -160,7 +160,7 @@
             .line{
               position: relative;
               // background-color: aqua;
-              width: 41vw;
+              width: 45vw;
               height: 10px;
               border-bottom: 0.5px solid black;
   
@@ -418,7 +418,117 @@
                       font-size: 15px;
                     }
                   }
-              }
+
+               // 교환진행사항
+                  .adminChangeCondition{
+                    position: relative;
+                    margin-top: 30px;
+  
+                    .adminChangeCondition_titleBox{
+                      position: relative;
+                      display: flex;
+                      align-items: center;
+                      font-size: 15px;
+                      margin-bottom: 10px;
+                      width: 100%;
+                      height: 40px;
+                      // background-color: beige;
+                    }
+                    
+                    label{
+                      position: relative;
+                      margin-right: 5px;
+                    }
+                    input{
+                      position: relative;
+                      top: 1px;
+                      margin-right: 20px;
+                    }
+                    .adminChangeConditionBTN {
+                      position: relative;
+                      all: unset;
+                      cursor: pointer;
+                      padding: 2px 10px;
+                      border: 0.5px solid black;
+                      font-size: 13px;
+                      background-color: rgb(0, 0, 0);
+                      font-weight: 500;
+                      transition: 0.3s ease;
+                      color: white;
+                      border-radius: 50px;
+                      margin-bottom: 2px;
+                      
+                      &:hover {
+                        color: rgb(0, 0, 0);
+                        background-color: rgb(255, 255, 255);
+                      }
+              
+                      &:active {
+                        background-color: rgb(226, 226, 226);
+                        color:rgb(226, 226, 226);
+                      }
+                    }  
+  
+                    .adminChangeConditionBTN2 {
+                      position: relative;
+                      all: unset;
+                      cursor: pointer;
+                      padding: 2px 10px;
+                      border: 0.5px solid black;
+                      font-size: 13px;
+                      background-color: rgb(255, 255, 255);
+                      font-weight: 500;
+                      transition: 0.3s ease;
+                      color: rgb(0, 0, 0);
+                      border-radius: 50px;
+                      margin-bottom: 2px;
+                      margin-right: 10px;
+                      
+                      &:hover {
+                        color: rgb(255, 255, 255);
+                        background-color: rgb(0, 0, 0);
+                      }
+              
+                      &:active {
+                        background-color: rgb(255, 255, 255);
+                        color:rgb(255, 255, 255);
+                      }
+                    }  
+                  }
+  
+                  .ChangeCodeBox {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding-top: 10px;
+                     
+                    span{
+                      font-size: 15px;
+                    }
+                     .shippingChangeCode_input{
+                      height: 25px;
+                      width: 350px;
+                      font-size: 15px;
+                    }
+                   }
+                    .ChangeCodeBox_Off {
+                      position: relative;
+                      display: none;
+                      align-items: center;
+                      gap: 10px;
+                      padding-top: 10px;
+                      
+                      span{
+                        font-size: 15px;
+                      }
+                      .shippingChangeCode_input{
+                        height: 25px;
+                        width: 350px;
+                        font-size: 15px;
+                      }
+                    }
+            }
           }
   
           .imagePreview_container{

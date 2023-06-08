@@ -361,51 +361,139 @@ export default function OrderList_client() {
                           </p>
                           <p className={orderList.status}>
                             {el.payments.status === 'DONE' &&
-                            !el.isReturnSubmit &&
-                            !el.isReturn ? (
+                            !el.isShipping &&
+                            el.shippingCode === 0 &&
+                            !el.isDelivered &&
+                            !el.isCancel &&
+                            !el.isReturn &&
+                            !el.isRetrieved &&
+                            !el.isRefund &&
+                            !el.isReturnSubmit ? (
                               '입금완료 / '
                             ) : el.payments.status !== 'DONE' &&
-                              !el.isReturnSubmit &&
                               !el.isShipping &&
+                              el.shippingCode === 0 &&
+                              !el.isDelivered &&
                               !el.isCancel &&
                               !el.isReturn &&
-                              !el.isDelivered &&
-                              el.shippingCode === 0 ? (
-                              '입금 전 / '
+                              !el.isRetrieved &&
+                              !el.isRefund &&
+                              !el.isReturnSubmit ? (
+                              '입금 전'
                             ) : (
                               <></>
                             )}
 
-                            {el.shippingCode === 0 &&
-                            !el.isReturn &&
+                            {el.payments.status === 'DONE' &&
                             !el.isShipping &&
+                            el.shippingCode === 0 &&
                             !el.isDelivered &&
-                            !el.isReturnSubmite ? (
-                              '배송준비중'
-                            ) : el.shippingCode !== 0 &&
+                            !el.isCancel &&
+                            !el.isReturn &&
+                            !el.isRetrieved &&
+                            !el.isRefund &&
+                            !el.isReturnSubmit ? (
+                              '배송준비 중'
+                            ) : el.payments.status === 'DONE' &&
                               el.isShipping &&
+                              el.shippingCode !== 0 &&
                               !el.isDelivered &&
+                              !el.isCancel &&
                               !el.isReturn &&
+                              !el.isRetrieved &&
+                              !el.isRefund &&
                               !el.isReturnSubmit ? (
-                              '배송중'
-                            ) : el.shippingCode !== 0 &&
+                              '배송 중'
+                            ) : el.payments.status === 'DONE' &&
                               !el.isShipping &&
+                              el.shippingCode !== 0 &&
                               el.isDelivered &&
+                              !el.isCancel &&
                               !el.isReturn &&
+                              !el.isRetrieved &&
+                              !el.isRefund &&
                               !el.isReturnSubmit ? (
                               '배송완료'
-                            ) : el.shippingCode !== 0 &&
+                            ) : el.payments.status === 'DONE' &&
                               !el.isShipping &&
+                              el.shippingCode !== 0 &&
                               el.isDelivered &&
+                              !el.isCancel &&
                               !el.isReturn &&
+                              !el.isRetrieved &&
+                              !el.isRefund &&
                               el.isReturnSubmit ? (
-                              '반품신청완료'
-                            ) : el.shippingCode !== 0 &&
+                              '반품신청 중'
+                            ) : el.payments.status === 'DONE' &&
                               !el.isShipping &&
+                              el.shippingCode !== 0 &&
+                              el.isDelivered &&
+                              !el.isCancel &&
+                              !el.isReturn &&
+                              !el.isRetrieved &&
+                              el.isRefund &&
+                              el.isReturnSubmit ? (
+                              '환불진행'
+                            ) : el.payments.status === 'DONE' &&
+                              el.isShipping &&
+                              el.shippingCode !== 0 &&
+                              el.isDelivered &&
+                              !el.isCancel &&
+                              !el.isReturn &&
+                              !el.isRetrieved &&
+                              el.isRefund &&
+                              el.isReturnSubmit ? (
+                              '상품회수 중 (환불)'
+                            ) : el.payments.status === 'DONE' &&
+                              !el.isShipping &&
+                              el.shippingCode !== 0 &&
                               !el.isDelivered &&
+                              !el.isCancel &&
+                              !el.isReturn &&
+                              el.isRetrieved &&
+                              el.isRefund &&
+                              el.isReturnSubmit ? (
+                              '상품회수 완료 (환불)'
+                            ) : el.payments.status === 'DONE' &&
+                              !el.isShipping &&
+                              el.shippingCode !== 0 &&
+                              el.isDelivered &&
+                              !el.isCancel &&
                               el.isReturn &&
-                              !el.isReturnSubmit ? (
-                              '교환진행 중'
+                              !el.isRetrieved &&
+                              !el.isRefund &&
+                              el.isReturnSubmit ? (
+                              '교환진행'
+                            ) : el.payments.status === 'DONE' &&
+                              el.isShipping &&
+                              el.shippingCode !== 0 &&
+                              el.isDelivered &&
+                              !el.isCancel &&
+                              el.isReturn &&
+                              !el.isRetrieved &&
+                              !el.isRefund &&
+                              el.isReturnSubmit ? (
+                              '상품회수 중 (교환)'
+                            ) : el.payments.status === 'DONE' &&
+                              !el.isShipping &&
+                              el.shippingCode !== 0 &&
+                              !el.isDelivered &&
+                              !el.isCancel &&
+                              el.isReturn &&
+                              el.isRetrieved &&
+                              !el.isRefund &&
+                              el.isReturnSubmit ? (
+                              '상품회수 완료 (교환)'
+                            ) : el.payments.status === 'DONE' &&
+                              el.isShipping &&
+                              el.shippingCode !== 0 &&
+                              !el.isDelivered &&
+                              !el.isCancel &&
+                              el.isReturn &&
+                              el.isRetrieved &&
+                              !el.isRefund &&
+                              el.isReturnSubmit ? (
+                              '교환상품 배송 중'
                             ) : (
                               <></>
                             )}
@@ -690,17 +778,35 @@ export default function OrderList_client() {
                             </p>
                             <p className={orderList.status}>
                               {el.payments.status === 'CANCELED' &&
+                                !el.isOrdered &&
+                                !el.isShipping &&
+                                !el.isDelivered &&
                                 el.isCancel &&
                                 !el.isReturn &&
+                                !el.isRetrieved &&
+                                !el.isRefund &&
+                                !el.isReturnSubmit &&
                                 '취소완료'}
                               {el.payments.status === 'CANCELED' &&
+                                !el.isOrdered &&
+                                !el.isShipping &&
+                                !el.isDelivered &&
                                 el.isCancel &&
-                                el.isReturn &&
+                                !el.isReturn &&
+                                el.isRetrieved &&
+                                el.isRefund &&
+                                el.isReturnSubmit &&
                                 '환불완료'}
                             </p>
                             {el.payments.status === 'CANCELED' &&
-                              el.isReturn &&
-                              el.isCancel && (
+                              !el.isOrdered &&
+                              !el.isShipping &&
+                              !el.isDelivered &&
+                              el.isCancel &&
+                              !el.isReturn &&
+                              el.isRetrieved &&
+                              el.isRefund &&
+                              el.isReturnSubmit && (
                                 <button
                                   className={orderList.orderCancle}
                                   onClick={() => {

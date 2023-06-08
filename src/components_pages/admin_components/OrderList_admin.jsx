@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import admin_orderList from '../../styles/orderList_Admin.module.scss';
-import axios from 'axios';
+import axios, { isCancel } from 'axios';
 import LoadingAdmin from '../client_components/LoadingAdmin';
 import { useNavigate } from 'react-router-dom';
 
@@ -118,52 +118,134 @@ export default function OrderList_admin() {
                     Status :{' '}
                     {el.payments.status !== 'DONE' &&
                     !el.isShipping &&
+                    el.shippingCode === 0 &&
                     !el.isDelivered &&
                     !el.isCancel &&
-                    !el.isReturnSubmit &&
                     !el.isReturn &&
-                    el.shippingCode === 0 ? (
+                    !el.isRetrieved &&
+                    !el.isRefund &&
+                    !el.isReturnSubmit ? (
                       '결제 전'
                     ) : el.payments.status === 'DONE' &&
                       !el.isShipping &&
+                      el.shippingCode === 0 &&
                       !el.isDelivered &&
                       !el.isCancel &&
-                      !el.isReturnSubmit &&
                       !el.isReturn &&
-                      el.shippingCode === 0 ? (
+                      !el.isRetrieved &&
+                      !el.isRefund &&
+                      !el.isReturnSubmit ? (
                       '결제완료 (배송 전)'
                     ) : el.payments.status === 'DONE' &&
                       el.isShipping &&
+                      el.shippingCode !== 0 &&
                       !el.isDelivered &&
                       !el.isCancel &&
-                      !el.isReturnSubmit &&
                       !el.isReturn &&
-                      el.shippingCode !== 0 ? (
+                      !el.isRetrieved &&
+                      !el.isRefund &&
+                      !el.isReturnSubmit ? (
                       '배송중'
                     ) : el.payments.status === 'DONE' &&
                       !el.isShipping &&
+                      el.shippingCode !== 0 &&
                       el.isDelivered &&
                       !el.isCancel &&
-                      !el.isReturnSubmit &&
                       !el.isReturn &&
-                      el.shippingCode !== 0 ? (
+                      !el.isRetrieved &&
+                      !el.isRefund &&
+                      !el.isReturnSubmit ? (
                       '배송완료'
                     ) : el.payments.status === 'DONE' &&
                       !el.isShipping &&
+                      el.shippingCode !== 0 &&
                       el.isDelivered &&
                       !el.isCancel &&
-                      el.isReturnSubmit &&
                       !el.isReturn &&
-                      el.shippingCode !== 0 ? (
+                      !el.isRetrieved &&
+                      !el.isRefund &&
+                      el.isReturnSubmit ? (
                       '반품신청 중'
                     ) : el.payments.status === 'DONE' &&
                       !el.isShipping &&
+                      el.shippingCode !== 0 &&
+                      el.isDelivered &&
+                      !el.isCancel &&
+                      el.isReturn &&
+                      !el.isRetrieved &&
+                      !el.isRefund &&
+                      el.isReturnSubmit ? (
+                      '교환진행 신청'
+                    ) : el.payments.status === 'DONE' &&
+                      el.isShipping &&
+                      el.shippingCode !== 0 &&
+                      el.isDelivered &&
+                      !el.isCancel &&
+                      el.isReturn &&
+                      !el.isRetrieved &&
+                      !el.isRefund &&
+                      el.isReturnSubmit ? (
+                      '상품회수 중 (교환)'
+                    ) : el.payments.status === 'DONE' &&
+                      !el.isShipping &&
+                      el.shippingCode !== 0 &&
                       !el.isDelivered &&
                       !el.isCancel &&
-                      !el.isReturnSubmit &&
                       el.isReturn &&
-                      el.shippingCode !== 0 ? (
-                      '교환 중'
+                      el.isRetrieved &&
+                      !el.isRefund &&
+                      el.isReturnSubmit ? (
+                      '상품회수 완료 (교환)'
+                    ) : el.payments.status === 'DONE' &&
+                      el.isShipping &&
+                      el.shippingCode !== 0 &&
+                      !el.isDelivered &&
+                      !el.isCancel &&
+                      el.isReturn &&
+                      el.isRetrieved &&
+                      !el.isRefund &&
+                      el.isReturnSubmit ? (
+                      '교환상품 배송 중'
+                    ) : el.payments.status === 'DONE' &&
+                      !el.isShipping &&
+                      el.shippingCode !== 0 &&
+                      el.isDelivered &&
+                      !el.isCancel &&
+                      el.isReturn &&
+                      !el.isRetrieved &&
+                      !el.isRefund &&
+                      !el.isReturnSubmit ? (
+                      '교환상품 배송 완료'
+                    ) : el.payments.status === 'DONE' &&
+                      !el.isShipping &&
+                      el.shippingCode !== 0 &&
+                      el.isDelivered &&
+                      !el.isCancel &&
+                      !el.isReturn &&
+                      !el.isRetrieved &&
+                      el.isRefund &&
+                      el.isReturnSubmit ? (
+                      '환불진행 신청'
+                    ) : el.payments.status === 'DONE' &&
+                      el.isShipping &&
+                      el.shippingCode !== 0 &&
+                      el.isDelivered &&
+                      !el.isCancel &&
+                      !el.isReturn &&
+                      !el.isRetrieved &&
+                      el.isRefund &&
+                      el.isReturnSubmit ? (
+                      '상품회수 중 (환불)'
+                    ) : el.payments.status === 'DONE' &&
+                      !el.isShipping &&
+                      el.shippingCode !== 0 &&
+                      !el.isDelivered &&
+                      !el.isCancel &&
+                      !el.isReturn &&
+                      el.isRetrieved &&
+                      el.isRefund &&
+                      el.isReturnSubmit ? (
+                      '상품회수 완료 (환불)'
                     ) : (
                       <></>
                     )}
@@ -224,9 +306,31 @@ export default function OrderList_admin() {
                   <p>User : {el.user}</p>
                   <p>
                     Status :{' '}
-                    {el.payments.status === 'CANCELED' && el.isCancel
-                      ? '결제취소'
-                      : '오류'}
+                    {el.payments.status === 'CANCELED' &&
+                    !el.isOrdered &&
+                    !el.isShipping &&
+                    el.shippingCode !== 0 &&
+                    !el.isDelivered &&
+                    el.isCancel &&
+                    !el.isReturn &&
+                    el.isRetrieved &&
+                    el.isRefund &&
+                    el.isReturnSubmit ? (
+                      '환불완료'
+                    ) : el.payments.status === 'CANCELED' &&
+                      !el.isOrdered &&
+                      !el.isShipping &&
+                      el.shippingCode === 0 &&
+                      !el.isDelivered &&
+                      el.isCancel &&
+                      !el.isReturn &&
+                      !el.isRetrieved &&
+                      !el.isRefund &&
+                      !el.isReturnSubmit ? (
+                      '결제취소'
+                    ) : (
+                      <></>
+                    )}
                   </p>
                   <p>Reason : {el.cancels.cancelReason}</p>
                 </li>
