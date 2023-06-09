@@ -57,13 +57,7 @@ export default function NavBar_admin() {
               className={currentURL === '/admin' ? navBarAdmin.on : <></>}
               onClick={() => navigate('/admin')}
             >
-              상품등록
-            </li>
-            <li
-              className={currentURL === '/admin/list' ? navBarAdmin.on : <></>}
-              onClick={() => navigate('/admin/list')}
-            >
-              등록상품 조회
+              송장입력
             </li>
             <li
               className={
@@ -76,6 +70,20 @@ export default function NavBar_admin() {
               onClick={() => navigate('/admin/orderlist')}
             >
               주문관리
+            </li>
+            <li
+              className={
+                currentURL === '/admin/register' ? navBarAdmin.on : <></>
+              }
+              onClick={() => navigate('/admin/register')}
+            >
+              상품등록
+            </li>
+            <li
+              className={currentURL === '/admin/list' ? navBarAdmin.on : <></>}
+              onClick={() => navigate('/admin/list')}
+            >
+              등록상품 조회
             </li>
           </ul>
         </nav>
@@ -88,13 +96,7 @@ export default function NavBar_admin() {
               className={currentURL === '/admin' ? navBarAdmin.on : <></>}
               onClick={() => navigate('/admin')}
             >
-              상품등록
-            </li>
-            <li
-              className={currentURL === '/admin/list' ? navBarAdmin.on : <></>}
-              onClick={() => navigate('/admin/list')}
-            >
-              등록상품 조회
+              송장입력
             </li>
             <li
               className={
@@ -107,6 +109,20 @@ export default function NavBar_admin() {
               onClick={() => navigate('/admin/orderlist')}
             >
               주문관리
+            </li>
+            <li
+              className={
+                currentURL === '/admin/register' ? navBarAdmin.on : <></>
+              }
+              onClick={() => navigate('/admin/register')}
+            >
+              상품등록
+            </li>
+            <li
+              className={currentURL === '/admin/list' ? navBarAdmin.on : <></>}
+              onClick={() => navigate('/admin/list')}
+            >
+              등록상품 조회
             </li>
           </ul>
 
@@ -146,17 +162,7 @@ export default function NavBar_admin() {
                   handleBurger(), navigate('/admin');
                 }}
               >
-                상품등록
-              </li>
-              <li
-                className={
-                  currentURL === '/admin/list' ? navBarAdmin.on : <></>
-                }
-                onClick={() => {
-                  handleBurger(), navigate('/admin/list');
-                }}
-              >
-                등록상품 조회
+                송장입력
               </li>
               <li
                 className={
@@ -171,6 +177,26 @@ export default function NavBar_admin() {
                 }}
               >
                 주문관리
+              </li>
+              <li
+                className={
+                  currentURL === '/admin/register' ? navBarAdmin.on : <></>
+                }
+                onClick={() => {
+                  handleBurger(), navigate('/admin/register');
+                }}
+              >
+                상품등록
+              </li>
+              <li
+                className={
+                  currentURL === '/admin/list' ? navBarAdmin.on : <></>
+                }
+                onClick={() => {
+                  handleBurger(), navigate('/admin/list');
+                }}
+              >
+                등록상품 조회
               </li>
             </ul>
           )}

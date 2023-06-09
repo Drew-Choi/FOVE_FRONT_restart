@@ -1,11 +1,12 @@
 header.header_admin {
   // background-color: red;
+  position: relative;
+  display: flex;
   box-sizing: border-box;
   position: relative;
   border-bottom: solid 0.5px black;
   height: 70px;
   width: 100vw;
-  display: flex;
   align-items: center;
   justify-content:space-between;
   white-space: nowrap;

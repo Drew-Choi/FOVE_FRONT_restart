@@ -39,6 +39,7 @@ import OrderReturnCheck_client from './components_pages/client_components/OrderR
 import OrderList_Indi_Admin from './components_pages/admin_components/OrderList_Indi_Admin';
 import OrderCancel_client_onlyOrder from './components_pages/client_components/OrderCancel_client_onlyOrder';
 import TossPay_Cancel_Complete_onlyOrder from './components_pages/client_components/TossPay_Cancel_Complete_onlyOrder';
+import ShippingCode_admin from './components_pages/admin_components/ShippingCode_admin';
 
 function App() {
   const isLogin = useSelector((state) => state.user.isLogin);
@@ -236,6 +237,12 @@ function App() {
         >
           <Route
             path=""
+            element={
+              !isAdmin ? <Error404 /> : isAdmin && <ShippingCode_admin />
+            }
+          />
+          <Route
+            path="/admin/register"
             element={
               !isAdmin ? <Error404 /> : isAdmin && <ProductRegister_admin />
             }

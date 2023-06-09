@@ -1,24 +1,26 @@
 .whol_Container{
   position: relative;
   // background-color: beige;
-  width: 100vw;
   overflow: hidden;
+  width: 90vw;
+  min-height: 700px;
+  @media screen and (max-width:667px) {
+    width: 100vw;
+  }
 
     .mainTitle{
       position: relative;
+      display: block;
       margin-bottom: 0px;
       text-align: center;
       font-size: 20px;
       font-weight: 600;
       padding: 30px;
       // background-color: aqua;
-      width: 90vw;
     }
 
     .subMenu {
       position: relative;
-      // background-color: beige;
-      width: 87vw;
       display: flex;
       justify-content: space-between;
       padding: 0px 20px;
@@ -74,15 +76,69 @@
     .list_ul_wrap{
     position: relative;
     // background-color: orange;
-    width: 88.5vw;
     margin: 0px auto;
-    // border: 0.5px solid black;
     padding: 0px 20px;
 
+    .listHeader {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      padding: 5px 0px;
+      list-style: none;
+      border-bottom: 0.5px solid rgb(132, 132, 132);
+      border-top: 0.5px solid rgb(132, 132, 132);
+      text-align: center;
+      font-weight: 600;
+
+      @media screen and (max-width: 880px) {
+        font-size: 13px;
+      }
+
+      @media screen and (max-width: 626px) {
+        font-size: 12px;
+        gap: 0px;
+      }
+      @media screen and (max-width: 426px) {
+        font-size: 10px;
+      }
+
+        p{
+          text-align: center;
+          margin-bottom: 0px;
+          border-right: 0.5px solid rgb(132, 132, 132);
+
+          &:first-child{
+            flex: 0.2;
+            font-size: 13px;
+            @media screen and (max-width: 880px) {
+              font-size: 10px;
+              
+            }
+          }
+          &:nth-child(2){
+            flex: 1.5;
+          }
+          &:nth-child(3){
+            flex: 1.5;
+          }
+          &:nth-child(4){
+            flex: 1.5;
+          }
+          &:nth-child(5){
+            flex: 0.8;
+          }
+          &:last-child{
+            flex: 1;
+          }
+        }
+    }
+
+
       .list_li{
-        display: grid;
+        display: flex;
+        align-items: stretch;
         gap: 10px;
-        grid-template-columns: 50px 1fr 1.1fr 0.8fr 0.5fr 0.6fr;
         font-size: 15px;
         padding: 5px 0px;
         list-style: none;
@@ -93,39 +149,174 @@
           background-color: rgb(210, 210, 210);
         }
 
-        p{
-          margin-bottom: 0px;
-          border-right: 0.5px solid rgb(132, 132, 132);
+        @media screen and (max-width: 880px) {
+          font-size: 13px;
         }
+
+        @media screen and (max-width: 626px) {
+          font-size: 12px;
+          gap: 0px;
+        }
+        @media screen and (max-width: 426px) {
+          font-size: 10px;
+        }
+          p{
+            display: flex;
+            align-items: center;
+            border-right: 0.5px solid rgb(132, 132, 132);
+            text-align: left;
+            word-break: break-all;
+            margin-bottom: 0px;
+            
+            @media screen and (max-width: 626px) {
+              text-align: center;
+              justify-content: center;
+            }
+
+            &:first-child{
+              flex: 0.2;
+              text-align: center;
+              justify-content: center;
+            }
+            &:nth-child(2){
+              flex: 1.5;
+            }
+            &:nth-child(3){
+              flex: 1.5;
+            }
+            &:nth-child(4){
+              flex: 1.5;
+            }
+            &:nth-child(5){
+              flex: 0.8;
+            }
+            &:last-child{
+              flex: 1;
+            }
+          }
       }
     }
 
     .list_ul_wrap_Cancel{
       position: relative;
       // background-color: orange;
-      width: 88.5vw;
       margin: 0px auto;
-      // border: 0.5px solid black;
       padding: 0px 20px;
+
+      .listHeader_cancel{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 15px;
+        padding: 5px 0px;
+        list-style: none;
+        border-bottom: 0.5px solid rgb(132, 132, 132);
+        border-top: 0.5px solid rgb(132, 132, 132);
+        text-align: center;
+        font-weight: 600;
   
-        .list_li{
-          display: grid;
-          gap: 10px;
-          grid-template-columns: 50px 0.6fr 1fr 0.55fr 0.3fr 0.8fr;
-          font-size: 15px;
-          padding: 5px 0px;
-          list-style: none;
-          border-bottom: 0.5px solid rgb(132, 132, 132);
-          cursor: pointer;
+        @media screen and (max-width: 880px) {
+          font-size: 13px;
+        }
   
-          &:hover {
-            background-color: rgb(210, 210, 210);
-          }
+        @media screen and (max-width: 626px) {
+          font-size: 12px;
+          gap: 0px;
+        }
+        @media screen and (max-width: 426px) {
+          font-size: 10px;
+        }
   
           p{
+            text-align: center;
             margin-bottom: 0px;
             border-right: 0.5px solid rgb(132, 132, 132);
+  
+            &:first-child{
+              flex: 0.2;
+              font-size: 13px;
+              @media screen and (max-width: 880px) {
+                font-size: 10px;
+                
+              }
+            }
+            &:nth-child(2){
+              flex: 1.5;
+            }
+            &:nth-child(3){
+              flex: 1.5;
+            }
+            &:nth-child(4){
+              flex: 1;
+            }
+            &:nth-child(5){
+              flex: 0.5;
+            }
+            &:last-child{
+              flex: 1.5;
+            }
           }
-        }
       }
+  
+      .list_li{
+        display: flex;
+        align-items: stretch;
+        gap: 10px;
+        font-size: 15px;
+        padding: 5px 0px;
+        list-style: none;
+        border-bottom: 0.5px solid rgb(132, 132, 132);
+        cursor: pointer;
+
+        &:hover {
+          background-color: rgb(210, 210, 210);
+        }
+
+        @media screen and (max-width: 880px) {
+          font-size: 13px;
+        }
+
+        @media screen and (max-width: 626px) {
+          font-size: 12px;
+          gap: 0px;
+        }
+        @media screen and (max-width: 426px) {
+          font-size: 10px;
+        }
+          p{
+            display: flex;
+            align-items: center;
+            border-right: 0.5px solid rgb(132, 132, 132);
+            text-align: left;
+            word-break: break-all;
+            margin-bottom: 0px;
+            
+            @media screen and (max-width: 626px) {
+              text-align: center;
+              justify-content: center;
+            }
+
+            &:first-child{
+              flex: 0.2;
+              text-align: center;
+              justify-content: center;
+            }
+            &:nth-child(2){
+              flex: 1.5;
+            }
+            &:nth-child(3){
+              flex: 1.5;
+            }
+            &:nth-child(4){
+              flex: 1;
+            }
+            &:nth-child(5){
+              flex: 0.5;
+            }
+            &:last-child{
+              flex: 1.5;
+            }
+          }
+      }
+   }
 }

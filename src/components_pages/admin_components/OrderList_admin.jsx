@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import admin_orderList from '../../styles/orderList_Admin.module.scss';
-import axios, { isCancel } from 'axios';
+import axios from 'axios';
 import LoadingAdmin from '../client_components/LoadingAdmin';
 import { useNavigate } from 'react-router-dom';
+import MediaQuery from 'react-responsive';
 
 export default function OrderList_admin() {
   const [orderData, setOrderData] = useState(null);
@@ -100,6 +101,24 @@ export default function OrderList_admin() {
             </p>
           </div>
           <ul className={admin_orderList.list_ul_wrap}>
+            <li className={admin_orderList.listHeader}>
+              <MediaQuery minWidth={491}>
+                <p>No.</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={490}>
+                <p>#</p>
+              </MediaQuery>
+              <p>OrderID</p>
+              <p>OrderName</p>
+              <p>User</p>
+              <MediaQuery minWidth={281}>
+                <p>Recipient</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={280}>
+                <p>Recip</p>
+              </MediaQuery>
+              <p>Status</p>
+            </li>
             {orderData.map((el, index) => {
               return (
                 <li
@@ -109,13 +128,12 @@ export default function OrderList_admin() {
                     navigate(`/admin/orderlist/detail/${el.payments.orderId}`)
                   }
                 >
-                  <p>No. {index}</p>
-                  <p>OrderID : {el.payments.orderId}</p>
-                  <p>OrderName : {el.payments.orderName}</p>
-                  <p>User : {el.user}</p>
-                  <p>Recipient : {el.recipient.recipientName}</p>
+                  <p>{index}</p>
+                  <p>{el.payments.orderId}</p>
+                  <p>{el.payments.orderName}</p>
+                  <p>{el.user}</p>
+                  <p>{el.recipient.recipientName}</p>
                   <p>
-                    Status :{' '}
                     {el.payments.status !== 'DONE' &&
                     !el.isShipping &&
                     el.shippingCode === 0 &&
@@ -289,6 +307,27 @@ export default function OrderList_admin() {
             </p>
           </div>
           <ul className={admin_orderList.list_ul_wrap_Cancel}>
+            <li className={admin_orderList.listHeader_cancel}>
+              <MediaQuery minWidth={491}>
+                <p>No.</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={490}>
+                <p>#</p>
+              </MediaQuery>
+              <p>OrderID</p>
+              <p>OrderName</p>
+              <p>User</p>
+              <MediaQuery minWidth={1051}>
+                <p>Recipient</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={1050} minWidth={281}>
+                <p>Recip</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={280}>
+                <p>Reci</p>
+              </MediaQuery>
+              <p>Status</p>
+            </li>
             {cancelData.map((el, index) => {
               return (
                 <li
@@ -300,12 +339,11 @@ export default function OrderList_admin() {
                   //   )
                   // }
                 >
-                  <p>No. {index}</p>
-                  <p>OrderID : {el.payments.orderId}</p>
-                  <p>OrderName : {el.payments.orderName}</p>
-                  <p>User : {el.user}</p>
+                  <p>{index}</p>
+                  <p>{el.payments.orderId}</p>
+                  <p>{el.payments.orderName}</p>
+                  <p>{el.user}</p>
                   <p>
-                    Status :{' '}
                     {el.payments.status === 'CANCELED' &&
                     !el.isOrdered &&
                     !el.isShipping &&
