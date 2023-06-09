@@ -75,19 +75,23 @@
     margin: 0px auto;
     padding: 0px 20px;
 
+    .index_desc {
+      margin-bottom: 5px;
+      font-size: 13px;
+    }
+
     .listHeader {
       display: flex;
-      gap: 10px;
-      font-size: 15px;
+      gap: 5px;
+      text-align: center;
+      font-size: 13px;
       padding: 5px 0px;
       list-style: none;
       border-bottom: 0.5px solid rgb(132, 132, 132);
       border-top: 0.5px solid rgb(132, 132, 132);
-      text-align: center;
       font-weight: 600;
 
         p{
-          text-align: center;
           margin-bottom: 0px;
           border-right: 0.5px solid rgb(132, 132, 132);
 
@@ -95,19 +99,34 @@
             flex: 0.2;
           }
           &:nth-child(2){
-            flex: 1.5;
+            flex: 0.2;
           }
           &:nth-child(3){
-            flex: 1.5;
+            flex: 1;
           }
           &:nth-child(4){
-            flex: 1.5;
+            flex: 1;
           }
           &:nth-child(5){
+            flex: 0.4;
+          }
+          &:nth-child(6){
+            flex: 0.5;
+          }
+          &:nth-child(7){
+            flex: 0.3;
+          }
+          &:nth-child(8){
+            flex: 1.5;
+          }
+          &:nth-child(9){
+            flex: 0.6;
+          }
+          &:nth-child(10){
             flex: 0.8;
           }
           &:last-child{
-            flex: 1;
+            flex: 0.7;
           }
         }
     }
@@ -115,11 +134,11 @@
 
       .list_li{
         display: flex;
-        gap: 10px;
-        font-size: 15px;
+        font-size: 12px;
+        gap: 5px;
         padding: 5px 0px;
         list-style: none;
-        border-bottom: 0.5px solid rgb(132, 132, 132);
+        // border-bottom: 0.5px solid rgb(132, 132, 132);
         cursor: pointer;
 
         &:hover {
@@ -137,19 +156,74 @@
             text-align: center;
           }
           &:nth-child(2){
-            flex: 1.5;
+            flex: 0.2;
+            text-align: center;
           }
           &:nth-child(3){
-            flex: 1.5;
+            flex: 1;
           }
           &:nth-child(4){
-            flex: 1.5;
+            flex: 1;
           }
           &:nth-child(5){
+            flex: 0.4;
+          }
+          &:nth-child(6){
+            flex: 0.5;
+          }
+          &:nth-child(7){
+            flex: 0.3;
+          }
+          &:nth-child(8){
+            flex: 1.5;
+          }
+          &:nth-child(9){
+            flex: 0.6;
+          }
+          &:nth-child(10){
             flex: 0.8;
           }
           &:last-child{
-            flex: 1;
+            flex: 0.7;
+          }
+        }
+      }
+
+      .orderInputWrap{
+        position: relative;
+        padding: 10px 10px;
+        border-bottom: 0.5px solid rgb(132, 132, 132);
+
+        .orderShippingCodeInput_title{
+          font-size: 15px;
+        }
+        .orderShippingCodeInput{
+          position: relative;
+          width: 50vw;
+          font-size: 15px;
+          padding: 0px 5px;
+        }
+        .shippingCodeBtn{
+          position: relative;
+          all: unset;
+          cursor: pointer;
+          padding: 2px 10px;
+          border: 0.5px solid black;
+          font-size: 13px;
+          background-color: rgb(0, 0, 0);
+          font-weight: 500;
+          transition: 0.3s ease;
+          color: white;
+          margin-left: 10px;
+          
+          &:hover {
+            color: rgb(0, 0, 0);
+            background-color: rgb(255, 255, 255);
+          }
+  
+          &:active {
+            background-color: rgb(226, 226, 226);
+            color:rgb(226, 226, 226);
           }
         }
       }

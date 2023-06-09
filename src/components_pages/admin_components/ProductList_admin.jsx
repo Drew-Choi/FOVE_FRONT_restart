@@ -454,9 +454,6 @@ export default function ProductList_admin() {
       return alert('삭제 할 이미지가 없습니다.');
     // null이 아니라면,
     try {
-      console.log(productCode);
-      console.log(imgURL);
-
       const response = await axios.post(
         'http://localhost:4000/admin/productlist/imgDelete',
         { productCode: productCode, imgURL: imgURL },
