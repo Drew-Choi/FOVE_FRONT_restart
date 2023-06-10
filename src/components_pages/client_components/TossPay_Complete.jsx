@@ -16,7 +16,6 @@ export default function TossPay_Complete() {
       });
 
       if (paymentData.status === 200) {
-        console.log(paymentData);
         await localStorage.setItem(
           'payments',
           JSON.stringify(paymentData.data),
