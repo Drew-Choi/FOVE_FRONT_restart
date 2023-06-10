@@ -461,7 +461,7 @@ export default function OrderList_Indi_Admin() {
   // 배송 전 결제
   const pdCancel = async () => {
     const updateConfirm = confirm(
-      `상품코드: ${orderId}\n관리자권환으로 결제취소(환불)를 진행하시겠습니까?`,
+      `주문번호: ${orderId}\n관리자권환으로 결제취소(환불)를 진행하시겠습니까?`,
     );
 
     if (!updateConfirm) return setRedirect((cur) => !cur), alert('실행 취소');
@@ -475,7 +475,7 @@ export default function OrderList_Indi_Admin() {
 
       if (cancelInfo.status !== 200) return alert('결제취소 실패');
       // 200번대 성공이면,
-      alert(`상품코드: ${orderId}\n결제취소(환불) 완료`);
+      alert(`주문번호: ${orderId}\n결제취소(환불) 완료`);
       navigate('/admin/orderlist');
       return;
     } catch (err) {
@@ -595,9 +595,7 @@ export default function OrderList_Indi_Admin() {
 
       if (cancelInfo.status !== 200) return alert('환불 실패');
       // 200번대 성공이면,
-      alert(
-        `상품코드: ${orderId}\n환불을 완료했습니다.\n환불목록을 통해 상품을 회수하십시오.`,
-      );
+      alert(`주문번호: ${orderId}\n환불을 완료했습니다.`);
       navigate('/admin/orderlist');
       return;
     } catch (err) {
@@ -609,7 +607,7 @@ export default function OrderList_Indi_Admin() {
   // 반품신청 취소
   const cancelSubmit = async () => {
     const updateConfirm = confirm(
-      `상품코드: ${orderId}\n반품신청 철회를 진행하시겠습니까?`,
+      `주문번호: ${orderId}\n반품신청 철회를 진행하시겠습니까?`,
     );
 
     if (!updateConfirm) return alert('철회진행 취소');
@@ -622,7 +620,7 @@ export default function OrderList_Indi_Admin() {
 
       if (response.status !== 200) return alert('철회진행 실패');
       // 200번대 성공이면
-      alert(`상품코드: ${orderId}\n반품신청철회 완료`);
+      alert(`주문번호: ${orderId}\n반품신청철회 완료`);
       setRedirect((cur) => !cur);
       return;
     } catch (err) {
@@ -643,7 +641,7 @@ export default function OrderList_Indi_Admin() {
 
       if (response.status !== 200) return alert('진행 오류');
       //200번대 잘 들어온다면,
-      alert(`상품코드: ${orderId}\n입금 전 강제주문취소 완료`);
+      alert(`주문번호: ${orderId}\n입금 전 강제주문취소 완료`);
       navigate('/admin/orderlist');
       return;
     } catch (err) {
@@ -654,7 +652,7 @@ export default function OrderList_Indi_Admin() {
   // 교환신청
   const adminPdChange = async () => {
     const updateConfirm = confirm(
-      `상품코드: ${orderId}\n상품교환을 진행하시겠습니까?`,
+      `주문번호: ${orderId}\n상품교환을 진행하시겠습니까?`,
     );
 
     if (!updateConfirm) return alert('교환진행 취소');
@@ -666,7 +664,7 @@ export default function OrderList_Indi_Admin() {
 
       if (response.status !== 200) return alert('교환신청 실패');
       // 200번대 성공이라면,
-      alert(`상품코드: ${orderId}\n교환진행 완료`);
+      alert(`주문번호: ${orderId}\n교환진행 완료`);
       setRedirect((cur) => !cur);
       return;
     } catch (err) {

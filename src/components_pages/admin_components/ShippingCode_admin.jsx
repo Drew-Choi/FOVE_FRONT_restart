@@ -14,6 +14,8 @@ export default function ShippingCode_admin() {
   const [updateInfo, setUpdateInfo] = useState([]);
   // 업데이트된목록-상품회수목록 -> 배송중으로
   const [updateInfoRetrieved, setUpdateInfoRetrieved] = useState([]);
+  // 업데이트된목록-교환상품배송준비중 -> 배송중으로
+  const [updateInfoReturn, setUpdateInfoReturn] = useState([]);
 
   // 화면전환용
   const [selector, setSelector] = useState('order');
@@ -26,6 +28,7 @@ export default function ShippingCode_admin() {
   // 송장번호 기록하는 곳
   const shippingCodeValue = useRef([]);
   const shippingCodeValueRetrieved = useRef([]);
+  const shippingCodeValueReturn = useRef([]);
 
   //db Number타입을 스트링으로 바꾸고 천단위 컴마 찍어 프론트에 보내기
   const country = navigator.language;
@@ -73,6 +76,23 @@ export default function ShippingCode_admin() {
     }
   };
 
+  // 상품 회수 후 교환상품 배송해야하는 목록 불러오기
+  const getReturnList = async () => {
+    try {
+      const adminReturnInfo = await axios.get(
+        'http://localhost:4000/admin/orderlist/return',
+      );
+
+      if (adminReturnInfo.status !== 200) return alert('데이터 오류');
+      // status 200이면,
+      setReturnData((cur) => adminReturnInfo.data);
+      return;
+    } catch (err) {
+      console.error(err);
+      return;
+    }
+  };
+
   useEffect(() => {
     getDoneListInfo();
   }, [orderRedirect]);
@@ -80,6 +100,10 @@ export default function ShippingCode_admin() {
   useEffect(() => {
     getRetrievedList();
   }, [retrievedRedirect]);
+
+  useEffect(() => {
+    getReturnList();
+  }, [returnRedirect]);
 
   // 핸들모음
   // 입금완료 목록
@@ -150,23 +174,74 @@ export default function ShippingCode_admin() {
           user,
           recipientName,
           recipientAddress,
-          shippingCode: shippingCodeValue.current[index].value,
+          newShippingCode: shippingCodeValueRetrieved.current[index].value,
         },
       );
 
-      if (response.status !== 200)
-        return setOrderRedirect((cur) => !cur), alert('등록실패');
-
-      // 200번대 성공이면,
-      setUpdateInfo((cur) => {
-        const copy = [...cur];
-        copy.push(response.data);
-        return copy;
-      });
-      shippingCodeValue.current[index].value = '';
-      setOrderRedirect((cur) => !cur);
-      return;
+      if (response.status !== 200) {
+        return setRetrievedRedirect((cur) => !cur), alert('등록실패');
+      } else if (response.status === 400) {
+        return setRetrievedRedirect((cur) => !cur), alert(response.data);
+      } else {
+        // 200번대 성공이면,
+        setUpdateInfoRetrieved((cur) => {
+          const copy = [...cur];
+          copy.push(response.data);
+          return copy;
+        });
+        shippingCodeValueRetrieved.current[index].value = '';
+        setRetrievedRedirect((cur) => !cur);
+        return;
+      }
     } catch (err) {
+      if (err.response.status === 400) {
+        setRetrievedRedirect((cur) => !cur);
+        alert(err.response.data);
+      }
+      console.error(err);
+    }
+  };
+
+  // 교환상품배송을 위한 송장등록
+  const registerShippingcodeReturn = async (
+    orderId,
+    user,
+    recipientName,
+    recipientAddress,
+    index,
+  ) => {
+    try {
+      const response = await axios.post(
+        'http://localhost:4000/admin/orderlist/register_shippingCode_return',
+        {
+          orderId,
+          user,
+          recipientName,
+          recipientAddress,
+          newShippingCode: shippingCodeValueReturn.current[index].value,
+        },
+      );
+
+      if (response.status !== 200) {
+        return setReturnRedirect((cur) => !cur), alert('등록실패');
+      } else if (response.status === 400) {
+        return setReturnRedirect((cur) => !cur), alert(response.data);
+      } else {
+        // 200번대 성공이면,
+        setUpdateInfoReturn((cur) => {
+          const copy = [...cur];
+          copy.push(response.data);
+          return copy;
+        });
+        shippingCodeValueReturn.current[index].value = '';
+        setReturnRedirect((cur) => !cur);
+        return;
+      }
+    } catch (err) {
+      if (err.response.status === 400) {
+        setReturnRedirect((cur) => !cur);
+        alert(err.response.data);
+      }
       console.error(err);
     }
   };
@@ -179,7 +254,7 @@ export default function ShippingCode_admin() {
         <span style={{ fontSize: '15px', fontWeight: '400' }}>Admin</span>
       </p>
 
-      {orderData === null || retrievedData === null ? (
+      {orderData === null || retrievedData === null || returnData === null ? (
         <LoadingAdmin />
       ) : (
         selector === 'order' && (
@@ -848,7 +923,7 @@ export default function ShippingCode_admin() {
                       <div
                         className={shippingCode.shippingCodeBtn}
                         onClick={() =>
-                          registerShippingcode(
+                          registerShippingcodeRetrieved(
                             el.payments.orderId,
                             el.user,
                             el.recipient.recipientName,
@@ -1087,12 +1162,397 @@ export default function ShippingCode_admin() {
               Total :{' '}
               {selector === 'return' &&
               orderData !== null &&
-              retrievedData !== null
-                ? orderData.length
-                : retrievedData.length}
+              retrievedData !== null &&
+              returnData !== null ? (
+                returnData.length
+              ) : (
+                <></>
+              )}
             </p>
           </div>
-          <p>기다려</p>
+
+          {/* 송장등록부분 -------------------------------- */}
+          <ul className={shippingCode.list_ul_wrap}>
+            <p className={shippingCode.index_desc}>
+              <strong>Reci</strong> = 받는 이{' '}
+            </p>
+            <li className={shippingCode.listHeader}>
+              <p>No.</p>
+              <p>OrderID</p>
+              <p>ShippingCode</p>
+              <p>OrderName</p>
+              <p>Amount</p>
+              <p>User</p>
+              <p>Reci</p>
+              <p>Address</p>
+              <p>P.H.</p>
+              <p>Message</p>
+              <p>Status</p>
+            </li>
+            <div className={shippingCode.listBox}>
+              {returnData.map((el, index) => {
+                return (
+                  <div key={index}>
+                    <li className={shippingCode.list_li}>
+                      <p>{index}</p>
+                      <p>{el.shippingCode}</p>
+                      <p>{el.payments.orderId}</p>
+                      <p>{el.payments.orderName}</p>
+                      <p>{frontPriceComma(el.payments.totalAmount)}</p>
+                      <p>{el.user}</p>
+                      <p>{el.recipient.recipientName}</p>
+                      <p>{`(${el.recipient.recipientZipcode}) ${el.recipient.recipientAddress} ${el.recipient.recipientAddressDetail}`}</p>
+                      <p>{`${el.recipient.phoneCode}-${el.recipient.phoneMidNum}-${el.recipient.phoneLastNum}`}</p>
+                      <p>{el.recipient.message}</p>
+                      <p>
+                        {el.payments.status !== 'DONE' &&
+                        !el.isShipping &&
+                        el.shippingCode === 0 &&
+                        !el.isDelivered &&
+                        !el.isCancel &&
+                        !el.isReturn &&
+                        !el.isRetrieved &&
+                        !el.isRefund &&
+                        !el.isReturnSubmit ? (
+                          '결제 전'
+                        ) : el.payments.status === 'DONE' &&
+                          !el.isShipping &&
+                          el.shippingCode === 0 &&
+                          !el.isDelivered &&
+                          !el.isCancel &&
+                          !el.isReturn &&
+                          !el.isRetrieved &&
+                          !el.isRefund &&
+                          !el.isReturnSubmit ? (
+                          '결제완료 (배송 전)'
+                        ) : el.payments.status === 'DONE' &&
+                          el.isShipping &&
+                          el.shippingCode !== 0 &&
+                          !el.isDelivered &&
+                          !el.isCancel &&
+                          !el.isReturn &&
+                          !el.isRetrieved &&
+                          !el.isRefund &&
+                          !el.isReturnSubmit ? (
+                          '배송중'
+                        ) : el.payments.status === 'DONE' &&
+                          !el.isShipping &&
+                          el.shippingCode !== 0 &&
+                          el.isDelivered &&
+                          !el.isCancel &&
+                          !el.isReturn &&
+                          !el.isRetrieved &&
+                          !el.isRefund &&
+                          !el.isReturnSubmit ? (
+                          '배송완료'
+                        ) : el.payments.status === 'DONE' &&
+                          !el.isShipping &&
+                          el.shippingCode !== 0 &&
+                          el.isDelivered &&
+                          !el.isCancel &&
+                          !el.isReturn &&
+                          !el.isRetrieved &&
+                          !el.isRefund &&
+                          el.isReturnSubmit ? (
+                          '반품신청 중'
+                        ) : el.payments.status === 'DONE' &&
+                          !el.isShipping &&
+                          el.shippingCode !== 0 &&
+                          el.isDelivered &&
+                          !el.isCancel &&
+                          el.isReturn &&
+                          !el.isRetrieved &&
+                          !el.isRefund &&
+                          el.isReturnSubmit ? (
+                          '교환진행 신청'
+                        ) : el.payments.status === 'DONE' &&
+                          el.isShipping &&
+                          el.shippingCode !== 0 &&
+                          el.isDelivered &&
+                          !el.isCancel &&
+                          el.isReturn &&
+                          !el.isRetrieved &&
+                          !el.isRefund &&
+                          el.isReturnSubmit ? (
+                          '상품회수 중 (교환)'
+                        ) : el.payments.status === 'DONE' &&
+                          !el.isShipping &&
+                          el.shippingCode !== 0 &&
+                          !el.isDelivered &&
+                          !el.isCancel &&
+                          el.isReturn &&
+                          el.isRetrieved &&
+                          !el.isRefund &&
+                          el.isReturnSubmit ? (
+                          '상품회수 완료 (교환)'
+                        ) : el.payments.status === 'DONE' &&
+                          el.isShipping &&
+                          el.shippingCode !== 0 &&
+                          !el.isDelivered &&
+                          !el.isCancel &&
+                          el.isReturn &&
+                          el.isRetrieved &&
+                          !el.isRefund &&
+                          el.isReturnSubmit ? (
+                          '교환상품 배송 중'
+                        ) : el.payments.status === 'DONE' &&
+                          !el.isShipping &&
+                          el.shippingCode !== 0 &&
+                          el.isDelivered &&
+                          !el.isCancel &&
+                          el.isReturn &&
+                          !el.isRetrieved &&
+                          !el.isRefund &&
+                          !el.isReturnSubmit ? (
+                          '교환상품 배송 완료'
+                        ) : el.payments.status === 'DONE' &&
+                          !el.isShipping &&
+                          el.shippingCode !== 0 &&
+                          el.isDelivered &&
+                          !el.isCancel &&
+                          !el.isReturn &&
+                          !el.isRetrieved &&
+                          el.isRefund &&
+                          el.isReturnSubmit ? (
+                          '환불진행 신청'
+                        ) : el.payments.status === 'DONE' &&
+                          el.isShipping &&
+                          el.shippingCode !== 0 &&
+                          el.isDelivered &&
+                          !el.isCancel &&
+                          !el.isReturn &&
+                          !el.isRetrieved &&
+                          el.isRefund &&
+                          el.isReturnSubmit ? (
+                          '상품회수 중 (환불)'
+                        ) : el.payments.status === 'DONE' &&
+                          !el.isShipping &&
+                          el.shippingCode !== 0 &&
+                          !el.isDelivered &&
+                          !el.isCancel &&
+                          !el.isReturn &&
+                          el.isRetrieved &&
+                          el.isRefund &&
+                          el.isReturnSubmit ? (
+                          '상품회수 완료 (환불)'
+                        ) : (
+                          <></>
+                        )}
+                      </p>
+                    </li>
+                    <div className={shippingCode.orderInputWrap}>
+                      <span
+                        className={shippingCode.orderShippingCodeInput_title}
+                      >
+                        회수용 송장번호입력 :{' '}
+                      </span>
+                      <input
+                        type="text"
+                        placeholder="유효한 회수용 송장번호를 입력하십시오."
+                        name="shippingCode"
+                        className={shippingCode.orderShippingCodeInput}
+                        ref={(el) =>
+                          (shippingCodeValueReturn.current[index] = el)
+                        }
+                      />
+                      <div
+                        className={shippingCode.shippingCodeBtn}
+                        onClick={() =>
+                          registerShippingcodeReturn(
+                            el.payments.orderId,
+                            el.user,
+                            el.recipient.recipientName,
+                            el.recipient.recipientAddress,
+                            index,
+                          )
+                        }
+                      >
+                        등록
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* 등록완료된 목록 -------------------------------- */}
+            <p className={shippingCode.completeTitle}>송장등록완료목록</p>
+            <p className={shippingCode.completeTitle}>
+              완료: {updateInfoReturn.length}
+            </p>
+            <li className={shippingCode.listHeader_complete}>
+              <p>No.</p>
+              <p>OrderID</p>
+              <p>ShippingCode</p>
+              <p>OrderName</p>
+              <p>Amount</p>
+              <p>User</p>
+              <p>Reci</p>
+              <p>Address</p>
+              <p>P.H.</p>
+              <p>Message</p>
+              <p>Status</p>
+            </li>
+            <div className={shippingCode.listBox_complete}>
+              {updateInfoReturn.length === 0 ? (
+                <> </>
+              ) : (
+                updateInfoReturn.map((el, index) => {
+                  return (
+                    <div key={index}>
+                      <li className={shippingCode.list_li}>
+                        <p>{index}</p>
+                        <p>{el.payments.orderId}</p>
+                        <p>{el.shippingCode}</p>
+                        <p>{el.payments.orderName}</p>
+                        <p>{frontPriceComma(el.payments.totalAmount)}</p>
+                        <p>{el.user}</p>
+                        <p>{el.recipient.recipientName}</p>
+                        <p>{`(${el.recipient.recipientZipcode}) ${el.recipient.recipientAddress} ${el.recipient.recipientAddressDetail}`}</p>
+                        <p>{`${el.recipient.phoneCode}-${el.recipient.phoneMidNum}-${el.recipient.phoneLastNum}`}</p>
+                        <p>{el.recipient.message}</p>
+                        <p>
+                          {el.payments.status !== 'DONE' &&
+                          !el.isShipping &&
+                          el.shippingCode === 0 &&
+                          !el.isDelivered &&
+                          !el.isCancel &&
+                          !el.isReturn &&
+                          !el.isRetrieved &&
+                          !el.isRefund &&
+                          !el.isReturnSubmit ? (
+                            '결제 전'
+                          ) : el.payments.status === 'DONE' &&
+                            !el.isShipping &&
+                            el.shippingCode === 0 &&
+                            !el.isDelivered &&
+                            !el.isCancel &&
+                            !el.isReturn &&
+                            !el.isRetrieved &&
+                            !el.isRefund &&
+                            !el.isReturnSubmit ? (
+                            '결제완료 (배송 전)'
+                          ) : el.payments.status === 'DONE' &&
+                            el.isShipping &&
+                            el.shippingCode !== 0 &&
+                            !el.isDelivered &&
+                            !el.isCancel &&
+                            !el.isReturn &&
+                            !el.isRetrieved &&
+                            !el.isRefund &&
+                            !el.isReturnSubmit ? (
+                            '배송중'
+                          ) : el.payments.status === 'DONE' &&
+                            !el.isShipping &&
+                            el.shippingCode !== 0 &&
+                            el.isDelivered &&
+                            !el.isCancel &&
+                            !el.isReturn &&
+                            !el.isRetrieved &&
+                            !el.isRefund &&
+                            !el.isReturnSubmit ? (
+                            '배송완료'
+                          ) : el.payments.status === 'DONE' &&
+                            !el.isShipping &&
+                            el.shippingCode !== 0 &&
+                            el.isDelivered &&
+                            !el.isCancel &&
+                            !el.isReturn &&
+                            !el.isRetrieved &&
+                            !el.isRefund &&
+                            el.isReturnSubmit ? (
+                            '반품신청 중'
+                          ) : el.payments.status === 'DONE' &&
+                            !el.isShipping &&
+                            el.shippingCode !== 0 &&
+                            el.isDelivered &&
+                            !el.isCancel &&
+                            el.isReturn &&
+                            !el.isRetrieved &&
+                            !el.isRefund &&
+                            el.isReturnSubmit ? (
+                            '교환진행 신청'
+                          ) : el.payments.status === 'DONE' &&
+                            el.isShipping &&
+                            el.shippingCode !== 0 &&
+                            el.isDelivered &&
+                            !el.isCancel &&
+                            el.isReturn &&
+                            !el.isRetrieved &&
+                            !el.isRefund &&
+                            el.isReturnSubmit ? (
+                            '상품회수 중 (교환)'
+                          ) : el.payments.status === 'DONE' &&
+                            !el.isShipping &&
+                            el.shippingCode !== 0 &&
+                            !el.isDelivered &&
+                            !el.isCancel &&
+                            el.isReturn &&
+                            el.isRetrieved &&
+                            !el.isRefund &&
+                            el.isReturnSubmit ? (
+                            '상품회수 완료 (교환)'
+                          ) : el.payments.status === 'DONE' &&
+                            el.isShipping &&
+                            el.shippingCode !== 0 &&
+                            !el.isDelivered &&
+                            !el.isCancel &&
+                            el.isReturn &&
+                            el.isRetrieved &&
+                            !el.isRefund &&
+                            el.isReturnSubmit ? (
+                            '교환상품 배송 중'
+                          ) : el.payments.status === 'DONE' &&
+                            !el.isShipping &&
+                            el.shippingCode !== 0 &&
+                            el.isDelivered &&
+                            !el.isCancel &&
+                            el.isReturn &&
+                            !el.isRetrieved &&
+                            !el.isRefund &&
+                            !el.isReturnSubmit ? (
+                            '교환상품 배송 완료'
+                          ) : el.payments.status === 'DONE' &&
+                            !el.isShipping &&
+                            el.shippingCode !== 0 &&
+                            el.isDelivered &&
+                            !el.isCancel &&
+                            !el.isReturn &&
+                            !el.isRetrieved &&
+                            el.isRefund &&
+                            el.isReturnSubmit ? (
+                            '환불진행 신청'
+                          ) : el.payments.status === 'DONE' &&
+                            el.isShipping &&
+                            el.shippingCode !== 0 &&
+                            el.isDelivered &&
+                            !el.isCancel &&
+                            !el.isReturn &&
+                            !el.isRetrieved &&
+                            el.isRefund &&
+                            el.isReturnSubmit ? (
+                            '상품회수 중 (환불)'
+                          ) : el.payments.status === 'DONE' &&
+                            !el.isShipping &&
+                            el.shippingCode !== 0 &&
+                            !el.isDelivered &&
+                            !el.isCancel &&
+                            !el.isReturn &&
+                            el.isRetrieved &&
+                            el.isRefund &&
+                            el.isReturnSubmit ? (
+                            '상품회수 완료 (환불)'
+                          ) : (
+                            <></>
+                          )}
+                        </p>
+                      </li>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </ul>
         </>
       )}
     </div>
