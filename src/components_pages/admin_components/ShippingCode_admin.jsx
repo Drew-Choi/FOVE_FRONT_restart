@@ -260,66 +260,186 @@ export default function ShippingCode_admin() {
         selector === 'order' && (
           <>
             <div className={shippingCode.subMenu}>
-              <p className={shippingCode.selector}>
-                <span
-                  className={
-                    selector === 'order'
-                      ? shippingCode.selector_order_on
-                      : shippingCode.selector_order
-                  }
-                  onClick={handleSelectorOrder}
-                >
-                  결제완료 목록 (배송준비 중)
-                </span>
-                &nbsp;&nbsp;/&nbsp;&nbsp;
-                <span
-                  className={
-                    selector === 'retrieved'
-                      ? shippingCode.selector_cancel_on
-                      : shippingCode.selector_cancel
-                  }
-                  onClick={handleSelectorRetrieved}
-                >
-                  상품회수 목록
-                </span>
-                &nbsp;&nbsp;/&nbsp;&nbsp;
-                <span
-                  className={
-                    selector === 'return'
-                      ? shippingCode.selector_cancel_on
-                      : shippingCode.selector_cancel
-                  }
-                  onClick={handleSelectorReturn}
-                >
-                  교환상품배송 목록
-                </span>
-              </p>
+              <MediaQuery minWidth={412}>
+                <p className={shippingCode.selector}>
+                  <span
+                    className={
+                      selector === 'order'
+                        ? shippingCode.selector_order_on
+                        : shippingCode.selector_order
+                    }
+                    onClick={handleSelectorOrder}
+                  >
+                    결제완료 목록 (배송준비 중)
+                  </span>
+                  &nbsp;&nbsp;/&nbsp;&nbsp;
+                  <span
+                    className={
+                      selector === 'retrieved'
+                        ? shippingCode.selector_cancel_on
+                        : shippingCode.selector_cancel
+                    }
+                    onClick={handleSelectorRetrieved}
+                  >
+                    상품회수 목록
+                  </span>
+                  &nbsp;&nbsp;/&nbsp;&nbsp;
+                  <span
+                    className={
+                      selector === 'return'
+                        ? shippingCode.selector_cancel_on
+                        : shippingCode.selector_cancel
+                    }
+                    onClick={handleSelectorReturn}
+                  >
+                    교환상품배송 목록
+                  </span>
+                </p>
+              </MediaQuery>
+              <MediaQuery maxWidth={411}>
+                <div className={shippingCode.selector}>
+                  <p
+                    className={
+                      selector === 'order'
+                        ? shippingCode.selector_order_on
+                        : shippingCode.selector_order
+                    }
+                    onClick={handleSelectorOrder}
+                  >
+                    결제완료 목록 (배송준비 중)
+                  </p>
+                  <p
+                    className={
+                      selector === 'retrieved'
+                        ? shippingCode.selector_cancel_on
+                        : shippingCode.selector_cancel
+                    }
+                    onClick={handleSelectorRetrieved}
+                  >
+                    상품회수 목록
+                  </p>
+                  <p
+                    className={
+                      selector === 'return'
+                        ? shippingCode.selector_cancel_on
+                        : shippingCode.selector_cancel
+                    }
+                    onClick={handleSelectorReturn}
+                  >
+                    교환상품배송 목록
+                  </p>
+                </div>
+              </MediaQuery>
+
               <p className={shippingCode.totalOrderCount}>
                 Total :{' '}
                 {selector === 'order' &&
                 orderData !== null &&
-                retrievedData !== null
-                  ? orderData.length
-                  : retrievedData.length}
+                retrievedData !== null &&
+                returnData !== null ? (
+                  orderData.length
+                ) : (
+                  <></>
+                )}
               </p>
             </div>
+
             {/* 송장등록부분 -------------------------------- */}
             <ul className={shippingCode.list_ul_wrap}>
               <p className={shippingCode.index_desc}>
-                <strong>Reci</strong> = 받는 이{' '}
+                <MediaQuery minWidth={1251}>
+                  <strong>Reci</strong> = 받는 이{' '}
+                </MediaQuery>
+                <MediaQuery maxWidth={1250} minWidth={780}>
+                  <strong>SC</strong> = 송장번호 &nbsp;&nbsp;&nbsp;
+                  <strong>Am</strong> = 결제금액 &nbsp;&nbsp;&nbsp;
+                  <strong>Re</strong> = 받는 이
+                </MediaQuery>
+                <MediaQuery maxWidth={779} minWidth={491}>
+                  <strong>SC</strong> = 송장번호 &nbsp;&nbsp;&nbsp;
+                  <strong>O.N.</strong> = 상품이름&nbsp;&nbsp;&nbsp;
+                  <strong>Am</strong> = 결제금액&nbsp;&nbsp;&nbsp;
+                  <strong>Re</strong> = 받는 이&nbsp;&nbsp;&nbsp;
+                  <strong>Ms</strong> = 배송메세지&nbsp;&nbsp;&nbsp;
+                </MediaQuery>
+                <MediaQuery maxWidth={490}>
+                  <strong>OI</strong> = 주문번호 &nbsp;&nbsp;&nbsp;
+                  <strong>SC</strong> = 송장번호 &nbsp;&nbsp;&nbsp;
+                  <strong>O.N.</strong> = 상품이름&nbsp;&nbsp;&nbsp;
+                </MediaQuery>
               </p>
+              <MediaQuery maxWidth={490} minWidth={281}>
+                <p className={shippingCode.index_desc}>
+                  <strong>Am</strong> = 결제금액&nbsp;&nbsp;&nbsp;
+                  <strong>Re</strong> = 받는 이&nbsp;&nbsp;&nbsp;
+                  <strong>Ms</strong> = 배송메세지&nbsp;&nbsp;&nbsp;
+                  <strong>St</strong> = 배송상태&nbsp;&nbsp;&nbsp;
+                </p>
+              </MediaQuery>
+              <MediaQuery maxWidth={280}>
+                <p className={shippingCode.index_desc}>
+                  <strong>Am</strong> = 결제금액&nbsp;&nbsp;&nbsp;
+                  <strong>Re</strong> = 받는 이&nbsp;&nbsp;&nbsp;
+                </p>
+              </MediaQuery>
+              <MediaQuery maxWidth={280}>
+                <p className={shippingCode.index_desc}>
+                  <strong>Ms</strong> = 배송메세지&nbsp;&nbsp;&nbsp;
+                  <strong>St</strong> = 배송상태&nbsp;&nbsp;&nbsp;
+                </p>
+              </MediaQuery>
               <li className={shippingCode.listHeader}>
-                <p>No.</p>
-                <p>OrderID</p>
-                <p>ShippingCode</p>
-                <p>OrderName</p>
-                <p>Amount</p>
+                <MediaQuery minWidth={1081}>
+                  <p>No.</p>
+                </MediaQuery>
+                <MediaQuery maxWidth={1080}>
+                  <p>#</p>
+                </MediaQuery>
+                <MediaQuery minWidth={491}>
+                  <p>OrderID</p>
+                </MediaQuery>
+                <MediaQuery maxWidth={490}>
+                  <p>OI</p>
+                </MediaQuery>
+                <MediaQuery minWidth={1251}>
+                  <p>ShippingCode</p>
+                </MediaQuery>
+                <MediaQuery maxWidth={1250}>
+                  <p>SC</p>
+                </MediaQuery>
+                <MediaQuery minWidth={780}>
+                  <p>OrderName</p>
+                </MediaQuery>
+                <MediaQuery maxWidth={779}>
+                  <p>O.N.</p>
+                </MediaQuery>
+                <MediaQuery minWidth={1251}>
+                  <p>Amount</p>
+                </MediaQuery>
+                <MediaQuery maxWidth={1250}>
+                  <p>Am</p>
+                </MediaQuery>
                 <p>User</p>
-                <p>Reci</p>
+                <MediaQuery minWidth={1251}>
+                  <p>Reci</p>
+                </MediaQuery>
+                <MediaQuery maxWidth={1250}>
+                  <p>Rc</p>
+                </MediaQuery>
                 <p>Address</p>
                 <p>P.H.</p>
-                <p>Message</p>
-                <p>Status</p>
+                <MediaQuery minWidth={780}>
+                  <p>Message</p>
+                </MediaQuery>
+                <MediaQuery maxWidth={779}>
+                  <p>Ms</p>
+                </MediaQuery>
+                <MediaQuery minWidth={491}>
+                  <p>Status</p>
+                </MediaQuery>
+                <MediaQuery maxWidth={490}>
+                  <p>St</p>
+                </MediaQuery>
               </li>
               <div className={shippingCode.listBox}>
                 {orderData.map((el, index) => {
@@ -327,8 +447,8 @@ export default function ShippingCode_admin() {
                     <div key={index}>
                       <li className={shippingCode.list_li}>
                         <p>{index}</p>
-                        <p>{el.shippingCode}</p>
                         <p>{el.payments.orderId}</p>
+                        <p>{el.shippingCode}</p>
                         <p>{el.payments.orderName}</p>
                         <p>{frontPriceComma(el.payments.totalAmount)}</p>
                         <p>{el.user}</p>
@@ -478,13 +598,15 @@ export default function ShippingCode_admin() {
                         >
                           송장번호입력 :{' '}
                         </span>
+
                         <input
                           type="text"
-                          placeholder="유효한 송장번호를 입력하십시오."
+                          placeholder="송장번호입력"
                           name="shippingCode"
                           className={shippingCode.orderShippingCodeInput}
                           ref={(el) => (shippingCodeValue.current[index] = el)}
                         />
+
                         <div
                           className={shippingCode.shippingCodeBtn}
                           onClick={() =>
@@ -511,17 +633,57 @@ export default function ShippingCode_admin() {
                 완료: {updateInfo.length}
               </p>
               <li className={shippingCode.listHeader_complete}>
-                <p>No.</p>
-                <p>OrderID</p>
-                <p>ShippingCode</p>
-                <p>OrderName</p>
-                <p>Amount</p>
+                <MediaQuery minWidth={1081}>
+                  <p>No.</p>
+                </MediaQuery>
+                <MediaQuery maxWidth={1080}>
+                  <p>#</p>
+                </MediaQuery>
+                <MediaQuery minWidth={491}>
+                  <p>OrderID</p>
+                </MediaQuery>
+                <MediaQuery maxWidth={490}>
+                  <p>OI</p>
+                </MediaQuery>
+                <MediaQuery minWidth={1251}>
+                  <p>ShippingCode</p>
+                </MediaQuery>
+                <MediaQuery maxWidth={1250}>
+                  <p>SC</p>
+                </MediaQuery>
+                <MediaQuery minWidth={780}>
+                  <p>OrderName</p>
+                </MediaQuery>
+                <MediaQuery maxWidth={779}>
+                  <p>O.N.</p>
+                </MediaQuery>
+                <MediaQuery minWidth={1251}>
+                  <p>Amount</p>
+                </MediaQuery>
+                <MediaQuery maxWidth={1250}>
+                  <p>Am</p>
+                </MediaQuery>
                 <p>User</p>
-                <p>Reci</p>
+                <MediaQuery minWidth={1251}>
+                  <p>Reci</p>
+                </MediaQuery>
+                <MediaQuery maxWidth={1250}>
+                  <p>Rc</p>
+                </MediaQuery>
                 <p>Address</p>
                 <p>P.H.</p>
-                <p>Message</p>
-                <p>Status</p>
+                <MediaQuery minWidth={780}>
+                  <p>Message</p>
+                </MediaQuery>
+                <MediaQuery maxWidth={779}>
+                  <p>Ms</p>
+                </MediaQuery>
+                <MediaQuery minWidth={491}>
+                  <p>Status</p>
+                </MediaQuery>
+                <MediaQuery maxWidth={490}>
+                  <p>St</p>
+                </MediaQuery>
               </li>
               <div className={shippingCode.listBox_complete}>
                 {updateInfo.length === 0 ? (
@@ -690,45 +852,83 @@ export default function ShippingCode_admin() {
       {selector === 'retrieved' && (
         <>
           <div className={shippingCode.subMenu}>
-            <p className={shippingCode.selector}>
-              <span
-                className={
-                  selector === 'order'
-                    ? shippingCode.selector_order_on
-                    : shippingCode.selector_order
-                }
-                onClick={handleSelectorOrder}
-              >
-                결제완료 목록 (배송준비 중)
-              </span>
-              &nbsp;&nbsp;/&nbsp;&nbsp;
-              <span
-                className={
-                  selector === 'retrieved'
-                    ? shippingCode.selector_cancel_on
-                    : shippingCode.selector_cancel
-                }
-                onClick={handleSelectorRetrieved}
-              >
-                상품회수 목록
-              </span>
-              &nbsp;&nbsp;/&nbsp;&nbsp;
-              <span
-                className={
-                  selector === 'return'
-                    ? shippingCode.selector_cancel_on
-                    : shippingCode.selector_cancel
-                }
-                onClick={handleSelectorReturn}
-              >
-                교환상품배송 목록
-              </span>
-            </p>
+            <MediaQuery minWidth={412}>
+              <p className={shippingCode.selector}>
+                <span
+                  className={
+                    selector === 'order'
+                      ? shippingCode.selector_order_on
+                      : shippingCode.selector_order
+                  }
+                  onClick={handleSelectorOrder}
+                >
+                  결제완료 목록 (배송준비 중)
+                </span>
+                &nbsp;&nbsp;/&nbsp;&nbsp;
+                <span
+                  className={
+                    selector === 'retrieved'
+                      ? shippingCode.selector_cancel_on
+                      : shippingCode.selector_cancel
+                  }
+                  onClick={handleSelectorRetrieved}
+                >
+                  상품회수 목록
+                </span>
+                &nbsp;&nbsp;/&nbsp;&nbsp;
+                <span
+                  className={
+                    selector === 'return'
+                      ? shippingCode.selector_cancel_on
+                      : shippingCode.selector_cancel
+                  }
+                  onClick={handleSelectorReturn}
+                >
+                  교환상품배송 목록
+                </span>
+              </p>
+            </MediaQuery>
+            <MediaQuery maxWidth={411}>
+              <div className={shippingCode.selector}>
+                <p
+                  className={
+                    selector === 'order'
+                      ? shippingCode.selector_order_on
+                      : shippingCode.selector_order
+                  }
+                  onClick={handleSelectorOrder}
+                >
+                  결제완료 목록 (배송준비 중)
+                </p>
+                <p
+                  className={
+                    selector === 'retrieved'
+                      ? shippingCode.selector_cancel_on
+                      : shippingCode.selector_cancel
+                  }
+                  onClick={handleSelectorRetrieved}
+                >
+                  상품회수 목록
+                </p>
+                <p
+                  className={
+                    selector === 'return'
+                      ? shippingCode.selector_cancel_on
+                      : shippingCode.selector_cancel
+                  }
+                  onClick={handleSelectorReturn}
+                >
+                  교환상품배송 목록
+                </p>
+              </div>
+            </MediaQuery>
+
             <p className={shippingCode.totalOrderCount}>
               Total :{' '}
               {selector === 'retrieved' &&
               orderData !== null &&
-              retrievedData !== null ? (
+              retrievedData !== null &&
+              returnData !== null ? (
                 retrievedData.length
               ) : (
                 <></>
@@ -739,20 +939,99 @@ export default function ShippingCode_admin() {
           {/* 송장등록부분 -------------------------------- */}
           <ul className={shippingCode.list_ul_wrap}>
             <p className={shippingCode.index_desc}>
-              <strong>Reci</strong> = 받는 이{' '}
+              <MediaQuery minWidth={1251}>
+                <strong>Reci</strong> = 받는 이{' '}
+              </MediaQuery>
+              <MediaQuery maxWidth={1250} minWidth={780}>
+                <strong>SC</strong> = 송장번호 &nbsp;&nbsp;&nbsp;
+                <strong>Am</strong> = 결제금액 &nbsp;&nbsp;&nbsp;
+                <strong>Re</strong> = 받는 이
+              </MediaQuery>
+              <MediaQuery maxWidth={779} minWidth={491}>
+                <strong>SC</strong> = 송장번호 &nbsp;&nbsp;&nbsp;
+                <strong>O.N.</strong> = 상품이름&nbsp;&nbsp;&nbsp;
+                <strong>Am</strong> = 결제금액&nbsp;&nbsp;&nbsp;
+                <strong>Re</strong> = 받는 이&nbsp;&nbsp;&nbsp;
+                <strong>Ms</strong> = 배송메세지&nbsp;&nbsp;&nbsp;
+              </MediaQuery>
+              <MediaQuery maxWidth={490}>
+                <strong>OI</strong> = 주문번호 &nbsp;&nbsp;&nbsp;
+                <strong>SC</strong> = 송장번호 &nbsp;&nbsp;&nbsp;
+                <strong>O.N.</strong> = 상품이름&nbsp;&nbsp;&nbsp;
+              </MediaQuery>
             </p>
+            <MediaQuery maxWidth={490} minWidth={281}>
+              <p className={shippingCode.index_desc}>
+                <strong>Am</strong> = 결제금액&nbsp;&nbsp;&nbsp;
+                <strong>Re</strong> = 받는 이&nbsp;&nbsp;&nbsp;
+                <strong>Ms</strong> = 배송메세지&nbsp;&nbsp;&nbsp;
+                <strong>St</strong> = 배송상태&nbsp;&nbsp;&nbsp;
+              </p>
+            </MediaQuery>
+            <MediaQuery maxWidth={280}>
+              <p className={shippingCode.index_desc}>
+                <strong>Am</strong> = 결제금액&nbsp;&nbsp;&nbsp;
+                <strong>Re</strong> = 받는 이&nbsp;&nbsp;&nbsp;
+              </p>
+            </MediaQuery>
+            <MediaQuery maxWidth={280}>
+              <p className={shippingCode.index_desc}>
+                <strong>Ms</strong> = 배송메세지&nbsp;&nbsp;&nbsp;
+                <strong>St</strong> = 배송상태&nbsp;&nbsp;&nbsp;
+              </p>
+            </MediaQuery>
             <li className={shippingCode.listHeader}>
-              <p>No.</p>
-              <p>OrderID</p>
-              <p>ShippingCode</p>
-              <p>OrderName</p>
-              <p>Amount</p>
+              <MediaQuery minWidth={1081}>
+                <p>No.</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={1080}>
+                <p>#</p>
+              </MediaQuery>
+              <MediaQuery minWidth={491}>
+                <p>OrderID</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={490}>
+                <p>OI</p>
+              </MediaQuery>
+              <MediaQuery minWidth={1251}>
+                <p>ShippingCode</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={1250}>
+                <p>SC</p>
+              </MediaQuery>
+              <MediaQuery minWidth={780}>
+                <p>OrderName</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={779}>
+                <p>O.N.</p>
+              </MediaQuery>
+              <MediaQuery minWidth={1251}>
+                <p>Amount</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={1250}>
+                <p>Am</p>
+              </MediaQuery>
               <p>User</p>
-              <p>Reci</p>
+              <MediaQuery minWidth={1251}>
+                <p>Reci</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={1250}>
+                <p>Rc</p>
+              </MediaQuery>
               <p>Address</p>
               <p>P.H.</p>
-              <p>Message</p>
-              <p>Status</p>
+              <MediaQuery minWidth={780}>
+                <p>Message</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={779}>
+                <p>Ms</p>
+              </MediaQuery>
+              <MediaQuery minWidth={491}>
+                <p>Status</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={490}>
+                <p>St</p>
+              </MediaQuery>
             </li>
             <div className={shippingCode.listBox}>
               {retrievedData.map((el, index) => {
@@ -760,8 +1039,8 @@ export default function ShippingCode_admin() {
                   <div key={index}>
                     <li className={shippingCode.list_li}>
                       <p>{index}</p>
-                      <p>{el.shippingCode}</p>
                       <p>{el.payments.orderId}</p>
+                      <p>{el.shippingCode}</p>
                       <p>{el.payments.orderName}</p>
                       <p>{frontPriceComma(el.payments.totalAmount)}</p>
                       <p>{el.user}</p>
@@ -906,14 +1185,24 @@ export default function ShippingCode_admin() {
                       </p>
                     </li>
                     <div className={shippingCode.orderInputWrap}>
-                      <span
-                        className={shippingCode.orderShippingCodeInput_title}
-                      >
-                        회수용 송장번호입력 :{' '}
-                      </span>
+                      <MediaQuery minWidth={913}>
+                        <span
+                          className={shippingCode.orderShippingCodeInput_title}
+                        >
+                          회수용 송장번호입력 :{' '}
+                        </span>
+                      </MediaQuery>
+                      <MediaQuery maxWidth={912}>
+                        <span
+                          className={shippingCode.orderShippingCodeInput_title}
+                          style={{ fontSize: '11px' }}
+                        >
+                          회수용 송장번호입력 :
+                        </span>
+                      </MediaQuery>
                       <input
                         type="text"
-                        placeholder="유효한 회수용 송장번호를 입력하십시오."
+                        placeholder="회수송장번호입력"
                         name="shippingCode"
                         className={shippingCode.orderShippingCodeInput}
                         ref={(el) =>
@@ -946,17 +1235,57 @@ export default function ShippingCode_admin() {
               완료: {updateInfoRetrieved.length}
             </p>
             <li className={shippingCode.listHeader_complete}>
-              <p>No.</p>
-              <p>OrderID</p>
-              <p>ShippingCode</p>
-              <p>OrderName</p>
-              <p>Amount</p>
+              <MediaQuery minWidth={1081}>
+                <p>No.</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={1080}>
+                <p>#</p>
+              </MediaQuery>
+              <MediaQuery minWidth={491}>
+                <p>OrderID</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={490}>
+                <p>OI</p>
+              </MediaQuery>
+              <MediaQuery minWidth={1251}>
+                <p>ShippingCode</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={1250}>
+                <p>SC</p>
+              </MediaQuery>
+              <MediaQuery minWidth={780}>
+                <p>OrderName</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={779}>
+                <p>O.N.</p>
+              </MediaQuery>
+              <MediaQuery minWidth={1251}>
+                <p>Amount</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={1250}>
+                <p>Am</p>
+              </MediaQuery>
               <p>User</p>
-              <p>Reci</p>
+              <MediaQuery minWidth={1251}>
+                <p>Reci</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={1250}>
+                <p>Rc</p>
+              </MediaQuery>
               <p>Address</p>
               <p>P.H.</p>
-              <p>Message</p>
-              <p>Status</p>
+              <MediaQuery minWidth={780}>
+                <p>Message</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={779}>
+                <p>Ms</p>
+              </MediaQuery>
+              <MediaQuery minWidth={491}>
+                <p>Status</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={490}>
+                <p>St</p>
+              </MediaQuery>
             </li>
             <div className={shippingCode.listBox_complete}>
               {updateInfoRetrieved.length === 0 ? (
@@ -1124,40 +1453,77 @@ export default function ShippingCode_admin() {
       {selector === 'return' && (
         <>
           <div className={shippingCode.subMenu}>
-            <p className={shippingCode.selector}>
-              <span
-                className={
-                  selector === 'order'
-                    ? shippingCode.selector_order_on
-                    : shippingCode.selector_order
-                }
-                onClick={handleSelectorOrder}
-              >
-                결제완료 목록 (배송준비 중)
-              </span>
-              &nbsp;&nbsp;/&nbsp;&nbsp;
-              <span
-                className={
-                  selector === 'retrieved'
-                    ? shippingCode.selector_cancel_on
-                    : shippingCode.selector_cancel
-                }
-                onClick={handleSelectorRetrieved}
-              >
-                상품회수 목록
-              </span>
-              &nbsp;&nbsp;/&nbsp;&nbsp;
-              <span
-                className={
-                  selector === 'return'
-                    ? shippingCode.selector_cancel_on
-                    : shippingCode.selector_cancel
-                }
-                onClick={handleSelectorReturn}
-              >
-                교환상품배송 목록
-              </span>
-            </p>
+            <MediaQuery minWidth={412}>
+              <p className={shippingCode.selector}>
+                <span
+                  className={
+                    selector === 'order'
+                      ? shippingCode.selector_order_on
+                      : shippingCode.selector_order
+                  }
+                  onClick={handleSelectorOrder}
+                >
+                  결제완료 목록 (배송준비 중)
+                </span>
+                &nbsp;&nbsp;/&nbsp;&nbsp;
+                <span
+                  className={
+                    selector === 'retrieved'
+                      ? shippingCode.selector_cancel_on
+                      : shippingCode.selector_cancel
+                  }
+                  onClick={handleSelectorRetrieved}
+                >
+                  상품회수 목록
+                </span>
+                &nbsp;&nbsp;/&nbsp;&nbsp;
+                <span
+                  className={
+                    selector === 'return'
+                      ? shippingCode.selector_cancel_on
+                      : shippingCode.selector_cancel
+                  }
+                  onClick={handleSelectorReturn}
+                >
+                  교환상품배송 목록
+                </span>
+              </p>
+            </MediaQuery>
+            <MediaQuery maxWidth={411}>
+              <div className={shippingCode.selector}>
+                <p
+                  className={
+                    selector === 'order'
+                      ? shippingCode.selector_order_on
+                      : shippingCode.selector_order
+                  }
+                  onClick={handleSelectorOrder}
+                >
+                  결제완료 목록 (배송준비 중)
+                </p>
+                <p
+                  className={
+                    selector === 'retrieved'
+                      ? shippingCode.selector_cancel_on
+                      : shippingCode.selector_cancel
+                  }
+                  onClick={handleSelectorRetrieved}
+                >
+                  상품회수 목록
+                </p>
+                <p
+                  className={
+                    selector === 'return'
+                      ? shippingCode.selector_cancel_on
+                      : shippingCode.selector_cancel
+                  }
+                  onClick={handleSelectorReturn}
+                >
+                  교환상품배송 목록
+                </p>
+              </div>
+            </MediaQuery>
+
             <p className={shippingCode.totalOrderCount}>
               Total :{' '}
               {selector === 'return' &&
@@ -1174,20 +1540,99 @@ export default function ShippingCode_admin() {
           {/* 송장등록부분 -------------------------------- */}
           <ul className={shippingCode.list_ul_wrap}>
             <p className={shippingCode.index_desc}>
-              <strong>Reci</strong> = 받는 이{' '}
+              <MediaQuery minWidth={1251}>
+                <strong>Reci</strong> = 받는 이{' '}
+              </MediaQuery>
+              <MediaQuery maxWidth={1250} minWidth={780}>
+                <strong>SC</strong> = 송장번호 &nbsp;&nbsp;&nbsp;
+                <strong>Am</strong> = 결제금액 &nbsp;&nbsp;&nbsp;
+                <strong>Re</strong> = 받는 이
+              </MediaQuery>
+              <MediaQuery maxWidth={779} minWidth={491}>
+                <strong>SC</strong> = 송장번호 &nbsp;&nbsp;&nbsp;
+                <strong>O.N.</strong> = 상품이름&nbsp;&nbsp;&nbsp;
+                <strong>Am</strong> = 결제금액&nbsp;&nbsp;&nbsp;
+                <strong>Re</strong> = 받는 이&nbsp;&nbsp;&nbsp;
+                <strong>Ms</strong> = 배송메세지&nbsp;&nbsp;&nbsp;
+              </MediaQuery>
+              <MediaQuery maxWidth={490}>
+                <strong>OI</strong> = 주문번호 &nbsp;&nbsp;&nbsp;
+                <strong>SC</strong> = 송장번호 &nbsp;&nbsp;&nbsp;
+                <strong>O.N.</strong> = 상품이름&nbsp;&nbsp;&nbsp;
+              </MediaQuery>
             </p>
+            <MediaQuery maxWidth={490} minWidth={281}>
+              <p className={shippingCode.index_desc}>
+                <strong>Am</strong> = 결제금액&nbsp;&nbsp;&nbsp;
+                <strong>Re</strong> = 받는 이&nbsp;&nbsp;&nbsp;
+                <strong>Ms</strong> = 배송메세지&nbsp;&nbsp;&nbsp;
+                <strong>St</strong> = 배송상태&nbsp;&nbsp;&nbsp;
+              </p>
+            </MediaQuery>
+            <MediaQuery maxWidth={280}>
+              <p className={shippingCode.index_desc}>
+                <strong>Am</strong> = 결제금액&nbsp;&nbsp;&nbsp;
+                <strong>Re</strong> = 받는 이&nbsp;&nbsp;&nbsp;
+              </p>
+            </MediaQuery>
+            <MediaQuery maxWidth={280}>
+              <p className={shippingCode.index_desc}>
+                <strong>Ms</strong> = 배송메세지&nbsp;&nbsp;&nbsp;
+                <strong>St</strong> = 배송상태&nbsp;&nbsp;&nbsp;
+              </p>
+            </MediaQuery>
             <li className={shippingCode.listHeader}>
-              <p>No.</p>
-              <p>OrderID</p>
-              <p>ShippingCode</p>
-              <p>OrderName</p>
-              <p>Amount</p>
+              <MediaQuery minWidth={1081}>
+                <p>No.</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={1080}>
+                <p>#</p>
+              </MediaQuery>
+              <MediaQuery minWidth={491}>
+                <p>OrderID</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={490}>
+                <p>OI</p>
+              </MediaQuery>
+              <MediaQuery minWidth={1251}>
+                <p>ShippingCode</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={1250}>
+                <p>SC</p>
+              </MediaQuery>
+              <MediaQuery minWidth={780}>
+                <p>OrderName</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={779}>
+                <p>O.N.</p>
+              </MediaQuery>
+              <MediaQuery minWidth={1251}>
+                <p>Amount</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={1250}>
+                <p>Am</p>
+              </MediaQuery>
               <p>User</p>
-              <p>Reci</p>
+              <MediaQuery minWidth={1251}>
+                <p>Reci</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={1250}>
+                <p>Rc</p>
+              </MediaQuery>
               <p>Address</p>
               <p>P.H.</p>
-              <p>Message</p>
-              <p>Status</p>
+              <MediaQuery minWidth={780}>
+                <p>Message</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={779}>
+                <p>Ms</p>
+              </MediaQuery>
+              <MediaQuery minWidth={491}>
+                <p>Status</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={490}>
+                <p>St</p>
+              </MediaQuery>
             </li>
             <div className={shippingCode.listBox}>
               {returnData.map((el, index) => {
@@ -1195,8 +1640,8 @@ export default function ShippingCode_admin() {
                   <div key={index}>
                     <li className={shippingCode.list_li}>
                       <p>{index}</p>
-                      <p>{el.shippingCode}</p>
                       <p>{el.payments.orderId}</p>
+                      <p>{el.shippingCode}</p>
                       <p>{el.payments.orderName}</p>
                       <p>{frontPriceComma(el.payments.totalAmount)}</p>
                       <p>{el.user}</p>
@@ -1341,20 +1786,32 @@ export default function ShippingCode_admin() {
                       </p>
                     </li>
                     <div className={shippingCode.orderInputWrap}>
-                      <span
-                        className={shippingCode.orderShippingCodeInput_title}
-                      >
-                        회수용 송장번호입력 :{' '}
-                      </span>
+                      <MediaQuery minWidth={855}>
+                        <span
+                          className={shippingCode.orderShippingCodeInput_title}
+                        >
+                          new송장번호입력 :{' '}
+                        </span>
+                      </MediaQuery>
+                      <MediaQuery maxWidth={854}>
+                        <span
+                          style={{ fontSize: '12px' }}
+                          className={shippingCode.orderShippingCodeInput_title}
+                        >
+                          new송장번호입력 :{' '}
+                        </span>
+                      </MediaQuery>
+
                       <input
                         type="text"
-                        placeholder="유효한 회수용 송장번호를 입력하십시오."
+                        placeholder="송장번호입력"
                         name="shippingCode"
                         className={shippingCode.orderShippingCodeInput}
                         ref={(el) =>
                           (shippingCodeValueReturn.current[index] = el)
                         }
                       />
+
                       <div
                         className={shippingCode.shippingCodeBtn}
                         onClick={() =>
@@ -1381,17 +1838,57 @@ export default function ShippingCode_admin() {
               완료: {updateInfoReturn.length}
             </p>
             <li className={shippingCode.listHeader_complete}>
-              <p>No.</p>
-              <p>OrderID</p>
-              <p>ShippingCode</p>
-              <p>OrderName</p>
-              <p>Amount</p>
+              <MediaQuery minWidth={1081}>
+                <p>No.</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={1080}>
+                <p>#</p>
+              </MediaQuery>
+              <MediaQuery minWidth={491}>
+                <p>OrderID</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={490}>
+                <p>OI</p>
+              </MediaQuery>
+              <MediaQuery minWidth={1251}>
+                <p>ShippingCode</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={1250}>
+                <p>SC</p>
+              </MediaQuery>
+              <MediaQuery minWidth={780}>
+                <p>OrderName</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={779}>
+                <p>O.N.</p>
+              </MediaQuery>
+              <MediaQuery minWidth={1251}>
+                <p>Amount</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={1250}>
+                <p>Am</p>
+              </MediaQuery>
               <p>User</p>
-              <p>Reci</p>
+              <MediaQuery minWidth={1251}>
+                <p>Reci</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={1250}>
+                <p>Rc</p>
+              </MediaQuery>
               <p>Address</p>
               <p>P.H.</p>
-              <p>Message</p>
-              <p>Status</p>
+              <MediaQuery minWidth={780}>
+                <p>Message</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={779}>
+                <p>Ms</p>
+              </MediaQuery>
+              <MediaQuery minWidth={491}>
+                <p>Status</p>
+              </MediaQuery>
+              <MediaQuery maxWidth={490}>
+                <p>St</p>
+              </MediaQuery>
             </li>
             <div className={shippingCode.listBox_complete}>
               {updateInfoReturn.length === 0 ? (

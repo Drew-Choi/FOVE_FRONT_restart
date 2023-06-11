@@ -3,6 +3,9 @@
   // background-color: beige;
   overflow: hidden;
   width: 90vw;
+  @media screen and (max-width: 667px) {
+    width: 100vw;
+  }
 
     .mainTitle{
       position: relative;
@@ -13,15 +16,43 @@
       font-weight: 600;
       padding: 30px;
       // background-color: aqua;
+      @media screen and (max-width:667px) {
+        margin-left: 30px;
+      }
+      @media screen and (max-width:383px) {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+      @media screen and (max-width:338px) {
+        font-size: 18px;
+        margin-left: 0px;
+      }
+
     }
 
     .subMenu {
       position: relative;
       display: flex;
       justify-content: space-between;
+      font-size: 15px;
       padding: 0px 20px;
+      @media screen and (max-width: 690px) {
+        font-size: 14px;
+      @media screen and (max-width: 464px) {
+        display: block;
+        text-align: center;
+      }
+        @media screen and (max-width: 280px) {
+        font-size: 12px;
+      }
+      }
 
       .selector {
+        p{
+          @media screen and (max-width: 411px) {
+          margin-bottom: 5px;
+          }
+        }
         .selector_order {
           cursor: pointer;
 
@@ -73,10 +104,16 @@
     // background-color: orange;
     margin: 0px auto;
     padding: 0px 20px;
+     @media screen and (max-width: 375px) {
+        padding: 0px 10px;
+      }
 
     .index_desc {
       margin-bottom: 5px;
       font-size: 13px;
+      @media screen and (max-width: 779px) {
+        font-size: 10px;
+      }
     }
 
     .listHeader {
@@ -90,6 +127,15 @@
       border-bottom: 0.5px solid rgb(132, 132, 132);
       border-top: 0.5px solid rgb(132, 132, 132);
       font-weight: 600;
+
+      @media screen and (max-width: 900px) {
+        font-size: 11px;
+      }
+
+        @media screen and (max-width: 280px) {
+        font-size: 9px;
+        gap: 0px;
+      }
 
         p{
           margin-bottom: 0px;
@@ -115,6 +161,13 @@
           }
           &:nth-child(7){
             flex: 0.3;
+
+          @media screen and (max-width: 796px) {
+            flex: 0.5;
+          }
+            @media screen and (max-width: 407px) {
+            flex: 0.7;
+          }
           }
           &:nth-child(8){
             flex: 2;
@@ -159,6 +212,13 @@
         padding: 5px 0px;
         list-style: none;
         // border-bottom: 0.5px solid rgb(132, 132, 132);
+        @media screen and (max-width: 900px) {
+        font-size: 10px;
+        }
+         @media screen and (max-width: 280px) {
+        font-size: 9px;
+        gap: 0px;
+        }
 
         p{
           text-align: left;
@@ -189,6 +249,13 @@
           }
           &:nth-child(7){
             flex: 0.3;
+
+            @media screen and (max-width: 796px) {
+              flex: 0.5;
+            }
+            @media screen and (max-width: 407px) {
+            flex: 0.7;
+          }
           }
           &:nth-child(8){
             flex: 2;
@@ -224,44 +291,60 @@
       border-top: 0.5px solid rgb(132, 132, 132);
       font-weight: 600;
 
-        p{
-          margin-bottom: 0px;
-          border-right: 0.5px solid rgb(132, 132, 132);
+      @media screen and (max-width: 900px) {
+        font-size: 11px;
+      }
 
-          &:first-child{
-            flex: 0.2;
-          }
-          &:nth-child(2){
-            flex: 1;
-          }
-          &:nth-child(3){
-            flex: 0.8;
-          }
-          &:nth-child(4){
-            flex: 1;
-          }
-          &:nth-child(5){
-            flex: 0.4;
-          }
-          &:nth-child(6){
-            flex: 0.8;
-          }
-          &:nth-child(7){
-            flex: 0.3;
-          }
-          &:nth-child(8){
-            flex: 2;
-          }
-          &:nth-child(9){
-            flex: 0.6;
-          }
-          &:nth-child(10){
-            flex: 0.8;
-          }
-          &:last-child{
-            flex: 0.7;
-          }
+        @media screen and (max-width: 280px) {
+        font-size: 9px;
+        gap: 0px;
+      }
+
+      p{
+        margin-bottom: 0px;
+        border-right: 0.5px solid rgb(132, 132, 132);
+
+        &:first-child{
+          flex: 0.2;
         }
+        &:nth-child(2){
+          flex: 1;
+        }
+        &:nth-child(3){
+          flex: 0.8;
+        }
+        &:nth-child(4){
+          flex: 1;
+        }
+        &:nth-child(5){
+          flex: 0.4;
+        }
+        &:nth-child(6){
+          flex: 0.8;
+        }
+        &:nth-child(7){
+          flex: 0.3;
+
+        @media screen and (max-width: 796px) {
+          flex: 0.5;
+        }
+          @media screen and (max-width: 407px) {
+          flex: 0.7;
+        }
+        }
+        &:nth-child(8){
+          flex: 2;
+        }
+        &:nth-child(9){
+          flex: 0.6;
+        }
+        &:nth-child(10){
+          flex: 0.8;
+        }
+        &:last-child{
+          flex: 0.7;
+        }
+      }
     }
 
     .listBox_complete{
@@ -293,6 +376,14 @@
         list-style: none;
         border-bottom: 0.5px solid rgb(132, 132, 132);
 
+        @media screen and (max-width: 900px) {
+          font-size: 10px;
+        }
+        @media screen and (max-width: 280px) {
+          font-size: 9px;
+          gap: 0px;
+        }
+
         p{
           text-align: left;
           margin-bottom: 0px;
@@ -322,6 +413,13 @@
           }
           &:nth-child(7){
             flex: 0.3;
+
+            @media screen and (max-width: 796px) {
+              flex: 0.5;
+            }
+            @media screen and (max-width: 407px) {
+            flex: 0.7;
+          }
           }
           &:nth-child(8){
             flex: 2;
@@ -344,14 +442,49 @@
         padding: 10px 10px;
         border-bottom: 0.5px solid rgb(132, 132, 132);
 
+        @media screen and (max-width: 912px) {
+          padding: 10px 5px;
+        }
+
+         @media screen and (max-width: 360px) {
+            padding: 10px 0px;
+          }
+
         .orderShippingCodeInput_title{
           font-size: 15px;
+          @media screen and (max-width: 360px) {
+            font-size: 12px;
+          }
         }
         .orderShippingCodeInput{
           position: relative;
           width: 50vw;
           font-size: 15px;
           padding: 0px 5px;
+          @media screen and (max-width: 817px) {
+            width: 40vw;
+          }
+          @media screen and (max-width: 690px) {
+            width: 38vw;
+            font-size: 10px;
+          }
+          @media screen and (max-width: 667px) {
+            width: 60vw;
+            font-size: 10px;
+          }
+           @media screen and (max-width: 528px) {
+            width: 50vw;
+            font-size: 10px;
+          }
+            @media screen and (max-width: 430px) {
+            width: 40vw;
+            font-size: 10px;
+          }
+
+           @media screen and (max-width: 290px) {
+            width: 38vw;
+            font-size: 10px;
+          }
         }
         .shippingCodeBtn{
           position: relative;
@@ -375,36 +508,8 @@
             background-color: rgb(226, 226, 226);
             color:rgb(226, 226, 226);
           }
+       
         }
       }
     }
-
-    .list_ul_wrap_Cancel{
-      position: relative;
-      // background-color: orange;
-      width: 88.5vw;
-      margin: 0px auto;
-      // border: 0.5px solid black;
-      padding: 0px 20px;
-  
-        .list_li{
-          display: grid;
-          gap: 10px;
-          grid-template-columns: 50px 0.6fr 1fr 0.55fr 0.3fr 0.8fr;
-          font-size: 15px;
-          padding: 5px 0px;
-          list-style: none;
-          border-bottom: 0.5px solid rgb(132, 132, 132);
-          cursor: pointer;
-  
-          &:hover {
-            background-color: rgb(210, 210, 210);
-          }
-  
-          p{
-            margin-bottom: 0px;
-            border-right: 0.5px solid rgb(132, 132, 132);
-          }
-        }
-      }
 }
