@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import navBarAdmin from '../../styles/navBar_admin.module.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CiMenuBurger } from 'react-icons/ci';
 import { AiOutlineClose } from 'react-icons/ai';
+import { orderFilter } from '../../store/modules/admin_orderList';
 
 export default function NavBar_admin() {
   const location = useLocation();
@@ -12,6 +13,7 @@ export default function NavBar_admin() {
   // 파라미터를 위한 주소
   const hasOrderId = currentURL.includes('/admin/orderlist/detail/');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const adminName = useSelector((state) =>
     state.user.userName === '' ? '' : state.user.userName,
@@ -67,7 +69,9 @@ export default function NavBar_admin() {
                   <></>
                 )
               }
-              onClick={() => navigate('/admin/orderlist')}
+              onClick={() => {
+                dispatch(orderFilter('allIndex')), navigate('/admin/orderlist');
+              }}
             >
               주문관리
             </li>
@@ -106,7 +110,9 @@ export default function NavBar_admin() {
                   <></>
                 )
               }
-              onClick={() => navigate('/admin/orderlist')}
+              onClick={() => {
+                dispatch(orderFilter('allIndex')), navigate('/admin/orderlist');
+              }}
             >
               주문관리
             </li>
@@ -173,7 +179,9 @@ export default function NavBar_admin() {
                   )
                 }
                 onClick={() => {
-                  handleBurger(), navigate('/admin/orderlist');
+                  handleBurger(),
+                    dispatch(orderFilter('allIndex')),
+                    navigate('/admin/orderlist');
                 }}
               >
                 주문관리

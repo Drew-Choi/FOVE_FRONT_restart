@@ -71,6 +71,21 @@
       }
 
     }
+
+    .filter {
+      // background-color: beige;
+      padding: 5px 20px;
+      text-align: right;
+      font-size: 15px;
+
+      @media screen and (max-width:375px) {
+        font-size: 13px;
+      }
+
+      .filter_select{
+        padding: 1px 5px;
+      }
+    }
     
 
     .list_ul_wrap{

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import LoadingAdmin from '../client_components/LoadingAdmin';
+import Loading_Spinner from '../client_components/Loading_Spinner';
 
 const Pd_Images = styled.div`
   ${(props) =>
@@ -41,6 +42,9 @@ export default function OrderList_Indi_Admin() {
   const { orderId } = useParams();
   const [status, setStatus] = useState(null);
   const [redirect, setRedirect] = useState(true);
+
+  // 스피너 상태 훅
+  const [spinner, setSpinner] = useState(false);
 
   // 라디오 박스 useState - 관리자 컨트롤 부분 - 배송상태
   const [adminShippingCondition, setAdminShippingCondition] = useState(null);
@@ -587,6 +591,7 @@ export default function OrderList_Indi_Admin() {
       return setRedirect((cur) => !cur), alert('환불진행 취소');
 
     // confirm이 true이면
+    setSpinner((cur) => true);
     try {
       const cancelInfo = await axios.post(
         'http://localhost:4000/admin/orderlist/detail/cancelRefund/complete',
@@ -600,8 +605,8 @@ export default function OrderList_Indi_Admin() {
       return;
     } catch (err) {
       console.error(err);
-      return;
     }
+    setSpinner((cur) => false);
   };
 
   // 반품신청 취소
@@ -685,6 +690,7 @@ export default function OrderList_Indi_Admin() {
 
   return (
     <div className={orderListIndi.wholContainer}>
+      {spinner && <Loading_Spinner />}
       <p className={orderListIndi.mainTitle}>
         ORDER DETAILS &nbsp;
         <span style={{ fontSize: '15px', fontWeight: '400' }}>Admin</span>

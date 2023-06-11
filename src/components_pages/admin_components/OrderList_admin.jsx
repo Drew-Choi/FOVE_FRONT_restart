@@ -1,15 +1,63 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import admin_orderList from '../../styles/orderList_Admin.module.scss';
 import axios from 'axios';
 import LoadingAdmin from '../client_components/LoadingAdmin';
 import { useNavigate } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
+import { useDispatch, useSelector } from 'react-redux';
+import { orderFilter } from '../../store/modules/admin_orderList';
 
 export default function OrderList_admin() {
   const [orderData, setOrderData] = useState(null);
   const [cancelData, setCancelData] = useState(null);
   const [selector, setSelector] = useState('order');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // 필터용 함수 및 상태보관 ----------------------------
+  // 필터용 셀렉트 - 주문내역
+  const filterSelect = useSelector(
+    (state) => state.admin_orderList.orderFilterValue,
+  );
+  const handleFilterSelect = (e) => {
+    dispatch(orderFilter(e.target.value));
+  };
+
+  // 필터함수 - 주문내역-반품신청내역
+  const filterSubmitReturnIndex = (data) => {
+    const filterData = data.filter(
+      (el) =>
+        el.payments.status === 'DONE' &&
+        el.isOrdered &&
+        !el.isShipping &&
+        el.shippingCode !== 0 &&
+        el.isDelivered &&
+        !el.isCancel &&
+        !el.isReturn &&
+        !el.isRetrieved &&
+        !el.isRefund &&
+        el.isReturnSubmit,
+    );
+    return filterData;
+  };
+
+  // 필터함수 - 주문내역-최종환불내역
+  const filterFinalRefundIndex = (data) => {
+    const filterData = data.filter(
+      (el) =>
+        el.payments.status === 'DONE' &&
+        el.isOrdered &&
+        !el.isShipping &&
+        el.shippingCode !== 0 &&
+        !el.isDelivered &&
+        !el.isCancel &&
+        !el.isReturn &&
+        el.isRetrieved &&
+        el.isRefund &&
+        el.isReturnSubmit,
+    );
+    return filterData;
+  };
 
   const getOrderListInfo = async () => {
     try {
@@ -100,6 +148,18 @@ export default function OrderList_admin() {
                 : cancelData.length}
             </p>
           </div>
+          <div className={admin_orderList.filter}>
+            <select
+              className={admin_orderList.filter_select}
+              name="orderList_index"
+              defaultValue={filterSelect}
+              onChange={(e) => handleFilterSelect(e)}
+            >
+              <option value="allIndex">전체내역</option>
+              <option value="submitReturnIndex">반품신청내역</option>
+              <option value="finalRefundIndex">최종환불내역</option>
+            </select>
+          </div>
           <ul className={admin_orderList.list_ul_wrap}>
             <li className={admin_orderList.listHeader}>
               <MediaQuery minWidth={491}>
@@ -119,7 +179,14 @@ export default function OrderList_admin() {
               </MediaQuery>
               <p>Status</p>
             </li>
-            {orderData.map((el, index) => {
+            {(filterSelect === 'allIndex'
+              ? orderData
+              : filterSelect === 'submitReturnIndex'
+              ? filterSubmitReturnIndex(orderData)
+              : filterSelect === 'finalRefundIndex'
+              ? filterFinalRefundIndex(orderData)
+              : []
+            ).map((el, index) => {
               return (
                 <li
                   className={admin_orderList.list_li}
