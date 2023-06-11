@@ -400,11 +400,9 @@ export default function OrderList_admin() {
                 <li
                   className={admin_orderList.list_li}
                   key={index}
-                  // onClick={() =>
-                  //   navigate(
-                  //     `/admin/orderlist/detaliCancel/${el.payments.orderId}`,
-                  //   )
-                  // }
+                  onClick={() =>
+                    navigate(`/admin/orderlist/detail/${el.payments.orderId}`)
+                  }
                 >
                   <p>{index}</p>
                   <p>{el.payments.orderId}</p>

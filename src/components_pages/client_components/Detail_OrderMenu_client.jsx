@@ -69,8 +69,15 @@ export default function Detail_OrderMenu_client({
       size: key,
       stock: value,
     }));
-    const sizeFilter = await sizeArr.filter((el) => el.stock !== 0);
-    setSizeCheck((cur) => sizeFilter[0].size);
+    const sizeFilter = await sizeArr.filter(
+      (el) => el.stock !== -1 && el.stock !== 0,
+    );
+    if (sizeFilter.length === 0) {
+      return;
+    } else {
+      // 아니라면,아래
+      setSizeCheck((cur) => sizeFilter[0].size);
+    }
   };
 
   //화면이 마운트되면 바로 초기 사이즈첵의 값을 재고에 따라 잡아준다.
@@ -103,6 +110,13 @@ export default function Detail_OrderMenu_client({
     } else {
       setOnL(false);
     }
+
+    if (sizeCheck === '') {
+      setOnOS(false);
+      setOnS(false);
+      setOnM(false);
+      setOnL(false);
+    }
   }, [sizeCheck]);
 
   //카트에 추가하는 Post 요청
@@ -112,7 +126,6 @@ export default function Detail_OrderMenu_client({
       alert('로그인이 필요한 서비스입니다.');
       return navigate(`/login`);
     }
-
     try {
       const reqData = await axios.post(`http://localhost:4000/cart/add`, {
         token: await getToken(),
@@ -121,10 +134,8 @@ export default function Detail_OrderMenu_client({
         img: datas.img[0],
         price: datas.price,
         size: sizeCheck,
-        color: datas.color,
         quantity: count,
         unitSumPrice: datas.price * count,
-        _id: datas._id,
       });
       if (reqData.status === 200) {
         // updateCart();
@@ -218,7 +229,7 @@ export default function Detail_OrderMenu_client({
         ₩ {frontPriceComma(count * price)}
       </p>
       <div className={detailOrderMenu.infoContain}>
-        {datas.size.OS > 0 ? (
+        {datas.size.OS !== -1 && datas.size.OS !== 0 ? (
           <button
             className={`${detailOrderMenu.sizeBTN} ${
               onOS ? detailOrderMenu.on : ''
@@ -228,8 +239,15 @@ export default function Detail_OrderMenu_client({
           >
             OS
           </button>
-        ) : null}
-        {datas.size.S > 0 ? (
+        ) : datas.size.OS === 0 ? (
+          <button className={detailOrderMenu.sizeBTN_soldOut}>
+            <div className={detailOrderMenu.line}></div>
+            <span>OS</span>
+          </button>
+        ) : (
+          <></>
+        )}
+        {datas.size.S !== -1 && datas.size.S !== 0 ? (
           <button
             className={`${detailOrderMenu.sizeBTN} ${
               onS ? detailOrderMenu.on : ''
@@ -239,8 +257,15 @@ export default function Detail_OrderMenu_client({
           >
             S
           </button>
-        ) : null}
-        {datas.size.M > 0 ? (
+        ) : datas.size.S === 0 ? (
+          <button className={detailOrderMenu.sizeBTN_soldOut}>
+            <div className={detailOrderMenu.line}></div>
+            <span>S</span>
+          </button>
+        ) : (
+          <></>
+        )}
+        {datas.size.M !== -1 && datas.size.M !== 0 ? (
           <button
             className={`${detailOrderMenu.sizeBTN} ${
               onM ? detailOrderMenu.on : ''
@@ -250,8 +275,15 @@ export default function Detail_OrderMenu_client({
           >
             M
           </button>
-        ) : null}
-        {datas.size.L > 0 ? (
+        ) : datas.size.M === 0 ? (
+          <button className={detailOrderMenu.sizeBTN_soldOut}>
+            <div className={detailOrderMenu.line}></div>
+            <span>M</span>
+          </button>
+        ) : (
+          <></>
+        )}
+        {datas.size.L !== -1 && datas.size.L !== 0 ? (
           <button
             className={`${detailOrderMenu.sizeBTN} ${
               onL ? detailOrderMenu.on : ''
@@ -261,7 +293,14 @@ export default function Detail_OrderMenu_client({
           >
             L
           </button>
-        ) : null}
+        ) : datas.size.L === 0 ? (
+          <button className={detailOrderMenu.sizeBTN_soldOut}>
+            <div className={detailOrderMenu.line}></div>
+            <span>L</span>
+          </button>
+        ) : (
+          <></>
+        )}
 
         <div className={detailOrderMenu.detailDesc}>{detail}</div>
 
@@ -278,24 +317,32 @@ export default function Detail_OrderMenu_client({
 
         <div className={detailOrderMenu.downInfoContain}>
           <div className={detailOrderMenu.countContainer}>
-            <span
-              className={detailOrderMenu.miners}
-              onClick={() =>
-                count <= 1 ? setCount((cur) => 1) : setCount((cur) => cur - 1)
-              }
-            >
-              -
-            </span>
+            {sizeCheck === '' ? (
+              <span className={detailOrderMenu.countNumber}>0</span>
+            ) : (
+              <>
+                <span
+                  className={detailOrderMenu.miners}
+                  onClick={() =>
+                    count <= 1
+                      ? setCount((cur) => 1)
+                      : setCount((cur) => cur - 1)
+                  }
+                >
+                  -
+                </span>
 
-            <span className={detailOrderMenu.countNumber}>{count}</span>
+                <span className={detailOrderMenu.countNumber}>{count}</span>
 
-            <span
-              className={detailOrderMenu.plus}
-              onClick={() => setCount((cur) => cur + 1)}
-            >
-              {' '}
-              +{' '}
-            </span>
+                <span
+                  className={detailOrderMenu.plus}
+                  onClick={() => setCount((cur) => cur + 1)}
+                >
+                  {' '}
+                  +{' '}
+                </span>
+              </>
+            )}
           </div>
 
           <div className={detailOrderMenu.catIcon}>
@@ -306,9 +353,13 @@ export default function Detail_OrderMenu_client({
             Add Cart
           </button>
           <br></br>
-          <button className={detailOrderMenu.buy} onClick={buyNow}>
-            Buy
-          </button>
+          {sizeCheck === '' ? (
+            <button className={detailOrderMenu.buy_soldout}>Sold-Out</button>
+          ) : (
+            <button className={detailOrderMenu.buy} onClick={buyNow}>
+              BUY
+            </button>
+          )}
         </div>
       </div>
     </div>

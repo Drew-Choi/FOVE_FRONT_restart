@@ -52,9 +52,6 @@ export default function Order_client() {
     ),
   );
 
-  const userName = useSelector((state) => state.user.userName);
-  const userPoints = useSelector((state) => state.user.userPoints);
-
   //----------------------------------------------------------------
 
   //다음주소 불러오기 기능 ----------------------------------------------

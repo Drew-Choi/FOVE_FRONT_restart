@@ -97,6 +97,16 @@ export default function ProductRegister_admin() {
   };
   //-------
 
+  // 재고 유효사항을 위한 상태관리
+  // OS사이즈
+  const [os_Value, setOS_Value] = useState('');
+  // S사이즈
+  const [s_Value, setS_Value] = useState('');
+  // M사이즈
+  const [m_Value, setM_Value] = useState('');
+  // L사이즈
+  const [l_Value, setL_Value] = useState('');
+
   //input 값을 받을 useRef생성
   const pd_code = useRef();
   const pd_productName = useRef();
@@ -204,12 +214,21 @@ export default function ProductRegister_admin() {
       let productCode = pd_code.current.value;
       let productName = pd_productName.current.value;
       let price = resultCommaRemove(pd_price.current.value);
-      let sizeOS = resultCommaRemove(pd_sizeOS.current.value);
-      let sizeS = resultCommaRemove(pd_sizeS.current.value);
-      let sizeM = resultCommaRemove(pd_sizeM.current.value);
-      let sizeL = resultCommaRemove(pd_sizeL.current.value);
+      let sizeOS =
+        os_Value === 'OS' ? resultCommaRemove(pd_sizeOS.current.value) : -1;
+      let sizeS =
+        s_Value === 'S' ? resultCommaRemove(pd_sizeS.current.value) : -1;
+      let sizeM =
+        m_Value === 'M' ? resultCommaRemove(pd_sizeM.current.value) : -1;
+      let sizeL =
+        l_Value === 'L' ? resultCommaRemove(pd_sizeL.current.value) : -1;
       let category = pd_category.current.value;
       let detail = pd_detail.current.value;
+
+      console.log('OS', sizeOS);
+      console.log('S', sizeS);
+      console.log('M', sizeM);
+      console.log('L', sizeL);
 
       //이미지 폼데이터 만들기
       const formData = new FormData();
@@ -239,24 +258,24 @@ export default function ProductRegister_admin() {
           return alert('상품 필수 정보를 모두 입력해주세요.');
         } else {
           if (
-            (sizeOS === 0 ||
+            (sizeOS === -1 ||
               sizeOS === undefined ||
               sizeOS === null ||
               sizeOS === '') &&
-            (sizeS === 0 ||
+            (sizeS === -1 ||
               sizeS === undefined ||
               sizeS === null ||
               sizeS === '') &&
-            (sizeM === 0 ||
+            (sizeM === -1 ||
               sizeM === undefined ||
               sizeM === null ||
               sizeM === '') &&
-            (sizeL === 0 ||
+            (sizeL === -1 ||
               sizeL === undefined ||
               sizeL === null ||
               sizeL === '')
           ) {
-            return alert('최소 1개의 사이즈의 재고를 입력해주세요.');
+            return alert('최소 1개의 사이즈를 입력해주세요.');
           } else {
             //여러 이미지라 formdata에 담아줌
             for (let i = 0; i < pd_img.current.length; i += 1) {
@@ -422,83 +441,144 @@ export default function ProductRegister_admin() {
 
         {/* 사이즈 별 수량 */}
         <p className={productRegister.sizeDesc}>
-          → * 재고는 최소 1개 사이즈 입력 필수
+          → * 유효한 사이즈 체크 후 재고입력 (최소 1개 체크)
         </p>
-        <div className={productRegister.indi_container}>
-          <p className={productRegister.pd_OS_title}>
-            재고수량 <strong style={{ fontSize: '18px' }}>OS</strong>
-          </p>
-          <Input_Custom
-            classNameDiv={productRegister.pd_OS_Input}
-            inputref={pd_sizeOS}
-            type="text"
-            placeholder="OS 사이즈 재고수량을 입력해주세요."
-            name="size[OS]"
-            value={enterNumQuantity1}
-            onChangeEvent={() =>
-              setEnterNumQuantity1(
-                changeEnteredNumComma(pd_sizeOS.current.value),
-              )
-            }
+        <p
+          className={productRegister.sizeDesc}
+          style={{ marginBottom: '20px' }}
+        >
+          → * 사이즈체크 후 미입력시 SoldOut처리
+        </p>
+        <div className={productRegister.sizeUsed_check}>
+          <span>OS </span>
+          <input
+            className={productRegister.pd_size_checkbox}
+            type="checkbox"
+            value="OS"
+            onChange={(e) => {
+              e.target.checked
+                ? setOS_Value((cur) => e.target.value)
+                : setOS_Value((cur) => '');
+            }}
+          />
+          <span>S</span>
+          <input
+            className={productRegister.pd_size_checkbox}
+            type="checkbox"
+            value="S"
+            onChange={(e) => {
+              e.target.checked
+                ? setS_Value((cur) => e.target.value)
+                : setS_Value((cur) => '');
+            }}
+          />
+          <span>M</span>
+          <input
+            className={productRegister.pd_size_checkbox}
+            type="checkbox"
+            value="M"
+            onChange={(e) => {
+              e.target.checked
+                ? setM_Value((cur) => e.target.value)
+                : setM_Value((cur) => '');
+            }}
+          />
+          <span>L</span>
+          <input
+            className={productRegister.pd_size_checkbox}
+            type="checkbox"
+            value="L"
+            onChange={(e) => {
+              e.target.checked
+                ? setL_Value((cur) => e.target.value)
+                : setL_Value((cur) => '');
+            }}
           />
         </div>
 
-        <div className={productRegister.indi_container}>
-          <p className={productRegister.pd_S_title}>
-            재고수량 <strong style={{ fontSize: '18px' }}>S</strong>
-          </p>
-          <Input_Custom
-            classNameDiv={productRegister.pd_S_Input}
-            inputref={pd_sizeS}
-            type="text"
-            placeholder="S 사이즈 재고수량을 입력해주세요."
-            name="size[S]"
-            value={enterNumQuantity2}
-            onChangeEvent={() =>
-              setEnterNumQuantity2(
-                changeEnteredNumComma(pd_sizeS.current.value),
-              )
-            }
-          />
-        </div>
+        {os_Value === 'OS' && (
+          <div className={productRegister.indi_container}>
+            <p className={productRegister.pd_OS_title}>
+              재고수량 <strong style={{ fontSize: '18px' }}>OS</strong>
+            </p>
+            <Input_Custom
+              classNameDiv={productRegister.pd_OS_Input}
+              inputref={pd_sizeOS}
+              type="text"
+              placeholder="OS 사이즈 재고수량을 입력해주세요."
+              name="size[OS]"
+              value={enterNumQuantity1}
+              onChangeEvent={() =>
+                setEnterNumQuantity1(
+                  changeEnteredNumComma(pd_sizeOS.current.value),
+                )
+              }
+            />
+          </div>
+        )}
 
-        <div className={productRegister.indi_container}>
-          <p className={productRegister.pd_M_title}>
-            재고수량 <strong style={{ fontSize: '18px' }}>M</strong>
-          </p>
-          <Input_Custom
-            classNameDiv={productRegister.pd_M_Input}
-            inputref={pd_sizeM}
-            type="text"
-            placeholder="M 사이즈 재고수량을 입력해주세요."
-            name="size[M]"
-            value={enterNumQuantity3}
-            onChangeEvent={() =>
-              setEnterNumQuantity3(
-                changeEnteredNumComma(pd_sizeM.current.value),
-              )
-            }
-          />
-        </div>
+        {s_Value === 'S' && (
+          <div className={productRegister.indi_container}>
+            <p className={productRegister.pd_S_title}>
+              재고수량 <strong style={{ fontSize: '18px' }}>S</strong>
+            </p>
+            <Input_Custom
+              classNameDiv={productRegister.pd_S_Input}
+              inputref={pd_sizeS}
+              type="text"
+              placeholder="S 사이즈 재고수량을 입력해주세요."
+              name="size[S]"
+              value={enterNumQuantity2}
+              onChangeEvent={() =>
+                setEnterNumQuantity2(
+                  changeEnteredNumComma(pd_sizeS.current.value),
+                )
+              }
+            />
+          </div>
+        )}
 
-        <div className={productRegister.indi_container}>
-          <p className={productRegister.pd_L_title}>
-            재고수량 <strong style={{ fontSize: '18px' }}>L</strong>
-          </p>
-          <Input_Custom
-            classNameDiv={productRegister.pd_L_Input}
-            inputref={pd_sizeL}
-            type="text"
-            placeholder="L 사이즈 재고수량을 입력해주세요."
-            name="size[L]"
-            value={enterNumQuantity4}
-            onChangeEvent={() =>
-              setEnterNumQuantity4(
-                changeEnteredNumComma(pd_sizeL.current.value),
-              )
-            }
-          />
-        </div>
+        {m_Value === 'M' && (
+          <div className={productRegister.indi_container}>
+            <p className={productRegister.pd_M_title}>
+              재고수량 <strong style={{ fontSize: '18px' }}>M</strong>
+            </p>
+            <Input_Custom
+              classNameDiv={productRegister.pd_M_Input}
+              inputref={pd_sizeM}
+              type="text"
+              placeholder="M 사이즈 재고수량을 입력해주세요."
+              name="size[M]"
+              value={enterNumQuantity3}
+              onChangeEvent={() =>
+                setEnterNumQuantity3(
+                  changeEnteredNumComma(pd_sizeM.current.value),
+                )
+              }
+            />
+          </div>
+        )}
+
+        {l_Value === 'L' && (
+          <div className={productRegister.indi_container}>
+            <p className={productRegister.pd_L_title}>
+              재고수량 <strong style={{ fontSize: '18px' }}>L</strong>
+            </p>
+            <Input_Custom
+              classNameDiv={productRegister.pd_L_Input}
+              inputref={pd_sizeL}
+              type="text"
+              placeholder="L 사이즈 재고수량을 입력해주세요."
+              name="size[L]"
+              value={enterNumQuantity4}
+              onChangeEvent={() =>
+                setEnterNumQuantity4(
+                  changeEnteredNumComma(pd_sizeL.current.value),
+                )
+              }
+            />
+          </div>
+        )}
 
         {/* 상품이미지 등록 */}
         <div className={productRegister.imgWrap}>

@@ -14,6 +14,50 @@ div.productRegister_admin {
       left: 50%;
       transform: translateX(-50%);;
     }
+
+    .sizeUsed_check{
+      position: relative;
+      display: flex;
+      align-items: center;
+      font-size: 15px;
+      gap: 5px;
+      // background-color: beige;
+      width: 865px;
+      padding: 0px 20px;
+      margin-bottom: 30px;
+
+
+      @media screen and (max-width: 1140px) {
+        width: 700px;
+        padding: 0px;
+      }
+
+      @media screen and (max-width: 968px) {
+        width: 400px;
+      }
+
+      @media screen and (max-width: 425px) {
+        width: 250px;
+        font-size: 13px;
+        left: 50%;
+        transform: translateX(-50%);
+        // background-color: beige;
+      }
+
+      .pd_size_checkbox{
+        display: inline-block;
+        width: 15px;
+        margin-bottom: 2px;
+        margin-right: 20px;
+
+
+      @media screen and (max-width: 425px) {
+        width: 13px;
+        font-size: 13px;
+        margin-right: 10px;
+      }
+      }
+    }
     
     // 각 셀렉터 및 인풋 컨트롤
     .indi_container { 
@@ -95,8 +139,6 @@ div.productRegister_admin {
         width: 250px;
       }
     }
-   
-
       .kind_title {
         margin-bottom: 0px;
       }
@@ -151,6 +193,7 @@ div.productRegister_admin {
       .sizeDesc {
         margin-left: 20px;
         font-size: 12px;
+        margin-bottom: 5px;
 
         @media screen and (max-width: 968px) {
           margin-left: 0px;

@@ -626,7 +626,13 @@ export default function ProductList_admin() {
             key={item?.id}
             type="text"
             name="sizeOS"
-            placeholder={changeEnteredNumComma(item?.size.OS)}
+            placeholder={
+              item.size.OS === 0
+                ? 'SoldOut'
+                : item.size.OS === -1
+                ? '사이즈 없음'
+                : changeEnteredNumComma(item?.size.OS)
+            }
             disabled={disableControll[index]}
           />
           <MediaQuery minWidth={491}>
@@ -648,7 +654,13 @@ export default function ProductList_admin() {
             key={item.id}
             type="text"
             name="sizeS"
-            placeholder={changeEnteredNumComma(item?.size.S)}
+            placeholder={
+              item.size.S === 0
+                ? 'SoldOut'
+                : item.size.S === -1
+                ? '사이즈 없음'
+                : changeEnteredNumComma(item?.size.S)
+            }
             disabled={disableControll[index]}
           />
           <p>M 재고</p>
@@ -665,7 +677,13 @@ export default function ProductList_admin() {
             key={item.id}
             type="text"
             name="sizeM"
-            placeholder={changeEnteredNumComma(item?.size.M)}
+            placeholder={
+              item.size.M === 0
+                ? 'SoldOut'
+                : item.size.M === -1
+                ? '사이즈 없음'
+                : changeEnteredNumComma(item?.size.M)
+            }
             disabled={disableControll[index]}
           />
           <MediaQuery minWidth={491}>
@@ -687,7 +705,13 @@ export default function ProductList_admin() {
             key={item?.id}
             type="text"
             name="sizeL"
-            placeholder={changeEnteredNumComma(item?.size.L)}
+            placeholder={
+              item.size.L === 0
+                ? 'SoldOut'
+                : item.size.L === -1
+                ? '사이즈 없음'
+                : changeEnteredNumComma(item?.size.L)
+            }
             disabled={disableControll[index]}
           />
         </div>
@@ -714,6 +738,7 @@ export default function ProductList_admin() {
           <br />* 이미지는 1:1 비율을 유지해주세요. 그렇지 않으면 잘립니다.
           <br />* Main이미지와 Sub_1이미지는 삭제가 불가하며 교체만
           가능합니다.(필수 사진 2개)
+          <br />* &#39;사이즈없음&#39;은 재고입력시 사이즈가 추가됩니다.
         </p>
       )}
 
