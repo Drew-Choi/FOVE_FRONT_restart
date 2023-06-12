@@ -76,7 +76,6 @@ export default function Header_client() {
         );
 
         if (cartDataGet.status === 200) {
-          console.log(cartDataGet.data);
           dispatch(importdb(cartDataGet.data));
         }
       } catch (err) {

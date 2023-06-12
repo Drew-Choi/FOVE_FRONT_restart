@@ -247,15 +247,13 @@ export default function CartModal({ className, cartModalMenu }) {
   );
 
   //카트 상품 수량 빼기
-  const minersCartItem = async (identity_id) => {
+  const minersCartItem = async (index) => {
     try {
       const tokenValue = await getToken();
-      const downData = await axios.post(
-        `http://localhost:4000/cart/qtyminus/${identity_id}`,
-        {
-          token: tokenValue,
-        },
-      );
+      const downData = await axios.post(`http://localhost:4000/cart/qtyminus`, {
+        token: tokenValue,
+        index,
+      });
       if (downData.status === 200) {
         if (downData.data && downData.data.userCart) {
           // 'cartObj' 객체가 null이 아니고 'products' 속성이 존재하는 경우에만 실행
@@ -264,9 +262,6 @@ export default function CartModal({ className, cartModalMenu }) {
           const totalQuantity = datas.reduce((sum, el) => sum + el.quantity, 0);
           dispatch(update(datas, totalQuantity));
         }
-        downData.data.message;
-      } else {
-        downData.data.message;
       }
     } catch (err) {
       console.error(err);
@@ -274,15 +269,13 @@ export default function CartModal({ className, cartModalMenu }) {
   };
 
   //카트 상품 수량 추가
-  const plusCartItem = async (identity_id) => {
+  const plusCartItem = async (index) => {
     try {
       const tokenValue = await getToken();
-      const upData = await axios.post(
-        `http://localhost:4000/cart/qtyplus/${identity_id}`,
-        {
-          token: tokenValue,
-        },
-      );
+      const upData = await axios.post(`http://localhost:4000/cart/qtyplus`, {
+        token: tokenValue,
+        index,
+      });
       if (upData.status === 200) {
         if (upData.data && upData.data.userCart) {
           // 'cartObj' 객체가 null이 아니고 'products' 속성이 존재하는 경우에만 실행
@@ -291,25 +284,24 @@ export default function CartModal({ className, cartModalMenu }) {
           const totalQuantity = datas.reduce((sum, el) => sum + el.quantity, 0);
           dispatch(update(datas, totalQuantity));
         }
-        upData.data.message;
       } else {
-        upData.data.message;
+        alert(upData.data);
+        return;
       }
     } catch (err) {
+      if (err.response.status === 400) return alert(err.response.data);
       console.error(err);
     }
   };
 
   //개별 상품 삭제
-  const deletePD = async (identity_id) => {
+  const deletePD = async (index) => {
     try {
       const tokenValue = await getToken();
-      const deleteID = await axios.post(
-        `http://localhost:4000/cart/remove/${identity_id}`,
-        {
-          token: tokenValue,
-        },
-      );
+      const deleteID = await axios.post(`http://localhost:4000/cart/remove`, {
+        token: tokenValue,
+        index,
+      });
       if (deleteID.status === 200) {
         if (deleteID.data && deleteID.data.updatedCart) {
           // 'cartObj' 객체가 null이 아니고 'products' 속성이 존재하는 경우에만 실행
@@ -318,9 +310,6 @@ export default function CartModal({ className, cartModalMenu }) {
           const totalQuantity = datas.reduce((sum, el) => sum + el.quantity, 0);
           await dispatch(update(datas, totalQuantity));
         }
-        deleteID.data.message;
-      } else {
-        deleteID.data.message;
       }
     } catch (err) {
       console.error(err);
@@ -435,7 +424,7 @@ export default function CartModal({ className, cartModalMenu }) {
                 ) : (
                   <Pd_miners
                     onClick={() => {
-                      minersCartItem(el.productCode);
+                      minersCartItem(index);
                     }}
                   >
                     -
@@ -450,7 +439,7 @@ export default function CartModal({ className, cartModalMenu }) {
                 ) : (
                   <Pd_plus
                     onClick={() => {
-                      plusCartItem(el.productCode);
+                      plusCartItem(index);
                     }}
                   >
                     +
@@ -459,7 +448,7 @@ export default function CartModal({ className, cartModalMenu }) {
               </Pd_quantity_contain>
               <RemoveIcon
                 onClick={() => {
-                  deletePD(el.productCode);
+                  deletePD(index);
                 }}
                 className="material-symbols-outlined"
               >
