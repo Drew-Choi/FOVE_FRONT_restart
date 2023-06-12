@@ -18,13 +18,14 @@ export default function Detail_OrderMenu_client({
   detail,
   datas,
 }) {
-  //리덕스 state 모음
-
+  // 필요한 훅
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  //리덕스 state 모음
   // 로그인 여부 확인 - 장바구니 담기, 바로 구매 가능 여부 판단
   const isLogin = useSelector((state) => state.user.isLogin);
+  const cartInfo = useSelector((state) => state.cart);
 
   //상품 사이즈 첵
   const [sizeCheck, setSizeCheck] = useState('');
@@ -127,6 +128,35 @@ export default function Detail_OrderMenu_client({
       return navigate(`/login`);
     }
     try {
+      // 카트 정보에서 해당 상품 분류하기
+      const finderItem = cartInfo.cartProducts.find(
+        (item) =>
+          item.productName === datas.productName &&
+          item.productCode === datas.productCode &&
+          item.size === sizeCheck,
+      );
+
+      // 상품이 있다면 진행
+      if (finderItem) {
+        // 카트수량과 추가하려는 수량 합산
+        const sumQuantity = finderItem.quantity + count;
+        // 카트 수량과 count수량 합산이 상품 재고를 초과하는지 확인
+        if (datas.size[sizeCheck] < sumQuantity)
+          return (
+            alert(
+              `카트에 추가하려는 상품이\n기존 카트 수량과 합산하여 재고를 초과합니다.\n상품명: ${
+                datas.productName
+              }\n사이즈: ${sizeCheck}\n카트에 추가 가능한 수량: ${
+                datas.size[sizeCheck] - finderItem.quantity < 0
+                  ? 0
+                  : datas.size[sizeCheck] - finderItem.quantity
+              } 개`,
+            ),
+            alert('카트를 확인해주세요.')
+          );
+      }
+
+      // 카트 기존 수량과 추가하려는 수량의 합산이 재고 수량보다 작거나 같다면 아래 추가 진행
       const reqData = await axios.post(`http://localhost:4000/cart/add`, {
         token: await getToken(),
         productName: datas.productName,
@@ -145,8 +175,6 @@ export default function Detail_OrderMenu_client({
           0,
         );
         dispatch(add(datasArr, totalQuantity));
-      } else {
-        console.log(reqData.data.message);
       }
     } catch (err) {
       console.error(err);
@@ -234,7 +262,10 @@ export default function Detail_OrderMenu_client({
             className={`${detailOrderMenu.sizeBTN} ${
               onOS ? detailOrderMenu.on : ''
             }`}
-            onClick={(e) => handle(e)}
+            onClick={(e) => {
+              handle(e);
+              setCount((cur) => 1);
+            }}
             value="OS"
           >
             OS
@@ -252,7 +283,10 @@ export default function Detail_OrderMenu_client({
             className={`${detailOrderMenu.sizeBTN} ${
               onS ? detailOrderMenu.on : ''
             }`}
-            onClick={(e) => handle(e)}
+            onClick={(e) => {
+              handle(e);
+              setCount((cur) => 1);
+            }}
             value="S"
           >
             S
@@ -270,7 +304,10 @@ export default function Detail_OrderMenu_client({
             className={`${detailOrderMenu.sizeBTN} ${
               onM ? detailOrderMenu.on : ''
             }`}
-            onClick={(e) => handle(e)}
+            onClick={(e) => {
+              handle(e);
+              setCount((cur) => 1);
+            }}
             value="M"
           >
             M
@@ -288,7 +325,10 @@ export default function Detail_OrderMenu_client({
             className={`${detailOrderMenu.sizeBTN} ${
               onL ? detailOrderMenu.on : ''
             }`}
-            onClick={(e) => handle(e)}
+            onClick={(e) => {
+              handle(e);
+              setCount((cur) => 1);
+            }}
             value="L"
           >
             L
@@ -323,11 +363,11 @@ export default function Detail_OrderMenu_client({
               <>
                 <span
                   className={detailOrderMenu.miners}
-                  onClick={() =>
-                    count <= 1
-                      ? setCount((cur) => 1)
-                      : setCount((cur) => cur - 1)
-                  }
+                  onClick={() => {
+                    if (count > 1) {
+                      setCount((cur) => cur - 1);
+                    }
+                  }}
                 >
                   -
                 </span>
@@ -336,7 +376,13 @@ export default function Detail_OrderMenu_client({
 
                 <span
                   className={detailOrderMenu.plus}
-                  onClick={() => setCount((cur) => cur + 1)}
+                  onClick={() => {
+                    if (datas.size[sizeCheck] === count) {
+                      return alert('재고초과');
+                    } else {
+                      setCount((cur) => cur + 1);
+                    }
+                  }}
                 >
                   {' '}
                   +{' '}

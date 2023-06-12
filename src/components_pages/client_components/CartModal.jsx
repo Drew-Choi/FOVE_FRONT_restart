@@ -259,7 +259,11 @@ export default function CartModal({ className, cartModalMenu }) {
           // 'cartObj' 객체가 null이 아니고 'products' 속성이 존재하는 경우에만 실행
           // 이곳에서 'products' 속성을 사용하는 코드 작성
           const datas = downData.data.userCart.products;
-          const totalQuantity = datas.reduce((sum, el) => sum + el.quantity, 0);
+          const totalQuantity = datas.reduce(
+            (sum, el) =>
+              sum + (el.quantity < 0 ? el.quantity - el.quantity : el.quantity),
+            0,
+          );
           dispatch(update(datas, totalQuantity));
         }
       }
@@ -281,7 +285,11 @@ export default function CartModal({ className, cartModalMenu }) {
           // 'cartObj' 객체가 null이 아니고 'products' 속성이 존재하는 경우에만 실행
           // 이곳에서 'products' 속성을 사용하는 코드 작성
           const datas = upData.data.userCart.products;
-          const totalQuantity = datas.reduce((sum, el) => sum + el.quantity, 0);
+          const totalQuantity = datas.reduce(
+            (sum, el) =>
+              sum + (el.quantity < 0 ? el.quantity - el.quantity : el.quantity),
+            0,
+          );
           dispatch(update(datas, totalQuantity));
         }
       } else {

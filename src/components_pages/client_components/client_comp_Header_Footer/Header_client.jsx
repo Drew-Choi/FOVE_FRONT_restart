@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '../../../styles/header_client.scss';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { importdb } from '../../../store/modules/cart';
@@ -35,6 +35,7 @@ export default function Header_client() {
   };
 
   const navigate = useNavigate();
+  const { productCode, category } = useParams();
 
   //리덕스 디스패치(액션함수 전달용)
   const dispatch = useDispatch();
@@ -93,6 +94,19 @@ export default function Header_client() {
   };
 
   useEffect(() => {
+    if (
+      currentURL === '/' ||
+      currentURL === '/store' ||
+      currentURL === `/store/${category}` ||
+      currentURL === '/store/new' ||
+      currentURL === `/store/detail/${productCode}` ||
+      currentURL === '/store/cartorder'
+    ) {
+      cartDataReq();
+    }
+  }, [currentURL]);
+
+  useEffect(() => {
     cartDataReq();
   }, [userData.userName]);
 
@@ -120,7 +134,7 @@ export default function Header_client() {
   const handleKeyPress = async (e) => {
     if (e.key === 'Enter') {
       // 검색 로직 실행
-      if (currentURL !== 'store') {
+      if (currentURL !== '/store') {
         await dispatch(searchinput(e.target.value));
         navigate('store');
       } else {
@@ -139,7 +153,7 @@ export default function Header_client() {
   const handleKeyPress2 = async (e) => {
     if (e.key === 'Enter') {
       // 검색 로직 실행
-      if (currentURL !== 'store') {
+      if (currentURL !== '/store') {
         await dispatch(searchinput(e.target.value));
         navigate('store');
       } else {
