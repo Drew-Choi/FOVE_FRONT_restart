@@ -71,10 +71,10 @@ export default function Header_client() {
         if (cartDataGet.status === 200) {
           dispatch(importdb(cartDataGet.data));
         } else {
-          console.log(cartDataGet.data.message);
-          // console.log(cartDataGet.data.message);
+          return;
         }
       } catch (err) {
+        if (err.response.status === 404) return;
         console.error(err);
       }
     }

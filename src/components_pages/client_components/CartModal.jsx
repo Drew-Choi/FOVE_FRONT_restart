@@ -368,7 +368,9 @@ export default function CartModal({ className, cartModalMenu }) {
     } else {
       let sum = 0;
       for (let i = 0; i < el.length; i += 1) {
-        sum += el[i].unitSumPrice;
+        if (el[i].quantity !== -1) {
+          sum += el[i].unitSumPrice;
+        }
       }
       return sum;
     }
@@ -429,21 +431,32 @@ export default function CartModal({ className, cartModalMenu }) {
                 <Line1></Line1>
                 <Line2></Line2>
                 <Line3></Line3>
-                <Pd_miners
-                  onClick={() => {
-                    minersCartItem(el.productCode);
-                  }}
-                >
-                  -
-                </Pd_miners>
-                <Pd_count>{el.quantity}</Pd_count>
-                <Pd_plus
-                  onClick={() => {
-                    plusCartItem(el.productCode);
-                  }}
-                >
-                  +
-                </Pd_plus>
+                {el.quantity === -1 ? (
+                  <></>
+                ) : (
+                  <Pd_miners
+                    onClick={() => {
+                      minersCartItem(el.productCode);
+                    }}
+                  >
+                    -
+                  </Pd_miners>
+                )}
+
+                <Pd_count>
+                  {el.quantity === -1 ? 'sold-out' : el.quantity}
+                </Pd_count>
+                {el.quantity === -1 ? (
+                  <></>
+                ) : (
+                  <Pd_plus
+                    onClick={() => {
+                      plusCartItem(el.productCode);
+                    }}
+                  >
+                    +
+                  </Pd_plus>
+                )}
               </Pd_quantity_contain>
               <RemoveIcon
                 onClick={() => {

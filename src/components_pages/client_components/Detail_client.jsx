@@ -7,7 +7,7 @@ import Detail_SubImage_client from './Detail_SubImage_client';
 import SubNav_client from './client_comp_Header_Footer/SubNav_client';
 import MediaQuery from 'react-responsive';
 import Loading from './Loading';
-
+import { IoMdArrowBack } from 'react-icons/io';
 export default function Detail_client() {
   const { productCode } = useParams();
   const [productData, setProductData] = useState(null);
@@ -100,6 +100,9 @@ export default function Detail_client() {
       그래서 아래와 같이 데이터가 들어오면 컴포넌트를 띄울 수 있게 순서적으로 처리해줘야함 */}
           {productData && (
             <div className={detailClient.image_info_container}>
+              <span className={detailClient.back} onClick={() => navigate(-1)}>
+                <IoMdArrowBack />
+              </span>
               <Detail_SubImage_client datas={productData} />
               <Detail_OrderMenu_client
                 productName={productData.productName}

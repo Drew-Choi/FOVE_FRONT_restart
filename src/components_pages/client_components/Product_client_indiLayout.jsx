@@ -72,7 +72,7 @@ export default function Product_client_indiLayout({
       />
       <ProductInfoLayout>
         <ProductName>{productName}</ProductName>
-        <ProductPrice>₩ {price}</ProductPrice>
+        <ProductPrice>{price}</ProductPrice>
       </ProductInfoLayout>
     </ImageContainer>
   );

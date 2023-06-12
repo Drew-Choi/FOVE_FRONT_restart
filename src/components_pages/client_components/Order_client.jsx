@@ -115,7 +115,9 @@ export default function Order_client() {
       });
     } else if (currentURL === '/store/cartorder') {
       cartOrderData.cartProducts.map((el) => {
-        products.push(el);
+        if (el.quantity !== -1) {
+          products.push(el);
+        }
       });
     } else {
       return console.log('데이터 오류');
@@ -158,7 +160,11 @@ export default function Order_client() {
   const cartItemPriceSum = () => {
     let sum = 0;
 
-    cartOrderData.cartProducts.map((el) => (sum += el.unitSumPrice));
+    cartOrderData.cartProducts.map((el) => {
+      if (el.quantity !== -1) {
+        sum += el.unitSumPrice;
+      }
+    });
     return sum;
   };
 
@@ -275,35 +281,41 @@ export default function Order_client() {
             currentURL === '/store/cartorder' ? (
               //만약 2번째 조건이 맞다면, 아래 카트데이터로 들어오는 걸 바인딩해줘
               //카트아이템은 어레이로 들어오기 때문에 map으로 죠진다
-              cartOrderData.cartProducts.map((el, index) => (
-                <div key={el._id} className={orderClient.individualCopy_layout}>
-                  <Pd_order_IMG
-                    img={el.img}
-                    className={orderClient.order_pdIMG}
-                  ></Pd_order_IMG>
-                  <div className={orderClient.order_pd_info}>
-                    <p className={orderClient.order_product_Name}>
-                      {el.productName}
-                    </p>
-                    <p className={orderClient.order_product_price}>
-                      ₩ {frontPriceComma(el.price)}
-                    </p>
-                    <p className={orderClient.order_product_size}>
-                      size: {el.size}
-                    </p>
-                    <p className={orderClient.order_product_color}>
-                      {el.color}
-                    </p>
-                    <p className={orderClient.order_product_quantity}>
-                      <strong>QTY</strong> : {frontPriceComma(el.quantity)}
-                    </p>
-                    <p className={orderClient.order_product_unitSumPrice}>
-                      <strong>Total : ₩</strong>{' '}
-                      <span>{frontPriceComma(el.quantity * el.price)}</span>
-                    </p>
-                  </div>
-                </div>
-              ))
+              cartOrderData.cartProducts.map((el, index) => {
+                if (el.quantity !== -1)
+                  return (
+                    <div
+                      key={index}
+                      className={orderClient.individualCopy_layout}
+                    >
+                      <Pd_order_IMG
+                        img={el.img}
+                        className={orderClient.order_pdIMG}
+                      ></Pd_order_IMG>
+                      <div className={orderClient.order_pd_info}>
+                        <p className={orderClient.order_product_Name}>
+                          {el.productName}
+                        </p>
+                        <p className={orderClient.order_product_price}>
+                          ₩ {frontPriceComma(el.price)}
+                        </p>
+                        <p className={orderClient.order_product_size}>
+                          size: {el.size}
+                        </p>
+                        <p className={orderClient.order_product_color}>
+                          {el.color}
+                        </p>
+                        <p className={orderClient.order_product_quantity}>
+                          <strong>QTY</strong> : {frontPriceComma(el.quantity)}
+                        </p>
+                        <p className={orderClient.order_product_unitSumPrice}>
+                          <strong>Total : ₩</strong>{' '}
+                          <span>{frontPriceComma(el.quantity * el.price)}</span>
+                        </p>
+                      </div>
+                    </div>
+                  );
+              })
             ) : (
               <Error404 />
             )}

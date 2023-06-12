@@ -72,6 +72,13 @@ export default function Store_client() {
     }
   };
 
+  // 사이즈에 재고가 있는 지 확인
+  const stockCheck = (data) => {
+    const arr = Object.values(data);
+    const filter = arr.filter((el) => el !== -1 && el !== 0);
+    return filter;
+  };
+
   //상품데이터 db에서 가져오기
   useEffect(() => {
     getAllProducts();
@@ -221,7 +228,11 @@ export default function Store_client() {
                               <Product_client_indiLayout
                                 imgFileName={el.img}
                                 productName={el.productName}
-                                price={frontPriceComma(el.price)}
+                                price={
+                                  stockCheck(el.size).length === 0
+                                    ? 'Sold-Out'
+                                    : `₩ ${frontPriceComma(el.price)}`
+                                }
                               />
                             </Col>
                           );
@@ -246,7 +257,11 @@ export default function Store_client() {
                               <Product_client_indiLayout
                                 imgFileName={el.img}
                                 productName={el.productName}
-                                price={frontPriceComma(el.price)}
+                                price={
+                                  stockCheck(el.size).length === 0
+                                    ? 'Sold-Out'
+                                    : `₩ ${frontPriceComma(el.price)}`
+                                }
                               />
                             </Col>
                           );
@@ -272,7 +287,11 @@ export default function Store_client() {
                               <Product_client_indiLayout
                                 imgFileName={el.img}
                                 productName={el.productName}
-                                price={frontPriceComma(el.price)}
+                                price={
+                                  stockCheck(el.size).length === 0
+                                    ? 'Sold-Out'
+                                    : `₩ ${frontPriceComma(el.price)}`
+                                }
                               />
                             </Col>
                           );
@@ -298,7 +317,11 @@ export default function Store_client() {
                               <Product_client_indiLayout
                                 imgFileName={el.img}
                                 productName={el.productName}
-                                price={frontPriceComma(el.price)}
+                                price={
+                                  stockCheck(el.size).length === 0
+                                    ? 'Sold-Out'
+                                    : `₩ ${frontPriceComma(el.price)}`
+                                }
                               />
                             </Col>
                           );
@@ -324,7 +347,11 @@ export default function Store_client() {
                               <Product_client_indiLayout
                                 imgFileName={el.img}
                                 productName={el.productName}
-                                price={frontPriceComma(el.price)}
+                                price={
+                                  stockCheck(el.size).length === 0
+                                    ? 'Sold-Out'
+                                    : `₩ ${frontPriceComma(el.price)}`
+                                }
                               />
                             </Col>
                           );
@@ -353,7 +380,11 @@ export default function Store_client() {
                           <Product_client_indiLayout
                             imgFileName={el.img}
                             productName={el.productName}
-                            price={frontPriceComma(el.price)}
+                            price={
+                              stockCheck(el.size).length === 0
+                                ? 'Sold-Out'
+                                : `₩ ${frontPriceComma(el.price)}`
+                            }
                           />
                         </Col>
                       );

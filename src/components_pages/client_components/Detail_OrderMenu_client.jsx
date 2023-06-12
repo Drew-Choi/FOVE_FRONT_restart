@@ -318,7 +318,7 @@ export default function Detail_OrderMenu_client({
         <div className={detailOrderMenu.downInfoContain}>
           <div className={detailOrderMenu.countContainer}>
             {sizeCheck === '' ? (
-              <span className={detailOrderMenu.countNumber}>0</span>
+              <></>
             ) : (
               <>
                 <span
@@ -345,13 +345,19 @@ export default function Detail_OrderMenu_client({
             )}
           </div>
 
-          <div className={detailOrderMenu.catIcon}>
-            <MdAddShoppingCart />
-          </div>
+          {sizeCheck === '' ? (
+            <></>
+          ) : (
+            <>
+              <div className={detailOrderMenu.catIcon}>
+                <MdAddShoppingCart />
+              </div>
+              <button className={detailOrderMenu.addCart} onClick={addToCart}>
+                Add Cart
+              </button>
+            </>
+          )}
 
-          <button className={detailOrderMenu.addCart} onClick={addToCart}>
-            Add Cart
-          </button>
           <br></br>
           {sizeCheck === '' ? (
             <button className={detailOrderMenu.buy_soldout}>Sold-Out</button>
