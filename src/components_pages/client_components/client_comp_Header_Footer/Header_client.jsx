@@ -62,19 +62,32 @@ export default function Header_client() {
         // indexedDB에서 토큰 받아오기
         const tokenValue = await getToken();
 
+        let nullCart = {
+          products: [],
+          cartQuantity: 0,
+        };
+        dispatch(importdb(nullCart));
+
         const cartDataGet = await axios.post(
           `http://localhost:4000/cart/list`,
           {
             token: tokenValue,
           },
         );
+
         if (cartDataGet.status === 200) {
+          console.log(cartDataGet.data);
           dispatch(importdb(cartDataGet.data));
-        } else {
-          return;
         }
       } catch (err) {
-        if (err.response.status === 404) return;
+        if (err.response.status === 404) {
+          let nullCart = {
+            products: [],
+            cartQuantity: 0,
+          };
+          dispatch(importdb(nullCart));
+          return;
+        }
         console.error(err);
       }
     }

@@ -246,11 +246,6 @@ export default function CartModal({ className, cartModalMenu }) {
     !state.cart.cartProducts ? [] : state.cart,
   );
 
-  //유저정보 state
-  const userID = useSelector((state) =>
-    state.user.userID === 0 ? 0 : state.user.userID,
-  );
-
   //카트 상품 수량 빼기
   const minersCartItem = async (identity_id) => {
     try {
@@ -368,7 +363,7 @@ export default function CartModal({ className, cartModalMenu }) {
     } else {
       let sum = 0;
       for (let i = 0; i < el.length; i += 1) {
-        if (el[i].quantity !== -1) {
+        if (el[i].quantity > 0) {
           sum += el[i].unitSumPrice;
         }
       }
@@ -419,19 +414,23 @@ export default function CartModal({ className, cartModalMenu }) {
         </ExtraTextContainer>
 
         {/* 카트에 담긴 상품 뿌려주는 곳 */}
-        {cartInfo.cartProducts ? (
+        {cartInfo.cartProducts.length !== 0 ? (
           cartInfo.cartProducts.map((el, index) => (
             <ContentContainer key={index}>
               <Img imgURL={el.img}></Img>
               <Pd_name>{el.productName}</Pd_name>
               <Pd_color>{el.color}</Pd_color>
               <Pd_size>size {el.size}</Pd_size>
-              <Pd_price>₩ {frontPriceComma(el.unitSumPrice)}</Pd_price>
+              {el.quantity < 0 ? (
+                <Pd_price>₩ 0</Pd_price>
+              ) : (
+                <Pd_price>₩ {frontPriceComma(el.unitSumPrice)}</Pd_price>
+              )}
               <Pd_quantity_contain>
                 <Line1></Line1>
                 <Line2></Line2>
                 <Line3></Line3>
-                {el.quantity === -1 ? (
+                {el.quantity < 0 ? (
                   <></>
                 ) : (
                   <Pd_miners
@@ -444,9 +443,9 @@ export default function CartModal({ className, cartModalMenu }) {
                 )}
 
                 <Pd_count>
-                  {el.quantity === -1 ? 'sold-out' : el.quantity}
+                  {el.quantity < 0 ? 'sold-out' : el.quantity}
                 </Pd_count>
-                {el.quantity === -1 ? (
+                {el.quantity < 0 ? (
                   <></>
                 ) : (
                   <Pd_plus

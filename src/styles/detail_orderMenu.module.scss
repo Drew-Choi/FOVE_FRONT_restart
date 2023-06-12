@@ -265,16 +265,17 @@
           font-weight: 600;
           color: white;
           background-color: black;
-          transition: 0.2s ease;
           cursor: pointer;
     
           &:hover {
             background: white;
             color: black;
+            transition: 0.2s ease;
           }
           &:active {
             background-color: rgb(101, 101, 101);
             color: rgb(0, 0, 0);
+            transition: 0.2s ease;
           }
         }
 

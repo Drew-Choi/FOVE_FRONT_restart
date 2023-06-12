@@ -115,7 +115,7 @@ export default function Order_client() {
       });
     } else if (currentURL === '/store/cartorder') {
       cartOrderData.cartProducts.map((el) => {
-        if (el.quantity !== -1) {
+        if (el.quantity > 0) {
           products.push(el);
         }
       });
@@ -161,7 +161,7 @@ export default function Order_client() {
     let sum = 0;
 
     cartOrderData.cartProducts.map((el) => {
-      if (el.quantity !== -1) {
+      if (el.quantity > 0) {
         sum += el.unitSumPrice;
       }
     });
@@ -282,7 +282,7 @@ export default function Order_client() {
               //만약 2번째 조건이 맞다면, 아래 카트데이터로 들어오는 걸 바인딩해줘
               //카트아이템은 어레이로 들어오기 때문에 map으로 죠진다
               cartOrderData.cartProducts.map((el, index) => {
-                if (el.quantity !== -1)
+                if (el.quantity > 0)
                   return (
                     <div
                       key={index}
