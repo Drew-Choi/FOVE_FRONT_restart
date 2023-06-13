@@ -24,7 +24,7 @@
     position: relative;
     border: none;
     width: 100vw;
-    height: 450px;
+    height: 500px;
     margin: 0px
   }
 
@@ -38,7 +38,7 @@
       padding: 0px 10px;
 
       @media screen and (max-width: 767px) {
-        top: -400px;
+        top: -440px;
         text-align: left;
         padding: 10px 30px;
       }
@@ -68,7 +68,7 @@
       color: #555555;
 
       @media screen and (max-width: 767px) {
-        top: -430px;
+        top: -470px;
         text-align: left;
         padding: 10px 30px;
       }
@@ -94,7 +94,7 @@
     .infoContain{
       position: absolute;
       // background-color: aqua;
-      top: 200px;
+      top: 175px;
       left: 50%;
       transform: translateX(-50%);
 

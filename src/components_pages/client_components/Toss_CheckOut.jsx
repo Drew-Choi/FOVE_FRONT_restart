@@ -9,11 +9,8 @@ import { nanoid } from 'nanoid';
 import tossCheckOut from '../../styles/toss_checkOut.module.scss';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 export function Toss_CheckOut() {
-  const navigate = useNavigate();
-
   const selector = '#payment-widget';
   const app = process.env.REACT_APP_KEY_API;
 
@@ -34,8 +31,12 @@ export function Toss_CheckOut() {
   const [price, setPrice] = useState(0);
   const userInfo = useSelector((state) => state.user);
 
-  //로컬에서 주문내역 뺴서 가공
+  //로컬에서 주문내역 뺴서 가공 (배열로 들어옴)
   const importLocalProducts = JSON.parse(localStorage.getItem('products'));
+
+  // 쿼리로 보내기위한 로컬스토리지 주문정보 json화
+  const importLocalProductsJSON = JSON.stringify(importLocalProducts);
+
   //이게 최종 금액
   let orderPrice = 0;
   importLocalProducts.map((el) => (orderPrice += el.unitSumPrice));
@@ -94,8 +95,8 @@ export function Toss_CheckOut() {
                 }`,
                 customerName: `${userInfo.userID}`,
                 customerEmail: `${userInfo.userID}`,
-                successUrl: `http://localhost:4000/toss/approve?orderPrice=${orderPrice}`,
-                failUrl: `${window.location.origin}/store/order/checkout/fail`,
+                successUrl: `http://localhost:4000/toss/approve?orderPrice=${orderPrice}&products=${importLocalProductsJSON}`,
+                failUrl: `http://localhost:3000/store/order/checkout/fail`,
               });
             } catch (error) {
               console.error(error);

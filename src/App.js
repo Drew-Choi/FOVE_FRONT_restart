@@ -40,6 +40,7 @@ import OrderList_Indi_Admin from './components_pages/admin_components/OrderList_
 import OrderCancel_client_onlyOrder from './components_pages/client_components/OrderCancel_client_onlyOrder';
 import TossPay_Cancel_Complete_onlyOrder from './components_pages/client_components/TossPay_Cancel_Complete_onlyOrder';
 import ShippingCode_admin from './components_pages/admin_components/ShippingCode_admin';
+import FailPage from './components_pages/client_components/FailPage';
 
 function App() {
   const isLogin = useSelector((state) => state.user.isLogin);
@@ -158,7 +159,7 @@ function App() {
           <Route path="/agreement" element={<Agreement_client />} />
           <Route path="/privacy" element={<Privacy_client />} />
           <Route path="/guide" element={<Guide_client />} />
-          {/* <Route path="/store/order/checkout/fail" element={<FailPage />} /> */}
+          <Route path="/store/order/checkout/fail" element={<FailPage />} />
           {/* 로그인 */}
           <Route path="/login" element={<Login_client />} />
           <Route path="/login/kakao/callback" element={<Kakao_final />} />

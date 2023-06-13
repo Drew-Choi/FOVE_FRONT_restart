@@ -119,8 +119,6 @@ export default function Order_client() {
           products.push(el);
         }
       });
-    } else {
-      return console.log('데이터 오류');
     }
 
     //받는 사람(recipien) 정보, recipien키로 JSON화 해서 통으로 넣기

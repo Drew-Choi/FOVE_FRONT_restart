@@ -341,6 +341,9 @@ export default function Detail_OrderMenu_client({
         ) : (
           <></>
         )}
+        <p style={{ marginBottom: '15px', fontSize: '13px' }}>
+          재고: {datas.size[sizeCheck]}
+        </p>
 
         <div className={detailOrderMenu.detailDesc}>{detail}</div>
 
