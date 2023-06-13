@@ -25,10 +25,6 @@ export default function ShippingCode_admin() {
   const [returnRedirect, setReturnRedirect] = useState(true);
 
   const navigate = useNavigate();
-  // 송장번호 기록하는 곳
-  const shippingCodeValue = useRef([]);
-  const shippingCodeValueRetrieved = useRef([]);
-  const shippingCodeValueReturn = useRef([]);
 
   //db Number타입을 스트링으로 바꾸고 천단위 컴마 찍어 프론트에 보내기
   const country = navigator.language;
@@ -42,6 +38,70 @@ export default function ShippingCode_admin() {
     }
   };
 
+  // 엔터키 구성
+  // onClick 버튼 컨트롤 - 일반배송
+  const shippingCodeClick = useRef([]);
+  // 인풋에 엔터 입력하기
+  const handleKeyDown = (e, index) => {
+    e.key === 'Enter' ? shippingCodeClick.current[index].click() : null;
+  };
+  // onClick 버튼 컨트롤 - 회수용
+  const shippingCodeClickRetrieved = useRef([]);
+  // 인풋에 엔터 입력하기
+  const handleKeyDownRetrieved = (e, index) => {
+    e.key === 'Enter'
+      ? shippingCodeClickRetrieved.current[index].click()
+      : null;
+  };
+  // onClick 버튼 컨트롤 - 교환용
+  const shippingCodeClickReturn = useRef([]);
+  // 인풋에 엔터 입력하기
+  const handleKeyDownReturn = (e, index) => {
+    e.key === 'Enter' ? shippingCodeClickReturn.current[index].click() : null;
+  };
+
+  // 송장 입력 칸 유효성 검사 - 일반송장입력
+  const [inputValue, setInputValue] = useState(null);
+  const handleInput = (e, index) => {
+    const value = e.target.value;
+    // 숫자만 입력하는 정규식
+    const regex = /^\d+$/;
+
+    if (regex.test(value) || value === '') {
+      const newInputValue = [...inputValue];
+      newInputValue[index] = value;
+      setInputValue((cur) => newInputValue);
+    }
+  };
+
+  // 송장 입력 칸 유효성 검사 - 회수목록
+  const [inputValueRetrieved, setInputValueRetrieved] = useState(null);
+  const handleInputRetrieved = (e, index) => {
+    const value = e.target.value;
+    // 숫자만 입력하는 정규식
+    const regex = /^\d+$/;
+
+    if (regex.test(value) || value === '') {
+      const newInputValue = [...inputValueRetrieved];
+      newInputValue[index] = value;
+      setInputValueRetrieved((cur) => newInputValue);
+    }
+  };
+
+  // 송장 입력 칸 유효성 검사 - 교환상품목록
+  const [inputValueReturn, setInputValueReturn] = useState(null);
+  const handleInputReturn = (e, index) => {
+    const value = e.target.value;
+    // 숫자만 입력하는 정규식
+    const regex = /^\d+$/;
+
+    if (regex.test(value) || value === '') {
+      const newInputValue = [...inputValueReturn];
+      newInputValue[index] = value;
+      setInputValueReturn((cur) => newInputValue);
+    }
+  };
+
   // 결제완료된 목록
   const getDoneListInfo = async () => {
     try {
@@ -52,6 +112,7 @@ export default function ShippingCode_admin() {
       if (adminDoneListInfo.status !== 200) return alert('데이터 오류');
       // status 200이면,
       setOrderData((cur) => adminDoneListInfo.data);
+      setInputValue((cur) => Array(adminDoneListInfo.data.length).fill(''));
       return;
     } catch (err) {
       console.error(err);
@@ -69,6 +130,9 @@ export default function ShippingCode_admin() {
       if (adminRetrievedInfo.status !== 200) return alert('데이터 오류');
       // status 200이면,
       setRetrievedData((cur) => adminRetrievedInfo.data);
+      setInputValueRetrieved((cur) =>
+        Array(adminRetrievedInfo.data.length).fill(''),
+      );
       return;
     } catch (err) {
       console.error(err);
@@ -86,6 +150,7 @@ export default function ShippingCode_admin() {
       if (adminReturnInfo.status !== 200) return alert('데이터 오류');
       // status 200이면,
       setReturnData((cur) => adminReturnInfo.data);
+      setInputValueReturn((cur) => Array(adminReturnInfo.data.length).fill(''));
       return;
     } catch (err) {
       console.error(err);
@@ -130,6 +195,12 @@ export default function ShippingCode_admin() {
     index,
   ) => {
     try {
+      if (!inputValue[index]) return alert('송장번호를 입력해주세요.');
+
+      if (inputValue[index].length < 10)
+        return alert('유효한 송장번호는 10자 이상입니다.');
+
+      // 아니라면 아래 진행
       const response = await axios.post(
         'http://localhost:4000/admin/orderlist/register_shippingCode',
         {
@@ -137,7 +208,7 @@ export default function ShippingCode_admin() {
           user,
           recipientName,
           recipientAddress,
-          shippingCode: shippingCodeValue.current[index].value,
+          shippingCode: inputValue[index],
         },
       );
 
@@ -150,7 +221,7 @@ export default function ShippingCode_admin() {
         copy.push(response.data);
         return copy;
       });
-      shippingCodeValue.current[index].value = '';
+      inputValue[index] = '';
       setOrderRedirect((cur) => !cur);
       return;
     } catch (err) {
@@ -167,6 +238,11 @@ export default function ShippingCode_admin() {
     index,
   ) => {
     try {
+      if (!inputValueRetrieved[index]) return alert('송장번호를 입력해주세요.');
+
+      if (inputValueRetrieved[index].length < 10)
+        return alert('유효한 송장번호는 10자 이상입니다.');
+
       const response = await axios.post(
         'http://localhost:4000/admin/orderlist/register_shippingCode_retrieved',
         {
@@ -174,7 +250,7 @@ export default function ShippingCode_admin() {
           user,
           recipientName,
           recipientAddress,
-          newShippingCode: shippingCodeValueRetrieved.current[index].value,
+          newShippingCode: inputValueRetrieved[index],
         },
       );
 
@@ -189,7 +265,7 @@ export default function ShippingCode_admin() {
           copy.push(response.data);
           return copy;
         });
-        shippingCodeValueRetrieved.current[index].value = '';
+        inputValueRetrieved[index] = '';
         setRetrievedRedirect((cur) => !cur);
         return;
       }
@@ -211,6 +287,11 @@ export default function ShippingCode_admin() {
     index,
   ) => {
     try {
+      if (!inputValueReturn[index]) return alert('송장번호를 입력해주세요.');
+
+      if (inputValueReturn[index].length < 10)
+        return alert('유효한 송장번호는 10자 이상입니다.');
+
       const response = await axios.post(
         'http://localhost:4000/admin/orderlist/register_shippingCode_return',
         {
@@ -218,7 +299,7 @@ export default function ShippingCode_admin() {
           user,
           recipientName,
           recipientAddress,
-          newShippingCode: shippingCodeValueReturn.current[index].value,
+          newShippingCode: inputValueReturn[index],
         },
       );
 
@@ -233,7 +314,7 @@ export default function ShippingCode_admin() {
           copy.push(response.data);
           return copy;
         });
-        shippingCodeValueReturn.current[index].value = '';
+        inputValueReturn[index] = '';
         setReturnRedirect((cur) => !cur);
         return;
       }
@@ -602,13 +683,16 @@ export default function ShippingCode_admin() {
                         <input
                           type="text"
                           placeholder="송장번호입력"
+                          value={inputValue[index]}
                           name="shippingCode"
+                          onChange={(e) => handleInput(e, index)}
+                          onKeyDown={(e) => handleKeyDown(e, index)}
                           className={shippingCode.orderShippingCodeInput}
-                          ref={(el) => (shippingCodeValue.current[index] = el)}
                         />
 
                         <div
                           className={shippingCode.shippingCodeBtn}
+                          ref={(el) => (shippingCodeClick.current[index] = el)}
                           onClick={() =>
                             registerShippingcode(
                               el.payments.orderId,
@@ -1204,13 +1288,16 @@ export default function ShippingCode_admin() {
                         type="text"
                         placeholder="회수송장번호입력"
                         name="shippingCode"
+                        value={inputValueRetrieved[index]}
                         className={shippingCode.orderShippingCodeInput}
-                        ref={(el) =>
-                          (shippingCodeValueRetrieved.current[index] = el)
-                        }
+                        onChange={(e) => handleInputRetrieved(e, index)}
+                        onKeyDown={(e) => handleKeyDownRetrieved(e, index)}
                       />
                       <div
                         className={shippingCode.shippingCodeBtn}
+                        ref={(el) =>
+                          (shippingCodeClickRetrieved.current[index] = el)
+                        }
                         onClick={() =>
                           registerShippingcodeRetrieved(
                             el.payments.orderId,
@@ -1806,14 +1893,17 @@ export default function ShippingCode_admin() {
                         type="text"
                         placeholder="송장번호입력"
                         name="shippingCode"
+                        value={inputValueReturn[index]}
                         className={shippingCode.orderShippingCodeInput}
-                        ref={(el) =>
-                          (shippingCodeValueReturn.current[index] = el)
-                        }
+                        onChange={(e) => handleInputReturn(e, index)}
+                        onKeyDown={(e) => handleKeyDownReturn(e, index)}
                       />
 
                       <div
                         className={shippingCode.shippingCodeBtn}
+                        ref={(el) =>
+                          (shippingCodeClickReturn.current[index] = el)
+                        }
                         onClick={() =>
                           registerShippingcodeReturn(
                             el.payments.orderId,
