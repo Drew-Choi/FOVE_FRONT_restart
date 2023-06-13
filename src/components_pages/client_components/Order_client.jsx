@@ -8,6 +8,7 @@ import Select_Custom from '../../components_elements/Select_Custom';
 import TextArea_Custom from '../../components_elements/TextArea_Custom';
 import DaumPostcode from 'react-daum-postcode';
 import Error404 from './Error404';
+import LoadingCartOrder from './LoadingCartOrder';
 
 const Pd_order_IMG = styled.div`
   ${(props) =>
@@ -16,6 +17,8 @@ const Pd_order_IMG = styled.div`
 `;
 
 export default function Order_client() {
+  // 화면전환 로딩용 리덕스 state
+  const isVisible = useSelector((state) => state.cartOrderLoading.isVisible);
   //카트에 담긴 상품들을 주문해 보자
   //일단, 현재 페이지의 url주소를 분석해서 싱글인지, 카트 상품인지 파악하자
   const location = useLocation();
@@ -275,6 +278,8 @@ export default function Order_client() {
                   </p>
                 </div>
               </div>
+            ) : isVisible ? (
+              <LoadingCartOrder />
             ) : //만약 아니라면, /store/cartorder 인지 확인해봐
             currentURL === '/store/cartorder' ? (
               //만약 2번째 조건이 맞다면, 아래 카트데이터로 들어오는 걸 바인딩해줘

@@ -633,6 +633,7 @@ export default function OrderList_Indi_Admin() {
     } catch (err) {
       console.error(err);
     }
+    setSpinner((cur) => false);
   };
 
   // 반품신청 취소

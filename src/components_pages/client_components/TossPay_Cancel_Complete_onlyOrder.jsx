@@ -8,7 +8,7 @@ export default function TossPay_Cancel_Complete_onlyOrder() {
   return (
     <div className={tossPayComplete.toss_complete_container}>
       <div className={tossPayComplete.wrap}>
-        <p className={tossPayComplete.complete_title}>Order Complete</p>
+        <p className={tossPayComplete.complete_title}>Order Cancel</p>
         <div className={tossPayComplete.complete_box}>
           <p className={tossPayComplete.order_title}>
             고객님의 주문취소가 완료되었습니다.

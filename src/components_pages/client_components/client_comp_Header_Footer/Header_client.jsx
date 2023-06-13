@@ -11,6 +11,7 @@ import { clickMenu, menuClose } from '../../../store/modules/menuAccount';
 import { searchinput } from '../../../store/modules/search';
 import MediaQuery from 'react-responsive';
 import getToken from '../../../store/modules/getToken';
+import { invisible, visible } from '../../../store/modules/cartOrderLoading';
 
 export default function Header_client() {
   const [reactSearchModal, setReactSearchModal] = useState(false);
@@ -52,6 +53,7 @@ export default function Header_client() {
   const currentURL = location.pathname;
 
   const cartDataReq = async () => {
+    dispatch(visible());
     if (!userData.isLogin) {
       let nullCart = {
         products: [],
@@ -91,6 +93,7 @@ export default function Header_client() {
         console.error(err);
       }
     }
+    dispatch(invisible());
   };
 
   useEffect(() => {
