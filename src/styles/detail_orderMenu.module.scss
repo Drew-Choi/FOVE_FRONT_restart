@@ -30,7 +30,7 @@
 
     .pdTitle {
       position: relative;
-      top: 30px;
+      top: 10px;
       text-align: center;
       font-size: 22px;
       font-weight: 700;
@@ -64,7 +64,7 @@
       font-size: 22px;
       letter-spacing: 2px;
       text-align: center;
-      top: 30px;
+      top: 0px;
       color: #555555;
 
       @media screen and (max-width: 767px) {
@@ -94,7 +94,7 @@
     .infoContain{
       position: absolute;
       // background-color: aqua;
-      top: 175px;
+      top: 155px;
       left: 50%;
       transform: translateX(-50%);
 

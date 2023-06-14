@@ -12,6 +12,7 @@ export default function Input_Custom({
   disabled,
   classNameNew,
   classNameDiv,
+  maxLength,
 }) {
   return (
     <div className={classNameDiv}>
@@ -29,6 +30,7 @@ export default function Input_Custom({
         accept={accept}
         disabled={disabled}
         className={classNameNew}
+        maxLength={maxLength}
       />
     </div>
   );

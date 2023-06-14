@@ -182,8 +182,8 @@ export default function ProductRegister_admin() {
 
           <MediaQuery maxWidth={425}>
             <p className={productRegister.previewDesc}>
-              Image Preview Area <br />* 상품 사진 2장 필수 / 비율은 1:1을
-              유지해주세요. 그렇지 않으면 사진이 잘립니다.
+              Image Preview Area <br />* 상품 사진 2장 필수, 최대 5장 / 비율은
+              1:1을 유지해주세요. 그렇지 않으면 사진이 잘립니다.
             </p>
           </MediaQuery>
         </>
@@ -420,6 +420,7 @@ export default function ProductRegister_admin() {
             type="text"
             name="productName"
             placeholder="상품이름을 입력해주세요."
+            maxLength="30"
           />
         </div>
 
@@ -586,8 +587,8 @@ export default function ProductRegister_admin() {
             *IMAGES <br />
             <MediaQuery minWidth={426}>
               <span className={productRegister.subDesc}>
-                * 상품 사진 2장 필수 / 비율은 1:1을 유지해주세요. 그렇지 않으면
-                사진이 잘립니다.
+                * 상품 사진 2장 필수, 최대 5장 / 비율은 1:1을 유지해주세요.
+                그렇지 않으면 사진이 잘립니다.
               </span>
             </MediaQuery>
           </p>
