@@ -658,7 +658,6 @@ export default function OrderList_client() {
                             <>
                               <button
                                 className={orderList.orderCancle}
-                                style={{ marginRight: '10px' }}
                                 onClick={() => {
                                   navigate(
                                     `/mypage/orderlist/return_check/${el.payments.orderId}`,
@@ -666,16 +665,6 @@ export default function OrderList_client() {
                                 }}
                               >
                                 반품신청내역 확인
-                              </button>
-                              <button
-                                className={orderList.orderCancle}
-                                onClick={() => {
-                                  navigate(
-                                    `/mypage/orderlist/return/${el.payments.orderId}`,
-                                  );
-                                }}
-                              >
-                                반품신청
                               </button>
                             </>
                           ) : (
