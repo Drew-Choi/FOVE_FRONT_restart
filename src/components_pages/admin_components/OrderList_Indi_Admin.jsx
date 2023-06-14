@@ -55,10 +55,15 @@ export default function OrderList_Indi_Admin() {
     setAdminShippingCondition((cur) => e.target.value);
   };
   // 송장번호 입력
-  const [shippingCodeChange, setShippingCodeChange] = useState(0);
+  const [shippingCodeChange, setShippingCodeChange] = useState('');
   // 송장번호 수정 핸들
   const handleShippingCode = (e) => {
-    setShippingCodeChange((cur) => e.target.value);
+    const value = e.target.value;
+    const regex = /^\d+$/;
+
+    if (regex.test(value) || value === '') {
+      setShippingCodeChange((cur) => value);
+    }
   };
 
   // 배송상태 백엔드 요청
@@ -69,7 +74,10 @@ export default function OrderList_Indi_Admin() {
 
     if (!updateConfirm) return alert('변경 취소');
     // true라면 아래 진행
-    if (adminShippingCondition === '배송 중' && shippingCodeChange === 0)
+    if (shippingCodeChange.length < 10)
+      return alert('유효한 송장번호는 10자 이상입니다.');
+    // true라면 아래 진행
+    if (adminShippingCondition === '배송 중' && shippingCodeChange === '')
       return alert("'배송 중'으로 변경 시에는 유효한 송장번호를 입력해주세요.");
 
     //아니라면 아래
@@ -115,10 +123,15 @@ export default function OrderList_Indi_Admin() {
     setAdminChangeCondition((cur) => e.target.value);
   };
   // 송장번호 입력-교환진행상태
-  const [changeShippingCodeChagne, setChangeShippingCodeChagne] = useState(0);
+  const [changeShippingCodeChagne, setChangeShippingCodeChagne] = useState('');
   // 송장번호 수정 핸들-교환진행상태
   const handleChangeShippingCodeChagne = (e) => {
-    setChangeShippingCodeChagne((cur) => e.target.value);
+    const value = e.target.value;
+    const regex = /^\d+$/;
+
+    if (regex.test(value) || value === '') {
+      setChangeShippingCodeChagne((cur) => value);
+    }
   };
 
   const req_AdminChangeCondition = async () => {
@@ -128,6 +141,10 @@ export default function OrderList_Indi_Admin() {
 
     if (!updateConfirm) return alert('변경 취소');
     // true라면 아래 진행
+
+    if (changeShippingCodeChagne.length < 10)
+      return alert('유효한 송장번호는 10자 이상입니다.');
+    // true이면 아래 진행
     try {
       const response = await axios.post(
         'http://localhost:4000/admin/orderlist/detail/changeCondition',
@@ -180,10 +197,15 @@ export default function OrderList_Indi_Admin() {
     setAdminSubmitReturnCondition((cur) => e.target.value);
   };
   // 송장번호 입력-환불진행상태
-  const [returnCodeChange, setReturnCodeChange] = useState(0);
+  const [returnCodeChange, setReturnCodeChange] = useState('');
   // 송장번호 수정 핸들-환불진행상태
   const handleReturnCodeChange = (e) => {
-    setReturnCodeChange((cur) => e.target.value);
+    const value = e.target.value;
+    const regex = /^\d+$/;
+
+    if (regex.test(value) || value === '') {
+      setReturnCodeChange((cur) => value);
+    }
   };
 
   // 배송상태 백엔드 요청
@@ -193,6 +215,9 @@ export default function OrderList_Indi_Admin() {
     );
 
     if (!updateConfirm) return alert('변경 취소');
+    // true라면 아래 진행
+    if (returnCodeChange.length < 10)
+      return alert('유효한 송장번호는 10자 이상입니다.');
     // true라면 아래 진행
     try {
       const response = await axios.post(

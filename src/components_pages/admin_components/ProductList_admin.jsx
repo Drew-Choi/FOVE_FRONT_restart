@@ -26,9 +26,13 @@ export default function ProductList_admin() {
 
   // value를 얻기위한 핸들
   const handleChange = (index, value, key) => {
-    setEnterNum((pre) =>
-      pre.map((el, num) => (num === index ? { ...el, [key]: value } : el)),
-    );
+    const regex = /^-?\d*$/;
+
+    if (regex.test(value) || value === '') {
+      setEnterNum((pre) =>
+        pre.map((el, num) => (num === index ? { ...el, [key]: value } : el)),
+      );
+    }
   };
 
   //천단위 콤마생성
@@ -616,15 +620,9 @@ export default function ProductList_admin() {
           <input
             ref={(el) => (os.current[index] = el)}
             value={enterNum[index].OS}
-            onChange={() =>
-              handleChange(
-                index,
-                changeEnteredNumComma(os.current[index].value),
-                'OS',
-              )
-            }
-            key={item?.id}
             type="text"
+            onChange={(e) => handleChange(index, e.target.value, 'OS')}
+            key={item?.id}
             name="sizeOS"
             placeholder={
               item.size.OS === 0
@@ -644,13 +642,7 @@ export default function ProductList_admin() {
           <input
             ref={(el) => (s.current[index] = el)}
             value={enterNum[index].S}
-            onChange={() =>
-              handleChange(
-                index,
-                changeEnteredNumComma(s.current[index].value),
-                'S',
-              )
-            }
+            onChange={(e) => handleChange(index, e.target.value, 'S')}
             key={item.id}
             type="text"
             name="sizeS"
@@ -667,13 +659,7 @@ export default function ProductList_admin() {
           <input
             ref={(el) => (m.current[index] = el)}
             value={enterNum[index].M}
-            onChange={() =>
-              handleChange(
-                index,
-                changeEnteredNumComma(m.current[index].value),
-                'M',
-              )
-            }
+            onChange={(e) => handleChange(index, e.target.value, 'M')}
             key={item.id}
             type="text"
             name="sizeM"
@@ -695,13 +681,7 @@ export default function ProductList_admin() {
           <input
             ref={(el) => (l.current[index] = el)}
             value={enterNum[index].L}
-            onChange={() =>
-              handleChange(
-                index,
-                changeEnteredNumComma(l.current[index].value),
-                'L',
-              )
-            }
+            onChange={(e) => handleChange(index, e.target.value, 'L')}
             key={item?.id}
             type="text"
             name="sizeL"
@@ -739,6 +719,8 @@ export default function ProductList_admin() {
           <br />* Main이미지와 Sub_1이미지는 삭제가 불가하며 교체만
           가능합니다.(필수 사진 2개)
           <br />* &#39;사이즈없음&#39;은 재고입력시 사이즈가 추가됩니다.
+          <br />* 재고 -1 입력시: 해당사이즈없음
+          <br />* 재고 0 입력시: 해당사이즈는 있으나 Sold-Out
         </p>
       )}
 
