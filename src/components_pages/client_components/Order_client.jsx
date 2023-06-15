@@ -327,17 +327,13 @@ export default function Order_client() {
             <p className={orderClient.ship_input_title}>배송 정보</p>
             <div className={orderClient.ship_info_input_container}>
               <div className={orderClient.adressCheck}>
-                <label>
-                  <input type="radio" value="defaultAddress" />
-                  &ensp;회원 정보와 동일 &ensp;&ensp; &ensp;
-                </label>
-
-                <label>
-                  <input type="radio" value="newAddress" />
-                  &ensp;새로운 배송지
-                </label>
+                <input
+                  type="checkbox"
+                  value="defaultAddress"
+                  defaultChecked={true}
+                />
+                <span>기본배송지 사용</span>
               </div>
-              <button className={orderClient.adressBook}>주소록 보기</button>
               <p>*필수입력사항</p>
             </div>
 

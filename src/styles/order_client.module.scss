@@ -256,21 +256,29 @@
   
         .adressCheck {
           position: relative;
-          left: -8px;
           margin: 0px;
-          padding: 0px;
-          top: -5px;
+          padding: 10px 0px;
           font-size: 13px;
+          // background-color: beige;
 
           @media screen and (max-width: 280px) {
             left: 0px;
+          }
+
+          input {
+            position: relative;
+            top: 2px;
+          }
+
+          span {
+            margin-left: 10px;
           }
         }
   
         .adressBook {
           position: relative;
-          left: 250px;
-          bottom: 44px;
+          left: 130px;
+          bottom: 37px;
           width: 80px;
           height: 35px;
           border: 1px solid black;
@@ -298,7 +306,7 @@
           position: relative;
           text-align: right;
           padding: 5px;
-          bottom: 30px;
+          bottom: 40px;
 
           @media screen and (max-width: 280px) {
             bottom: 80px;

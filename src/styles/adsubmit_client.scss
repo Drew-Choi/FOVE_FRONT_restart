@@ -1,3 +1,8 @@
+.container_addressbook {
+  position: relative;
+  background-color: beige;
+  min-height: 700px;
+
 .titleArea {
   width: 100%;
   text-align: center;
@@ -11,7 +16,6 @@
 .ad_wrap {
   padding-top: 30px;
   text-align: center;
-  height: 1500px;
 
   p {
     font-size: 14px;
@@ -63,3 +67,6 @@
     margin-bottom: 10px;
   }
 }
+
+}
+

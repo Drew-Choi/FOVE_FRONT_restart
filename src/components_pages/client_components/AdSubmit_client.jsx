@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { Container } from 'react-bootstrap';
 
 export default function AdSubmit_client() {
   const userId = useSelector((state) => state.user.userID);
@@ -13,30 +14,30 @@ export default function AdSubmit_client() {
   const [data, setData] = useState([]);
   const [length, setLength] = useState(0);
 
-  useEffect(() => {
-    getAddress();
-  });
+  // useEffect(() => {
+  //   getAddress();
+  // });
 
-  const getAddress = async () => {
-    try {
-      const resAddressAll = await axios.post(
-        'http://localhost:4000/mypage/getAddress',
-        {
-          userId: userId, // 리덕스에 있는 아이디 값
-        },
-      );
+  // const getAddress = async () => {
+  //   try {
+  //     const resAddressAll = await axios.post(
+  //       'http://localhost:4000/mypage/getAddress',
+  //       {
+  //         userId: userId, // 리덕스에 있는 아이디 값
+  //       },
+  //     );
 
-      if (resAddressAll.status === 200) {
-        await setData(resAddressAll.data.myAddresses);
-        await setLength(resAddressAll.data.myAddresses.length);
-      }
+  //     if (resAddressAll.status === 200) {
+  //       await setData(resAddressAll.data.myAddresses);
+  //       await setLength(resAddressAll.data.myAddresses.length);
+  //     }
 
-      console.log(resAddressAll);
-      console.log(resAddressAll.data.message);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  //     console.log(resAddressAll);
+  //     console.log(resAddressAll.data.message);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   const deleteAddress = async (index) => {
     try {
@@ -59,7 +60,7 @@ export default function AdSubmit_client() {
   // console.log(length);
 
   return (
-    <>
+    <div className="container_addressbook">
       <div className="titleArea">
         <h2 className="subtitle">주소록 관리</h2>
       </div>
@@ -121,6 +122,6 @@ export default function AdSubmit_client() {
           {/* <p>{data[0].destination}</p> */}
         </div>
       </div>
-    </>
+    </div>
   );
 }
