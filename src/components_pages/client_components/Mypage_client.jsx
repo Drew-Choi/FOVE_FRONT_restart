@@ -55,10 +55,26 @@ export default function Mypage_client() {
     }
   };
 
+  // 전화번호 유효성 검사
+  const checkPhoneCode = (phoneData, index) => {
+    const splitData = phoneData.split('-');
+    return splitData[index];
+  };
+
   // 취소시 리셋
   const resetInput = () => {
     recipient.current.value = '';
-    phoneZoneCode.current.value = '010';
+    phoneZoneCode.current.value = checkPhoneCode(addressInfo.recipientPhone, 0);
+    setRegexValue_num1((cur) => '');
+    setRegexValue_num2((cur) => '');
+    message.current.value = '';
+    addressData.zonecode = '';
+    addressData.address = '';
+    addressData.buildingName = '';
+  };
+
+  const resetInput2 = () => {
+    recipient.current.value = '';
     setRegexValue_num1((cur) => '');
     setRegexValue_num2((cur) => '');
     message.current.value = '';
@@ -72,14 +88,11 @@ export default function Mypage_client() {
     try {
       if (
         (regexValue_num1.length < 3 && regexValue_num1 !== '') ||
-        (regexValue_num2.length < 4 && regexValue_num2 !== '') ||
-        (regexValue_num1 !== '' && regexValue_num2 === '') ||
-        (regexValue_num1 === '' && regexValue_num2 !== '')
+        (regexValue_num2.length < 4 && regexValue_num2 !== '')
       )
         return alert('전화번호가 잘못 입력되었습니다.');
 
       // 아니라면 다음,
-
       const tokenValue = await getToken();
 
       const newAddress = {
@@ -101,8 +114,67 @@ export default function Mypage_client() {
             : zipCode.current.value,
 
         recipientPhone:
-          regexValue_num1 === '' || regexValue_num2 === ''
+          phoneZoneCode.current.value ===
+            checkPhoneCode(addressInfo.recipientPhone, 0) &&
+          regexValue_num1 === '' &&
+          regexValue_num2 === ''
             ? addressInfo.recipientPhone
+            : phoneZoneCode.current.value !==
+                checkPhoneCode(addressInfo.recipientPhone, 0) &&
+              regexValue_num1 === '' &&
+              regexValue_num2 === ''
+            ? `${phoneZoneCode.current.value}-${checkPhoneCode(
+                addressInfo.recipientPhone,
+                1,
+              )}-${checkPhoneCode(addressInfo.recipientPhone, 2)}`
+            : phoneZoneCode.current.value ===
+                checkPhoneCode(addressInfo.recipientPhone, 0) &&
+              regexValue_num1 !== '' &&
+              regexValue_num2 === ''
+            ? `${checkPhoneCode(
+                addressInfo.recipientPhone,
+                0,
+              )}-${regexValue_num1}-${checkPhoneCode(
+                addressInfo.recipientPhone,
+                2,
+              )}`
+            : phoneZoneCode.current.value ===
+                checkPhoneCode(addressInfo.recipientPhone, 0) &&
+              regexValue_num1 === '' &&
+              regexValue_num2 !== ''
+            ? `${checkPhoneCode(
+                addressInfo.recipientPhone,
+                0,
+              )}-${checkPhoneCode(
+                addressInfo.recipientPhone,
+                1,
+              )}-${regexValue_num2}`
+            : phoneZoneCode.current.value !==
+                checkPhoneCode(addressInfo.recipientPhone, 0) &&
+              regexValue_num1 !== '' &&
+              regexValue_num2 === ''
+            ? `${
+                phoneZoneCode.current.value
+              }-${regexValue_num1}-${checkPhoneCode(
+                addressInfo.recipientPhone,
+                2,
+              )}`
+            : phoneZoneCode.current.value !==
+                checkPhoneCode(addressInfo.recipientPhone, 0) &&
+              regexValue_num1 === '' &&
+              regexValue_num2 !== ''
+            ? `${phoneZoneCode.current.value}-${checkPhoneCode(
+                addressInfo.recipientPhone,
+                1,
+              )}-${regexValue_num2}`
+            : phoneZoneCode.current.value ===
+                checkPhoneCode(addressInfo.recipientPhone, 0) &&
+              regexValue_num1 !== '' &&
+              regexValue_num2 !== ''
+            ? `${checkPhoneCode(
+                addressInfo.recipientPhone,
+                0,
+              )}-${regexValue_num1}-${regexValue_num2}`
             : `${phoneZoneCode.current.value}-${regexValue_num1}-${regexValue_num2}`,
         message_ad:
           message.current.value === ''
@@ -118,11 +190,15 @@ export default function Mypage_client() {
           newAddress,
         },
       );
-
       if (response.status !== 200) return alert('오류\n등록실패');
       // 200번대 성공이면
       alert('기본배송주소 등록 성공');
       setRedirect((cur) => !cur);
+      resetInput2();
+      phoneZoneCode.current.value = checkPhoneCode(
+        response.data.recipientPhone,
+        0,
+      );
       setDisableCtr((cur) => true);
       return;
     } catch (err) {
@@ -583,7 +659,7 @@ export default function Mypage_client() {
                 <div className={myPage.phoneWrap}>
                   <select
                     defaultValue={
-                      phoneSplitData && phoneSplitData !== []
+                      phoneSplitData && phoneSplitData.length !== 0
                         ? phoneSplitData[0]
                         : '010'
                     }
@@ -593,6 +669,7 @@ export default function Mypage_client() {
                     <option value="010">010</option>
                     <option value="011">011</option>
                     <option value="016">016</option>
+                    <option value="017">017</option>
                     <option value="019">019</option>
                   </select>
                   <input
@@ -654,13 +731,14 @@ export default function Mypage_client() {
                     취소
                   </span>
                 )}
-
-                <span
-                  className={myPage.registerBTN_black}
-                  onClick={submitAddress}
-                >
-                  등록
-                </span>
+                {!disableCtr && (
+                  <span
+                    className={myPage.registerBTN_black}
+                    onClick={submitAddress}
+                  >
+                    등록
+                  </span>
+                )}
               </div>
             </div>
           </div>

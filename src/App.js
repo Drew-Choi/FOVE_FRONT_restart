@@ -1,5 +1,5 @@
 import './App.css';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Admin_main from './components_pages/admin_components/Admin_main';
 import ProductRegister_admin from './components_pages/admin_components/ProductRegister_admin';
@@ -45,6 +45,8 @@ import FailPage from './components_pages/client_components/FailPage';
 function App() {
   const isLogin = useSelector((state) => state.user.isLogin);
   const dispatch = useDispatch();
+  const location = useLocation();
+  const currentURL = location.pathname;
 
   // 트랜젝션 생성 함수 (빈 키를 하나 만들어서 로그인 과정에서 키에 업데이트 하도록 초기값 세팅)
   const createDatabase = async () => {
@@ -83,6 +85,7 @@ function App() {
           token: valueKey,
         });
         if (userInfo.status === 200) {
+          console.log('로그인 성공');
           dispatch(
             keepLogin({
               nickName: userInfo.data.nickName,
@@ -93,6 +96,7 @@ function App() {
           );
         }
       } else {
+        alert('로그아웃 되었습니다.');
         dispatch(
           keepLogin({
             nickName: '',
@@ -103,6 +107,7 @@ function App() {
         );
       }
     } catch (err) {
+      alert('로그아웃 되었습니다.');
       const db = await openDB('db', 1);
       const transaction = db.transaction(['store'], 'readwrite');
       const store = transaction.objectStore('store');
@@ -122,7 +127,7 @@ function App() {
   // 리액트 앱이 시작 되면 바로 토큰 검증 로직 실행 -> 토큰 로그인 수행
   useEffect(() => {
     tokenLoginCheck();
-  }, []);
+  }, [currentURL]);
 
   const isAdmin = useSelector((state) => state.user.isAdmin);
 

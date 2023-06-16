@@ -268,10 +268,12 @@
           input {
             position: relative;
             top: 2px;
+            z-index: 2;
           }
 
-          span {
+          label {
             margin-left: 10px;
+            z-index: 2;
           }
         }
   
