@@ -366,6 +366,51 @@
               color: black;
             }
           }
+
+          .daum_post_box{
+            position: absolute;
+            left: 70px;
+            background-color: white;
+            box-shadow: 0 0 8px #00000080;
+            width: 40vw;
+            height: max-content;
+            z-index: 3;
+            border: 0.5px solid black;
+            text-align: right;
+
+            @media screen and (max-width: 912px) {
+              left: 50%;
+              transform: translateX(-50%);
+              width: 70vw;
+            }
+
+            @media screen and (max-width: 447px) {
+              left: 50%;
+              transform: translateX(-50%);
+              width: 90vw;
+            }
+
+            @media screen and (max-width: 280px) {
+              left: 50%;
+              transform: translateX(-60%);
+              width: 90vw;
+            }
+
+            .ad_closeIconBox{
+              position: relative;
+              z-index: 5;
+              cursor: pointer;
+  
+              &:active{
+                color: rgb(208, 208, 208);
+              }
+  
+              .ad_closeIcon{
+                font-size: 35px;
+              }
+            }
+          }
+         
         }
   
         .phonNum_contain {

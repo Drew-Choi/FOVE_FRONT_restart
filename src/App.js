@@ -85,7 +85,6 @@ function App() {
           token: valueKey,
         });
         if (userInfo.status === 200) {
-          console.log('로그인 성공');
           dispatch(
             keepLogin({
               nickName: userInfo.data.nickName,
@@ -96,7 +95,6 @@ function App() {
           );
         }
       } else {
-        alert('로그아웃 되었습니다.');
         dispatch(
           keepLogin({
             nickName: '',
@@ -107,7 +105,6 @@ function App() {
         );
       }
     } catch (err) {
-      alert('로그아웃 되었습니다.');
       const db = await openDB('db', 1);
       const transaction = db.transaction(['store'], 'readwrite');
       const store = transaction.objectStore('store');
@@ -153,17 +150,26 @@ function App() {
           />
           {/* 주문서작성 영역 */}
           {/* 1. 싱글상품 */}
-          <Route path="/store/order" element={<Order_client />} />
+          <Route
+            path="/store/order"
+            element={isLogin ? <Order_client /> : <Login_client />}
+          />
           {/* 2. 카트에 담긴 여러 개 상품 */}
-          <Route path="/store/cartorder" element={<Order_client />} />
+          <Route
+            path="/store/cartorder"
+            element={isLogin ? <Order_client /> : <Login_client />}
+          />
           {/* 토스페이먼츠 완성 */}
-          <Route path="/store/order/checkout" element={<Toss_CheckOut />} />
+          <Route
+            path="/store/order/checkout"
+            element={isLogin ? <Toss_CheckOut /> : <Login_client />}
+          />
           {/* 토스페이먼츠 결제성공페이지 */}
           <Route path="store/order_success" element={<TossPay_Complete />} />
           {/* account쪽 */}
-          <Route path="/agreement" element={<Agreement_client />} />
+          {/* <Route path="/agreement" element={<Agreement_client />} />
           <Route path="/privacy" element={<Privacy_client />} />
-          <Route path="/guide" element={<Guide_client />} />
+          <Route path="/guide" element={<Guide_client />} /> */}
           <Route path="/store/order/checkout/fail" element={<FailPage />} />
           {/* 로그인 */}
           <Route path="/login" element={<Login_client />} />
@@ -239,36 +245,40 @@ function App() {
 
         <Route
           path="/admin"
-          element={!isAdmin ? <Error404 /> : isAdmin && <Admin_main />}
+          element={!isAdmin ? <Login_client /> : isAdmin && <Admin_main />}
         >
           <Route
             path=""
             element={
-              !isAdmin ? <Error404 /> : isAdmin && <ShippingCode_admin />
+              !isAdmin ? <Login_client /> : isAdmin && <ShippingCode_admin />
             }
           />
           <Route
             path="/admin/register"
             element={
-              !isAdmin ? <Error404 /> : isAdmin && <ProductRegister_admin />
+              !isAdmin ? <Login_client /> : isAdmin && <ProductRegister_admin />
             }
           />
           <Route
             path="/admin/list"
-            element={!isAdmin ? <Error404 /> : isAdmin && <ProductList_admin />}
+            element={
+              !isAdmin ? <Login_client /> : isAdmin && <ProductList_admin />
+            }
           />
           <Route
             path="/admin/orderlist"
-            element={!isAdmin ? <Error404 /> : isAdmin && <OrderList_admin />}
+            element={
+              !isAdmin ? <Login_client /> : isAdmin && <OrderList_admin />
+            }
           />
           <Route
             path="/admin/orderlist/detail/:orderId"
             element={
-              !isAdmin ? <Error404 /> : isAdmin && <OrderList_Indi_Admin />
+              !isAdmin ? <Login_client /> : isAdmin && <OrderList_Indi_Admin />
             }
           />
         </Route>
-        <Route path="*" element={<Error404 />} />
+        <Route path="*" element={<Login_client />} />
       </Routes>
     </>
   );

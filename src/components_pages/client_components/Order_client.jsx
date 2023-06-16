@@ -11,6 +11,7 @@ import Error404 from './Error404';
 import LoadingCartOrder from './LoadingCartOrder';
 import getToken from '../../store/modules/getToken';
 import axios from 'axios';
+import { IoCloseCircleOutline } from 'react-icons/io5';
 import Loading from './Loading';
 
 const Pd_order_IMG = styled.div`
@@ -225,16 +226,10 @@ export default function Order_client() {
 
   const postCodeStyle2 = {
     display: 'block',
-    position: 'absolute',
-    top: '88px',
-    left: '15%',
-    right: '0',
-    margin: '50px',
-    width: '30vw',
-    height: '450px',
-    zIndex: 100,
-    border: '1px solid black',
-    boxShadow: '0 0 8px rgba(0, 0, 0, 0.5)',
+    position: 'relative',
+    height: '480px',
+    margin: '0px auto',
+    borderTop: '1px solid black',
   };
 
   //카트데이터 계산할때 총 합계값을 반환해주는 함수
@@ -290,7 +285,16 @@ export default function Order_client() {
   const handle = {
     // 버튼 클릭 이벤트
     clickButton: () => {
-      setOpenPostcode((current) => !current);
+      setOpenPostcode((current) => {
+        if (current === false) return true;
+        return true;
+      });
+    },
+    clickButton_close: () => {
+      setOpenPostcode((cur) => {
+        if (cur === true) return false;
+        return false;
+      });
     },
 
     // 주소 선택 이벤트
@@ -478,13 +482,24 @@ export default function Order_client() {
                       주소 찾기
                     </button>
                     {openPostcode && (
-                      <DaumPostcode
-                        style={postCodeStyle2}
-                        className={orderClient.kakaoadd}
-                        onComplete={handle.selectAddress} // 값을 선택할 경우 실행되는 이벤트
-                        autoClose={false} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
-                        defaultQuery="" // 팝업을 열때 기본적으로 입력되는 검색어
-                      />
+                      <div className={orderClient.daum_post_box}>
+                        <span
+                          className={orderClient.ad_closeIconBox}
+                          onClick={() => handle.clickButton_close()}
+                        >
+                          <IoCloseCircleOutline
+                            className={orderClient.ad_closeIcon}
+                          />
+                        </span>
+
+                        <DaumPostcode
+                          style={postCodeStyle2}
+                          className={orderClient.kakaoadd}
+                          onComplete={handle.selectAddress} // 값을 선택할 경우 실행되는 이벤트
+                          autoClose={false} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
+                          defaultQuery="" // 팝업을 열때 기본적으로 입력되는 검색어
+                        />
+                      </div>
                     )}
                   </div>
 

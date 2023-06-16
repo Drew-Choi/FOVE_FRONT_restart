@@ -317,7 +317,7 @@ export default function Header_client() {
             >
               STORE
             </p>
-            <p onClick={() => navigate('#')}>COLLECTION</p>
+            {/* <p onClick={() => navigate('#')}>COLLECTION</p> */}
           </div>
         </MediaQuery>
 
@@ -512,7 +512,7 @@ export default function Header_client() {
             >
               STORE
             </p>
-            <p onClick={() => navigate('#')}>COLLECTION</p>
+            {/* <p onClick={() => navigate('#')}>COLLECTION</p> */}
           </nav>
         ) : (
           <></>
@@ -540,7 +540,7 @@ export default function Header_client() {
               STORE
             </p>
           </li>
-          <li>
+          {/* <li>
             <p
               onClick={() => {
                 burherHandler(), navigate('#');
@@ -548,7 +548,7 @@ export default function Header_client() {
             >
               COLLECTION
             </p>
-          </li>
+          </li> */}
         </ul>
       ) : (
         <></>
