@@ -101,7 +101,7 @@ export default function Detail_client() {
           {productData && (
             <div className={detailClient.image_info_container}>
               <span className={detailClient.back} onClick={() => navigate(-1)}>
-                <IoMdArrowBack />
+                <IoMdArrowBack className={detailClient.backIcon} />
               </span>
               <Detail_SubImage_client datas={productData} />
               <Detail_OrderMenu_client

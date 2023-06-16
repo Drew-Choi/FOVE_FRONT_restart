@@ -25,6 +25,34 @@ export default function OrderList_client() {
   // 주문상세내역서용 - cancel
   const [detailInfoCancel, setDetailInfoCancel] = useState([]);
 
+  // 시간에 따라 반품신청 버튼 활성화
+  const timeCheck = (data) => {
+    // 현재시간 기준
+    if (
+      data.payments.status === 'DONE' &&
+      !data.isShipping &&
+      data.shippingCode !== 0 &&
+      data.isDelivered &&
+      !data.isCancel &&
+      !data.isReturn &&
+      !data.isRetrieved &&
+      !data.isRefund &&
+      !data.isReturnSubmit
+    ) {
+      const currentDate = new Date();
+
+      // 데이터 시간에 7일을 더하여 종료시점 잡기
+      const toDate = new Date(data.shoppingAt);
+      const fixTime = new Date(toDate.getTime() - 9 * 60 * 60 * 1000);
+      const expireDay = new Date(fixTime.getTime() + 5 * 60 * 60 * 1000);
+
+      if (currentDate > expireDay) return false;
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   // 주문상세내역서용 핸들 - order
   const handleArrowDetail = (index) => {
     if (detailInfo[index] === 'off') {
@@ -529,7 +557,8 @@ export default function OrderList_client() {
                             >
                               주문취소
                             </button>
-                          ) : el.payments.status === 'DONE' &&
+                          ) : timeCheck(el) === true &&
+                            el.payments.status === 'DONE' &&
                             !el.isShipping &&
                             el.shippingCode !== 0 &&
                             el.isDelivered &&

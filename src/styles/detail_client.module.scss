@@ -40,13 +40,17 @@
 
       .back{
         position: absolute;
-        font-size: 35px;
         color: black;
         left: 20px;
         cursor: pointer;
+        z-index: 2;
 
         &:active {
           color: rgb(209, 209, 209);
+        }
+
+        .backIcon{
+          font-size: 35px;
         }
       }
     }
