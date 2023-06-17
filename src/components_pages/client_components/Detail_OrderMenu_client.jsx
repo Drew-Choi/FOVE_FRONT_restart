@@ -13,7 +13,6 @@ import getToken from '../../store/modules/getToken';
 
 export default function Detail_OrderMenu_client({
   productName,
-  size,
   price,
   detail,
   datas,
@@ -350,12 +349,22 @@ export default function Detail_OrderMenu_client({
         <p className={detailOrderMenu.sizeFitCheck}>
           {/* SIZE & FIT 모달창 '비니'만 만들어놨는데 카테고리 별로 다르게 떠야함 */}
           <span onClick={handleOpenModal2}>SIZE & FIT</span>
-          <span className="material-symbols-outlined">open_in_new</span>
+          <span
+            className="material-symbols-outlined"
+            style={{ fontSize: '18px', fontWeight: 500, marginLeft: '5px' }}
+          >
+            open_in_new
+          </span>
         </p>
         <p className={detailOrderMenu.sizeFitCheck}>
           {/* SIZE & FIT 모달창 '비니'만 만들어놨는데 카테고리 별로 다르게 떠야함 */}
           <span onClick={handleOpenModal}>SHIPPING</span>
-          <span className="material-symbols-outlined">open_in_new</span>
+          <span
+            className="material-symbols-outlined"
+            style={{ fontSize: '18px', fontWeight: 500, marginLeft: '5px' }}
+          >
+            open_in_new
+          </span>
         </p>
 
         <div className={detailOrderMenu.downInfoContain}>

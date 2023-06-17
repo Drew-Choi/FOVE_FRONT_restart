@@ -74,7 +74,7 @@ function App() {
   const tokenLoginCheck = async () => {
     // 홈페이지가 뜨면 indexedDB와 트랜젝션을 바로 생성해서 토큰 받을 준비를 한다.
     // 키값도 빈값으로 추가해 놓음
-    createDatabase();
+    await createDatabase();
 
     //이후 토큰이 있으면 로그인 유지 작업을, 토큰이 없다면 토큰인증실패로 비로그인상태 유지
     try {

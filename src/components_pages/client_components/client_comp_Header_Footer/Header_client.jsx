@@ -12,6 +12,7 @@ import { searchinput } from '../../../store/modules/search';
 import MediaQuery from 'react-responsive';
 import getToken from '../../../store/modules/getToken';
 import { invisible, visible } from '../../../store/modules/cartOrderLoading';
+import { AiOutlineClose } from 'react-icons/ai';
 
 export default function Header_client() {
   const [reactSearchModal, setReactSearchModal] = useState(false);
@@ -338,7 +339,7 @@ export default function Header_client() {
                 onClick={burherHandler}
                 className={`material-symbols-sharp burgerClose ${burgerClose}`}
               >
-                close
+                <AiOutlineClose />
               </span>
             </div>
           )}
@@ -402,7 +403,7 @@ export default function Header_client() {
                           dispatch(clickMenu());
                         }}
                       >
-                        close
+                        <AiOutlineClose />
                       </p>
                     </div>
                   )}
@@ -426,7 +427,7 @@ export default function Header_client() {
                         dispatch(clickMenu());
                       }}
                     >
-                      close
+                      <AiOutlineClose />
                     </span>
                   )}
                 </MediaQuery>

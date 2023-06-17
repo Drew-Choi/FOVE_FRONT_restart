@@ -66,8 +66,8 @@ export default function cart(state = initState, action) {
     case RESET:
       return {
         ...state,
-        cartProducts: '',
-        cartProductsLength: '',
+        cartProducts: [],
+        cartProductsLength: 0,
       };
     default:
       return state;

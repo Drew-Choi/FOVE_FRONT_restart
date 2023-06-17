@@ -382,7 +382,9 @@ export default function CartModal({ className, cartModalMenu }) {
         <ExtraTextContainer>
           <UnitSum>Total:&nbsp;&nbsp;&nbsp;₩</UnitSum>
           <UnitSumNum>
-            {frontPriceComma(unitSum(cartInfo.cartProducts))}
+            {cartInfo.cartProducts.length !== 0
+              ? frontPriceComma(unitSum(cartInfo.cartProducts))
+              : 0}
           </UnitSumNum>
           <UnitSum>/ {cartInfo.cartProductsLength} ea</UnitSum>
           <AllRemove
@@ -398,11 +400,11 @@ export default function CartModal({ className, cartModalMenu }) {
             transFontSize="10px"
             padding="7px 30px"
             onClickEvent={() => {
-              if (cartInfo.cartProducts.length === 0) {
-                null;
-              } else {
+              if (cartInfo.cartProducts.length !== 0) {
                 navigate(`/store/cartorder`);
                 dispatch(offon());
+              } else {
+                <></>;
               }
             }}
           >

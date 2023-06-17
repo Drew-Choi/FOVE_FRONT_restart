@@ -180,12 +180,6 @@
         &:active {
           color: #d7d7d7;
         }
-    
-        .material-symbols-outlined {
-          font-size: 18px;
-          font-weight: 500;
-          margin-left: 5px;
-        }
       }
     
       .downInfoContain{
@@ -222,6 +216,7 @@
             }
           }
         }
+
         .catIcon {
           font-size: 30px;
           position: absolute;
@@ -231,7 +226,6 @@
         }
     
         .addCart{
-          position: absolute;
           all: unset;
           border: 2px solid black;
           padding: 8px 45px;
@@ -255,7 +249,6 @@
         }
     
         .buy{
-          position: absolute;
           all: unset;
           border: 2px solid black;
           padding: 8px 85px;

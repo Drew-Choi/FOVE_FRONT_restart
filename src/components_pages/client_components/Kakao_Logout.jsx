@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from '../../store/modules/user';
 import { reset } from '../../store/modules/cart';
 import { deleteDB } from 'idb';
+import Loading from './Loading';
 
 export default function Kakao_Logout() {
   const navigate = useNavigate();
@@ -22,5 +23,9 @@ export default function Kakao_Logout() {
     navigate(`/store`); // 로그인 페이지로 이동
   }, []);
 
-  return <></>;
+  return (
+    <>
+      <Loading />
+    </>
+  );
 }

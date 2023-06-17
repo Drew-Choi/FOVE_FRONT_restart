@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
@@ -6,6 +6,7 @@ import { logout } from '../../store/modules/user';
 import { clickMenu } from '../../store/modules/menuAccount';
 import { reset, update } from '../../store/modules/cart';
 import axios from 'axios';
+import Loading from './Loading';
 
 const MenuAccountWrap = styled.div`
   position: absolute;
@@ -86,10 +87,14 @@ export default function MenuAccount({ menuAccountRef }) {
 
   // 로그아웃
   const logoutUser = async () => {
-    const YOUR_REST_API_KEY = await getKey('REST_API_KEY');
-    const YOUR_LOGOUT_REDIRECT_URI = 'http://localhost:3000/kakao/logout';
-    dispatch(clickMenu()); // MenuAccount 닫기
-    window.location.href = `https://kauth.kakao.com/oauth/logout?client_id=${YOUR_REST_API_KEY}&logout_redirect_uri=${YOUR_LOGOUT_REDIRECT_URI}`;
+    try {
+      const YOUR_REST_API_KEY = await getKey('REST_API_KEY');
+      const YOUR_LOGOUT_REDIRECT_URI = 'http://localhost:3000/kakao/logout';
+      dispatch(clickMenu()); // MenuAccount 닫기
+      window.location.href = `https://kauth.kakao.com/oauth/logout?client_id=${YOUR_REST_API_KEY}&logout_redirect_uri=${YOUR_LOGOUT_REDIRECT_URI}`;
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
