@@ -40,11 +40,16 @@ export default function OrderList_client() {
       !data.isReturnSubmit
     ) {
       const currentDate = new Date();
+      console.log('현재 시간: ', currentDate);
 
       // 데이터 시간에 7일을 더하여 종료시점 잡기
-      const toDate = new Date(data.shoppingAt);
+      const toDate = new Date(data.shippingAt);
       const fixTime = new Date(toDate.getTime() - 9 * 60 * 60 * 1000);
-      const expireDay = new Date(fixTime.getTime() + 5 * 60 * 60 * 1000);
+      const expireDay = new Date(
+        fixTime.getTime() + (24 + 4.5) * 60 * 60 * 1000,
+      );
+
+      console.log(expireDay);
 
       if (currentDate > expireDay) return false;
       return true;
