@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import styled from 'styled-components';
-import { logout } from '../../store/modules/user';
 import { clickMenu } from '../../store/modules/menuAccount';
-import { reset, update } from '../../store/modules/cart';
 import axios from 'axios';
-import Loading from './Loading';
 
 const MenuAccountWrap = styled.div`
   position: absolute;
@@ -29,6 +26,25 @@ const MenuAccountWrap = styled.div`
     right: 0px;
   }
 
+  @media screen and (max-width: 400px) {
+    right: 0px;
+    width: 150px;
+    height: 120px;
+  }
+`;
+
+const MenuAccountWrap2 = styled.div`
+  position: absolute;
+  top: 69px;
+  right: -1px;
+  z-index: 999; // 장바구니보다 위에 위치
+  width: 200px;
+  height: 140px;
+  border-left: 0.5px solid black;
+  border-right: 0.5px solid black;
+  border-bottom: 0.5px solid black;
+  background-color: white;
+  padding: 15px;
   @media screen and (max-width: 400px) {
     right: 0px;
     width: 150px;
@@ -62,6 +78,9 @@ const Content = styled.p`
 `;
 
 export default function MenuAccount({ menuAccountRef }) {
+  const location = useLocation();
+  const currentURL = location.pathname;
+
   //리덕스
   //유저정보 state
 
@@ -98,26 +117,52 @@ export default function MenuAccount({ menuAccountRef }) {
   };
 
   return (
-    <MenuAccountWrap ref={menuAccountRef}>
-      <ContentTitle>{userName} 님, 환영합니다!</ContentTitle>
-      <ContentTitle>Point : {userPoints} p</ContentTitle>
-      <Content
-        onClick={() => {
-          dispatch(clickMenu());
-          navigate(`/mypage`);
-        }}
-      >
-        MY PAGE
-      </Content>
-      <Content
-        onClick={() => {
-          dispatch(clickMenu());
-          navigate(`/mypage/orderlist`);
-        }}
-      >
-        ORDER
-      </Content>
-      <Content onClick={logoutUser}>LOGOUT</Content>
-    </MenuAccountWrap>
+    <>
+      {currentURL === '/' ? (
+        <MenuAccountWrap2 ref={menuAccountRef}>
+          <ContentTitle>{userName} 님, 환영합니다!</ContentTitle>
+          <ContentTitle>Point : {userPoints} p</ContentTitle>
+          <Content
+            onClick={() => {
+              dispatch(clickMenu());
+              navigate(`/mypage`);
+            }}
+          >
+            MY PAGE
+          </Content>
+          <Content
+            onClick={() => {
+              dispatch(clickMenu());
+              navigate(`/mypage/orderlist`);
+            }}
+          >
+            ORDER
+          </Content>
+          <Content onClick={logoutUser}>LOGOUT</Content>
+        </MenuAccountWrap2>
+      ) : (
+        <MenuAccountWrap ref={menuAccountRef}>
+          <ContentTitle>{userName} 님, 환영합니다!</ContentTitle>
+          <ContentTitle>Point : {userPoints} p</ContentTitle>
+          <Content
+            onClick={() => {
+              dispatch(clickMenu());
+              navigate(`/mypage`);
+            }}
+          >
+            MY PAGE
+          </Content>
+          <Content
+            onClick={() => {
+              dispatch(clickMenu());
+              navigate(`/mypage/orderlist`);
+            }}
+          >
+            ORDER
+          </Content>
+          <Content onClick={logoutUser}>LOGOUT</Content>
+        </MenuAccountWrap>
+      )}
+    </>
   );
 }
