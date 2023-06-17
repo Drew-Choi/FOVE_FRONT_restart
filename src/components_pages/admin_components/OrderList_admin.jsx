@@ -62,7 +62,7 @@ export default function OrderList_admin() {
   const getOrderListInfo = async () => {
     try {
       const adminOrderListInfo = await axios.get(
-        'http://localhost:4000/admin/orderlist',
+        'http://13.125.248.186:4000/admin/orderlist',
       );
 
       if (adminOrderListInfo.status !== 200) return alert('데이터 오류');
@@ -78,7 +78,7 @@ export default function OrderList_admin() {
   const getCancelList = async () => {
     try {
       const adminCancelInfo = await axios.get(
-        'http://localhost:4000/admin/cancel_list',
+        'http://13.125.248.186:4000/admin/cancel_list',
       );
 
       if (adminCancelInfo.status !== 200) return alert('데이터 오류');

@@ -9,7 +9,7 @@ import Loading from './Loading';
 const Pd_Images = styled.div`
   ${(props) =>
     props.img &&
-    `background-image: url('http://localhost:4000/uploads/${props.img}')`}
+    `background-image: url('http://13.125.248.186:4000/uploads/${props.img}')`}
 `;
 
 const Preview = styled.img`
@@ -47,7 +47,7 @@ export default function OrderReturnCheck_client() {
       const tokenValue = await getToken();
 
       const getCancelData = await axios.post(
-        'http://localhost:4000/order_list/getCancelItem',
+        'http://13.125.248.186:4000/order_list/getCancelItem',
         {
           token: tokenValue,
           orderId: orderId,
@@ -80,7 +80,7 @@ export default function OrderReturnCheck_client() {
       const tokenValue = await getToken();
 
       const response = await axios.post(
-        'http://localhost:4000/admin/return_submit/submit_cancel',
+        'http://13.125.248.186:4000/admin/return_submit/submit_cancel',
         { token: tokenValue, orderId },
       );
 
@@ -291,7 +291,7 @@ export default function OrderReturnCheck_client() {
                   return (
                     <Preview
                       key={index}
-                      src={`http://localhost:4000/uploads/${orderCancelItem.payments.orderId}/${el}`}
+                      src={`http://13.125.248.186:4000/uploads/${orderCancelItem.payments.orderId}/${el}`}
                     ></Preview>
                   );
                 })}

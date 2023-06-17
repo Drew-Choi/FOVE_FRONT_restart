@@ -58,7 +58,7 @@ export default function Store_NewItems() {
   const getCategoryProducts = async () => {
     try {
       const newProductsData = await axios.get(
-        `http://localhost:4000/store/new`,
+        `http://13.125.248.186:4000/store/new`,
       );
       if (newProductsData.status === 200) {
         await setPd_New_Items(newProductsData.data);

@@ -58,7 +58,9 @@ export default function Store_client() {
   //엑시오스로 모든 상품 정보 요청
   const getAllProducts = async () => {
     try {
-      const productsData = await axios.get('http://localhost:4000/store/all');
+      const productsData = await axios.get(
+        'http://13.125.248.186:4000/store/all',
+      );
       if (productsData.status === 200) {
         orignData.current = productsData.data;
         await setPd_Datas(productsData.data);

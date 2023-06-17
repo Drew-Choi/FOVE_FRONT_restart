@@ -185,7 +185,7 @@ export default function Mypage_client() {
       };
 
       const response = await axios.post(
-        'http://localhost:4000/mypage/editAddress',
+        'http://13.125.248.186:4000/mypage/editAddress',
         {
           token: tokenValue,
           newAddress,
@@ -214,7 +214,7 @@ export default function Mypage_client() {
       const tokenValue = await getToken();
 
       const response = await axios.post(
-        'http://localhost:4000/mypage/getAddress',
+        'http://13.125.248.186:4000/mypage/getAddress',
         {
           token: tokenValue,
         },
@@ -279,7 +279,7 @@ export default function Mypage_client() {
     try {
       const tokenValue = await getToken();
       const getOrderListData = await axios.post(
-        'http://localhost:4000/order_list/getMemberOrderList',
+        'http://13.125.248.186:4000/order_list/getMemberOrderList',
         { token: tokenValue },
       );
       if (getOrderListData.status === 200 && getOrderListData.data.length > 0) {
@@ -296,7 +296,7 @@ export default function Mypage_client() {
     try {
       const tokenValue = await getToken();
       const getCancelListData = await axios.post(
-        'http://localhost:4000/order_list/getCancelList',
+        'http://13.125.248.186:4000/order_list/getCancelList',
         {
           token: tokenValue,
         },

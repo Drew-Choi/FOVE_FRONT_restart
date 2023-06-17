@@ -94,7 +94,7 @@ export default function MenuAccount({ menuAccountRef }) {
 
   const getKey = async (key) => {
     try {
-      const res = await axios.get(`http://localhost:4000/${app}`, {
+      const res = await axios.get(`http://13.125.248.186:4000/${app}`, {
         params: { key },
       });
       return res.data.key;

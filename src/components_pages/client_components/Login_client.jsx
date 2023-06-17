@@ -21,7 +21,7 @@ export default function Login_client() {
 
   const getKey = async (key) => {
     try {
-      const res = await axios.get(`http://localhost:4000/${app}`, {
+      const res = await axios.get(`http://13.125.248.186:4000/${app}`, {
         params: { key },
       });
       return res.data.key;
@@ -34,7 +34,7 @@ export default function Login_client() {
   const kakoHandleClick = async () => {
     const REST_API_KEY = await getKey('REST_API_KEY');
     const SCOPE = await getKey('SCOPE');
-    const REDIRECT_URI = `http://localhost:4000/${cb}`;
+    const REDIRECT_URI = `http://13.125.248.186:4000/${cb}`;
     const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${SCOPE}`;
     window.location.href = KAKAO_AUTH_URL;
   };

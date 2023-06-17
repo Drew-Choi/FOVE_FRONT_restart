@@ -8,7 +8,7 @@ const MainImage = styled.div`
   margin-right: 160px;
   ${(props) =>
     props.selectImgFileName &&
-    `background-image: url('http://localhost:4000/uploads/${props.selectImgFileName}');`}
+    `background-image: url('http://13.125.248.186:4000/uploads/${props.selectImgFileName}');`}
   background-size: cover;
   width: 350px;
   height: 350px;
@@ -53,7 +53,7 @@ const Sub_IMG = styled.div`
   display: block;
   ${(props) =>
     props.imgFileName &&
-    `background-image: url('http://localhost:4000/uploads/${props.imgFileName}');`}
+    `background-image: url('http://13.125.248.186:4000/uploads/${props.imgFileName}');`}
   width: 50px;
   height: 50px;
   background-position: center;

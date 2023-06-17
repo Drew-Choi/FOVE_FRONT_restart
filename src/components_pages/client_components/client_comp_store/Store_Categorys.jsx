@@ -69,7 +69,7 @@ export default function Store_Categorys() {
   const getCategoryProducts = async () => {
     try {
       const productsData = await axios.get(
-        `http://localhost:4000/store/${category}`,
+        `http://13.125.248.186:4000/store/${category}`,
       );
       if (productsData.status === 200) {
         await setPd_Datas_Categorys(productsData.data);

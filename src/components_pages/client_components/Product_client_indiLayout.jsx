@@ -67,7 +67,7 @@ export default function Product_client_indiLayout({
     >
       {/* 위에서 선별된 이미지를 실제로 쏴준다. */}
       <ImageLayout
-        src={'http://localhost:4000/uploads/' + image}
+        src={'http://13.125.248.186:4000/uploads/' + image}
         onLoad={onLoadEffect}
       />
       <ProductInfoLayout>

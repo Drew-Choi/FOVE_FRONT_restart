@@ -16,7 +16,7 @@ export function Toss_CheckOut() {
 
   const getKey = async (key) => {
     try {
-      const res = await axios.get(`http://localhost:4000/${app}`, {
+      const res = await axios.get(`http://13.125.248.186:4000/${app}`, {
         params: { key },
       });
       return res.data.key;
@@ -95,7 +95,7 @@ export function Toss_CheckOut() {
                 }`,
                 customerName: `${userInfo.userID}`,
                 customerEmail: `${userInfo.userID}`,
-                successUrl: `http://localhost:4000/toss/approve?orderPrice=${orderPrice}&products=${importLocalProductsJSON}`,
+                successUrl: `http://13.125.248.186:4000/toss/approve?orderPrice=${orderPrice}&products=${importLocalProductsJSON}`,
                 failUrl: `http://localhost:3000/store/order/checkout/fail`,
               });
             } catch (error) {

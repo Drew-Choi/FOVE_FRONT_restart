@@ -9,7 +9,7 @@ import Loading_Spinner from '../client_components/Loading_Spinner';
 const Pd_Images = styled.div`
   ${(props) =>
     props.img &&
-    `background-image: url('http://localhost:4000/uploads/${props.img}')`}
+    `background-image: url('http://13.125.248.186:4000/uploads/${props.img}')`}
 `;
 
 const Preview = styled.img`
@@ -83,7 +83,7 @@ export default function OrderList_Indi_Admin() {
     //아니라면 아래
     try {
       const response = await axios.post(
-        'http://localhost:4000/admin/orderlist/detail/shippingCondition',
+        'http://13.125.248.186:4000/admin/orderlist/detail/shippingCondition',
         {
           adminShippingCondition,
           orderId,
@@ -147,7 +147,7 @@ export default function OrderList_Indi_Admin() {
     // true이면 아래 진행
     try {
       const response = await axios.post(
-        'http://localhost:4000/admin/orderlist/detail/changeCondition',
+        'http://13.125.248.186:4000/admin/orderlist/detail/changeCondition',
         {
           adminChangeCondition,
           orderId,
@@ -221,7 +221,7 @@ export default function OrderList_Indi_Admin() {
     // true라면 아래 진행
     try {
       const response = await axios.post(
-        'http://localhost:4000/admin/orderlist/detail/submitReturnCondition',
+        'http://13.125.248.186:4000/admin/orderlist/detail/submitReturnCondition',
         {
           adminSubmitReturnCondition,
           orderId,
@@ -496,7 +496,7 @@ export default function OrderList_Indi_Admin() {
   const getOrderIdInfo = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/admin/orderlist/detail/${orderId}`,
+        `http://13.125.248.186:4000/admin/orderlist/detail/${orderId}`,
         {},
       );
 
@@ -524,7 +524,7 @@ export default function OrderList_Indi_Admin() {
     // confirm이 true이면
     try {
       const cancelInfo = await axios.post(
-        'http://localhost:4000/admin/orderlist/detail/cancel',
+        'http://13.125.248.186:4000/admin/orderlist/detail/cancel',
         { orderId },
       );
 
@@ -549,7 +549,7 @@ export default function OrderList_Indi_Admin() {
     //true 라면 아래
     try {
       const cancelInfo = await axios.post(
-        'http://localhost:4000/admin//orderlist/detail/cancelRefund',
+        'http://13.125.248.186:4000/admin//orderlist/detail/cancelRefund',
         { orderId },
       );
 
@@ -581,7 +581,7 @@ export default function OrderList_Indi_Admin() {
     // true이면,
     try {
       const cancelInfo = await axios.post(
-        'http://localhost:4000/admin//orderlist/detail/cancelRefund/cancel',
+        'http://13.125.248.186:4000/admin//orderlist/detail/cancelRefund/cancel',
         { orderId },
       );
 
@@ -611,7 +611,7 @@ export default function OrderList_Indi_Admin() {
     // true이면,
     try {
       const cancelInfo = await axios.post(
-        'http://localhost:4000/admin//orderlist/detail/cancelRefund/cancel',
+        'http://13.125.248.186:4000/admin//orderlist/detail/cancelRefund/cancel',
         { orderId },
       );
 
@@ -645,7 +645,7 @@ export default function OrderList_Indi_Admin() {
     setSpinner((cur) => true);
     try {
       const cancelInfo = await axios.post(
-        'http://localhost:4000/admin/orderlist/detail/cancelRefund/complete',
+        'http://13.125.248.186:4000/admin/orderlist/detail/cancelRefund/complete',
         { orderId },
       );
 
@@ -671,7 +671,7 @@ export default function OrderList_Indi_Admin() {
     // true이면 아래 진행
     try {
       const response = await axios.post(
-        'http://localhost:4000/admin/orderlist/detail/cancel_return_submit',
+        'http://13.125.248.186:4000/admin/orderlist/detail/cancel_return_submit',
         { orderId },
       );
 
@@ -693,7 +693,7 @@ export default function OrderList_Indi_Admin() {
     //true라면,
     try {
       const response = await axios.get(
-        `http://localhost:4000/admin/orderlist/detail/order_delete/${orderId}`,
+        `http://13.125.248.186:4000/admin/orderlist/detail/order_delete/${orderId}`,
       );
 
       if (response.status !== 200) return alert('진행 오류');
@@ -716,7 +716,7 @@ export default function OrderList_Indi_Admin() {
     // true라면,
     try {
       const response = await axios.get(
-        `http://localhost:4000/admin/orderlist/detail/order_return/${orderId}`,
+        `http://13.125.248.186:4000/admin/orderlist/detail/order_return/${orderId}`,
       );
 
       if (response.status !== 200) return alert('교환신청 실패');
@@ -845,7 +845,7 @@ export default function OrderList_Indi_Admin() {
                   return (
                     <Preview
                       key={index}
-                      src={`http://localhost:4000/uploads/${data.payments.orderId}/${el}`}
+                      src={`http://13.125.248.186:4000/uploads/${data.payments.orderId}/${el}`}
                     ></Preview>
                   );
                 })

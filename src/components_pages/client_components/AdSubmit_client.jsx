@@ -21,7 +21,7 @@ export default function AdSubmit_client() {
   // const getAddress = async () => {
   //   try {
   //     const resAddressAll = await axios.post(
-  //       'http://localhost:4000/mypage/getAddress',
+  //       'http://13.125.248.186:4000/mypage/getAddress',
   //       {
   //         userId: userId, // 리덕스에 있는 아이디 값
   //       },
@@ -42,7 +42,7 @@ export default function AdSubmit_client() {
   const deleteAddress = async (index) => {
     try {
       const resAddress = await axios.post(
-        'http://localhost:4000/mypage/deleteAddress',
+        'http://13.125.248.186:4000/mypage/deleteAddress',
         {
           addressId: data[index]?._id,
           userId: userId, // 리덕스에 있는 아이디 값

@@ -110,7 +110,7 @@ export default function Adwrite_client() {
         phoneLastNum.current.value;
 
       const resAddress = await axios.post(
-        'http://localhost:4000/mypage/editAddress',
+        'http://13.125.248.186:4000/mypage/editAddress',
         {
           userId: userId, // 리덕스에 있는 아이디 값
           destination: inputshipname.current.value,

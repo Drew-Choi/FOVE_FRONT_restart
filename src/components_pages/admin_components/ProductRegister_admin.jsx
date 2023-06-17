@@ -304,7 +304,7 @@ export default function ProductRegister_admin() {
             //async/await를 이용해 fetch 구현
             const newPdPostData = await fetch(
               //요청할 페이지 날림 -> 이 서버 라우터에서 몽고디비에 인설트 하는 컨트롤을 가지고 있음
-              'http://localhost:4000/admin/register-product',
+              'http://13.125.248.186:4000/admin/register-product',
               {
                 method: 'POST',
                 headers: {},
@@ -352,7 +352,7 @@ export default function ProductRegister_admin() {
       }
 
       const getUniqueCode = await axios.get(
-        'http://localhost:4000/admin/register-product/uniqueCheck',
+        'http://13.125.248.186:4000/admin/register-product/uniqueCheck',
       );
 
       const uniqueCode = getUniqueCode.data;

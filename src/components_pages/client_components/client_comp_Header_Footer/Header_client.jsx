@@ -73,7 +73,7 @@ export default function Header_client() {
         dispatch(importdb(nullCart));
 
         const cartDataGet = await axios.post(
-          `http://localhost:4000/cart/list`,
+          `http://13.125.248.186:4000/cart/list`,
           {
             token: tokenValue,
           },

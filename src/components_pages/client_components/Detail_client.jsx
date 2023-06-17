@@ -18,7 +18,7 @@ export default function Detail_client() {
 
   const getSelectProduct = async () => {
     const selectData = await axios.get(
-      `http://localhost:4000/store/productId/${productCode}`,
+      `http://13.125.248.186:4000/store/productId/${productCode}`,
     );
     if (selectData.status === 200) {
       await setProductData(selectData.data[0]);

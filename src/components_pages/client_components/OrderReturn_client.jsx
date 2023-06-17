@@ -11,7 +11,7 @@ import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
 const Pd_Images = styled.div`
   ${(props) =>
     props.img &&
-    `background-image: url('http://localhost:4000/uploads/${props.img}')`}
+    `background-image: url('http://13.125.248.186:4000/uploads/${props.img}')`}
 `;
 
 const Preview = styled.img`
@@ -50,7 +50,7 @@ export default function OrderReturn_client() {
       const tokenValue = await getToken();
 
       const getCancelData = await axios.post(
-        'http://localhost:4000/order_list/getCancelItem',
+        'http://13.125.248.186:4000/order_list/getCancelItem',
         {
           token: tokenValue,
           orderId: orderId,
@@ -213,7 +213,7 @@ export default function OrderReturn_client() {
 
           // multer이용으로 fetch 사용
           const submitRes = await fetch(
-            'http://localhost:4000/admin/return_submit',
+            'http://13.125.248.186:4000/admin/return_submit',
             {
               method: 'POST',
               headers: {},

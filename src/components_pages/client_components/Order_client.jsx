@@ -17,7 +17,7 @@ import Loading from './Loading';
 const Pd_order_IMG = styled.div`
   ${(props) =>
     props.img &&
-    `background-image: url('http://localhost:4000/uploads/${props.img}')`}
+    `background-image: url('http://13.125.248.186:4000/uploads/${props.img}')`}
 `;
 
 export default function Order_client() {
@@ -141,7 +141,7 @@ export default function Order_client() {
       const tokenValue = await getToken();
 
       const response = await axios.post(
-        'http://localhost:4000/mypage/getAddress',
+        'http://13.125.248.186:4000/mypage/getAddress',
         { token: tokenValue },
       );
 

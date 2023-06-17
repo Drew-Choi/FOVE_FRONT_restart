@@ -156,7 +156,7 @@ export default function Detail_OrderMenu_client({
       }
 
       // 카트 기존 수량과 추가하려는 수량의 합산이 재고 수량보다 작거나 같다면 아래 추가 진행
-      const reqData = await axios.post(`http://localhost:4000/cart/add`, {
+      const reqData = await axios.post(`http://13.125.248.186:4000/cart/add`, {
         token: await getToken(),
         productName: datas.productName,
         productCode: datas.productCode,

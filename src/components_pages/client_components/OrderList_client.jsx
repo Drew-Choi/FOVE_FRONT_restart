@@ -10,7 +10,7 @@ import { BsArrowDownCircle } from 'react-icons/bs';
 const PD_Images = styled.div`
   ${(props) =>
     props.img &&
-    `background-image: url('http://localhost:4000/uploads/${props.img}')`}
+    `background-image: url('http://13.125.248.186:4000/uploads/${props.img}')`}
 `;
 
 export default function OrderList_client() {
@@ -89,7 +89,7 @@ export default function OrderList_client() {
     try {
       const tokenValue = await getToken();
       const getOrderListData = await axios.post(
-        'http://localhost:4000/order_list/getMemberOrderList',
+        'http://13.125.248.186:4000/order_list/getMemberOrderList',
         { token: tokenValue },
       );
       if (getOrderListData.status === 200 && getOrderListData.data.length > 0) {
@@ -110,7 +110,7 @@ export default function OrderList_client() {
     try {
       const tokenValue = await getToken();
       const getCancelListData = await axios.post(
-        'http://localhost:4000/order_list/getCancelList',
+        'http://13.125.248.186:4000/order_list/getCancelList',
         {
           token: tokenValue,
         },

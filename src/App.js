@@ -81,9 +81,12 @@ function App() {
       const valueKey = await getToken();
 
       if (valueKey) {
-        const userInfo = await axios.post('http://localhost:4000/islogin', {
-          token: valueKey,
-        });
+        const userInfo = await axios.post(
+          'http://13.125.248.186:4000/islogin',
+          {
+            token: valueKey,
+          },
+        );
         if (userInfo.status === 200) {
           dispatch(
             keepLogin({

@@ -10,7 +10,7 @@ import Select_Custom from '../../components_elements/Select_Custom';
 const Pd_Images = styled.div`
   ${(props) =>
     props.img &&
-    `background-image: url('http://localhost:4000/uploads/${props.img}')`}
+    `background-image: url('http://13.125.248.186:4000/uploads/${props.img}')`}
 `;
 
 export default function OrderCancel_client_onlyOrder() {
@@ -24,7 +24,7 @@ export default function OrderCancel_client_onlyOrder() {
       const tokenValue = await getToken();
 
       const getCancelData = await axios.post(
-        'http://localhost:4000/order_list/getCancelItem',
+        'http://13.125.248.186:4000/order_list/getCancelItem',
         {
           token: tokenValue,
           orderId: orderId,
@@ -45,7 +45,7 @@ export default function OrderCancel_client_onlyOrder() {
       const tokenValue = await getToken();
 
       const response = await axios.post(
-        'http://localhost:4000/order_list/readyCancel',
+        'http://13.125.248.186:4000/order_list/readyCancel',
         { orderId: orderId, token: tokenValue },
       );
 

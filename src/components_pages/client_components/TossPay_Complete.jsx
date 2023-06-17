@@ -11,9 +11,12 @@ export default function TossPay_Complete() {
 
   const getData = async () => {
     try {
-      const paymentData = await axios.get('http://localhost:4000/toss/data', {
-        withCredentials: true,
-      });
+      const paymentData = await axios.get(
+        'http://13.125.248.186:4000/toss/data',
+        {
+          withCredentials: true,
+        },
+      );
 
       if (paymentData.status === 200) {
         await localStorage.setItem(
@@ -40,7 +43,7 @@ export default function TossPay_Complete() {
     try {
       const tokenValue = await getToken();
       const finalOrderData = await axios.post(
-        'http://localhost:4000/store/order',
+        'http://13.125.248.186:4000/store/order',
         {
           token: tokenValue,
           //상품정보

@@ -15,11 +15,14 @@ export default function TossPay_Cancel_Complete() {
   const cancelProgress = async () => {
     try {
       const tokenValue = await getToken();
-      const cancelInfo = await axios.post('http://localhost:4000/toss/cancel', {
-        orderId,
-        reason,
-        token: tokenValue,
-      });
+      const cancelInfo = await axios.post(
+        'http://13.125.248.186:4000/toss/cancel',
+        {
+          orderId,
+          reason,
+          token: tokenValue,
+        },
+      );
 
       if (cancelInfo.status === 200) {
         setCancelInfoData((cur) => cancelInfo.data);

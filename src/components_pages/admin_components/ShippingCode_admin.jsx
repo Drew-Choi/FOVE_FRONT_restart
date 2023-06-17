@@ -106,7 +106,7 @@ export default function ShippingCode_admin() {
   const getDoneListInfo = async () => {
     try {
       const adminDoneListInfo = await axios.get(
-        'http://localhost:4000/admin/orderlist/shippingcode',
+        'http://13.125.248.186:4000/admin/orderlist/shippingcode',
       );
 
       if (adminDoneListInfo.status !== 200) return alert('데이터 오류');
@@ -124,7 +124,7 @@ export default function ShippingCode_admin() {
   const getRetrievedList = async () => {
     try {
       const adminRetrievedInfo = await axios.get(
-        'http://localhost:4000/admin/orderlist/retrieved',
+        'http://13.125.248.186:4000/admin/orderlist/retrieved',
       );
 
       if (adminRetrievedInfo.status !== 200) return alert('데이터 오류');
@@ -144,7 +144,7 @@ export default function ShippingCode_admin() {
   const getReturnList = async () => {
     try {
       const adminReturnInfo = await axios.get(
-        'http://localhost:4000/admin/orderlist/return',
+        'http://13.125.248.186:4000/admin/orderlist/return',
       );
 
       if (adminReturnInfo.status !== 200) return alert('데이터 오류');
@@ -202,7 +202,7 @@ export default function ShippingCode_admin() {
 
       // 아니라면 아래 진행
       const response = await axios.post(
-        'http://localhost:4000/admin/orderlist/register_shippingCode',
+        'http://13.125.248.186:4000/admin/orderlist/register_shippingCode',
         {
           orderId,
           user,
@@ -244,7 +244,7 @@ export default function ShippingCode_admin() {
         return alert('유효한 송장번호는 10자 이상입니다.');
 
       const response = await axios.post(
-        'http://localhost:4000/admin/orderlist/register_shippingCode_retrieved',
+        'http://13.125.248.186:4000/admin/orderlist/register_shippingCode_retrieved',
         {
           orderId,
           user,
@@ -293,7 +293,7 @@ export default function ShippingCode_admin() {
         return alert('유효한 송장번호는 10자 이상입니다.');
 
       const response = await axios.post(
-        'http://localhost:4000/admin/orderlist/register_shippingCode_return',
+        'http://13.125.248.186:4000/admin/orderlist/register_shippingCode_return',
         {
           orderId,
           user,

@@ -109,7 +109,7 @@ export default function EditInfo_client() {
     try {
       // 리덕스에 있는 아이디 값으로 회원 정보 불러오기
       const resId = await axios.post(
-        'http://localhost:4000/mypage/editInfo/fillInfo',
+        'http://13.125.248.186:4000/mypage/editInfo/fillInfo',
         {
           id: userId,
         },
@@ -150,7 +150,7 @@ export default function EditInfo_client() {
       // 입력 받은 값들 axios로 보내기
       // 새로운 토큰 발행을 위해 포인트, 관리자 여부 정보도 보내기
       const resInfo = await axios.post(
-        'http://localhost:4000/mypage/editInfo',
+        'http://13.125.248.186:4000/mypage/editInfo',
         {
           id: inputId.current.value,
           newPw: inputPw.current.value,
@@ -202,7 +202,7 @@ export default function EditInfo_client() {
         )
       ) {
         const resInfo = await axios.post(
-          'http://localhost:4000/mypage/deleteInfo',
+          'http://13.125.248.186:4000/mypage/deleteInfo',
           {
             id: inputId.current.value,
           },
