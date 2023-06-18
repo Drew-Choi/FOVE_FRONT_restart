@@ -108,7 +108,8 @@ export default function MenuAccount({ menuAccountRef }) {
   const logoutUser = async () => {
     try {
       const YOUR_REST_API_KEY = await getKey('REST_API_KEY');
-      const YOUR_LOGOUT_REDIRECT_URI = 'http://localhost:3000/kakao/logout';
+      const YOUR_LOGOUT_REDIRECT_URI =
+        'http://13.125.248.186:3000/kakao/logout';
       dispatch(clickMenu()); // MenuAccount 닫기
       window.location.href = `https://kauth.kakao.com/oauth/logout?client_id=${YOUR_REST_API_KEY}&logout_redirect_uri=${YOUR_LOGOUT_REDIRECT_URI}`;
     } catch (err) {

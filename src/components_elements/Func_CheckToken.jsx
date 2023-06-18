@@ -12,9 +12,12 @@ export default function Func_CheckToken() {
   const tokenLoginCheck = async () => {
     try {
       // 검증을 위해, 로컬 스토리지의 토큰 axios로 보내기
-      const resToken = await axios.post('http://localhost:4000/login/token', {
-        token: window.localStorage.getItem('token'),
-      });
+      const resToken = await axios.post(
+        'http://13.125.248.186:4000/login/token',
+        {
+          token: window.localStorage.getItem('token'),
+        },
+      );
 
       // 토큰 검증 결과를 받아서 처리, 필요 데이터는 data 에 담아서 전송되므로 필요한 정보 세팅
       console.log(`토큰 검증 결과: ${resToken.data.message}`); // ////////////////////////

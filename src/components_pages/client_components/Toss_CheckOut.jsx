@@ -96,7 +96,7 @@ export function Toss_CheckOut() {
                 customerName: `${userInfo.userID}`,
                 customerEmail: `${userInfo.userID}`,
                 successUrl: `http://13.125.248.186:4000/toss/approve?orderPrice=${orderPrice}&products=${importLocalProductsJSON}`,
-                failUrl: `http://localhost:3000/store/order/checkout/fail`,
+                failUrl: `http://13.125.248.186:3000/store/order/checkout/fail`,
               });
             } catch (error) {
               console.error(error);
