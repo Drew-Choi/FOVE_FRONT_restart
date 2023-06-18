@@ -13,9 +13,7 @@ export default function TossPay_Complete() {
     try {
       const paymentData = await axios.get(
         'http://13.125.248.186:4000/toss/data',
-        {
-          withCredentials: true,
-        },
+        { withCredentials: true },
       );
 
       if (paymentData.status === 200) {
