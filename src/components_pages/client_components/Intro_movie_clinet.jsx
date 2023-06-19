@@ -9,11 +9,11 @@ export default function Intro_movie_client() {
 
   useEffect(() => {
     const player = videojs(videoRef.current, {
-      // autoplay: true,
+      autoplay: false,
       muted: true,
       playsinline: true,
       preload: 'metadata',
-      loop: true,
+      loop: false,
     });
 
     const handleUser = () => {
