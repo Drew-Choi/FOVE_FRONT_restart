@@ -10,16 +10,14 @@ export default function Intro_movie_client() {
     const player = new Plyr(videoRef.current, {
       inheritedControls: true,
       controls: false,
+      autoplay: false,
+      muted: true,
+      volume: 0,
     });
-
-    (player.autoplay = false),
-      (player.muted = true),
-      (player.loop = false),
-      (player.volume = 0),
-      (player.source = {
-        type: 'video',
-        sources: [{ src: '/videos/intro.mp4', type: 'video/mp4' }],
-      });
+    player.source = {
+      type: 'video',
+      sources: [{ src: '/videos/intro.mp4', type: 'video/mp4' }],
+    };
 
     const handleUser = () => {
       player.play();
@@ -36,10 +34,10 @@ export default function Intro_movie_client() {
   return (
     <section className="intro_moive">
       <div className="intro_moive_container">
-        <video
-          ref={videoRef}
-          style={{ width: '1682px', height: '100%' }}
-        ></video>
+        <div className="wrap">
+          {' '}
+          <video ref={videoRef}></video>
+        </div>
       </div>
     </section>
   );
