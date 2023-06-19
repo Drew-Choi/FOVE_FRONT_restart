@@ -1,21 +1,22 @@
 /* eslint-disable no-undef */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import '../../styles/intro_Movie_client.scss';
-import videojs from 'video.js';
-import 'video.js/dist/video-js.css';
+import Plyr from 'plyr';
 
 export default function Intro_movie_client() {
   const videoRef = useRef(null);
 
   useEffect(() => {
-    const player = videojs(videoRef.current, {
-      autoplay: false,
-      muted: true,
-      volume: false,
-      playsinline: true,
-      preload: 'metadata',
-      controls: true,
-    });
+    const player = new Plyr(videoRef.current);
+
+    (player.autoplay = false),
+      (player.muted = true),
+      (player.loop = false),
+      (player.volume = 0),
+      (player.source = {
+        type: 'video',
+        sources: [{ src: '/videos/intro.mp4', type: 'video/mp4' }],
+      });
 
     const handleUser = () => {
       player.play();
@@ -23,20 +24,19 @@ export default function Intro_movie_client() {
 
     document.addEventListener('click', handleUser);
 
-    player.src('/videos/intro.mp4');
-
     return () => {
       document.removeEventListener('click', handleUser);
-      player.dispose();
+      player.destroy();
     };
   }, []);
 
   return (
     <section className="intro_moive">
       <div className="intro_moive_container">
-        <div data-vjs-player>
-          <video ref={videoRef} className="video-js" width="1682"></video>
-        </div>
+        <video
+          ref={videoRef}
+          style={{ width: '1682px', height: 'auto' }}
+        ></video>
       </div>
     </section>
   );
