@@ -11,9 +11,10 @@ export default function Intro_movie_client() {
     const player = videojs(videoRef.current, {
       autoplay: false,
       muted: true,
+      volume: false,
       playsinline: true,
       preload: 'metadata',
-      loop: false,
+      controls: true,
     });
 
     const handleUser = () => {
