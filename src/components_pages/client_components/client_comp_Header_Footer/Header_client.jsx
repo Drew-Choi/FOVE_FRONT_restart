@@ -292,7 +292,7 @@ export default function Header_client() {
         </p>
 
         {/* 관리자 페이지 이동 버튼 */}
-        <MediaQuery minWidth={1037}>
+        <MediaQuery minWidth={829}>
           {userData.isAdmin && (
             <button className="adminBTN" onClick={() => navigate('/admin')}>
               👩‍💻 관리자 페이지
@@ -300,7 +300,7 @@ export default function Header_client() {
           )}
         </MediaQuery>
 
-        <MediaQuery maxWidth={1036}>
+        <MediaQuery maxWidth={828}>
           {userData.isAdmin && (
             <button className="adminBTN" onClick={() => navigate('/admin')}>
               👩‍💻

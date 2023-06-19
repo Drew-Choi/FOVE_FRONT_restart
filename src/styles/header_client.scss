@@ -220,10 +220,11 @@
 
 
 .adminBTN {
-  position: absolute;
-  left: 220px;
-  top: 50%;
-  transform: translateY(-50%);
+  position: relative;
+  grid-column: 2 / 3;
+  grid-row: 1/1;
+  margin: auto 0px;
+  transform: translateY(-30%);
   width: 150px;
   height: 30px;
   font-size: 13px;
@@ -232,17 +233,18 @@
   background-color: white;
   border: 2px solid black;
 
-    @media screen and (max-width: 1036px) {
+    @media screen and (max-width: 828px) {
     width: 30px;
-    left: 190px;
   }
 
-    @media screen and (max-width: 575px) {
-      left: 70px
+  @media screen and (max-width: 575px) {
+    left: 50px;
+    grid-column: 1 / 2;
+    grid-row: 1/1;
   }
 
     @media screen and (max-width: 280px) {
-     left: 60px;
+     left: 40px;
   }
 
   &:hover {
