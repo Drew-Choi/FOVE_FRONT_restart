@@ -13,7 +13,7 @@ export default function Intro_movie_client() {
       muted: true,
       playsinline: true,
       preload: 'metadata',
-      loop: true,
+      // loop: true,
     });
 
     const handleUser = () => {
