@@ -22,7 +22,7 @@
   }
 
   .intro_moive_container{
-    position: absolute;
+    position: relative;
     // background-color: beige;
     width: 1700px;
     height: 710px;
@@ -34,7 +34,7 @@
     align-items: center;
 
     .intro_moive_wrap {
-      position: absolute;
+      position: relative;
       top: 0px;
       width: 1682px;
     }
