@@ -73,7 +73,7 @@ export default function Header_client() {
         dispatch(importdb(nullCart));
 
         const cartDataGet = await axios.post(
-          `http://13.125.248.186:4000/cart/list`,
+          `http://localhost:4000/cart/list`,
           {
             token: tokenValue,
           },
@@ -294,17 +294,17 @@ export default function Header_client() {
         {/* 관리자 페이지 이동 버튼 */}
         <MediaQuery minWidth={829}>
           {userData.isAdmin && (
-            <button className="adminBTN" onClick={() => navigate('/admin')}>
+            <div className="adminBTN" onClick={() => navigate('/admin')}>
               👩‍💻 관리자 페이지
-            </button>
+            </div>
           )}
         </MediaQuery>
 
         <MediaQuery maxWidth={828}>
           {userData.isAdmin && (
-            <button className="adminBTN" onClick={() => navigate('/admin')}>
+            <div className="adminBTN" onClick={() => navigate('/admin')}>
               👩‍💻
-            </button>
+            </div>
           )}
         </MediaQuery>
 

@@ -221,6 +221,9 @@
 
 .adminBTN {
   position: relative;
+  text-align: center;
+  padding-right: 1px;
+  padding-top: 3px;
   grid-column: 1 / 2;
   left: 150px;
   grid-row: 1/1;
@@ -261,8 +264,6 @@
     border: none;
     transition: 0.3s ease;
   }
-
-
 }
 
 //쿼리영역----------
