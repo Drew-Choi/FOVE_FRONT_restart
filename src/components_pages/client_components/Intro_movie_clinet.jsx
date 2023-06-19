@@ -26,7 +26,7 @@ export default function Intro_movie_client() {
             muted={true}
             loop={playING}
             volume={0}
-            // playsinline={true}
+            playsinline={true}
           />
         </div>
       </div>
