@@ -7,7 +7,10 @@ export default function Intro_movie_client() {
   const videoRef = useRef(null);
 
   useEffect(() => {
-    const player = new Plyr(videoRef.current);
+    const player = new Plyr(videoRef.current, {
+      inheritedControls: true,
+      controls: false,
+    });
 
     (player.autoplay = false),
       (player.muted = true),
@@ -35,7 +38,7 @@ export default function Intro_movie_client() {
       <div className="intro_moive_container">
         <video
           ref={videoRef}
-          style={{ width: '1682px', height: 'auto' }}
+          style={{ width: '1682px', height: '100%' }}
         ></video>
       </div>
     </section>
