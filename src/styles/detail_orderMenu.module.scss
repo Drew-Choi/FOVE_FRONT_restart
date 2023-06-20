@@ -251,6 +251,23 @@
             color: white;
           }
         }
+
+        .addCart_mobile{
+          all: unset;
+          border: 2px solid black;
+          padding: 8px 45px;
+          border-radius: 50px;
+          margin-bottom: 10px;
+          margin-left: 45px;
+          font-weight: 500;
+          color: black;
+          transition: 0.3s ease;
+
+          &:active {
+            background-color: rgb(255, 255, 255);
+            color: white;
+          }
+        }
     
         .buy{
           all: unset;

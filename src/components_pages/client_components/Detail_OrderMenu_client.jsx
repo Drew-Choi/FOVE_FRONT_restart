@@ -20,6 +20,21 @@ export default function Detail_OrderMenu_client({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // 터치화면인지 인식하기 위한 로직 ------
+  const [isTouch, setIsTouch] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsTouch((cur) => true);
+    };
+
+    document.addEventListener('touchstart', checkMobile);
+
+    return () => {
+      document.removeEventListener('touchstart', checkMobile);
+    };
+  }, []);
+
   //주문으로 수량 자료 넘기려는 용도
   const [count, setCount] = useState(1);
 
@@ -409,7 +424,14 @@ export default function Detail_OrderMenu_client({
               <div className={detailOrderMenu.catIcon}>
                 <MdAddShoppingCart />
               </div>
-              <button className={detailOrderMenu.addCart} onClick={addToCart}>
+              <button
+                className={
+                  !isTouch
+                    ? detailOrderMenu.addCart
+                    : detailOrderMenu.addCart_mobile
+                }
+                onClick={addToCart}
+              >
                 Add Cart
               </button>
             </>
