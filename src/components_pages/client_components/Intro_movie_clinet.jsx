@@ -11,9 +11,9 @@ export default function Intro_movie_client() {
     };
   }, []);
 
-  const handle = () => {
-    setPlayING((cur) => true);
-  };
+  // const handle = () => {
+  //   setPlayING((cur) => true);
+  // };
 
   return (
     <section className="intro_moive">
@@ -28,7 +28,8 @@ export default function Intro_movie_client() {
             loop={playING}
             volume={0}
             playsinline={true}
-            onReady={handle}
+            // onReady={handle}
+            controls={true}
           />
         </div>
       </div>
