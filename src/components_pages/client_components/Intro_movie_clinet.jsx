@@ -1,44 +1,36 @@
-/* eslint-disable no-undef */
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../styles/intro_Movie_client.scss';
-import Plyr from 'plyr';
+import ReactPlayer from 'react-player';
 
 export default function Intro_movie_client() {
-  const videoRef = useRef(null);
-
-  // 제발 되라
+  const [playING, setPlayING] = useState(false);
 
   useEffect(() => {
-    const player = new Plyr(videoRef.current, {
-      inheritedControls: true,
-      controls: false,
-      autoplay: false,
-      muted: true,
-      volume: 0,
-      preload: 'metadata',
-    });
-    player.source = {
-      type: 'video',
-      sources: [{ src: '/videos/intro.mp4', type: 'video/mp4' }],
-    };
-
-    const handleUser = () => {
-      player.play();
-    };
-
-    document.addEventListener('click', handleUser);
-
     return () => {
-      document.removeEventListener('click', handleUser);
-      player.destroy();
+      setPlayING((cur) => false);
     };
   }, []);
+
+  const handle = () => {
+    setPlayING((cur) => true);
+  };
 
   return (
     <section className="intro_moive">
       <div className="intro_moive_container">
-        {' '}
-        <video className="intro_content" ref={videoRef}></video>
+        <div className="intro_moive_wrap">
+          <ReactPlayer
+            url="/videos/intro_1.mp4"
+            width="100%"
+            height="auto"
+            playing={playING}
+            muted={true}
+            loop={playING}
+            volume={0}
+            playsinline={true}
+            onReady={handle}
+          />
+        </div>
       </div>
     </section>
   );
