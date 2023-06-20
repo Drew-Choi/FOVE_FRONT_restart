@@ -12,7 +12,9 @@ import { searchinput } from '../../../store/modules/search';
 import MediaQuery from 'react-responsive';
 import getToken from '../../../store/modules/getToken';
 import { invisible, visible } from '../../../store/modules/cartOrderLoading';
-import { AiOutlineClose } from 'react-icons/ai';
+import { AiOutlineClose, AiOutlineShopping } from 'react-icons/ai';
+import { MdOutlineLogin, MdOutlineAccountCircle } from 'react-icons/md';
+import { GrSearch } from 'react-icons/gr';
 
 export default function Header_client() {
   const [reactSearchModal, setReactSearchModal] = useState(false);
@@ -369,24 +371,40 @@ export default function Header_client() {
                       : setSearchOnOff('off')
                   }
                 >
-                  search
+                  <GrSearch />
                 </span>
               )}
             </li>
           </MediaQuery>
 
           <MediaQuery maxWidth={1327}>
+            <li id="search_container">
+              {currentURL === '/' ? (
+                <></>
+              ) : (
+                <span
+                  ref={searchBTN}
+                  className="material-symbols-outlined search"
+                  onClick={() => setReactSearchModal((cur) => !cur)}
+                >
+                  <GrSearch />
+                </span>
+              )}
+            </li>
+          </MediaQuery>
+
+          {/* <MediaQuery maxWidth={1327}>
             {currentURL === '/' ? (
               <></>
             ) : (
               <span
                 className="material-symbols-outlined search_react"
-                onClick={() => setReactSearchModal((cur) => !cur)}
+           
               >
-                search
+                <GrSearch />
               </span>
             )}
-          </MediaQuery>
+          </MediaQuery> */}
 
           <li id="cate_li2">
             {userData.isLogin ? (
@@ -417,7 +435,7 @@ export default function Header_client() {
                       }}
                       className="material-symbols-sharp account_react"
                     >
-                      account_circle
+                      <MdOutlineAccountCircle />
                     </span>
                   ) : (
                     <span
@@ -454,7 +472,7 @@ export default function Header_client() {
                       }}
                       className="material-symbols-outlined header_login_mediaQ"
                     >
-                      login
+                      <MdOutlineLogin />
                     </span>
                   )}
                 </MediaQuery>
@@ -486,7 +504,7 @@ export default function Header_client() {
                   ref={cartModalRef2}
                 >
                   <span className="material-symbols-sharp header_beg_icon_media">
-                    shopping_bag
+                    <AiOutlineShopping />
                   </span>
                   <div className="header_beg_count_media">
                     {!cartInfo.cartProductsLength ||
