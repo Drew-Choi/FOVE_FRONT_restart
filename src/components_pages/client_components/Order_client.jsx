@@ -12,7 +12,6 @@ import LoadingCartOrder from './LoadingCartOrder';
 import getToken from '../../store/modules/getToken';
 import axios from 'axios';
 import { IoCloseCircleOutline } from 'react-icons/io5';
-import Loading from './Loading';
 
 const Pd_order_IMG = styled.div`
   ${(props) =>
@@ -44,7 +43,7 @@ export default function Order_client() {
   //리덕스 state ---------------------------
   //오더메뉴에서 넘어오는 정보들(리덕스)
   const singleOrder = useSelector((state) =>
-    state.order ? (
+    state.order.productName !== '' ? (
       state.order
     ) : (
       <h2 style={{ position: 'relative', top: '100px' }}>data Error</h2>
@@ -52,7 +51,7 @@ export default function Order_client() {
   );
 
   const cartOrderData = useSelector((state) =>
-    state.cart ? (
+    state.cart.cartProducts.length !== 0 ? (
       state.cart
     ) : (
       <h2 style={{ position: 'relative', top: '100px' }}>data Error</h2>

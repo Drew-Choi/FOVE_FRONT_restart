@@ -1,12 +1,12 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { reset, update } from '../../store/modules/cart';
+import { update } from '../../store/modules/cart';
 import { offon } from '../../store/modules/cartmodal';
 import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
 import '../../styles/cartModal.scss';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import getToken from '../../store/modules/getToken';
 
 const CartModal_Layout = styled.div`
@@ -103,7 +103,7 @@ const Img = styled.div`
   height: 100px;
   ${(props) =>
     props.imgURL &&
-    `background-image: url('http://13.125.248.186:4000/uploads/${props.imgURL}');`};
+    `background-image: url('http://localhost:4000/uploads/${props.imgURL}');`};
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -242,21 +242,16 @@ export default function CartModal({ className, cartModalMenu }) {
 
   //리덕스
   //상품정보 state
-  const cartInfo = useSelector((state) =>
-    !state.cart.cartProducts ? [] : state.cart,
-  );
+  const cartInfo = useSelector((state) => state.cart);
 
   //카트 상품 수량 빼기
   const minersCartItem = async (index) => {
     try {
       const tokenValue = await getToken();
-      const downData = await axios.post(
-        `http://13.125.248.186:4000/cart/qtyminus`,
-        {
-          token: tokenValue,
-          index,
-        },
-      );
+      const downData = await axios.post(`http://localhost:4000/cart/qtyminus`, {
+        token: tokenValue,
+        index,
+      });
       if (downData.status === 200) {
         if (downData.data && downData.data.userCart) {
           // 'cartObj' 객체가 null이 아니고 'products' 속성이 존재하는 경우에만 실행
@@ -279,13 +274,10 @@ export default function CartModal({ className, cartModalMenu }) {
   const plusCartItem = async (index) => {
     try {
       const tokenValue = await getToken();
-      const upData = await axios.post(
-        `http://13.125.248.186:4000/cart/qtyplus`,
-        {
-          token: tokenValue,
-          index,
-        },
-      );
+      const upData = await axios.post(`http://localhost:4000/cart/qtyplus`, {
+        token: tokenValue,
+        index,
+      });
       if (upData.status === 200) {
         if (upData.data && upData.data.userCart) {
           // 'cartObj' 객체가 null이 아니고 'products' 속성이 존재하는 경우에만 실행
@@ -312,13 +304,10 @@ export default function CartModal({ className, cartModalMenu }) {
   const deletePD = async (index) => {
     try {
       const tokenValue = await getToken();
-      const deleteID = await axios.post(
-        `http://13.125.248.186:4000/cart/remove`,
-        {
-          token: tokenValue,
-          index,
-        },
-      );
+      const deleteID = await axios.post(`http://localhost:4000/cart/remove`, {
+        token: tokenValue,
+        index,
+      });
       if (deleteID.status === 200) {
         if (deleteID.data && deleteID.data.updatedCart) {
           // 'cartObj' 객체가 null이 아니고 'products' 속성이 존재하는 경우에만 실행
@@ -338,7 +327,7 @@ export default function CartModal({ className, cartModalMenu }) {
     try {
       const tokenValue = await getToken();
       const allRemoveCart = await axios.post(
-        `http://13.125.248.186:4000/cart/clean`,
+        `http://localhost:4000/cart/clean`,
         {
           token: tokenValue,
         },

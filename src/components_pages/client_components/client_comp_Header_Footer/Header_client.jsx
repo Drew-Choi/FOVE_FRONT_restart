@@ -45,9 +45,9 @@ export default function Header_client() {
   const offonKey = useSelector((state) => state.cartmodal.offon);
   const menuClicked = useSelector((state) => state.menuAccount.clicked);
   //유저정보 state
-  const userData = useSelector((state) => (state.user === 0 ? 0 : state.user));
+  const userData = useSelector((state) => state.user);
   //상품정보 state
-  const cartInfo = useSelector((state) => (state.cart === 0 ? 0 : state.cart));
+  const cartInfo = useSelector((state) => state.cart);
   const [isVisible, setIsVisible] = useState(true);
 
   const location = useLocation();
@@ -112,7 +112,7 @@ export default function Header_client() {
 
   useEffect(() => {
     cartDataReq();
-  }, [userData.userName]);
+  }, [userData.userName] || cartInfo.cartProducts);
 
   // 장바구니 버튼(Shopping Bag) - 로그인 상태에서 사용 가능하게
   const clickShoppingBag = () => {
