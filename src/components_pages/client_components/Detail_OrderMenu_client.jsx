@@ -172,7 +172,8 @@ export default function Detail_OrderMenu_client({
         // updateCart();
         const datasArr = reqData.data.userCart.products;
         const totalQuantity = datasArr.reduce(
-          (sum, el) => sum + el.quantity,
+          (sum, el) =>
+            sum + (el.quantity < 0 ? el.quantity - el.quantity : el.quantity),
           0,
         );
         dispatch(add(datasArr, totalQuantity));
