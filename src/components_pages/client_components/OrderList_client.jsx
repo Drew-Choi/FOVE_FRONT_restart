@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Loading from './Loading';
 import { BsArrowDownCircle } from 'react-icons/bs';
+import { useSelector } from 'react-redux';
 
 const PD_Images = styled.div`
   ${(props) =>
@@ -24,6 +25,9 @@ export default function OrderList_client() {
   const [detailInfo, setDetailInfo] = useState([]);
   // 주문상세내역서용 - cancel
   const [detailInfoCancel, setDetailInfoCancel] = useState([]);
+
+  // 로그인여부확인
+  const isLogin = useSelector((state) => state.user.isLogin);
 
   // 시간에 따라 반품신청 버튼 활성화
   const timeCheck = (data) => {
@@ -550,9 +554,14 @@ export default function OrderList_client() {
                             <button
                               className={orderList.orderCancle}
                               onClick={() => {
-                                navigate(
-                                  `/mypage/orderlist/cancel/${el.payments.orderId}`,
-                                );
+                                if (isLogin) {
+                                  navigate(
+                                    `/mypage/orderlist/cancel/${el.payments.orderId}`,
+                                  );
+                                } else {
+                                  alert('로그인이 필요한 서비스입니다.');
+                                  return navigate(`/login`);
+                                }
                               }}
                             >
                               주문취소
@@ -570,9 +579,14 @@ export default function OrderList_client() {
                             <button
                               className={orderList.orderCancle}
                               onClick={() => {
-                                navigate(
-                                  `/mypage/orderlist/return/${el.payments.orderId}`,
-                                );
+                                if (isLogin) {
+                                  navigate(
+                                    `/mypage/orderlist/return/${el.payments.orderId}`,
+                                  );
+                                } else {
+                                  alert('로그인이 필요한 서비스입니다.');
+                                  return navigate(`/login`);
+                                }
                               }}
                             >
                               반품신청
@@ -652,9 +666,14 @@ export default function OrderList_client() {
                             <button
                               className={orderList.orderCancle}
                               onClick={() => {
-                                navigate(
-                                  `/mypage/orderlist/return_check/${el.payments.orderId}`,
-                                );
+                                if (isLogin) {
+                                  navigate(
+                                    `/mypage/orderlist/return_check/${el.payments.orderId}`,
+                                  );
+                                } else {
+                                  alert('로그인이 필요한 서비스입니다.');
+                                  return navigate(`/login`);
+                                }
                               }}
                             >
                               반품신청내역 확인
@@ -668,9 +687,14 @@ export default function OrderList_client() {
                             <button
                               className={orderList.orderCancle}
                               onClick={() => {
-                                navigate(
-                                  `/mypage/orderlist/cancel_onlyOrder/${el.payments.orderId}`,
-                                );
+                                if (isLogin) {
+                                  navigate(
+                                    `/mypage/orderlist/cancel_onlyOrder/${el.payments.orderId}`,
+                                  );
+                                } else {
+                                  alert('로그인이 필요한 서비스입니다.');
+                                  return navigate(`/login`);
+                                }
                               }}
                             >
                               주문취소
@@ -688,9 +712,14 @@ export default function OrderList_client() {
                               <button
                                 className={orderList.orderCancle}
                                 onClick={() => {
-                                  navigate(
-                                    `/mypage/orderlist/return_check/${el.payments.orderId}`,
-                                  );
+                                  if (isLogin) {
+                                    navigate(
+                                      `/mypage/orderlist/return_check/${el.payments.orderId}`,
+                                    );
+                                  } else {
+                                    alert('로그인이 필요한 서비스입니다.');
+                                    return navigate(`/login`);
+                                  }
                                 }}
                               >
                                 반품신청내역 확인
@@ -936,9 +965,14 @@ export default function OrderList_client() {
                                 <button
                                   className={orderList.orderCancle}
                                   onClick={() => {
-                                    navigate(
-                                      `/mypage/orderlist/return_check/${el.payments.orderId}`,
-                                    );
+                                    if (isLogin) {
+                                      navigate(
+                                        `/mypage/orderlist/return_check/${el.payments.orderId}`,
+                                      );
+                                    } else {
+                                      alert('로그인이 필요한 서비스입니다.');
+                                      return navigate(`/login`);
+                                    }
                                   }}
                                 >
                                   반품신청내역 확인

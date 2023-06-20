@@ -5,6 +5,7 @@ import axios from 'axios';
 import orderReturnCheck from '../../styles/orderReturnCheck_client.module.scss';
 import styled from 'styled-components';
 import Loading from './Loading';
+import { useSelector } from 'react-redux';
 
 const Pd_Images = styled.div`
   ${(props) =>
@@ -42,6 +43,9 @@ export default function OrderReturnCheck_client() {
   const navigate = useNavigate();
   const { orderId } = useParams();
 
+  // 로그인 여부 확인 - 장바구니 담기, 바로 구매 가능 여부 판단
+  const isLogin = useSelector((state) => state.user.isLogin);
+
   const getCancelItem = async () => {
     try {
       const tokenValue = await getToken();
@@ -76,6 +80,10 @@ export default function OrderReturnCheck_client() {
   }, []);
 
   const cancelSubmit = async () => {
+    if (!isLogin) {
+      alert('로그인이 필요한 서비스입니다.');
+      return navigate(`/login`);
+    }
     try {
       const tokenValue = await getToken();
 

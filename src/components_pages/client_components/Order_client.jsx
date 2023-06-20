@@ -28,6 +28,9 @@ export default function Order_client() {
   const currentURL = location.pathname;
   const navigate = useNavigate();
 
+  // 로그인관련
+  const isLogin = useSelector((state) => state.user.isLogin);
+
   //천단위 컴마
   const country = navigator.language;
   const frontPriceComma = (price) => {
@@ -698,9 +701,14 @@ export default function Order_client() {
                         className={orderClient.order_btn}
                         padding="10px 0px"
                         onClickEvent={() => {
-                          !agreement
-                            ? setToggleModal((cur) => true)
-                            : orderListLocalSave();
+                          if (isLogin) {
+                            !agreement
+                              ? setToggleModal((cur) => true)
+                              : orderListLocalSave();
+                          } else {
+                            alert('로그인이 필요한 서비스입니다.');
+                            return navigate(`/login`);
+                          }
                         }}
                       >
                         결제하기

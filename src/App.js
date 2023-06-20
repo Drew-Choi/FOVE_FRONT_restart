@@ -126,7 +126,15 @@ function App() {
 
   // 리액트 앱이 시작 되면 바로 토큰 검증 로직 실행 -> 토큰 로그인 수행
   useEffect(() => {
-    tokenLoginCheck();
+    if (
+      currentURL !== '/store/order_success' &&
+      currentURL !== '/store/order/checkout/fail' &&
+      currentURL !== '/login' &&
+      currentURL !== '/login/kakao/callback' &&
+      currentURL !== '/kakao/logout'
+    ) {
+      tokenLoginCheck();
+    }
   }, [currentURL]);
 
   const isAdmin = useSelector((state) => state.user.isAdmin);

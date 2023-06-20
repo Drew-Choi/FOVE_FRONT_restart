@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import Loading from './Loading';
 import Select_Custom from '../../components_elements/Select_Custom';
 import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
+import { useSelector } from 'react-redux';
 
 const Pd_Images = styled.div`
   ${(props) =>
@@ -44,6 +45,9 @@ export default function OrderReturn_client() {
   const navigate = useNavigate();
   const { orderId } = useParams();
   const desc = useRef('');
+
+  // 로그인 정보
+  const isLogin = useSelector((state) => state.user.isLogin);
 
   const getCancelItem = async () => {
     try {
@@ -168,6 +172,9 @@ export default function OrderReturn_client() {
 
   // 반품 신청서 제출
   const submitReturnInfo = async () => {
+    if (!isLogin)
+      return alert('로그인이 필요한 서비스입니다.'), navigate(`/login`);
+
     const updateConfirm = confirm('반품신청을 진행하시겠습니까?');
 
     if (!updateConfirm) return alert('반품신청 취소');
@@ -279,7 +286,14 @@ export default function OrderReturn_client() {
               </button>
               <button
                 className={orderReturn.btn_orderList}
-                onClick={() => navigate('/mypage/orderlist')}
+                onClick={() => {
+                  if (isLogin) {
+                    navigate('/mypage/orderlist');
+                  } else {
+                    alert('로그인이 필요한 서비스입니다.');
+                    return navigate(`/login`);
+                  }
+                }}
               >
                 반품신청 확인하기
               </button>

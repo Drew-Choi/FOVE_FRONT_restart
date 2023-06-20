@@ -226,6 +226,9 @@ const RemoveIcon = styled.span`
 `;
 
 export default function CartModal({ className, cartModalMenu }) {
+  // 로그인 여부 확인
+  const isLogin = useSelector((state) => state.user.isLogin);
+
   //천단위 콤마
   const country = navigator.language;
   const frontPriceComma = (price) => {
@@ -246,6 +249,10 @@ export default function CartModal({ className, cartModalMenu }) {
 
   //카트 상품 수량 빼기
   const minersCartItem = async (index) => {
+    if (!isLogin) {
+      alert('로그인이 필요한 서비스입니다.');
+      return navigate(`/login`);
+    }
     try {
       const tokenValue = await getToken();
       const downData = await axios.post(
@@ -275,6 +282,10 @@ export default function CartModal({ className, cartModalMenu }) {
 
   //카트 상품 수량 추가
   const plusCartItem = async (index) => {
+    if (!isLogin) {
+      alert('로그인이 필요한 서비스입니다.');
+      return navigate(`/login`);
+    }
     try {
       const tokenValue = await getToken();
       const upData = await axios.post(
@@ -308,6 +319,10 @@ export default function CartModal({ className, cartModalMenu }) {
 
   //개별 상품 삭제
   const deletePD = async (index) => {
+    if (!isLogin) {
+      alert('로그인이 필요한 서비스입니다.');
+      return navigate(`/login`);
+    }
     try {
       const tokenValue = await getToken();
       const deleteID = await axios.post(
@@ -333,6 +348,10 @@ export default function CartModal({ className, cartModalMenu }) {
 
   //전체 삭제(카트 비움)
   const allRemove = async () => {
+    if (!isLogin) {
+      alert('로그인이 필요한 서비스입니다.');
+      return navigate(`/login`);
+    }
     try {
       const tokenValue = await getToken();
       const allRemoveCart = await axios.post(
@@ -407,11 +426,17 @@ export default function CartModal({ className, cartModalMenu }) {
             transFontSize="10px"
             padding="7px 30px"
             onClickEvent={() => {
-              if (cartInfo.cartProducts.length !== 0) {
-                navigate(`/store/cartorder`);
-                dispatch(offon());
+              if (isLogin) {
+                if (cartInfo.cartProducts.length !== 0) {
+                  navigate(`/store/cartorder`);
+                  dispatch(offon());
+                } else {
+                  alert('카트오류');
+                  return navigate(`/store`);
+                }
               } else {
-                <></>;
+                alert('로그인이 필요한 서비스입니다.');
+                return navigate(`/login`);
               }
             }}
           >

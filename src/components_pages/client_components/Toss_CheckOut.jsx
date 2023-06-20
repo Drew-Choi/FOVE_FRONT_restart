@@ -9,8 +9,13 @@ import { nanoid } from 'nanoid';
 import tossCheckOut from '../../styles/toss_checkOut.module.scss';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export function Toss_CheckOut() {
+  // 로그인 확인하기
+  const isLogin = useSelector((state) => state.user.isLogin);
+  const navigate = useNavigate();
+
   const selector = '#payment-widget';
   const app = process.env.REACT_APP_KEY_API;
 
@@ -83,23 +88,28 @@ export function Toss_CheckOut() {
 
         <button
           onClick={async () => {
-            const paymentWidget = paymentWidgetRef.current;
+            if (isLogin) {
+              const paymentWidget = paymentWidgetRef.current;
 
-            try {
-              await paymentWidget?.requestPayment({
-                orderId: nanoid(7),
-                orderName: `${
-                  importLocalProducts.length > 1
-                    ? '상품명: ' + productName + '외 다수'
-                    : '상품명: ' + productName
-                }`,
-                customerName: `${userInfo.userID}`,
-                customerEmail: `${userInfo.userID}`,
-                successUrl: `http://13.125.248.186:4000/toss/approve?orderPrice=${orderPrice}&products=${importLocalProductsJSON}`,
-                failUrl: `http://13.125.248.186:3000/store/order/checkout/fail`,
-              });
-            } catch (error) {
-              console.error(error);
+              try {
+                await paymentWidget?.requestPayment({
+                  orderId: nanoid(7),
+                  orderName: `${
+                    importLocalProducts.length > 1
+                      ? '상품명: ' + productName + '외 다수'
+                      : '상품명: ' + productName
+                  }`,
+                  customerName: `${userInfo.userID}`,
+                  customerEmail: `${userInfo.userID}`,
+                  successUrl: `http://13.125.248.186:4000/toss/approve?orderPrice=${orderPrice}&products=${importLocalProductsJSON}`,
+                  failUrl: `http://13.125.248.186:3000/store/order/checkout/fail`,
+                });
+              } catch (error) {
+                console.error(error);
+              }
+            } else {
+              alert('로그인이 필요한 서비스입니다.');
+              return navigate(`/login`);
             }
           }}
         >
