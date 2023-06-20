@@ -42,21 +42,8 @@ export default function Order_client() {
 
   //리덕스 state ---------------------------
   //오더메뉴에서 넘어오는 정보들(리덕스)
-  const singleOrder = useSelector((state) =>
-    state.order.productName !== '' ? (
-      state.order
-    ) : (
-      <h2 style={{ position: 'relative', top: '100px' }}>data Error</h2>
-    ),
-  );
-
-  const cartOrderData = useSelector((state) =>
-    state.cart.cartProducts.length !== 0 ? (
-      state.cart
-    ) : (
-      <h2 style={{ position: 'relative', top: '100px' }}>data Error</h2>
-    ),
-  );
+  const singleOrder = useSelector((state) => state.order);
+  const cartOrderData = useSelector((state) => state.cart);
 
   //----------------------------------------------------------------
 
@@ -399,7 +386,8 @@ export default function Order_client() {
             ) : isVisible ? (
               <LoadingCartOrder />
             ) : //만약 아니라면, /store/cartorder 인지 확인해봐
-            currentURL === '/store/cartorder' ? (
+            currentURL === '/store/cartorder' &&
+              cartOrderData.cartProductsLength !== 0 ? (
               //만약 2번째 조건이 맞다면, 아래 카트데이터로 들어오는 걸 바인딩해줘
               //카트아이템은 어레이로 들어오기 때문에 map으로 죠진다
               cartOrderData.cartProducts.map((el, index) => {
