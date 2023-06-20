@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/intro_Movie_client.scss';
-import ReactPlayer from 'react-player';
+// import ReactPlayer from 'react-player';
 
 export default function Intro_movie_client() {
-  const [playING, setPlayING] = useState(false);
+  // const [playING, setPlayING] = useState(false);
 
-  useEffect(() => {
-    setPlayING((cur) => true);
+  // useEffect(() => {
+  //   setPlayING((cur) => true);
 
-    return () => {
-      setPlayING((cur) => false);
-    };
-  }, []);
+  //   return () => {
+  //     setPlayING((cur) => false);
+  //   };
+  // }, []);
 
   return (
     <section className="intro_moive">
       <div className="intro_moive_container">
         <div className="intro_moive_wrap">
-          <ReactPlayer
+          {/* <ReactPlayer
             url="/videos/intro_1.webm"
             width="100%"
             height="auto"
@@ -26,7 +26,8 @@ export default function Intro_movie_client() {
             loop={playING}
             volume={0}
             playsinline={true}
-          />
+          /> */}
+          <img src="/videos/intro_2.gif" className="intro_moive_wrap" />
         </div>
       </div>
     </section>

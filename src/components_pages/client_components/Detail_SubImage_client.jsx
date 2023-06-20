@@ -102,15 +102,7 @@ const Sub_IMG2 = styled.div`
 
 export default function Detail_SubImage_client({ datas }) {
   const [selectImgFileName, setSelectImgFileName] = useState(datas.img[0]);
-  const [selector, setSelector] = useState([]);
-
-  useEffect(() => {
-    setSelector((cur) => {
-      let copy = [...cur];
-      copy = new Array(datas.img.length).fill(false);
-      return copy;
-    });
-  }, []);
+  const [selector, setSelector] = useState([true, false, false, false, false]);
 
   console.log(selector);
 
@@ -144,12 +136,16 @@ export default function Detail_SubImage_client({ datas }) {
               ></Sub_IMG>
             ) : (
               <Sub_IMG2
-                className={selector[el] ? detailSubImage.subImg_on : null}
+                className={selector[el] ? detailSubImage.subImg_on : <></>}
                 onClick={() => {
                   setSelectImgFileName((cur) => el);
                   setSelector((cur) => {
-                    let copy = [...cur];
-                    !copy[el] ? (copy[el] = true) : (copy[el] = false);
+                    let copy = [];
+                    for (let i = 0; i < cur.length; i += 1) {
+                      cur[i] = false;
+                      copy.push(cur[i]);
+                    }
+                    copy[el] = true;
                     return copy;
                   });
                 }}
