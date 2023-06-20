@@ -23,20 +23,19 @@
 
   .intro_moive_container{
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     // background-color: beige;
     width: 1700px;
     height: 710px;
     left: 50%;
     transform: translateX(-50%);
     overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .wrap {
-    position: relative;
-    top: 0px;
-    width: 1680px;
-    height: auto;
+    
+    .intro_content{
+      position: relative;
+      width: 1680px;
+    }
   }
 }
