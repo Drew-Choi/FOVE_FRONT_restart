@@ -100,12 +100,27 @@ const Sub_IMG2 = styled.div`
   }
 `;
 
-export default function Detail_SubImage_client({ datas, isTouch }) {
+export default function Detail_SubImage_client({ datas }) {
   const [selectImgFileName, setSelectImgFileName] = useState(datas.img[0]);
   const [selector, setSelector] = useState([]);
 
   useEffect(() => {
     setSelector((cur) => new Array(datas.img.length).fill(false));
+  }, []);
+
+  // 터치화면인지 인식하기 위한 로직 ------
+  const [isTouch, setIsTouch] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsTouch((cur) => true);
+    };
+
+    document.addEventListener('touchstart', checkMobile);
+
+    return () => {
+      document.removeEventListener('touchstart', checkMobile);
+    };
   }, []);
 
   return (
@@ -123,7 +138,7 @@ export default function Detail_SubImage_client({ datas, isTouch }) {
               ></Sub_IMG>
             ) : (
               <Sub_IMG2
-                className={selector[el] ? detailSubImage.subImg_on : <></>}
+                className={selector[el] ? detailSubImage.subImg_on : null}
                 onClick={() => {
                   setSelectImgFileName((cur) => el);
                   setSelector((cur) => {
