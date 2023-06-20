@@ -6,6 +6,8 @@ import Plyr from 'plyr';
 export default function Intro_movie_client() {
   const videoRef = useRef(null);
 
+  // 제발 되라
+
   useEffect(() => {
     const player = new Plyr(videoRef.current, {
       inheritedControls: true,
