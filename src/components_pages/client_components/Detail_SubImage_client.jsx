@@ -105,8 +105,14 @@ export default function Detail_SubImage_client({ datas }) {
   const [selector, setSelector] = useState([]);
 
   useEffect(() => {
-    setSelector((cur) => new Array(datas.img.length).fill(false));
+    setSelector((cur) => {
+      let copy = [...cur];
+      copy = new Array(datas.img.length).fill(false);
+      return copy;
+    });
   }, []);
+
+  console.log(selector);
 
   // 터치화면인지 인식하기 위한 로직 ------
   const [isTouch, setIsTouch] = useState(false);

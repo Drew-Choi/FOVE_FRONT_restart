@@ -18,7 +18,7 @@ export default function Intro_movie_client() {
       <div className="intro_moive_container">
         <div className="intro_moive_wrap">
           <ReactPlayer
-            url="/videos/intro_1.mp4"
+            url="/videos/intro_1.webm"
             width="100%"
             height="auto"
             playing={playING}
