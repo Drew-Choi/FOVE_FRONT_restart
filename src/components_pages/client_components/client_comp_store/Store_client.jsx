@@ -25,6 +25,21 @@ export default function Store_client() {
   const [isVisible, setIsVisible] = useState(true);
   const orignData = useRef([]);
 
+  // 터치화면인지 인식하기 위한 로직 ------
+  const [isTouch, setIsTouch] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsTouch((cur) => true);
+    };
+
+    document.addEventListener('touchstart', checkMobile);
+
+    return () => {
+      document.removeEventListener('touchstart', checkMobile);
+    };
+  }, []);
+
   //네비게이트 리액트Dom 설정
   const navigate = useNavigate();
 
@@ -229,6 +244,7 @@ export default function Store_client() {
                               key={el._id}
                             >
                               <Product_client_indiLayout
+                                isTouch={isTouch}
                                 imgFileName={el.img}
                                 productName={el.productName}
                                 price={

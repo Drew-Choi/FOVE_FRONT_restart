@@ -43,6 +43,7 @@ export default function Product_client_indiLayout({
   productName,
   price,
   onLoadEffect,
+  isTouch,
 }) {
   //조건부 설정
   const [isHovered, setIsHovered] = useState(false);
@@ -58,7 +59,11 @@ export default function Product_client_indiLayout({
   };
 
   //마우스 오버 여부를 변수에 담는 곳, 이미지 파일들은 프롭스 받은 것들로 구성
-  const image = isHovered ? imgFileName[1] : imgFileName[0];
+  const image = isTouch
+    ? imgFileName[0]
+    : isHovered
+    ? imgFileName[1]
+    : imgFileName[0];
 
   return (
     <ImageContainer

@@ -23,7 +23,7 @@ export default function Intro_movie_client() {
             url="/videos/intro_1.mp4"
             width="100%"
             height="auto"
-            playing={playING}
+            playing={false}
             muted={true}
             loop={playING}
             volume={0}
