@@ -5,7 +5,6 @@ import { add } from '../../store/modules/cart';
 import { useNavigate } from 'react-router-dom';
 import { single } from '../../store/modules/order';
 import Shipping_client from './Shipping_client';
-import ModalContainer_client from './ModalContainer_client';
 import ModalContainer_client2 from './ModalContainer_client2';
 import detailOrderMenu from '../../styles/detail_orderMenu.module.scss';
 import { MdAddShoppingCart } from 'react-icons/md';
@@ -20,6 +19,9 @@ export default function Detail_OrderMenu_client({
   // 필요한 훅
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  //주문으로 수량 자료 넘기려는 용도
+  const [count, setCount] = useState(1);
 
   //리덕스 state 모음
   // 로그인 여부 확인 - 장바구니 담기, 바로 구매 가능 여부 판단
@@ -180,9 +182,6 @@ export default function Detail_OrderMenu_client({
     }
   };
 
-  //주문으로 자료 넘기려는 용도
-  const [count, setCount] = useState(1);
-
   //싱글상품 데이터
   const singleDataSum = (datas, count, sizeCheck) => {
     let sumData = {
@@ -245,7 +244,6 @@ export default function Detail_OrderMenu_client({
       {shipon && <Shipping_client handleCloseModal={handleCloseModal} />}
       {beanieSizeOn && (
         <>
-          <ModalContainer_client handleCloseModa2={handleCloseModa2} />
           <ModalContainer_client2 handleCloseModa2={handleCloseModa2} />
         </>
       )}
@@ -346,9 +344,9 @@ export default function Detail_OrderMenu_client({
 
         <div className={detailOrderMenu.detailDesc}>{detail}</div>
 
-        <p className={detailOrderMenu.sizeFitCheck}>
+        <p className={detailOrderMenu.sizeFitCheck} onClick={handleOpenModal2}>
           {/* SIZE & FIT 모달창 '비니'만 만들어놨는데 카테고리 별로 다르게 떠야함 */}
-          <span onClick={handleOpenModal2}>SIZE & FIT</span>
+          <span>SIZE & FIT</span>
           <span
             className="material-symbols-outlined"
             style={{ fontSize: '18px', fontWeight: 500, marginLeft: '5px' }}
@@ -356,9 +354,9 @@ export default function Detail_OrderMenu_client({
             open_in_new
           </span>
         </p>
-        <p className={detailOrderMenu.sizeFitCheck}>
+        <p className={detailOrderMenu.sizeFitCheck} onClick={handleOpenModal}>
           {/* SIZE & FIT 모달창 '비니'만 만들어놨는데 카테고리 별로 다르게 떠야함 */}
-          <span onClick={handleOpenModal}>SHIPPING</span>
+          <span>SHIPPING</span>
           <span
             className="material-symbols-outlined"
             style={{ fontSize: '18px', fontWeight: 500, marginLeft: '5px' }}
