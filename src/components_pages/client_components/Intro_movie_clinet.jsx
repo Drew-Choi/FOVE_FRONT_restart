@@ -10,7 +10,7 @@ export default function Intro_movie_clinet() {
   useEffect(() => {
     const time = setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 1300);
 
     return () => {
       clearTimeout(time);
