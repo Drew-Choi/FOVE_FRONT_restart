@@ -32,11 +32,12 @@
     left: 50%;
     transform: translateX(-50%);
     overflow: hidden;
-    
-    .intro_moive_wrap{
+
+    .content {
       position: relative;
-      width: 1680px;
-      height: auto;
+      top: 100px;
     }
+
   }
 }
+

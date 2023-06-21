@@ -60,6 +60,21 @@ export default function Detail_client() {
     }
   };
 
+  // 터치화면인지 인식하기 위한 로직 ------
+  const [isTouch, setIsTouch] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsTouch((cur) => true);
+    };
+
+    document.addEventListener('touchstart', checkMobile);
+
+    return () => {
+      document.removeEventListener('touchstart', checkMobile);
+    };
+  }, []);
+
   return (
     <section className={detailClient.pd_detail}>
       {productData !== null ? (
@@ -103,7 +118,7 @@ export default function Detail_client() {
               <span className={detailClient.back} onClick={() => navigate(-1)}>
                 <IoMdArrowBack className={detailClient.backIcon} />
               </span>
-              <Detail_SubImage_client datas={productData} />
+              <Detail_SubImage_client datas={productData} isTouch={isTouch} />
               <Detail_OrderMenu_client
                 productName={productData.productName}
                 detail={productData.detail}
