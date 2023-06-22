@@ -21,10 +21,12 @@ export default function Intro_movie_clinet() {
   return (
     <section className="intro_moive">
       {isLoading && <Loading />}
-      <Suspense fallback={<Loading />}>
-        <Intro_content />
-      </Suspense>
-      <div className="intro_moive_container"></div>
+
+      <div className="intro_moive_container">
+        <Suspense fallback={<Loading />}>
+          <Intro_content />
+        </Suspense>
+      </div>
     </section>
   );
 }
