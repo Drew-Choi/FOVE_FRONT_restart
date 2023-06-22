@@ -10,7 +10,8 @@ export default function Intro_content() {
         height="945"
         className="content"
         frameBorder="0"
-        allow="autoplay; fullscreen; picture-in-picture"
+        allow="autoplay; picture-in-picture"
+        allowFullScreen
         title="fovv_intro_example"
       />
     </>
