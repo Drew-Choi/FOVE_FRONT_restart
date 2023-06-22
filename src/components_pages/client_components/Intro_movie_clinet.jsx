@@ -1,8 +1,9 @@
 /* eslint-disable no-undef */
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import '../../styles/intro_Movie_client.scss';
 import Loading from './Loading';
-import Iframe from 'react-iframe';
+
+const Intro_content = React.lazy(() => import('./Intro_content'));
 
 export default function Intro_movie_clinet() {
   const [isLoading, setIsLoading] = useState(true);
@@ -20,19 +21,10 @@ export default function Intro_movie_clinet() {
   return (
     <section className="intro_moive">
       {isLoading && <Loading />}
-
-      <div className="intro_moive_container">
-        <Iframe
-          url="https://player.vimeo.com/video/837875796?title=0&amp;byline=0&amp;speed=0&amp;muted=1&amp;autoplay=1&amp;controls=0&amp;loop=1&amp;quality=auto&amp;app_id=122963"
-          width="1680"
-          height="945"
-          className="content"
-          frameBorder="0"
-          allow="autoplay; fullscreen; picture-in-picture"
-          allowFullScreen
-          title="fovv_intro_example"
-        />
-      </div>
+      <Suspense fallback={<Loading />}>
+        <Intro_content />
+      </Suspense>
+      <div className="intro_moive_container"></div>
     </section>
   );
 }
