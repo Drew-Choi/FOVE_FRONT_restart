@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import getToken from '../../store/modules/getToken';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -6,11 +7,12 @@ import orderReturnCheck from '../../styles/orderReturnCheck_client.module.scss';
 import styled from 'styled-components';
 import Loading from './Loading';
 import { useSelector } from 'react-redux';
+const { REACT_APP_KEY_IMAGE } = process.env;
 
 const Pd_Images = styled.div`
   ${(props) =>
     props.img &&
-    `background-image: url('http://13.125.248.186:4000/uploads/${props.img}')`}
+    `background-image: url('${REACT_APP_KEY_IMAGE}/uploads/${props.img}')`}
 `;
 
 const Preview = styled.img`
@@ -43,6 +45,9 @@ export default function OrderReturnCheck_client() {
   const navigate = useNavigate();
   const { orderId } = useParams();
 
+  const { REACT_APP_KEY_BACK } = process.env;
+  const { REACT_APP_KEY_IMAGE } = process.env;
+
   // 로그인 여부 확인 - 장바구니 담기, 바로 구매 가능 여부 판단
   const isLogin = useSelector((state) => state.user.isLogin);
 
@@ -51,7 +56,7 @@ export default function OrderReturnCheck_client() {
       const tokenValue = await getToken();
 
       const getCancelData = await axios.post(
-        'http://13.125.248.186:4000/order_list/getCancelItem',
+        `${REACT_APP_KEY_BACK}/order_list/getCancelItem`,
         {
           token: tokenValue,
           orderId: orderId,
@@ -88,7 +93,7 @@ export default function OrderReturnCheck_client() {
       const tokenValue = await getToken();
 
       const response = await axios.post(
-        'http://13.125.248.186:4000/admin/return_submit/submit_cancel',
+        `${REACT_APP_KEY_BACK}/admin/return_submit/submit_cancel`,
         { token: tokenValue, orderId },
       );
 
@@ -299,7 +304,7 @@ export default function OrderReturnCheck_client() {
                   return (
                     <Preview
                       key={index}
-                      src={`http://13.125.248.186:4000/uploads/${orderCancelItem.payments.orderId}/${el}`}
+                      src={`${REACT_APP_KEY_IMAGE}/uploads/${orderCancelItem.payments.orderId}/${el}`}
                     ></Preview>
                   );
                 })}

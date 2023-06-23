@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +18,8 @@ export default function Register_client() {
   const phoneCode = useRef();
   const phoneMidNum = useRef();
   const phoneLastNum = useRef();
+
+  const { REACT_APP_KEY_BACK } = process.env;
 
   const selectList_celPhone = ['010', '011', '016', '017', '019'];
 
@@ -66,7 +69,7 @@ export default function Register_client() {
     // axios 로 보내기 - try-catch문 안에 적어야!!
     try {
       const resCheckId = await axios.post(
-        'http://13.125.248.186:4000/register/checkId',
+        `${REACT_APP_KEY_BACK}/register/checkId`,
         {
           id: registerIdInput.current.value,
         },
@@ -108,34 +111,31 @@ export default function Register_client() {
         return alert('아이디 중복 확인을 해주세요!');
 
       // axios 로 보내기
-      const resRegister = await axios.post(
-        'http://13.125.248.186:4000/register',
-        {
-          id: registerIdInput.current.value,
-          password: registerPwInput.current.value,
-          name: registerNameInput.current.value,
-          phone:
+      const resRegister = await axios.post(`${REACT_APP_KEY_BACK}/register`, {
+        id: registerIdInput.current.value,
+        password: registerPwInput.current.value,
+        name: registerNameInput.current.value,
+        phone:
+          phoneCode.current.value +
+          '-' +
+          phoneMidNum.current.value +
+          '-' +
+          phoneLastNum.current.value,
+        addresses: {
+          destination: registerNameInput.current.value,
+          recipient: registerNameInput.current.value,
+          address: recipientAddress.current.value,
+          addressDetail: recipientAddressDetail.current.value,
+          zipCode: recipientZipcode.current.value,
+          recipientPhone:
             phoneCode.current.value +
             '-' +
             phoneMidNum.current.value +
             '-' +
             phoneLastNum.current.value,
-          addresses: {
-            destination: registerNameInput.current.value,
-            recipient: registerNameInput.current.value,
-            address: recipientAddress.current.value,
-            addressDetail: recipientAddressDetail.current.value,
-            zipCode: recipientZipcode.current.value,
-            recipientPhone:
-              phoneCode.current.value +
-              '-' +
-              phoneMidNum.current.value +
-              '-' +
-              phoneLastNum.current.value,
-            isDefault: true,
-          },
+          isDefault: true,
         },
-      );
+      });
 
       alert(resRegister.data); // await 하지 말기!
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import tossPayComplete from '../../styles/tossPay_complete.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -9,20 +10,18 @@ export default function TossPay_Cancel_Complete() {
   const { orderId } = useParams();
   const { reason } = useParams();
   const navigate = useNavigate();
+  const { REACT_APP_KEY_BACK } = process.env;
 
   const [cancelInfoData, setCancelInfoData] = useState(null);
 
   const cancelProgress = async () => {
     try {
       const tokenValue = await getToken();
-      const cancelInfo = await axios.post(
-        'http://13.125.248.186:4000/toss/cancel',
-        {
-          orderId,
-          reason,
-          token: tokenValue,
-        },
-      );
+      const cancelInfo = await axios.post(`${REACT_APP_KEY_BACK}/toss/cancel`, {
+        orderId,
+        reason,
+        token: tokenValue,
+      });
 
       if (cancelInfo.status === 200) {
         setCancelInfoData((cur) => cancelInfo.data);

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useRef, useState } from 'react';
 import admin_orderList from '../../styles/orderList_Admin.module.scss';
 import axios from 'axios';
@@ -13,6 +14,7 @@ export default function OrderList_admin() {
   const [selector, setSelector] = useState('order');
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { REACT_APP_KEY_BACK } = process.env;
 
   // 필터용 함수 및 상태보관 ----------------------------
   // 필터용 셀렉트 - 주문내역
@@ -62,7 +64,7 @@ export default function OrderList_admin() {
   const getOrderListInfo = async () => {
     try {
       const adminOrderListInfo = await axios.get(
-        'http://13.125.248.186:4000/admin/orderlist',
+        `${REACT_APP_KEY_BACK}/admin/orderlist`,
       );
 
       if (adminOrderListInfo.status !== 200) return alert('데이터 오류');
@@ -78,7 +80,7 @@ export default function OrderList_admin() {
   const getCancelList = async () => {
     try {
       const adminCancelInfo = await axios.get(
-        'http://13.125.248.186:4000/admin/cancel_list',
+        `${REACT_APP_KEY_BACK}/admin/cancel_list`,
       );
 
       if (adminCancelInfo.status !== 200) return alert('데이터 오류');

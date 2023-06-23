@@ -1,14 +1,17 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import detailSubImage from '../../styles/detail_subimage_client.module.scss';
 import MediaQuery from 'react-responsive';
+
+const { REACT_APP_KEY_IMAGE } = process.env;
 
 const MainImage = styled.div`
   position: relative;
   margin-right: 160px;
   ${(props) =>
     props.selectImgFileName &&
-    `background-image: url('http://13.125.248.186:4000/uploads/${props.selectImgFileName}');`}
+    `background-image: url('${REACT_APP_KEY_IMAGE}/uploads/${props.selectImgFileName}');`}
   background-size: cover;
   width: 350px;
   height: 350px;
@@ -53,7 +56,7 @@ const Sub_IMG = styled.div`
   display: block;
   ${(props) =>
     props.imgFileName &&
-    `background-image: url('http://13.125.248.186:4000/uploads/${props.imgFileName}');`}
+    `background-image: url('${REACT_APP_KEY_IMAGE}/uploads/${props.imgFileName}');`}
   width: 50px;
   height: 50px;
   background-position: center;
@@ -80,7 +83,7 @@ const Sub_IMG2 = styled.div`
   display: block;
   ${(props) =>
     props.imgFileName &&
-    `background-image: url('http://13.125.248.186:4000/uploads/${props.imgFileName}');`}
+    `background-image: url('${REACT_APP_KEY_IMAGE}/uploads/${props.imgFileName}');`}
   width: 50px;
   height: 50px;
   background-position: center;

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import productRegister from '../../styles/productRegister_admin.module.scss';
 import Input_Custom from '../../components_elements/Input_Custom';
@@ -59,6 +60,7 @@ export default function ProductRegister_admin() {
 
     return kstData;
   };
+  const { REACT_APP_KEY_BACK } = process.env;
 
   //고유번호를 위해 ref값을 실식간 렌더링
   const [selectCategory, setSeloectCategory] = useState('BEANIE');
@@ -304,7 +306,7 @@ export default function ProductRegister_admin() {
             //async/await를 이용해 fetch 구현
             const newPdPostData = await fetch(
               //요청할 페이지 날림 -> 이 서버 라우터에서 몽고디비에 인설트 하는 컨트롤을 가지고 있음
-              'http://13.125.248.186:4000/admin/register-product',
+              `${REACT_APP_KEY_BACK}/admin/register-product`,
               {
                 method: 'POST',
                 headers: {},
@@ -352,7 +354,7 @@ export default function ProductRegister_admin() {
       }
 
       const getUniqueCode = await axios.get(
-        'http://13.125.248.186:4000/admin/register-product/uniqueCheck',
+        `${REACT_APP_KEY_BACK}/admin/register-product/uniqueCheck`,
       );
 
       const uniqueCode = getUniqueCode.data;

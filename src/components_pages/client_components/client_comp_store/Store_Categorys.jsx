@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import '../../../styles/store_client.scss';
@@ -25,6 +26,8 @@ export default function Store_Categorys() {
   const orignData = useRef([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
+
+  const { REACT_APP_KEY_BACK } = process.env;
 
   //네비게이트 리액트Dom 설정
   const navigate = useNavigate();
@@ -69,7 +72,7 @@ export default function Store_Categorys() {
   const getCategoryProducts = async () => {
     try {
       const productsData = await axios.get(
-        `http://13.125.248.186:4000/store/${category}`,
+        `${REACT_APP_KEY_BACK}/store/${category}`,
       );
       if (productsData.status === 200) {
         await setPd_Datas_Categorys(productsData.data);

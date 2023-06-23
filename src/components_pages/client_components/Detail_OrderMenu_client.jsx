@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,6 +20,8 @@ export default function Detail_OrderMenu_client({
   // 필요한 훅
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { REACT_APP_KEY_BACK } = process.env;
 
   // 터치화면인지 인식하기 위한 로직 ------
   const [isTouch, setIsTouch] = useState(false);
@@ -173,7 +176,7 @@ export default function Detail_OrderMenu_client({
       }
 
       // 카트 기존 수량과 추가하려는 수량의 합산이 재고 수량보다 작거나 같다면 아래 추가 진행
-      const reqData = await axios.post(`http://13.125.248.186:4000/cart/add`, {
+      const reqData = await axios.post(`${REACT_APP_KEY_BACK}/cart/add`, {
         token: await getToken(),
         productName: datas.productName,
         productCode: datas.productCode,

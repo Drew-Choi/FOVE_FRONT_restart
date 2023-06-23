@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // ACCOUNT → MYPAGE → 배송주소록 등록 페이지
 
 import React, { useEffect, useState } from 'react';
@@ -13,6 +14,7 @@ export default function AdSubmit_client() {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [length, setLength] = useState(0);
+  const { REACT_APP_KEY_BACK } = process.env;
 
   // useEffect(() => {
   //   getAddress();
@@ -21,7 +23,7 @@ export default function AdSubmit_client() {
   // const getAddress = async () => {
   //   try {
   //     const resAddressAll = await axios.post(
-  //       'http://13.125.248.186:4000/mypage/getAddress',
+  //       `${REACT_APP_KEY_BACK}/mypage/getAddress`,
   //       {
   //         userId: userId, // 리덕스에 있는 아이디 값
   //       },
@@ -42,7 +44,7 @@ export default function AdSubmit_client() {
   const deleteAddress = async (index) => {
     try {
       const resAddress = await axios.post(
-        'http://13.125.248.186:4000/mypage/deleteAddress',
+        `${REACT_APP_KEY_BACK}/mypage/deleteAddress`,
         {
           addressId: data[index]?._id,
           userId: userId, // 리덕스에 있는 아이디 값

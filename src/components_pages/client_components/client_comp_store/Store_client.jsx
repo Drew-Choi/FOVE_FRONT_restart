@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import '../../../styles/store_client.scss';
@@ -24,6 +25,8 @@ export default function Store_client() {
   const [isLoading, setIsLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
   const orignData = useRef([]);
+
+  const { REACT_APP_KEY_BACK } = process.env;
 
   // 터치화면인지 인식하기 위한 로직 ------
   const [isTouch, setIsTouch] = useState(false);
@@ -73,9 +76,7 @@ export default function Store_client() {
   //엑시오스로 모든 상품 정보 요청
   const getAllProducts = async () => {
     try {
-      const productsData = await axios.get(
-        'http://13.125.248.186:4000/store/all',
-      );
+      const productsData = await axios.get(`${REACT_APP_KEY_BACK}/store/all`);
       if (productsData.status === 200) {
         orignData.current = productsData.data;
         await setPd_Datas(productsData.data);

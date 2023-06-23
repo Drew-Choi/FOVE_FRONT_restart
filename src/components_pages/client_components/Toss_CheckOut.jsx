@@ -15,13 +15,14 @@ export function Toss_CheckOut() {
   // 로그인 확인하기
   const isLogin = useSelector((state) => state.user.isLogin);
   const navigate = useNavigate();
+  const { REACT_APP_KEY_BACK, REACT_APP_KEY_FRONT } = process.env;
 
   const selector = '#payment-widget';
   const app = process.env.REACT_APP_KEY_API;
 
   const getKey = async (key) => {
     try {
-      const res = await axios.get(`http://13.125.248.186:4000/${app}`, {
+      const res = await axios.get(`${REACT_APP_KEY_BACK}/${app}`, {
         params: { key },
       });
       return res.data.key;
@@ -101,8 +102,8 @@ export function Toss_CheckOut() {
                   }`,
                   customerName: `${userInfo.userID}`,
                   customerEmail: `${userInfo.userID}`,
-                  successUrl: `http://13.125.248.186:4000/toss/approve?orderPrice=${orderPrice}&products=${importLocalProductsJSON}`,
-                  failUrl: `http://13.125.248.186:3000/store/order/checkout/fail`,
+                  successUrl: `${REACT_APP_KEY_BACK}/toss/approve?orderPrice=${orderPrice}&products=${importLocalProductsJSON}`,
+                  failUrl: `${REACT_APP_KEY_FRONT}/store/order/checkout/fail`,
                 });
               } catch (error) {
                 console.error(error);

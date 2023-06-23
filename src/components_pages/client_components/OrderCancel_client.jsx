@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useRef, useState } from 'react';
 import getToken from '../../store/modules/getToken';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -7,10 +8,12 @@ import styled from 'styled-components';
 import Loading from './Loading';
 import Select_Custom from '../../components_elements/Select_Custom';
 
+const { REACT_APP_KEY_IMAGE } = process.env;
+
 const Pd_Images = styled.div`
   ${(props) =>
     props.img &&
-    `background-image: url('http://13.125.248.186:4000/uploads/${props.img}')`}
+    `background-image: url('${REACT_APP_KEY_IMAGE}/uploads/${props.img}')`}
 `;
 
 export default function OrderCancel_client() {
@@ -20,13 +23,14 @@ export default function OrderCancel_client() {
   const { orderId } = useParams();
   // 취소사유
   const cancelReasonSelet = useRef('단순변심');
+  const { REACT_APP_KEY_BACK } = process.env;
 
   const getCancelItem = async () => {
     try {
       const tokenValue = await getToken();
 
       const getCancelData = await axios.post(
-        'http://13.125.248.186:4000/order_list/getCancelItem',
+        `${REACT_APP_KEY_BACK}/order_list/getCancelItem`,
         {
           token: tokenValue,
           orderId: orderId,

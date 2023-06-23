@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router';
@@ -89,12 +90,12 @@ export default function MenuAccount({ menuAccountRef }) {
   const userName = useSelector((state) => state.user.userName);
   const userPoints = useSelector((state) => state.user.userPoints);
 
-  // eslint-disable-next-line no-undef
   const app = process.env.REACT_APP_KEY_API;
+  const { REACT_APP_KEY_BACK } = process.env;
 
   const getKey = async (key) => {
     try {
-      const res = await axios.get(`http://13.125.248.186:4000/${app}`, {
+      const res = await axios.get(`${REACT_APP_KEY_BACK}/${app}`, {
         params: { key },
       });
       return res.data.key;
@@ -104,12 +105,13 @@ export default function MenuAccount({ menuAccountRef }) {
     }
   };
 
+  const { REACT_APP_KEY_FRONT } = process.env;
+
   // 로그아웃
   const logoutUser = async () => {
     try {
       const YOUR_REST_API_KEY = await getKey('REST_API_KEY');
-      const YOUR_LOGOUT_REDIRECT_URI =
-        'http://13.125.248.186:3000/kakao/logout';
+      const YOUR_LOGOUT_REDIRECT_URI = `${REACT_APP_KEY_FRONT}/kakao/logout`;
       dispatch(clickMenu()); // MenuAccount 닫기
       window.location.href = `https://kauth.kakao.com/oauth/logout?client_id=${YOUR_REST_API_KEY}&logout_redirect_uri=${YOUR_LOGOUT_REDIRECT_URI}`;
     } catch (err) {

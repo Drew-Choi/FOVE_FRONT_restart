@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import '../../../styles/store_client.scss';
@@ -26,6 +27,8 @@ export default function Store_NewItems() {
   const orignData = useRef([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
+
+  const { REACT_APP_KEY_BACK } = process.env;
 
   //스와이퍼 커스텀
   const [swiperEl, setSwiperEl] = useState(null);
@@ -58,7 +61,7 @@ export default function Store_NewItems() {
   const getCategoryProducts = async () => {
     try {
       const newProductsData = await axios.get(
-        `http://13.125.248.186:4000/store/new`,
+        `${REACT_APP_KEY_BACK}/store/new`,
       );
       if (newProductsData.status === 200) {
         await setPd_New_Items(newProductsData.data);

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import detailClient from '../../styles/detail_client.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -11,6 +12,7 @@ import { IoMdArrowBack } from 'react-icons/io';
 export default function Detail_client() {
   const { productCode } = useParams();
   const [productData, setProductData] = useState(null);
+  const { REACT_APP_KEY_BACK } = process.env;
 
   useEffect(() => {
     getSelectProduct();
@@ -18,7 +20,7 @@ export default function Detail_client() {
 
   const getSelectProduct = async () => {
     const selectData = await axios.get(
-      `http://13.125.248.186:4000/store/productId/${productCode}`,
+      `${REACT_APP_KEY_BACK}/store/productId/${productCode}`,
     );
     if (selectData.status === 200) {
       await setProductData(selectData.data[0]);

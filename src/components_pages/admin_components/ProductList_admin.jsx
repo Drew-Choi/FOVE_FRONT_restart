@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import axios from 'axios';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import adminPdList from '../../styles/productList_admin.module.scss';
@@ -11,6 +12,8 @@ export default function ProductList_admin() {
   const [disableControll, setDisableControll] = useState([]);
   const [redirect, setRedirect] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  const { REACT_APP_KEY_BACK } = process.env;
+  const { REACT_APP_KEY_IMAGE } = process.env;
 
   const productName = useRef([]);
   const os = useRef([]);
@@ -58,7 +61,7 @@ export default function ProductList_admin() {
     async function fetchData() {
       try {
         const response = await axios.get(
-          'http://13.125.248.186:4000/admin/productlist',
+          `${REACT_APP_KEY_BACK}/admin/productlist`,
         );
 
         setData(response.data);
@@ -317,7 +320,7 @@ export default function ProductList_admin() {
 
           const response = await fetch(
             //요청할 페이지 날림 -> 이 서버 라우터에서 몽고디비에 인설트 하는 컨트롤을 가지고 있음
-            `http://13.125.248.186:4000/admin/productlist/modify/${productCode}`,
+            `${REACT_APP_KEY_BACK}/admin/productlist/modify/${productCode}`,
             {
               method: 'POST',
               headers: {},
@@ -425,7 +428,7 @@ export default function ProductList_admin() {
     // confirm이 true이면 아래 진행
     try {
       const response = await axios.post(
-        `http://13.125.248.186:4000/admin/productlist/delete/${productCode}`,
+        `${REACT_APP_KEY_BACK}/admin/productlist/delete/${productCode}`,
       );
 
       if (response.status === 200)
@@ -459,7 +462,7 @@ export default function ProductList_admin() {
     // null이 아니라면,
     try {
       const response = await axios.post(
-        'http://13.125.248.186:4000/admin/productlist/imgDelete',
+        `${REACT_APP_KEY_BACK}/admin/productlist/imgDelete`,
         { productCode: productCode, imgURL: imgURL },
       );
 
@@ -496,8 +499,8 @@ export default function ProductList_admin() {
                   }
                   src={
                     el !== null
-                      ? `http://13.125.248.186:4000/uploads/${el}`
-                      : `http://13.125.248.186:4000/uploads/upload.png`
+                      ? `${REACT_APP_KEY_IMAGE}/uploads/${el}`
+                      : `${REACT_APP_KEY_IMAGE}/uploads/upload.png`
                   }
                   alt="register Img"
                   onClick={

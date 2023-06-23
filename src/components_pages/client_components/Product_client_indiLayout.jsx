@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Loading from './Loading';
@@ -48,6 +49,8 @@ export default function Product_client_indiLayout({
   //조건부 설정
   const [isHovered, setIsHovered] = useState(false);
 
+  const { REACT_APP_KEY_IMAGE } = process.env;
+
   //마우스엔터 핸들러
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -72,7 +75,7 @@ export default function Product_client_indiLayout({
     >
       {/* 위에서 선별된 이미지를 실제로 쏴준다. */}
       <ImageLayout
-        src={'http://13.125.248.186:4000/uploads/' + image}
+        src={`${REACT_APP_KEY_IMAGE}/uploads/` + image}
         onLoad={onLoadEffect}
       />
       <ProductInfoLayout>

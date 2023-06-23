@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import orderList from '../../styles/orderlist_client.module.scss';
 import axios from 'axios';
@@ -7,11 +8,12 @@ import { useNavigate } from 'react-router-dom';
 import Loading from './Loading';
 import { BsArrowDownCircle } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
+const { REACT_APP_KEY_IMAGE } = process.env;
 
 const PD_Images = styled.div`
   ${(props) =>
     props.img &&
-    `background-image: url('http://13.125.248.186:4000/uploads/${props.img}')`}
+    `background-image: url('${REACT_APP_KEY_IMAGE}/uploads/${props.img}')`}
 `;
 
 export default function OrderList_client() {
@@ -25,6 +27,8 @@ export default function OrderList_client() {
   const [detailInfo, setDetailInfo] = useState([]);
   // 주문상세내역서용 - cancel
   const [detailInfoCancel, setDetailInfoCancel] = useState([]);
+
+  const { REACT_APP_KEY_BACK } = process.env;
 
   // 로그인여부확인
   const isLogin = useSelector((state) => state.user.isLogin);
@@ -93,7 +97,7 @@ export default function OrderList_client() {
     try {
       const tokenValue = await getToken();
       const getOrderListData = await axios.post(
-        'http://13.125.248.186:4000/order_list/getMemberOrderList',
+        `${REACT_APP_KEY_BACK}/order_list/getMemberOrderList`,
         { token: tokenValue },
       );
       if (getOrderListData.status === 200 && getOrderListData.data.length > 0) {
@@ -114,7 +118,7 @@ export default function OrderList_client() {
     try {
       const tokenValue = await getToken();
       const getCancelListData = await axios.post(
-        'http://13.125.248.186:4000/order_list/getCancelList',
+        `${REACT_APP_KEY_BACK}/order_list/getCancelList`,
         {
           token: tokenValue,
         },

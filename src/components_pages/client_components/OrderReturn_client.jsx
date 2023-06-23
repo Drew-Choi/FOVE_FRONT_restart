@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import getToken from '../../store/modules/getToken';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -8,11 +9,12 @@ import Loading from './Loading';
 import Select_Custom from '../../components_elements/Select_Custom';
 import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
 import { useSelector } from 'react-redux';
+const { REACT_APP_KEY_IMAGE } = process.env;
 
 const Pd_Images = styled.div`
   ${(props) =>
     props.img &&
-    `background-image: url('http://13.125.248.186:4000/uploads/${props.img}')`}
+    `background-image: url('${REACT_APP_KEY_IMAGE}/uploads/${props.img}')`}
 `;
 
 const Preview = styled.img`
@@ -46,6 +48,8 @@ export default function OrderReturn_client() {
   const { orderId } = useParams();
   const desc = useRef('');
 
+  const { REACT_APP_KEY_BACK } = process.env;
+
   // 로그인 정보
   const isLogin = useSelector((state) => state.user.isLogin);
 
@@ -54,7 +58,7 @@ export default function OrderReturn_client() {
       const tokenValue = await getToken();
 
       const getCancelData = await axios.post(
-        'http://13.125.248.186:4000/order_list/getCancelItem',
+        `${REACT_APP_KEY_BACK}/order_list/getCancelItem`,
         {
           token: tokenValue,
           orderId: orderId,
@@ -220,7 +224,7 @@ export default function OrderReturn_client() {
 
           // multer이용으로 fetch 사용
           const submitRes = await fetch(
-            'http://13.125.248.186:4000/admin/return_submit',
+            `${REACT_APP_KEY_BACK}/admin/return_submit`,
             {
               method: 'POST',
               headers: {},

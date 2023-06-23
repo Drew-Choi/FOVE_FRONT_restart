@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // ACCOUNT → MYPAGE → 배송주소록 등록 → 작성 페이지
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -13,6 +14,7 @@ import { useSelector } from 'react-redux';
 export default function Adwrite_client() {
   const userId = useSelector((state) => state.user.userID);
   const navigate = useNavigate();
+  const { REACT_APP_KEY_BACK } = process.env;
 
   const inputshipname = useRef(); // 배송지명
   const inputidname = useRef(); // 수령인 이름
@@ -110,7 +112,7 @@ export default function Adwrite_client() {
         phoneLastNum.current.value;
 
       const resAddress = await axios.post(
-        'http://13.125.248.186:4000/mypage/editAddress',
+        `${REACT_APP_KEY_BACK}/mypage/editAddress`,
         {
           userId: userId, // 리덕스에 있는 아이디 값
           destination: inputshipname.current.value,

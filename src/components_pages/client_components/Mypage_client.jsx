@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useRef, useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
 import myPage from '../../styles/mypage_client.module.scss';
@@ -17,6 +18,7 @@ export default function Mypage_client() {
   const [addressInfo, setAddressInfo] = useState(null);
   const [phoneSplitData, setPhoneSplitData] = useState([]);
   const [disableCtr, setDisableCtr] = useState(true);
+  const { REACT_APP_KEY_BACK } = process.env;
 
   const phoneNumSplit = (num) => {
     if (!num || num === '') return;
@@ -185,7 +187,7 @@ export default function Mypage_client() {
       };
 
       const response = await axios.post(
-        'http://13.125.248.186:4000/mypage/editAddress',
+        `${REACT_APP_KEY_BACK}/mypage/editAddress`,
         {
           token: tokenValue,
           newAddress,
@@ -214,7 +216,7 @@ export default function Mypage_client() {
       const tokenValue = await getToken();
 
       const response = await axios.post(
-        'http://13.125.248.186:4000/mypage/getAddress',
+        `${REACT_APP_KEY_BACK}/mypage/getAddress`,
         {
           token: tokenValue,
         },
@@ -279,7 +281,7 @@ export default function Mypage_client() {
     try {
       const tokenValue = await getToken();
       const getOrderListData = await axios.post(
-        'http://13.125.248.186:4000/order_list/getMemberOrderList',
+        `${REACT_APP_KEY_BACK}/order_list/getMemberOrderList`,
         { token: tokenValue },
       );
       if (getOrderListData.status === 200 && getOrderListData.data.length > 0) {
@@ -296,7 +298,7 @@ export default function Mypage_client() {
     try {
       const tokenValue = await getToken();
       const getCancelListData = await axios.post(
-        'http://13.125.248.186:4000/order_list/getCancelList',
+        `${REACT_APP_KEY_BACK}/order_list/getCancelList`,
         {
           token: tokenValue,
         },

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useRef, useState } from 'react';
 import orderClient from '../../styles/order_client.module.scss';
 import { useSelector } from 'react-redux';
@@ -12,11 +13,12 @@ import LoadingCartOrder from './LoadingCartOrder';
 import getToken from '../../store/modules/getToken';
 import axios from 'axios';
 import { IoCloseCircleOutline } from 'react-icons/io5';
+const { REACT_APP_KEY_IMAGE } = process.env;
 
 const Pd_order_IMG = styled.div`
   ${(props) =>
     props.img &&
-    `background-image: url('http://13.125.248.186:4000/uploads/${props.img}')`}
+    `background-image: url('${REACT_APP_KEY_IMAGE}/uploads/${props.img}')`}
 `;
 
 export default function Order_client() {
@@ -27,6 +29,8 @@ export default function Order_client() {
   const location = useLocation();
   const currentURL = location.pathname;
   const navigate = useNavigate();
+
+  const { REACT_APP_KEY_BACK } = process.env;
 
   // 로그인관련
   const isLogin = useSelector((state) => state.user.isLogin);
@@ -130,7 +134,7 @@ export default function Order_client() {
       const tokenValue = await getToken();
 
       const response = await axios.post(
-        'http://13.125.248.186:4000/mypage/getAddress',
+        `${REACT_APP_KEY_BACK}/mypage/getAddress`,
         { token: tokenValue },
       );
 

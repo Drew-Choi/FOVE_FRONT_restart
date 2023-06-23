@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import axios from 'axios';
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -104,12 +105,14 @@ export default function EditInfo_client() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { REACT_APP_KEY_BACK } = process.env;
+
   // DB에 있는 회원 정보 불러오기
   const getUserInfo = async () => {
     try {
       // 리덕스에 있는 아이디 값으로 회원 정보 불러오기
       const resId = await axios.post(
-        'http://13.125.248.186:4000/mypage/editInfo/fillInfo',
+        `${REACT_APP_KEY_BACK}/mypage/editInfo/fillInfo`,
         {
           id: userId,
         },
@@ -150,7 +153,7 @@ export default function EditInfo_client() {
       // 입력 받은 값들 axios로 보내기
       // 새로운 토큰 발행을 위해 포인트, 관리자 여부 정보도 보내기
       const resInfo = await axios.post(
-        'http://13.125.248.186:4000/mypage/editInfo',
+        `${REACT_APP_KEY_BACK}/mypage/editInfo`,
         {
           id: inputId.current.value,
           newPw: inputPw.current.value,
@@ -202,7 +205,7 @@ export default function EditInfo_client() {
         )
       ) {
         const resInfo = await axios.post(
-          'http://13.125.248.186:4000/mypage/deleteInfo',
+          `${REACT_APP_KEY_BACK}/mypage/deleteInfo`,
           {
             id: inputId.current.value,
           },

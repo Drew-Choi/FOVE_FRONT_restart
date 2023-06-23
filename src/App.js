@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import './App.css';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -47,6 +48,7 @@ function App() {
   const dispatch = useDispatch();
   const location = useLocation();
   const currentURL = location.pathname;
+  const { REACT_APP_KEY_BACK } = process.env;
 
   // 트랜젝션 생성 함수 (빈 키를 하나 만들어서 로그인 과정에서 키에 업데이트 하도록 초기값 세팅)
   const createDatabase = async () => {
@@ -81,12 +83,9 @@ function App() {
       const valueKey = await getToken();
 
       if (valueKey) {
-        const userInfo = await axios.post(
-          'http://13.125.248.186:4000/islogin',
-          {
-            token: valueKey,
-          },
-        );
+        const userInfo = await axios.post(`${REACT_APP_KEY_BACK}/islogin`, {
+          token: valueKey,
+        });
         if (userInfo.status === 200) {
           dispatch(
             keepLogin({
