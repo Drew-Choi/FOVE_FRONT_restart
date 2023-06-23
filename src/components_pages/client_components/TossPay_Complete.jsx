@@ -1,21 +1,25 @@
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import tossPayComplete from '../../styles/tossPay_complete.module.scss';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import getToken from '../../store/modules/getToken';
 
 export default function TossPay_Complete() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchQuery = new URLSearchParams(location.search);
   const [orderID, setOrderID] = useState('');
   const [orderTime, setOrderTime] = useState('');
   const { REACT_APP_KEY_BACK } = process.env;
 
   const getData = async () => {
     try {
-      const paymentData = await axios.get(`${REACT_APP_KEY_BACK}/toss/data`, {
-        withCredentials: true,
-      });
+      const sessionId = searchQuery.get('sessionID');
+      console.log(sessionId);
+      const paymentData = await axios.get(
+        `${REACT_APP_KEY_BACK}/toss/data?sessionID=${sessionId}`,
+      );
 
       if (paymentData.status === 200) {
         await localStorage.setItem(
