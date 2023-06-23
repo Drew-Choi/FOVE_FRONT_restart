@@ -107,8 +107,6 @@ export default function Detail_SubImage_client({ datas, isTouch }) {
   const [selectImgFileName, setSelectImgFileName] = useState(datas.img[0]);
   const [selector, setSelector] = useState([true, false, false, false, false]);
 
-  console.log(selector);
-
   return (
     <div className={detailSubImage.detail_sub_image_totalContainer}>
       <MediaQuery minWidth={556}>

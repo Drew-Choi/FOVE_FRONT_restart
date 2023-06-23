@@ -18,8 +18,6 @@ const KakaoPostcode_client = () => {
 
     // 주소 선택 이벤트
     selectAddress: (data) => {
-      // console.log(typeof data); object
-      console.log(data);
       setAdressData(data);
       setOpenPostcode(false);
     },
@@ -59,7 +57,7 @@ const KakaoPostcode_client = () => {
               className="kakaoadd"
               onComplete={handle.selectAddress} // 값을 선택할 경우 실행되는 이벤트
               autoClose={false} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
-              defaultQuery="" // 팝업을 열때 기본적으로 입력되는 검색어         
+              defaultQuery="" // 팝업을 열때 기본적으로 입력되는 검색어
             />
           )}
         </div>

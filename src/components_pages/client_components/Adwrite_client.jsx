@@ -69,8 +69,6 @@ export default function Adwrite_client() {
 
     // 주소 선택 이벤트
     selectAddress: (data) => {
-      // console.log(typeof data); object
-      // console.log(data);
       setAdressData(data);
       setOpenPostcode(false);
     },

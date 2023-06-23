@@ -227,11 +227,6 @@ export default function ProductRegister_admin() {
       let category = pd_category.current.value;
       let detail = pd_detail.current.value;
 
-      console.log('OS', sizeOS);
-      console.log('S', sizeS);
-      console.log('M', sizeM);
-      console.log('L', sizeL);
-
       //이미지 폼데이터 만들기
       const formData = new FormData();
       //이미지 체크 및 form에 담기

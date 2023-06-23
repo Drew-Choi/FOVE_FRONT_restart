@@ -16,7 +16,6 @@ export default function TossPay_Complete() {
   const getData = async () => {
     try {
       const sessionId = searchQuery.get('sessionID');
-      console.log(sessionId);
       const paymentData = await axios.get(
         `${REACT_APP_KEY_BACK}/toss/data?sessionID=${sessionId}`,
       );

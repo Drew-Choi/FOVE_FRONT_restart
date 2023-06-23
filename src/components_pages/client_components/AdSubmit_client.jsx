@@ -50,9 +50,6 @@ export default function AdSubmit_client() {
           userId: userId, // 리덕스에 있는 아이디 값
         },
       );
-
-      console.log(resAddress);
-      console.log(resAddress.data.message);
     } catch (err) {
       console.log(err);
     }
