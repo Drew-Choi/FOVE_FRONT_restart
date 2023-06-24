@@ -106,7 +106,7 @@ const Img = styled.div`
   height: 100px;
   ${(props) =>
     props.imgURL &&
-    `background-image: url('${REACT_APP_KEY_IMAGE}/uploads/${props.imgURL}');`};
+    `background-image: url('${REACT_APP_KEY_IMAGE}${props.imgURL}');`};
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

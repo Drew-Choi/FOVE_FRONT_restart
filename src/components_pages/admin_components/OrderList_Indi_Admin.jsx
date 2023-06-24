@@ -11,8 +11,7 @@ const { REACT_APP_KEY_IMAGE } = process.env;
 
 const Pd_Images = styled.div`
   ${(props) =>
-    props.img &&
-    `background-image: url('${REACT_APP_KEY_IMAGE}/uploads/${props.img}')`}
+    props.img && `background-image: url('${REACT_APP_KEY_IMAGE}${props.img}')`}
 `;
 
 const Preview = styled.img`
@@ -849,7 +848,7 @@ export default function OrderList_Indi_Admin() {
                   return (
                     <Preview
                       key={index}
-                      src={`${REACT_APP_KEY_IMAGE}/uploads/${data.payments.orderId}/${el}`}
+                      src={`${REACT_APP_KEY_IMAGE}${data.payments.orderId}/${el}`}
                     ></Preview>
                   );
                 })

@@ -499,8 +499,8 @@ export default function ProductList_admin() {
                   }
                   src={
                     el !== null
-                      ? `${REACT_APP_KEY_IMAGE}/uploads/${el}`
-                      : `${REACT_APP_KEY_IMAGE}/uploads/upload.png`
+                      ? `${REACT_APP_KEY_IMAGE}${el}`
+                      : `${REACT_APP_KEY_IMAGE}upload.png`
                   }
                   alt="register Img"
                   onClick={

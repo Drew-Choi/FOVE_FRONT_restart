@@ -11,8 +11,7 @@ const { REACT_APP_KEY_IMAGE } = process.env;
 
 const Pd_Images = styled.div`
   ${(props) =>
-    props.img &&
-    `background-image: url('${REACT_APP_KEY_IMAGE}/uploads/${props.img}')`}
+    props.img && `background-image: url('${REACT_APP_KEY_IMAGE}${props.img}')`}
 `;
 
 const Preview = styled.img`
@@ -304,7 +303,7 @@ export default function OrderReturnCheck_client() {
                   return (
                     <Preview
                       key={index}
-                      src={`${REACT_APP_KEY_IMAGE}/uploads/${orderCancelItem.payments.orderId}/${el}`}
+                      src={`${REACT_APP_KEY_IMAGE}${orderCancelItem.payments.orderId}/${el}`}
                     ></Preview>
                   );
                 })}

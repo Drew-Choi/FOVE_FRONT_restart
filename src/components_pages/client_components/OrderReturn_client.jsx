@@ -13,8 +13,7 @@ const { REACT_APP_KEY_IMAGE } = process.env;
 
 const Pd_Images = styled.div`
   ${(props) =>
-    props.img &&
-    `background-image: url('${REACT_APP_KEY_IMAGE}/uploads/${props.img}')`}
+    props.img && `background-image: url('${REACT_APP_KEY_IMAGE}${props.img}')`}
 `;
 
 const Preview = styled.img`
