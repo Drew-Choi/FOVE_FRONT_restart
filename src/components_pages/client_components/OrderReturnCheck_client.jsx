@@ -7,6 +7,7 @@ import orderReturnCheck from '../../styles/orderReturnCheck_client.module.scss';
 import styled from 'styled-components';
 import Loading from './Loading';
 import { useSelector } from 'react-redux';
+import Loading_Spinner from './Loading_Spinner';
 const { REACT_APP_KEY_IMAGE } = process.env;
 
 const Pd_Images = styled.div`
@@ -40,6 +41,9 @@ const Preview = styled.img`
 `;
 
 export default function OrderReturnCheck_client() {
+  // 스피너
+  const [spinner, setSpinner] = useState(false);
+
   const [orderCancelItem, setOrderCancelItem] = useState(null);
   const navigate = useNavigate();
   const { orderId } = useParams();
@@ -88,6 +92,7 @@ export default function OrderReturnCheck_client() {
       alert('로그인이 필요한 서비스입니다.');
       return navigate(`/login`);
     }
+    setSpinner((cur) => true);
     try {
       const tokenValue = await getToken();
 
@@ -96,18 +101,22 @@ export default function OrderReturnCheck_client() {
         { token: tokenValue, orderId },
       );
 
-      if (response.status !== 200) return alert('철회 오류');
+      if (response.status !== 200)
+        return setSpinner((cur) => false), alert('철회 오류');
       // 200번대 성공이면,
       alert('반품신청 철회 완료');
+      setSpinner((cur) => false);
       return navigate('/mypage/orderlist');
     } catch (err) {
       console.error(err);
+      setSpinner((cur) => false);
       return;
     }
   };
 
   return (
     <section className={orderReturnCheck.orderList_container}>
+      {spinner && <Loading_Spinner />}
       {orderCancelItem !== null && Object.keys(orderCancelItem).length > 0 ? (
         <>
           <div className={orderReturnCheck.titleArea}>

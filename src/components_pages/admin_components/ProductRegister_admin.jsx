@@ -8,6 +8,7 @@ import TextArea_Custom from '../../components_elements/TextArea_Custom';
 import styled from 'styled-components';
 import axios from 'axios';
 import MediaQuery from 'react-responsive';
+import Loading_Spinner from '../client_components/Loading_Spinner';
 
 const Preview = styled.div`
   position: relative;
@@ -49,6 +50,8 @@ const ImageOrder = styled.p`
 `;
 
 export default function ProductRegister_admin() {
+  // 스피너
+  const [spinner, setSpinner] = useState(false);
   // 한국시간 구하기
   // UTC기준 시간을 한국 시간으로 바꾸기 시차 9시간
   const nowDayTime = () => {
@@ -211,6 +214,7 @@ export default function ProductRegister_admin() {
   //express에서는 이 값을 req.body.data / 혹은 req.files로 받는다.
 
   const newProductPost = async () => {
+    setSpinner((cur) => true);
     try {
       //이미지 외 자료들 남기
       let productCode = pd_code.current.value;
@@ -314,12 +318,15 @@ export default function ProductRegister_admin() {
             switch (newPdPostData.status) {
               case 200:
                 alert(await newPdPostData.json());
+                setSpinner((cur) => false);
                 return window.location.reload();
 
               case 400:
+                setSpinner((cur) => false);
                 return alert(await newPdPostData.json());
 
               case 500:
+                setSpinner((cur) => false);
                 return alert(await newPdPostData.json());
             }
           }
@@ -329,6 +336,7 @@ export default function ProductRegister_admin() {
       console.error(err);
       return;
     }
+    setSpinner((cur) => false);
   };
 
   //고유번호 자동생성 함수
@@ -373,6 +381,7 @@ export default function ProductRegister_admin() {
 
   return (
     <div className={productRegister.productRegister_admin}>
+      {spinner && <Loading_Spinner />}
       <div className={productRegister.register_container}>
         <div className={productRegister.indi_container_title}>
           <p className={productRegister.mainTitle}>PRODUCT REGISTRATION</p>

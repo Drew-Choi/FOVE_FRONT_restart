@@ -13,6 +13,7 @@ import LoadingCartOrder from './LoadingCartOrder';
 import getToken from '../../store/modules/getToken';
 import axios from 'axios';
 import { IoCloseCircleOutline } from 'react-icons/io5';
+import Loading_Spinner from './Loading_Spinner';
 const { REACT_APP_KEY_IMAGE } = process.env;
 
 const Pd_order_IMG = styled.div`
@@ -21,6 +22,9 @@ const Pd_order_IMG = styled.div`
 `;
 
 export default function Order_client() {
+  // 스피너
+  const [spinner, setSpinner] = useState(false);
+
   // 화면전환 로딩용 리덕스 state
   const isVisible = useSelector((state) => state.cartOrderLoading.isVisible);
   //카트에 담긴 상품들을 주문해 보자
@@ -154,6 +158,7 @@ export default function Order_client() {
 
   const orderListLocalSave = async () => {
     // 저장 전에 주문서 유효성 검사
+    setSpinner((cur) => true);
     if (
       recipientName === '' ||
       recipientZipcode === '' ||
@@ -163,7 +168,7 @@ export default function Order_client() {
       phoneMidNum === '' ||
       phoneLastNum === ''
     )
-      return alert('필수정보를 모두 입력해주세요.');
+      return setSpinner((cur) => false), alert('필수정보를 모두 입력해주세요.');
 
     // 유효성 통과되면 전화번호 재대로 들어왔는지 검사
     if (
@@ -172,7 +177,7 @@ export default function Order_client() {
       phoneMidNum.length < 3 ||
       phoneLastNum.length < 4
     )
-      return alert('연락처가 잘못 입력되었습니다.');
+      return setSpinner((cur) => false), alert('연락처가 잘못 입력되었습니다.');
 
     //--------싱글아이템과 멀티아이템 추리는 작업 그리고 products키로 로컬스토리지에 JSON화 저장
     const products = [];
@@ -211,6 +216,7 @@ export default function Order_client() {
     localStorage.setItem('products', JSON.stringify(products));
     localStorage.setItem('recipien', JSON.stringify(recipien));
 
+    setSpinner((cur) => false);
     navigate('/store/order/checkout');
   };
 
@@ -302,6 +308,7 @@ export default function Order_client() {
 
   return (
     <div className={orderClient.order_main}>
+      {spinner && <Loading_Spinner />}
       <div
         className={`${orderClient.orderModalOff} ${
           on === 'On' ? orderClient.On : ''

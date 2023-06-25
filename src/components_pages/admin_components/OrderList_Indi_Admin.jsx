@@ -84,6 +84,7 @@ export default function OrderList_Indi_Admin() {
       return alert("'배송 중'으로 변경 시에는 유효한 송장번호를 입력해주세요.");
 
     //아니라면 아래
+    setSpinner((cur) => true);
     try {
       const response = await axios.post(
         `${REACT_APP_KEY_BACK}/admin/orderlist/detail/shippingCondition`,
@@ -98,12 +99,14 @@ export default function OrderList_Indi_Admin() {
         // 200번대 성공이라면,
         setRedirect((cur) => !cur);
         setDisableShipping((cur) => true);
+        setSpinner((cur) => false);
         alert('변경성공');
         return;
       } else if (response.status === 404) {
         // 404번대 오류라면,
         setRedirect((cur) => !cur);
         alert(response.data);
+        setSpinner((cur) => false);
         return;
       } else {
         return alert('변경실패');
@@ -112,7 +115,9 @@ export default function OrderList_Indi_Admin() {
       if (err.response.status === 404) {
         setRedirect((cur) => !cur);
         alert(err.response.data);
+        setSpinner((cur) => false);
       }
+      setSpinner((cur) => false);
       return;
     }
   };
@@ -148,6 +153,7 @@ export default function OrderList_Indi_Admin() {
     if (changeShippingCodeChagne.length < 10)
       return alert('유효한 송장번호는 10자 이상입니다.');
     // true이면 아래 진행
+    setSpinner((cur) => true);
     try {
       const response = await axios.post(
         `${REACT_APP_KEY_BACK}/admin/orderlist/detail/changeCondition`,
@@ -163,27 +169,34 @@ export default function OrderList_Indi_Admin() {
         setRedirect((cur) => !cur);
         setDisableChange((cur) => true);
         alert('변경성공');
+        setSpinner((cur) => false);
         return;
       } else if (response.status === 404) {
         // 404번대 오류라면,
         setRedirect((cur) => !cur);
         alert(response.data);
+        setSpinner((cur) => false);
         return;
       } else if (response.status === 400) {
         setRedirect((cur) => !cur);
         alert(response.data);
+        setSpinner((cur) => false);
         return;
       } else {
+        setSpinner((cur) => false);
         return alert('변경실패');
       }
     } catch (err) {
       if (err.response.status === 404) {
         setRedirect((cur) => !cur);
         alert(err.response.data);
+        setSpinner((cur) => false);
       } else if (err.response.status === 400) {
         setRedirect((cur) => !cur);
         alert(err.response.data);
+        setSpinner((cur) => false);
       } else {
+        setSpinner((cur) => false);
         return alert('변경실패');
       }
       return;
@@ -222,6 +235,7 @@ export default function OrderList_Indi_Admin() {
     if (returnCodeChange.length < 10)
       return alert('유효한 송장번호는 10자 이상입니다.');
     // true라면 아래 진행
+    setSpinner((cur) => true);
     try {
       const response = await axios.post(
         `${REACT_APP_KEY_BACK}/admin/orderlist/detail/submitReturnCondition`,
@@ -237,29 +251,37 @@ export default function OrderList_Indi_Admin() {
         setRedirect((cur) => !cur);
         setDisableReturn((cur) => true);
         alert('변경성공');
+        setSpinner((cur) => false);
         return;
       } else if (response.status === 404) {
         // 404번대 오류라면,
         setRedirect((cur) => !cur);
         alert(response.data);
+        setSpinner((cur) => false);
         return;
       } else if (response.status === 400) {
         setRedirect((cur) => !cur);
         alert(response.data);
+        setSpinner((cur) => false);
         return;
       } else {
+        setSpinner((cur) => false);
         return alert('변경실패');
       }
     } catch (err) {
       if (err.response.status === 404) {
         setRedirect((cur) => !cur);
         alert(err.response.data);
+        setSpinner((cur) => false);
       } else if (err.response.status === 400) {
         setRedirect((cur) => !cur);
         alert(err.response.data);
+        setSpinner((cur) => false);
       } else {
+        setSpinner((cur) => false);
         return alert('변경실패');
       }
+      setSpinner((cur) => false);
       return;
     }
   };
@@ -525,6 +547,7 @@ export default function OrderList_Indi_Admin() {
     if (!updateConfirm) return setRedirect((cur) => !cur), alert('실행 취소');
 
     // confirm이 true이면
+    setSpinner((cur) => true);
     try {
       const cancelInfo = await axios.post(
         `${REACT_APP_KEY_BACK}/admin/orderlist/detail/cancel`,
@@ -535,9 +558,11 @@ export default function OrderList_Indi_Admin() {
       // 200번대 성공이면,
       alert(`주문번호: ${orderId}\n결제취소(환불) 완료`);
       navigate('/admin/orderlist');
+      setSpinner((cur) => false);
       return;
     } catch (err) {
       console.error(err);
+      setSpinner((cur) => false);
       return;
     }
   };
@@ -550,6 +575,7 @@ export default function OrderList_Indi_Admin() {
 
     if (!updateConfirm) return alert('환불 진행 취소');
     //true 라면 아래
+    setSpinner((cur) => true);
     try {
       const cancelInfo = await axios.post(
         `${REACT_APP_KEY_BACK}/admin//orderlist/detail/cancelRefund`,
@@ -562,9 +588,11 @@ export default function OrderList_Indi_Admin() {
       alert(
         `주문번호: ${orderId}\n환불을 완료했습니다.\n'상품회수 목록'을 통해 상품회수를 진행하십시오.`,
       );
+      setSpinner((cur) => false);
       return;
     } catch (err) {
       console.error(err);
+      setSpinner((cur) => false);
       return;
     }
   };
@@ -582,6 +610,7 @@ export default function OrderList_Indi_Admin() {
 
     if (!updateConfirm) return alert('철회 취소');
     // true이면,
+    setSpinner((cur) => true);
     try {
       const cancelInfo = await axios.post(
         `${REACT_APP_KEY_BACK}/admin//orderlist/detail/cancelRefund/cancel`,
@@ -592,9 +621,11 @@ export default function OrderList_Indi_Admin() {
       // 200번대 성공이면,
       setRedirect((cur) => !cur);
       alert(`주문번호: ${orderId}\n환불신청 철회 완료`);
+      setSpinner((cur) => false);
       return;
     } catch (err) {
       console.error(err);
+      setSpinner((cur) => false);
       return;
     }
   };
@@ -612,6 +643,7 @@ export default function OrderList_Indi_Admin() {
 
     if (!updateConfirm) return alert('철회 취소');
     // true이면,
+    setSpinner((cur) => true);
     try {
       const cancelInfo = await axios.post(
         `${REACT_APP_KEY_BACK}/admin//orderlist/detail/cancelRefund/cancel`,
@@ -622,9 +654,11 @@ export default function OrderList_Indi_Admin() {
       // 200번대 성공이면,
       setRedirect((cur) => !cur);
       alert(`주문번호: ${orderId}\n교환신청 철회 완료`);
+      setSpinner((cur) => false);
       return;
     } catch (err) {
       console.error(err);
+      setSpinner((cur) => false);
       return;
     }
   };
@@ -672,6 +706,7 @@ export default function OrderList_Indi_Admin() {
 
     if (!updateConfirm) return alert('철회진행 취소');
     // true이면 아래 진행
+    setSpinner((cur) => true);
     try {
       const response = await axios.post(
         `${REACT_APP_KEY_BACK}/admin/orderlist/detail/cancel_return_submit`,
@@ -682,10 +717,13 @@ export default function OrderList_Indi_Admin() {
       // 200번대 성공이면
       alert(`주문번호: ${orderId}\n반품신청철회 완료`);
       setRedirect((cur) => !cur);
+      setSpinner((cur) => false);
       return;
     } catch (err) {
       console.error(err);
+      setSpinner((cur) => false);
     }
+    setSpinner((cur) => false);
   };
 
   // 강제주문취소
@@ -694,6 +732,7 @@ export default function OrderList_Indi_Admin() {
 
     if (!updateConfirm) return alert('주문내역 삭제 진행 취소');
     //true라면,
+    setSpinner((cur) => true);
     try {
       const response = await axios.get(
         `${REACT_APP_KEY_BACK}/admin/orderlist/detail/order_delete/${orderId}`,
@@ -703,9 +742,11 @@ export default function OrderList_Indi_Admin() {
       //200번대 잘 들어온다면,
       alert(`주문번호: ${orderId}\n입금 전 강제주문취소 완료`);
       navigate('/admin/orderlist');
+      setSpinner((cur) => false);
       return;
     } catch (err) {
       console.error(err);
+      setSpinner((cur) => false);
     }
   };
 
@@ -717,6 +758,7 @@ export default function OrderList_Indi_Admin() {
 
     if (!updateConfirm) return alert('교환진행 취소');
     // true라면,
+    setSpinner((cur) => true);
     try {
       const response = await axios.get(
         `${REACT_APP_KEY_BACK}/admin/orderlist/detail/order_return/${orderId}`,
@@ -726,9 +768,11 @@ export default function OrderList_Indi_Admin() {
       // 200번대 성공이라면,
       alert(`주문번호: ${orderId}\n교환진행 완료`);
       setRedirect((cur) => !cur);
+      setSpinner((cur) => false);
       return;
     } catch (err) {
       console.error(err);
+      setSpinner((cur) => false);
       return;
     }
   };

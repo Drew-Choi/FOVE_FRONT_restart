@@ -9,6 +9,7 @@ import Loading from './Loading';
 import Select_Custom from '../../components_elements/Select_Custom';
 import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
 import { useSelector } from 'react-redux';
+import Loading_Spinner from './Loading_Spinner';
 const { REACT_APP_KEY_IMAGE } = process.env;
 
 const Pd_Images = styled.div`
@@ -42,6 +43,9 @@ const Preview = styled.img`
 `;
 
 export default function OrderReturn_client() {
+  // 스피너
+  const [spinner, setSpinner] = useState(false);
+
   const [orderCancelItem, setOrderCancelItem] = useState(null);
   const navigate = useNavigate();
   const { orderId } = useParams();
@@ -182,6 +186,7 @@ export default function OrderReturn_client() {
 
     if (!updateConfirm) return alert('반품신청 취소');
     // true이면 아래 진행
+    setSpinner((cur) => true);
     try {
       const tokenValue = await getToken();
       // const message = desc.current.value || '';
@@ -193,6 +198,7 @@ export default function OrderReturn_client() {
         pd_img.current === null ||
         pd_img.current.length === 0
       ) {
+        setSpinner((cur) => false);
         return alert(
           '제품의 문제가 되는 부분의 사진을 최소 1장은 올려주세요.(필수사항)',
         );
@@ -203,6 +209,7 @@ export default function OrderReturn_client() {
             desc.current.value === null ||
             desc.current.value === undefined)
         ) {
+          setSpinner((cur) => false);
           return alert('기타사유를 입력해주세요.');
         } else {
           // 이미지가 여러개라 for문으로 담아줌
@@ -235,15 +242,18 @@ export default function OrderReturn_client() {
             const dataParse = await submitRes.json();
             setReturnSubmitData((cur) => dataParse);
             setCompleteStatus((cur) => true);
+            setSpinner((cur) => false);
           } else {
             console.log('전송실패');
+            setSpinner((cur) => false);
           }
         }
       }
     } catch (err) {
       console.error(err);
-      console.log('전송실패 콘솔에러');
+      setSpinner((cur) => false);
     }
+    setSpinner((cur) => false);
   };
 
   useEffect(() => {
@@ -254,6 +264,7 @@ export default function OrderReturn_client() {
   if (completeStatus)
     return (
       <section className={orderReturn.orderList_container}>
+        {spinner && <Loading_Spinner />}
         {returnSubmitData !== null &&
         Object.keys(returnSubmitData).length > 0 ? (
           <div className={orderReturn.wrap}>
