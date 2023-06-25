@@ -646,7 +646,7 @@ export default function OrderList_Indi_Admin() {
     setSpinner((cur) => true);
     try {
       const cancelInfo = await axios.post(
-        `${REACT_APP_KEY_BACK}/admin//orderlist/detail/cancelRefund/cancel`,
+        `${REACT_APP_KEY_BACK}/admin/orderlist/detail/cancelRefund/cancel`,
         { orderId },
       );
 
