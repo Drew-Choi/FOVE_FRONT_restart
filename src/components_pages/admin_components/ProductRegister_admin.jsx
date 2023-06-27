@@ -356,15 +356,15 @@ export default function ProductRegister_admin() {
         return;
       }
 
-      const getUniqueCode = await axios.get(
+      const getUniqueCode = await axios.post(
         `${REACT_APP_KEY_BACK}/admin/register-product/uniqueCheck`,
+        { headCode: code },
       );
 
       const uniqueCode = getUniqueCode.data;
 
       if (getUniqueCode.status === 200 && uniqueCode.uniqueNumber) {
-        code += await uniqueCode.uniqueNumber;
-        setPdCode((cur) => code);
+        setPdCode((cur) => uniqueCode.uniqueNumber);
         return;
       } else {
         return;
