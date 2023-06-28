@@ -245,6 +245,7 @@ export default function Mypage_client() {
     });
   };
 
+  // 위젯 스타일 지정
   const postCodeStyle2 = {
     display: 'block',
     position: 'relative',
