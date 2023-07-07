@@ -1,6 +1,6 @@
 npm i -S dotenv
 npm i -D prettier
-npm i -D eslint
+npm i -D aslant
 npx eslint --init
 npm i -S react-router-dom
 npm i -S styled-components
@@ -8,6 +8,25 @@ npm i -S sass
 npm i -S axios
 npm i -S redux react-redux
 npm i -S @reduxjs/toolkit
+
+npm i -D eslint
+이후에
+npx eslint --init
+✔ How would you like to use ESLint? · problems
+✔ What type of modules does your project use? · esm
+✔ Which framework does your project use? · react
+✔ Does your project use TypeScript? · No / Yes <- 타입스크립트는 사용할때만 yes체크
+✔ Where does your code run? · browser
+✔ What format do you want your config file to be in? · JavaScript
+The config that you've selected requires the following dependencies:
+
+eslint-plugin-react@latest
+✔ Would you like to install them now? · No / Yes <- 'eslint-plugin-react' 설치 여부 yes로 설치
+✔ Which package manager do you want to use? · npm
+
+이렇게 설정
+
+**nodemon은 글로벌로 설치하여 재설치 안해도 됨
 
 
 .eslintrc.js --
