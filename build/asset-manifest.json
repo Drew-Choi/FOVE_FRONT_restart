@@ -1,17 +1,18 @@
 {
   "files": {
-    "main.css": "/static/css/main.b6d28087.css",
-    "main.js": "/static/js/main.500082c8.js",
+    "main.css": "/static/css/main.ab57dd34.css",
+    "main.js": "/static/js/main.9cd73c94.js",
     "static/js/480.a7d1b858.chunk.js": "/static/js/480.a7d1b858.chunk.js",
     "static/js/787.e282a9b2.chunk.js": "/static/js/787.e282a9b2.chunk.js",
+    "static/media/FOVV_mainLogo.png": "/static/media/FOVV_mainLogo.2299d1b3de666907541e.png",
     "index.html": "/index.html",
-    "main.b6d28087.css.map": "/static/css/main.b6d28087.css.map",
-    "main.500082c8.js.map": "/static/js/main.500082c8.js.map",
+    "main.ab57dd34.css.map": "/static/css/main.ab57dd34.css.map",
+    "main.9cd73c94.js.map": "/static/js/main.9cd73c94.js.map",
     "480.a7d1b858.chunk.js.map": "/static/js/480.a7d1b858.chunk.js.map",
     "787.e282a9b2.chunk.js.map": "/static/js/787.e282a9b2.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.b6d28087.css",
-    "static/js/main.500082c8.js"
+    "static/css/main.ab57dd34.css",
+    "static/js/main.9cd73c94.js"
   ]
 }

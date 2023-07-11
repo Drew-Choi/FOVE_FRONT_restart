@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import React, { useEffect, useRef, useState } from 'react';
 import '../../../styles/header_client.scss';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -29,8 +28,6 @@ export default function Header_client() {
   const cartModalMenu = useRef(null);
   const burgerBTNref = useRef(null);
   const burgerRef = useRef(null);
-
-  const { REACT_APP_KEY_BACK } = process.env;
 
   //반응형 햄버거 메뉴 커서
   const [burger, setBurger] = useState('on');
@@ -78,7 +75,7 @@ export default function Header_client() {
         dispatch(importdb(nullCart));
 
         const cartDataGet = await axios.post(
-          `${REACT_APP_KEY_BACK}/cart/list`,
+          `http://localhost:4000/cart/list`,
           {
             token: tokenValue,
           },
@@ -292,9 +289,7 @@ export default function Header_client() {
       </MediaQuery>
 
       <header className="header_client">
-        <p className="logo" onClick={() => navigate('/')}>
-          FOVE
-        </p>
+        <div className="logo" onClick={() => navigate('/')}></div>
 
         {/* 관리자 페이지 이동 버튼 */}
         <MediaQuery minWidth={829}>

@@ -26,11 +26,14 @@
     grid-row: 1/1;
     position: relative;
     justify-self: start;
-    cursor: pointer;
-    font-size: 50px;
-    font-weight: 600;
-    font-style: italic;
+    width: 140px;
+    height: 75px;
     z-index: 3;
+    background-image: url("../../public//FOVV_mainLogo.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
 
     @media screen and (max-width: 1144px) {
       grid-column: 1 / 2;
@@ -58,7 +61,7 @@
     justify-content: center;
     text-align: center;
     align-items: center;
-    padding-left: 10px;
+    padding-right: 25px;
 
     @media screen and (max-width: 1144px) {
       grid-column: 2 / 5;
