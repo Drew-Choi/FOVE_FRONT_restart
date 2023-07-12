@@ -37,7 +37,7 @@ const Container = styled.div`
 `;
 
 export default function Loading() {
-  const text = 'FOVE...';
+  const text = 'FOVV...';
 
   return (
     <Container>

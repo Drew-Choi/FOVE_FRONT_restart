@@ -32,7 +32,7 @@ const Container = styled.div`
 `;
 
 export default function LoadingAdmin() {
-  const text = 'FOVE...';
+  const text = 'FOVV...';
 
   return (
     <Container>

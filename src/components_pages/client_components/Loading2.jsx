@@ -53,7 +53,7 @@ export default function Loading2() {
   const location = useLocation();
   const currentURL = location.pathname;
 
-  const text = 'FOVE...';
+  const text = 'FOVV...';
 
   return (
     <Container>

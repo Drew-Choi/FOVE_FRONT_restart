@@ -41,7 +41,7 @@ const Container = styled.div`
 `;
 
 export default function LoadingCartOrder() {
-  const text = 'FOVE...';
+  const text = 'FOVV...';
 
   return (
     <Container>

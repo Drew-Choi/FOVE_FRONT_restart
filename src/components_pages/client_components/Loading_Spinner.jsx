@@ -36,7 +36,7 @@ const Container = styled.div`
 `;
 
 export default function Loading_Spinner() {
-  const text = 'FOVE...';
+  const text = 'FOVV...';
 
   return (
     <>
