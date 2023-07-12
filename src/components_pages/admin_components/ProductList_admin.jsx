@@ -209,6 +209,7 @@ export default function ProductList_admin() {
       return (
         productUpdateCancel(index),
         setRedirect((cur) => !cur),
+        window.location.reload(),
         alert('수정 취소')
       );
     // 만약 사용자가 확인을 눌렀다면
@@ -333,9 +334,12 @@ export default function ProductList_admin() {
             return (
               productUpdateCancel(index),
               setRedirect((cur) => !cur),
+              window.location.reload(),
               alert('수정실패')
             );
-          productUpdateCancel(index), setRedirect((cur) => !cur);
+          productUpdateCancel(index),
+            setRedirect((cur) => !cur),
+            window.location.reload();
           return alert('수정 완료');
         }
       }
@@ -344,6 +348,7 @@ export default function ProductList_admin() {
       return (
         productUpdateCancel(index),
         setRedirect((cur) => !cur),
+        window.location.reload(),
         alert('수정오류, 서버오류')
       );
     }
@@ -434,6 +439,7 @@ export default function ProductList_admin() {
       if (response.status === 200)
         return (
           setRedirect((cur) => !cur),
+          window.location.reload(),
           alert(
             `상품명: ${productName}\n상품코드: ${productCode}\n삭제되었습니다`,
           )
@@ -468,6 +474,7 @@ export default function ProductList_admin() {
 
       if (response.status === 200) {
         setRedirect((cur) => !cur);
+        window.location.reload();
         return alert('이미지 삭제 완료');
       } else {
         return alert('삭제오류');
