@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useRef, useState } from 'react';
 import '../../../styles/header_client.scss';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -28,6 +29,8 @@ export default function Header_client() {
   const cartModalMenu = useRef(null);
   const burgerBTNref = useRef(null);
   const burgerRef = useRef(null);
+
+  const { REACT_APP_KEY_BACK } = process.env;
 
   //반응형 햄버거 메뉴 커서
   const [burger, setBurger] = useState('on');
@@ -75,7 +78,7 @@ export default function Header_client() {
         dispatch(importdb(nullCart));
 
         const cartDataGet = await axios.post(
-          `http://localhost:4000/cart/list`,
+          `${REACT_APP_KEY_BACK}/cart/list`,
           {
             token: tokenValue,
           },
