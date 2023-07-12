@@ -338,8 +338,8 @@ export default function ProductList_admin() {
               alert('수정실패')
             );
           productUpdateCancel(index),
-            setRedirect((cur) => !cur),
-            window.location.reload();
+            window.location.reload(),
+            setRedirect((cur) => !cur);
           return alert('수정 완료');
         }
       }
