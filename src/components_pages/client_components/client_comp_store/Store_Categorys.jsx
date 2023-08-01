@@ -13,14 +13,21 @@ import 'swiper/css/scrollbar';
 import SwiperPaginationBTN from '../../../styles/SwiperPaginationBTN';
 import SwiperPaginationContainer from '../../../styles/SwiperPaginationContainer';
 import SubNav_client from '../client_comp_Store/SubNav_client';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import MediaQuery from 'react-responsive';
 import Loading2 from '../Loading2';
+import {
+  handleCategoryChange,
+  selectCategory,
+  sub_menu,
+} from './subMenu_controller';
 
 SwiperCore.use([Navigation]);
 
 export default function Store_Categorys() {
+  const location = useLocation();
+  const currentURL = location.pathname;
   const { category } = useParams();
   const searchText = useSelector((state) => state.search.searchData);
   const orignData = useRef([]);
@@ -31,15 +38,6 @@ export default function Store_Categorys() {
 
   //네비게이트 리액트Dom 설정
   const navigate = useNavigate();
-
-  //네비게이트 로딩
-  const navLoading = (address) => {
-    setIsVisible((cur) => true);
-    setTimeout(() => {
-      setIsVisible((cur) => false);
-    }, 400);
-    navigate(address);
-  };
 
   //스와이퍼 커스텀
   const [swiperEl, setSwiperEl] = useState(null);
@@ -98,99 +96,38 @@ export default function Store_Categorys() {
   }, [searchText]);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsVisible(false);
-    }, 500);
+    if (
+      currentURL === '/store/beanie' ||
+      currentURL === '/store/cap' ||
+      currentURL === '/store/training' ||
+      currentURL === '/store/windbreaker'
+    ) {
+      setIsVisible(true);
+      const timeout = setTimeout(() => {
+        setIsVisible(false);
+      }, 500);
 
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, []);
-
-  //db Number타입을 스트링으로 바꾸고 천단위 컴마 찍어 프론트에 보내기
-  const country = navigator.language;
-  const frontPriceComma = (price) => {
-    if (price && typeof price.toLocaleString === 'function') {
-      return price.toLocaleString(country, {
-        currency: 'KRW',
-      });
-    } else {
-      return price;
+      return () => {
+        clearTimeout(timeout);
+      };
     }
-  };
-
-  //반응형 영역
-  //반응형 카테고리 구현
-  const categotryMenus_act = [
-    'VIEW ALL',
-    'NEW ARRIVALS',
-    'BEANIE',
-    'CAP',
-    'TRAINING',
-    'WINDBREAKER',
-  ];
-
-  //반응형 셀렉터 핸들
-  const handleCategoryChange = (e) => {
-    let eValue = e.target.value;
-    if (eValue === 'VIEW ALL') {
-      navigate('/store');
-      return;
-    } else if (eValue === 'NEW ARRIVALS') {
-      navigate('/store/new');
-      return;
-    } else if (eValue === 'BEANIE') {
-      navLoading('/store/beanie');
-      return;
-    } else if (eValue === 'CAP') {
-      navLoading('/store/cap');
-      return;
-    } else if (eValue === 'TRAINING') {
-      navLoading('/store/training');
-      return;
-    } else if (eValue === 'WINDBREAKER') {
-      navLoading('/store/windbreaker');
-      return;
-    }
-  };
-
-  const selectCategory = () => {
-    if (category === 'beanie') return 'BEANIE';
-    else if (category === 'cap') return 'CAP';
-    else if (category === 'training') return 'TRAINING';
-    else if (category === 'windbreaker') return 'WINDBREAKER';
-  };
+  }, [currentURL]);
 
   return (
     <main className="store_main">
       <MediaQuery minWidth={576}>
-        <SubNav_client
-          onClickEvent1={() => navigate('/store')}
-          onClickEvent2={() => navigate('/store/new')}
-          onClickEvent3={() => {
-            navLoading('/store/beanie');
-          }}
-          onClickEvent4={() => navLoading('/store/cap')}
-          onClickEvent5={() => navLoading('/store/training')}
-          onClickEvent6={() => navLoading('/store/windbreaker')}
-          menu1="VIEW ALL"
-          menu2="NEW ARRIVALS"
-          menu3="BEANIE"
-          menu4="CAP"
-          menu5="TRAINING"
-          menu6="WINDBREAKER"
-        />
+        <SubNav_client menuList={sub_menu} />
       </MediaQuery>
 
       <MediaQuery maxWidth={575}>
         <select
           className="selectCategorys"
-          value={selectCategory()}
-          onChange={handleCategoryChange}
+          value={selectCategory(sub_menu, category)}
+          onChange={(e) => handleCategoryChange(e, sub_menu, navigate)}
         >
-          {categotryMenus_act.map((el) => (
-            <option value={el} key={el}>
-              {el}
+          {sub_menu.map((el) => (
+            <option value={el.label} key={el.label}>
+              {el.label}
             </option>
           ))}
         </select>
@@ -250,7 +187,7 @@ export default function Store_Categorys() {
                               <Product_client_indiLayout
                                 imgFileName={el.img}
                                 productName={el.productName}
-                                price={frontPriceComma(el.price)}
+                                price={el.price.toLocaleString('ko-KR')}
                               />
                             </Col>
                           );
@@ -279,7 +216,7 @@ export default function Store_Categorys() {
                                 <Product_client_indiLayout
                                   imgFileName={el.img}
                                   productName={el.productName}
-                                  price={frontPriceComma(el.price)}
+                                  price={el.price.toLocaleString('ko-KR')}
                                 />
                               </Col>
                             );
@@ -310,7 +247,7 @@ export default function Store_Categorys() {
                                 <Product_client_indiLayout
                                   imgFileName={el.img}
                                   productName={el.productName}
-                                  price={frontPriceComma(el.price)}
+                                  price={el.price.toLocaleString('ko-KR')}
                                 />
                               </Col>
                             );
@@ -341,7 +278,7 @@ export default function Store_Categorys() {
                                 <Product_client_indiLayout
                                   imgFileName={el.img}
                                   productName={el.productName}
-                                  price={frontPriceComma(el.price)}
+                                  price={el.price.toLocaleString('ko-KR')}
                                 />
                               </Col>
                             );
@@ -372,7 +309,7 @@ export default function Store_Categorys() {
                                 <Product_client_indiLayout
                                   imgFileName={el.img}
                                   productName={el.productName}
-                                  price={frontPriceComma(el.price)}
+                                  price={el.price.toLocaleString('ko-KR')}
                                 />
                               </Col>
                             );
@@ -402,7 +339,7 @@ export default function Store_Categorys() {
                           <Product_client_indiLayout
                             imgFileName={el.img}
                             productName={el.productName}
-                            price={frontPriceComma(el.price)}
+                            price={el.price.toLocaleString('ko-KR')}
                           />
                         </Col>
                       );

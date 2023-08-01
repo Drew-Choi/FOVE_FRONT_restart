@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const NavBar = styled.nav`
@@ -27,34 +28,17 @@ const Li = styled.li`
   }
 `;
 
-export default function SubNav_client({
-  menu1,
-  menu2,
-  menu3,
-  menu4,
-  menu5,
-  menu6,
-  menu7,
-  bottom,
-  top,
-  onClickEvent1,
-  onClickEvent2,
-  onClickEvent3,
-  onClickEvent4,
-  onClickEvent5,
-  onClickEvent6,
-  onClickEvent7,
-}) {
+export default function SubNav_client({ menuList, bottom, top }) {
+  const navi = useNavigate();
+
   return (
     <NavBar bottom={bottom} top={top}>
       <Ul>
-        <Li onClick={onClickEvent1}>{menu1}</Li>
-        <Li onClick={onClickEvent2}>{menu2}</Li>
-        <Li onClick={onClickEvent3}>{menu3}</Li>
-        <Li onClick={onClickEvent4}>{menu4}</Li>
-        <Li onClick={onClickEvent5}>{menu5}</Li>
-        <Li onClick={onClickEvent6}>{menu6}</Li>
-        <Li onClick={onClickEvent7}>{menu7}</Li>
+        {menuList.map((el) => (
+          <Li key={el.label} onClick={() => navi(el.clickPath)}>
+            {el.label}
+          </Li>
+        ))}
       </Ul>
     </NavBar>
   );

@@ -244,18 +244,6 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
   // 카트 정보 리덕스state
   const cartInfo = useSelector((state) => state.cart);
 
-  //천단위 콤마
-  const country = navigator.language;
-  const frontPriceComma = (price) => {
-    if (price && typeof price.toLocaleString === 'function') {
-      return price.toLocaleString(country, {
-        currency: 'KRW',
-      });
-    } else {
-      return price;
-    }
-  };
-
   // 카트 정보 불러오키 API
   const cartDataReq = async () => {
     if (!isLogin) {
@@ -456,7 +444,7 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
           <UnitSum>Total:&nbsp;&nbsp;&nbsp;₩</UnitSum>
           <UnitSumNum>
             {cartInfo.cartProducts.length !== 0
-              ? frontPriceComma(unitSum(cartInfo.cartProducts))
+              ? unitSum(cartInfo.cartProducts).toLocaleString('ko-KR')
               : 0}
           </UnitSumNum>
           <UnitSum>/ {cartInfo.cartProductsLength} ea</UnitSum>
@@ -502,7 +490,7 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
               {el.quantity < 0 ? (
                 <Pd_price>₩ 0</Pd_price>
               ) : (
-                <Pd_price>₩ {frontPriceComma(el.unitSumPrice)}</Pd_price>
+                <Pd_price>₩ {el.unitSumPrice.toLocaleString('ko-KR')}</Pd_price>
               )}
               <Pd_quantity_contain>
                 <Line1></Line1>

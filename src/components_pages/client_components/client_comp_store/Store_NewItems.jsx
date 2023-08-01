@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import MediaQuery from 'react-responsive';
 import Loading2 from '../Loading2';
+import { handleCategoryChange, sub_menu } from './subMenu_controller';
 
 SwiperCore.use([Navigation]);
 
@@ -106,69 +107,21 @@ export default function Store_NewItems() {
     }
   };
 
-  //반응형 영역
-  //반응형 카테고리 구현
-  const categotryMenus_act = [
-    'VIEW ALL',
-    'NEW ARRIVALS',
-    'BEANIE',
-    'CAP',
-    'TRAINING',
-    'WINDBREAKER',
-  ];
-
-  //반응형 셀렉터 핸들
-  const handleCategoryChange = (e) => {
-    let eValue = e.target.value;
-    if (eValue === 'VIEW ALL') {
-      navigate('/store');
-      return;
-    } else if (eValue === 'NEW ARRIVALS') {
-      navigate('/store/new');
-      return;
-    } else if (eValue === 'BEANIE') {
-      navigate('/store/beanie');
-      return;
-    } else if (eValue === 'CAP') {
-      navigate('/store/cap');
-      return;
-    } else if (eValue === 'TRAINING') {
-      navigate('/store/training');
-      return;
-    } else if (eValue === 'WINDBREAKER') {
-      navigate('/store/windbreaker');
-      return;
-    }
-  };
-
   return (
     <main className="store_main">
       <MediaQuery minWidth={576}>
-        <SubNav_client
-          onClickEvent1={() => navigate('/store')}
-          onClickEvent2={() => navigate('/store/new')}
-          onClickEvent3={() => navigate('/store/beanie')}
-          onClickEvent4={() => navigate('/store/cap')}
-          onClickEvent5={() => navigate('/store/training')}
-          onClickEvent6={() => navigate('/store/windbreaker')}
-          menu1="VIEW ALL"
-          menu2="NEW ARRIVALS"
-          menu3="BEANIE"
-          menu4="CAP"
-          menu5="TRAINING"
-          menu6="WINDBREAKER"
-        />
+        <SubNav_client menuList={sub_menu} />
       </MediaQuery>
 
       <MediaQuery maxWidth={575}>
         <select
           className="selectCategorys"
           value="NEW ARRIVALS"
-          onChange={handleCategoryChange}
+          onChange={(e) => handleCategoryChange(e, sub_menu, navigate)}
         >
-          {categotryMenus_act.map((el) => (
-            <option value={el} key={el}>
-              {el}
+          {sub_menu.map((el) => (
+            <option value={el.label} key={el.label}>
+              {el.label}
             </option>
           ))}
         </select>

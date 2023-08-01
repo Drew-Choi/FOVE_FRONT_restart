@@ -17,10 +17,15 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import MediaQuery from 'react-responsive';
 import Loading2 from '../../client_components/Loading2';
+import { handleCategoryChange, sub_menu } from './subMenu_controller';
 
+// 스와이퍼 기능 설치
 SwiperCore.use([Navigation]);
 
 export default function Store_client() {
+  //All상품데이터 get
+  const [pd_Datas, setPd_Datas] = useState([]);
+
   const searchText = useSelector((state) => state.search.searchData);
   const [isLoading, setIsLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
@@ -53,9 +58,6 @@ export default function Store_client() {
   const [pagination3, setPagination3] = useState('off');
   const [pagination4, setPagination4] = useState('off');
   const [pagination5, setPagination5] = useState('off');
-
-  //All상품데이터 get
-  const [pd_Datas, setPd_Datas] = useState([]);
 
   //상품검색
   const searchProducts = (text) => {
@@ -131,63 +133,22 @@ export default function Store_client() {
   };
 
   //반응형 영역
-  //반응형 카테고리 구현
-  const categotryMenus_act = [
-    'VIEW ALL',
-    'NEW ARRIVALS',
-    'BEANIE',
-    'CAP',
-    'TRAINING',
-    'WINDBREAKER',
-  ];
-
-  //반응형 셀렉터 핸들
-  const handleCategoryChange = (e) => {
-    let eValue = e.target.value;
-
-    if (eValue === 'VIEW ALL') {
-      navigate('/store');
-    } else if (eValue === 'NEW ARRIVALS') {
-      navigate('/store/new');
-    } else if (eValue === 'BEANIE') {
-      navigate('/store/beanie');
-    } else if (eValue === 'CAP') {
-      navigate('/store/cap');
-    } else if (eValue === 'TRAINING') {
-      navigate('/store/training');
-    } else if (eValue === 'WINDBREAKER') {
-      navigate('/store/windbreaker');
-    }
-  };
 
   return (
     <main className="store_main">
       <MediaQuery minWidth={576}>
-        <SubNav_client
-          onClickEvent1={() => navigate('/store')}
-          onClickEvent2={() => navigate('/store/new')}
-          onClickEvent3={() => navigate('/store/beanie')}
-          onClickEvent4={() => navigate('/store/cap')}
-          onClickEvent5={() => navigate('/store/training')}
-          onClickEvent6={() => navigate('/store/windbreaker')}
-          menu1="VIEW ALL"
-          menu2="NEW ARRIVALS"
-          menu3="BEANIE"
-          menu4="CAP"
-          menu5="TRAINING"
-          menu6="WINDBREAKER"
-        />
+        <SubNav_client menuList={sub_menu} />
       </MediaQuery>
 
       <MediaQuery maxWidth={575}>
         <select
           className="selectCategorys"
           value="VIEW ALL"
-          onChange={handleCategoryChange}
+          onChange={(e) => handleCategoryChange(e, sub_menu, navigate)}
         >
-          {categotryMenus_act.map((el) => (
-            <option value={el} key={el}>
-              {el}
+          {sub_menu.map((el) => (
+            <option value={el.label} key={el.label}>
+              {el.label}
             </option>
           ))}
         </select>
