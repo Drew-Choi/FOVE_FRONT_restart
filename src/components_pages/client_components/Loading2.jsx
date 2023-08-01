@@ -31,7 +31,7 @@ const Container = styled.div`
   position: absolute;
   width: 100vw;
   min-height: 630px;
-  height: 92%;
+  height: 100%;
   background-color: white;
   text-align: center;
   z-index: 5;
@@ -50,9 +50,6 @@ const Container = styled.div`
 `;
 
 export default function Loading2() {
-  const location = useLocation();
-  const currentURL = location.pathname;
-
   const text = 'FOVV...';
 
   return (

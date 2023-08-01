@@ -12,29 +12,43 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import SwiperPaginationBTN from '../../../styles/SwiperPaginationBTN';
 import SwiperPaginationContainer from '../../../styles/SwiperPaginationContainer';
-import SubNav_client from '../client_comp_Store/SubNav_client';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import MediaQuery from 'react-responsive';
 import Loading2 from '../Loading2';
-import {
-  handleCategoryChange,
-  selectCategory,
-  sub_menu,
-} from './subMenu_controller';
 
+// 스와이퍼 기능 설치
 SwiperCore.use([Navigation]);
 
 export default function Store_Categorys() {
+  //카테고리 상품데이터 get
+  const [pd_Datas_Cateroys, setPd_Datas_Categorys] = useState([]);
+
   const location = useLocation();
   const currentURL = location.pathname;
   const { category } = useParams();
+
   const searchText = useSelector((state) => state.search.searchData);
-  const orignData = useRef([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
+  const orignData = useRef([]);
 
   const { REACT_APP_KEY_BACK } = process.env;
+
+  // 터치화면인지 인식하기 위한 로직 ------
+  const [isTouch, setIsTouch] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsTouch((cur) => true);
+    };
+
+    document.addEventListener('touchstart', checkMobile);
+
+    return () => {
+      document.removeEventListener('touchstart', checkMobile);
+    };
+  }, []);
 
   //네비게이트 리액트Dom 설정
   const navigate = useNavigate();
@@ -46,9 +60,6 @@ export default function Store_Categorys() {
   const [pagination3, setPagination3] = useState('off');
   const [pagination4, setPagination4] = useState('off');
   const [pagination5, setPagination5] = useState('off');
-
-  //카테고리 상품데이터 get
-  const [pd_Datas_Cateroys, setPd_Datas_Categorys] = useState([]);
 
   //상품검색
   const searchProducts = (text) => {
@@ -73,7 +84,7 @@ export default function Store_Categorys() {
         `${REACT_APP_KEY_BACK}/store/${category}`,
       );
       if (productsData.status === 200) {
-        await setPd_Datas_Categorys(productsData.data);
+        setPd_Datas_Categorys(productsData.data);
         setIsLoading(false);
         return;
       } else {
@@ -82,6 +93,13 @@ export default function Store_Categorys() {
     } catch (err) {
       console.error(err);
     }
+  };
+
+  // 사이즈에 재고가 있는 지 확인
+  const stockCheck = (data) => {
+    const arr = Object.values(data);
+    const filter = arr.filter((el) => el !== -1 && el !== 0);
+    return filter;
   };
 
   //상품데이터 db에서 가져오기
@@ -100,7 +118,8 @@ export default function Store_Categorys() {
       currentURL === '/store/beanie' ||
       currentURL === '/store/cap' ||
       currentURL === '/store/training' ||
-      currentURL === '/store/windbreaker'
+      currentURL === '/store/windbreaker' ||
+      currentURL === '/store/new'
     ) {
       setIsVisible(true);
       const timeout = setTimeout(() => {
@@ -115,24 +134,6 @@ export default function Store_Categorys() {
 
   return (
     <main className="store_main">
-      <MediaQuery minWidth={576}>
-        <SubNav_client menuList={sub_menu} />
-      </MediaQuery>
-
-      <MediaQuery maxWidth={575}>
-        <select
-          className="selectCategorys"
-          value={selectCategory(sub_menu, category)}
-          onChange={(e) => handleCategoryChange(e, sub_menu, navigate)}
-        >
-          {sub_menu.map((el) => (
-            <option value={el.label} key={el.label}>
-              {el.label}
-            </option>
-          ))}
-        </select>
-      </MediaQuery>
-
       {isLoading ? (
         <Loading2 />
       ) : (
@@ -185,9 +186,14 @@ export default function Store_Categorys() {
                               key={el._id}
                             >
                               <Product_client_indiLayout
+                                isTouch={isTouch}
                                 imgFileName={el.img}
                                 productName={el.productName}
-                                price={el.price.toLocaleString('ko-KR')}
+                                price={
+                                  stockCheck(el.size).length === 0
+                                    ? 'Sold-Out'
+                                    : `₩ ${el.price.toLocaleString('ko-KR')}`
+                                }
                               />
                             </Col>
                           );
@@ -216,7 +222,11 @@ export default function Store_Categorys() {
                                 <Product_client_indiLayout
                                   imgFileName={el.img}
                                   productName={el.productName}
-                                  price={el.price.toLocaleString('ko-KR')}
+                                  price={
+                                    stockCheck(el.size).length === 0
+                                      ? 'Sold-Out'
+                                      : `₩ ${el.price.toLocaleString('ko-KR')}`
+                                  }
                                 />
                               </Col>
                             );
@@ -247,7 +257,11 @@ export default function Store_Categorys() {
                                 <Product_client_indiLayout
                                   imgFileName={el.img}
                                   productName={el.productName}
-                                  price={el.price.toLocaleString('ko-KR')}
+                                  price={
+                                    stockCheck(el.size).length === 0
+                                      ? 'Sold-Out'
+                                      : `₩ ${el.price.toLocaleString('ko-KR')}`
+                                  }
                                 />
                               </Col>
                             );
@@ -278,7 +292,11 @@ export default function Store_Categorys() {
                                 <Product_client_indiLayout
                                   imgFileName={el.img}
                                   productName={el.productName}
-                                  price={el.price.toLocaleString('ko-KR')}
+                                  price={
+                                    stockCheck(el.size).length === 0
+                                      ? 'Sold-Out'
+                                      : `₩ ${el.price.toLocaleString('ko-KR')}`
+                                  }
                                 />
                               </Col>
                             );
@@ -309,7 +327,11 @@ export default function Store_Categorys() {
                                 <Product_client_indiLayout
                                   imgFileName={el.img}
                                   productName={el.productName}
-                                  price={el.price.toLocaleString('ko-KR')}
+                                  price={
+                                    stockCheck(el.size).length === 0
+                                      ? 'Sold-Out'
+                                      : `₩ ${el.price.toLocaleString('ko-KR')}`
+                                  }
                                 />
                               </Col>
                             );
@@ -326,7 +348,7 @@ export default function Store_Categorys() {
               {
                 <Container>
                   <Row xs={1}>
-                    {pd_Datas_Cateroys.map((el, index) => {
+                    {pd_Datas_Cateroys.map((el) => {
                       return (
                         <Col
                           onClick={() =>
@@ -339,7 +361,11 @@ export default function Store_Categorys() {
                           <Product_client_indiLayout
                             imgFileName={el.img}
                             productName={el.productName}
-                            price={el.price.toLocaleString('ko-KR')}
+                            price={
+                              stockCheck(el.size).length === 0
+                                ? 'Sold-Out'
+                                : `₩ ${el.price.toLocaleString('ko-KR')}`
+                            }
                           />
                         </Col>
                       );

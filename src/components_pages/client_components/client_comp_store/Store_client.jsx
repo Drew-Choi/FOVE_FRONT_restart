@@ -12,12 +12,10 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import SwiperPaginationBTN from '../../../styles/SwiperPaginationBTN';
 import SwiperPaginationContainer from '../../../styles/SwiperPaginationContainer';
-import SubNav_client from '../client_comp_Store/SubNav_client';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import MediaQuery from 'react-responsive';
 import Loading2 from '../../client_components/Loading2';
-import { handleCategoryChange, sub_menu } from './subMenu_controller';
 
 // 스와이퍼 기능 설치
 SwiperCore.use([Navigation]);
@@ -136,24 +134,6 @@ export default function Store_client() {
 
   return (
     <main className="store_main">
-      <MediaQuery minWidth={576}>
-        <SubNav_client menuList={sub_menu} />
-      </MediaQuery>
-
-      <MediaQuery maxWidth={575}>
-        <select
-          className="selectCategorys"
-          value="VIEW ALL"
-          onChange={(e) => handleCategoryChange(e, sub_menu, navigate)}
-        >
-          {sub_menu.map((el) => (
-            <option value={el.label} key={el.label}>
-              {el.label}
-            </option>
-          ))}
-        </select>
-      </MediaQuery>
-
       {isLoading ? (
         <Loading2 />
       ) : (

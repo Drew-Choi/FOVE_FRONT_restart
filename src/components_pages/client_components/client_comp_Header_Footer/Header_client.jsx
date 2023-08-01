@@ -1,11 +1,10 @@
 /* eslint-disable no-undef */
 import React, { useEffect, useRef, useState } from 'react';
 import '../../../styles/header_client.scss';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import MenuAccount from './MenuAccount';
 import CartModal from '../client_comp_Cart/CartModal';
-import { clickMenu, menuClose } from '../../../store/modules/menuAccount';
 import { searchinput } from '../../../store/modules/search';
 import MediaQuery from 'react-responsive';
 import { AiOutlineClose, AiOutlineShopping } from 'react-icons/ai';
@@ -367,7 +366,7 @@ export default function Header_client() {
                   {!accountMenuOnOff ? (
                     <span
                       onClick={() => {
-                        dispatch(clickMenu());
+                        setAccountMenuOnOff(true);
                       }}
                       className="material-symbols-sharp account_react"
                     >
@@ -378,7 +377,7 @@ export default function Header_client() {
                       ref={accountRef2}
                       className="material-symbols-sharp account-close2"
                       onClick={() => {
-                        dispatch(clickMenu());
+                        setAccountMenuOnOff(false);
                       }}
                     >
                       <AiOutlineClose />
