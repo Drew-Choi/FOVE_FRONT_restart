@@ -1,6 +1,6 @@
 import React from 'react';
 import MediaQuery from 'react-responsive';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { sub_menu } from '../@client_Controller/subNave_client_controller';
 
@@ -66,8 +66,6 @@ export default function SubNav_client() {
       }
     }
   };
-
-  console.log(category);
 
   return (
     <>

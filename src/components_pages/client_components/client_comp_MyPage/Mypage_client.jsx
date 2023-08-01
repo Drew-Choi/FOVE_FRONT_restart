@@ -271,7 +271,6 @@ export default function Mypage_client() {
 
     // 주소 선택 이벤트
     selectAddress: (data) => {
-      // console.log(typeof data); object
       setAdressData(data);
       setOpenPostcode(false);
     },

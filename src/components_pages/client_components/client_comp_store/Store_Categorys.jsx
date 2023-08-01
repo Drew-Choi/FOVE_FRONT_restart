@@ -147,10 +147,7 @@ export default function Store_Categorys() {
                 modules={[Navigation, Pagination, A11y, Mousewheel]}
                 spaceBetween={50}
                 slidesPerView={1}
-                // navigation={true}
-                // pagination={{ clickable: true }}
                 onSwiper={(swiper) => setSwiperEl((cur) => swiper)}
-                // onSlideChange={() => console.log('slide change')}
                 onActiveIndexChange={(swiper) => {
                   swiper.activeIndex !== 0
                     ? setPagination1((cur) => 'off')

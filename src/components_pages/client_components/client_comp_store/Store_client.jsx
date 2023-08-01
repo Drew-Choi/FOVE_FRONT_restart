@@ -118,20 +118,6 @@ export default function Store_client() {
     };
   }, []);
 
-  //db Number타입을 스트링으로 바꾸고 천단위 컴마 찍어 프론트에 보내기
-  const country = navigator.language;
-  const frontPriceComma = (price) => {
-    if (price && typeof price.toLocaleString === 'function') {
-      return price.toLocaleString(country, {
-        currency: 'KRW',
-      });
-    } else {
-      return price;
-    }
-  };
-
-  //반응형 영역
-
   return (
     <main className="store_main">
       {isLoading ? (
@@ -147,10 +133,7 @@ export default function Store_client() {
                 modules={[Navigation, Pagination, A11y, Mousewheel]}
                 spaceBetween={50}
                 slidesPerView={1}
-                // navigation={true}
-                // pagination={{ clickable: true }}
                 onSwiper={(swiper) => setSwiperEl((cur) => swiper)}
-                // onSlideChange={() => console.log('slide change')}
                 onActiveIndexChange={(swiper) => {
                   swiper.activeIndex !== 0
                     ? setPagination1((cur) => 'off')
@@ -192,7 +175,7 @@ export default function Store_client() {
                                 price={
                                   stockCheck(el.size).length === 0
                                     ? 'Sold-Out'
-                                    : `₩ ${frontPriceComma(el.price)}`
+                                    : `₩ ${el.price.toLocaleString('ko-KR')}`
                                 }
                               />
                             </Col>
@@ -225,7 +208,7 @@ export default function Store_client() {
                                   price={
                                     stockCheck(el.size).length === 0
                                       ? 'Sold-Out'
-                                      : `₩ ${frontPriceComma(el.price)}`
+                                      : `₩ ${el.price.toLocaleString('ko-KR')}`
                                   }
                                 />
                               </Col>
@@ -260,7 +243,7 @@ export default function Store_client() {
                                   price={
                                     stockCheck(el.size).length === 0
                                       ? 'Sold-Out'
-                                      : `₩ ${frontPriceComma(el.price)}`
+                                      : `₩ ${el.price.toLocaleString('ko-KR')}`
                                   }
                                 />
                               </Col>
@@ -295,7 +278,7 @@ export default function Store_client() {
                                   price={
                                     stockCheck(el.size).length === 0
                                       ? 'Sold-Out'
-                                      : `₩ ${frontPriceComma(el.price)}`
+                                      : `₩ ${el.price.toLocaleString('ko-KR')}`
                                   }
                                 />
                               </Col>
@@ -330,7 +313,7 @@ export default function Store_client() {
                                   price={
                                     stockCheck(el.size).length === 0
                                       ? 'Sold-Out'
-                                      : `₩ ${frontPriceComma(el.price)}`
+                                      : `₩ ${el.price.toLocaleString('ko-KR')}`
                                   }
                                 />
                               </Col>
@@ -364,7 +347,7 @@ export default function Store_client() {
                             price={
                               stockCheck(el.size).length === 0
                                 ? 'Sold-Out'
-                                : `₩ ${frontPriceComma(el.price)}`
+                                : `₩ ${el.price.toLocaleString('ko-KR')}`
                             }
                           />
                         </Col>

@@ -288,7 +288,6 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
       currentURL !== '/login/kakao/callback' &&
       currentURL !== '/kakao/logout'
     ) {
-      console.log('작동?');
       cartDataReq();
     }
   }, [currentURL, isLogin]);

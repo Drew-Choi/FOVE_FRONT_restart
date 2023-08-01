@@ -3,16 +3,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import '../../../styles/header_client.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import MenuAccount from './MenuAccount';
-import CartModal from '../client_comp_Cart/CartModal';
 import { searchinput } from '../../../store/modules/search';
 import MediaQuery from 'react-responsive';
 import { AiOutlineClose, AiOutlineShopping } from 'react-icons/ai';
 import { MdOutlineLogin, MdOutlineAccountCircle } from 'react-icons/md';
 import { GrSearch } from 'react-icons/gr';
+import MenuAccount from './MenuAccount';
+import CartModal from '../client_comp_Cart/CartModal';
 
 export default function Header_client() {
-  console.log('헤더임');
   //리덕스 디스패치(액션함수 전달용)
   const dispatch = useDispatch();
   // 이동용

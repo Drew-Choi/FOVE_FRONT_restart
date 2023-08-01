@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Loading from '../Loading';
 
 const ImageContainer = styled.div`
   position: relative;
@@ -46,6 +45,7 @@ export default function Product_client_indiLayout({
   onLoadEffect,
   isTouch,
 }) {
+  console.log('스토어내부 이미지 컴포넌트');
   //조건부 설정
   const [isHovered, setIsHovered] = useState(false);
 

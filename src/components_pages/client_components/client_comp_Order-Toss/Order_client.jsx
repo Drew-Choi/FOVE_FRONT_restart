@@ -297,7 +297,6 @@ export default function Order_client() {
 
     // 주소 선택 이벤트
     selectAddress: (data) => {
-      // console.log(typeof data); object
       setRecipientZipcode((cur) => data.zonecode);
       setRecipientAddress((cur) => data.address);
       setRecipientAddressDetail((cur) => data.buildingName);
