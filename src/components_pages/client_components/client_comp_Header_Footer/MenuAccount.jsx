@@ -78,7 +78,7 @@ const Content = styled.p`
   }
 `;
 
-export default function MenuAccount({ menuAccountRef }) {
+const MenuAccount = ({ menuAccountRef, closeOnClick }) => {
   const location = useLocation();
   const currentURL = location.pathname;
 
@@ -127,7 +127,7 @@ export default function MenuAccount({ menuAccountRef }) {
           <ContentTitle>Point : {userPoints} p</ContentTitle>
           <Content
             onClick={() => {
-              dispatch(clickMenu());
+              closeOnClick((cur) => (cur ? false : true));
               navigate(`/mypage`);
             }}
           >
@@ -135,7 +135,7 @@ export default function MenuAccount({ menuAccountRef }) {
           </Content>
           <Content
             onClick={() => {
-              dispatch(clickMenu());
+              closeOnClick((cur) => (cur ? false : true));
               navigate(`/mypage/orderlist`);
             }}
           >
@@ -149,7 +149,7 @@ export default function MenuAccount({ menuAccountRef }) {
           <ContentTitle>Point : {userPoints} p</ContentTitle>
           <Content
             onClick={() => {
-              dispatch(clickMenu());
+              closeOnClick((cur) => (cur ? false : true));
               navigate(`/mypage`);
             }}
           >
@@ -157,7 +157,7 @@ export default function MenuAccount({ menuAccountRef }) {
           </Content>
           <Content
             onClick={() => {
-              dispatch(clickMenu());
+              closeOnClick((cur) => (cur ? false : true));
               navigate(`/mypage/orderlist`);
             }}
           >
@@ -168,4 +168,6 @@ export default function MenuAccount({ menuAccountRef }) {
       )}
     </>
   );
-}
+};
+
+export default MenuAccount;

@@ -86,7 +86,7 @@
     z-index: 7;
     // background-color: #a0a0a0;
   
-    .material-symbols-sharp.burgerIcon.on {
+    .material-symbols-sharp.burgerIcon.off {
      display: block;
      position: relative;
      top: 12px;
@@ -100,7 +100,7 @@
      'opsz' 48
     }
 
-    .material-symbols-sharp.burgerIcon.off {
+    .material-symbols-sharp.burgerIcon.on {
       display: none;
     }
     

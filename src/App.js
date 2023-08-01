@@ -81,6 +81,7 @@ function App() {
           token: valueKey,
         });
         if (userInfo.status === 200) {
+          console.log('로그인체크 작동하니?');
           dispatch(
             keepLogin({
               nickName: userInfo.data.nickName,

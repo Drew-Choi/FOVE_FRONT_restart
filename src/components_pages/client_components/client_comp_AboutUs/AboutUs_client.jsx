@@ -1,24 +1,24 @@
 import React from 'react';
-import '../../../styles/aboutus_client.scss';
+import style from '../../../styles/aboutus_client.module.scss';
 import { useNavigate } from 'react-router-dom';
 
 export default function AboutUs_client() {
   const navigate = useNavigate();
   return (
     <>
-      <div className="aboutus">
-        <div className="about_left">
+      <div className={style.aboutus}>
+        <div className={style.about_left}>
           <img src="images/aboutus.gif"></img>
         </div>
-        <div className="about_right">
-          <div className="maintitle">
-            <h2 className="subtitle">
+        <div className={style.about_right}>
+          <div className={style.maintitle}>
+            <h2 className={style.subtitle}>
               ABOUT
               <br />
               <br />
               <br />
             </h2>
-            <div className="aboutus">
+            <div className={style.aboutus}>
               <p>
                 FOVE is brand that stands for Fever, Freedom, Fortitude, Faith,
                 <br />

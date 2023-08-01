@@ -2,23 +2,32 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '../../../styles/header_client.scss';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { importdb } from '../../../store/modules/cart';
-import CartModal from '../client_comp_Cart/CartModal';
-import { offon, onlyoff } from '../../../store/modules/cartmodal';
 import MenuAccount from './MenuAccount';
+import CartModal from '../client_comp_Cart/CartModal';
 import { clickMenu, menuClose } from '../../../store/modules/menuAccount';
 import { searchinput } from '../../../store/modules/search';
 import MediaQuery from 'react-responsive';
-import getToken from '../../../store/modules/getToken';
-import { invisible, visible } from '../../../store/modules/cartOrderLoading';
 import { AiOutlineClose, AiOutlineShopping } from 'react-icons/ai';
 import { MdOutlineLogin, MdOutlineAccountCircle } from 'react-icons/md';
 import { GrSearch } from 'react-icons/gr';
 
 export default function Header_client() {
-  const [reactSearchModal, setReactSearchModal] = useState(false);
+  console.log('헤더임');
+  //리덕스 디스패치(액션함수 전달용)
+  const dispatch = useDispatch();
+  // 이동용
+  const navigate = useNavigate();
+  // 현재 URI주소 얻어오는 용
+  const location = useLocation();
+  const currentURL = location.pathname;
+
+  // 유저정보 리덕스state
+  const userData = useSelector((state) => state.user);
+  // 카트 정보 리덕스state
+  const cartInfo = useSelector((state) => state.cart);
+
+  // dom컨트롤용 useRef 모음
   const excludeRef = useRef(null);
   const searchBTN = useRef(null);
   const accountRef = useRef(null);
@@ -30,112 +39,31 @@ export default function Header_client() {
   const burgerBTNref = useRef(null);
   const burgerRef = useRef(null);
 
-  const { REACT_APP_KEY_BACK } = process.env;
-
-  //반응형 햄버거 메뉴 커서
-  const [burger, setBurger] = useState('on');
-  const [burgerClose, setBurgerClose] = useState('off');
-  const burherHandler = () => {
-    burger === 'on' && burgerClose === 'off'
-      ? (setBurger((cur) => 'off'), setBurgerClose((cur) => 'on'))
-      : (setBurger((cur) => 'on'), setBurgerClose((cur) => 'off'));
-  };
-
-  const navigate = useNavigate();
-  const { productCode, category } = useParams();
-
-  //리덕스 디스패치(액션함수 전달용)
-  const dispatch = useDispatch();
-  //모달을 위한 state
-  const offonKey = useSelector((state) => state.cartmodal.offon);
-  const menuClicked = useSelector((state) => state.menuAccount.clicked);
-  //유저정보 state
-  const userData = useSelector((state) => state.user);
-  //상품정보 state
-  const cartInfo = useSelector((state) => state.cart);
-  const [isVisible, setIsVisible] = useState(true);
-
-  const location = useLocation();
-  const currentURL = location.pathname;
-
-  const cartDataReq = async () => {
-    dispatch(visible());
-    if (!userData.isLogin) {
-      let nullCart = {
-        products: [],
-        cartQuantity: 0,
-      };
-      dispatch(importdb(nullCart));
-    } else {
-      try {
-        // indexedDB에서 토큰 받아오기
-        const tokenValue = await getToken();
-
-        let nullCart = {
-          products: [],
-          cartQuantity: 0,
-        };
-        dispatch(importdb(nullCart));
-
-        const cartDataGet = await axios.post(
-          `${REACT_APP_KEY_BACK}/cart/list`,
-          {
-            token: tokenValue,
-          },
-        );
-
-        if (cartDataGet.status === 200) {
-          dispatch(importdb(cartDataGet.data));
-        }
-      } catch (err) {
-        if (err.response.status === 404) {
-          let nullCart = {
-            products: [],
-            cartQuantity: 0,
-          };
-          dispatch(importdb(nullCart));
-          return;
-        }
-        console.error(err);
-      }
-    }
-    dispatch(invisible());
-  };
-
-  useEffect(() => {
-    if (
-      currentURL === '/' ||
-      currentURL === '/store' ||
-      currentURL === `/store/${category}` ||
-      currentURL === '/store/new' ||
-      currentURL === `/store/detail/${productCode}` ||
-      currentURL === '/store/cartorder'
-    ) {
-      cartDataReq();
-    }
-  }, [currentURL]);
-
-  useEffect(() => {
-    cartDataReq();
-  }, [userData.userName] || cartInfo.cartProducts);
-
+  // 모달용 state와 handler모음 ------------
+  // 카트 모달용 state와 handler
+  const [cartOnOff, setCartOnOff] = useState('off');
   // 장바구니 버튼(Shopping Bag) - 로그인 상태에서 사용 가능하게
   const clickShoppingBag = () => {
     if (!userData.isLogin) {
       alert('로그인이 필요한 서비스입니다.');
       return navigate(`/login`);
     }
-    dispatch(offon());
+
+    setCartOnOff((cur) => (cur === 'off' ? 'on' : 'off'));
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      setIsVisible(false);
-    }, 500);
-  }, []);
+  // account메뉴 모달용
+  const [accountMenuOnOff, setAccountMenuOnOff] = useState(false);
 
-  //서칭용 상태관리
+  //로그인 로딩스피너
+  const [isVisible, setIsVisible] = useState(true);
+
+  // 서칭용 상태관리
   const [searchOnOff, setSearchOnOff] = useState('off');
+  // 서치용 검색창 컨트롤
+  const handleClick = () => {
+    setSearchOnOff('on');
+  };
   //검색창에 검색 안할떄
   const [empty, setEmpty] = useState('상품검색');
 
@@ -158,7 +86,10 @@ export default function Header_client() {
     }
   };
 
-  //반응형 서칭용 엔터 핸들러
+  // 반응형 사용하는 검색창용
+  const [reactSearchModal, setReactSearchModal] = useState(false);
+
+  // 반응형 서칭용 엔터 핸들러
   const handleKeyPress2 = async (e) => {
     if (e.key === 'Enter') {
       // 검색 로직 실행
@@ -176,6 +107,20 @@ export default function Header_client() {
       }
     }
   };
+
+  //반응형 햄버거 메뉴용 state와 handler
+  const [burger, setBurger] = useState('off');
+  const burherHandler = () => {
+    setBurger((cur) => (cur === 'off' ? 'on' : 'off'));
+  };
+
+  // ------------------------
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsVisible(false);
+    }, 500);
+  }, []);
 
   //윈도우 클릭시 기능해제, 돋보기
   useEffect(() => {
@@ -197,26 +142,23 @@ export default function Header_client() {
     };
   }, [searchBTN]);
 
-  const handleClick = () => {
-    setSearchOnOff('on');
-  };
-
-  const handleClickOutside2 = (event) => {
-    if (
-      (accountRef.current &&
-        !accountRef.current.contains(event.target) &&
-        menuAccountRef.current &&
-        !menuAccountRef.current.contains(event.target)) ||
-      (accountRef2.current &&
-        !accountRef2.current.contains(event.target) &&
-        menuAccountRef.current &&
-        !menuAccountRef.current.contains(event.target))
-    ) {
-      dispatch(menuClose());
-    }
-  };
-
+  //윈도우 클릭시 기능해제, Account메뉴
   useEffect(() => {
+    const handleClickOutside2 = (event) => {
+      if (
+        (accountRef.current &&
+          !accountRef.current.contains(event.target) &&
+          menuAccountRef.current &&
+          !menuAccountRef.current.contains(event.target)) ||
+        (accountRef2.current &&
+          !accountRef2.current.contains(event.target) &&
+          menuAccountRef.current &&
+          !menuAccountRef.current.contains(event.target))
+      ) {
+        setAccountMenuOnOff(false);
+      }
+    };
+
     document.addEventListener('mousedown', handleClickOutside2);
 
     return () => {
@@ -224,22 +166,23 @@ export default function Header_client() {
     };
   }, [accountRef || accountRef2]);
 
-  const handleClickOutside3 = (event) => {
-    if (
-      (cartModalRef.current &&
-        !cartModalRef.current.contains(event.target) &&
-        cartModalMenu.current &&
-        !cartModalMenu.current.contains(event.target)) ||
-      (cartModalRef2.current &&
-        !cartModalRef2.current.contains(event.target) &&
-        cartModalMenu.current &&
-        !cartModalMenu.current.contains(event.target))
-    ) {
-      dispatch(onlyoff());
-    }
-  };
-
+  //윈도우 클릭시 기능해제, Cart메뉴
   useEffect(() => {
+    const handleClickOutside3 = (event) => {
+      if (
+        (cartModalRef.current &&
+          !cartModalRef.current.contains(event.target) &&
+          cartModalMenu.current &&
+          !cartModalMenu.current.contains(event.target)) ||
+        (cartModalRef2.current &&
+          !cartModalRef2.current.contains(event.target) &&
+          cartModalMenu.current &&
+          !cartModalMenu.current.contains(event.target))
+      ) {
+        setCartOnOff('off');
+      }
+    };
+
     document.addEventListener('mousedown', handleClickOutside3);
 
     return () => {
@@ -247,19 +190,18 @@ export default function Header_client() {
     };
   }, [cartModalRef] || [cartModalRef2]);
 
-  // 버거 메뉴 외부 클릭 핸들러
-  const handleOutsideBurger = (e) => {
-    if (
-      burgerBTNref.current &&
-      !burgerBTNref.current.contains(e.target) &&
-      burgerRef.current &&
-      !burgerRef.current.contains(e.target)
-    ) {
-      burherHandler();
-    }
-  };
-
+  //윈도우 클릭시 기능해제, Burger메뉴
   useEffect(() => {
+    const handleOutsideBurger = (e) => {
+      if (
+        burgerBTNref.current &&
+        !burgerBTNref.current.contains(e.target) &&
+        burgerRef.current &&
+        !burgerRef.current.contains(e.target)
+      ) {
+        burherHandler();
+      }
+    };
     document.addEventListener('mousedown', handleOutsideBurger);
 
     return () => {
@@ -340,7 +282,7 @@ export default function Header_client() {
               <span
                 ref={burgerBTNref}
                 onClick={burherHandler}
-                className={`material-symbols-sharp burgerClose ${burgerClose}`}
+                className={`material-symbols-sharp burgerClose ${burger}`}
               >
                 <AiOutlineClose />
               </span>
@@ -394,33 +336,26 @@ export default function Header_client() {
             </li>
           </MediaQuery>
 
-          {/* <MediaQuery maxWidth={1327}>
-            {currentURL === '/' ? (
-              <></>
-            ) : (
-              <span
-                className="material-symbols-outlined search_react"
-           
-              >
-                <GrSearch />
-              </span>
-            )}
-          </MediaQuery> */}
-
           <li id="cate_li2">
             {userData.isLogin ? (
               <>
                 <MediaQuery minWidth={1145}>
-                  {!menuClicked ? (
-                    <p onClick={() => dispatch(clickMenu())}>ACCOUNT</p>
+                  {!accountMenuOnOff ? (
+                    <p
+                      onClick={() =>
+                        setAccountMenuOnOff((cur) => (!cur ? true : false))
+                      }
+                    >
+                      ACCOUNT
+                    </p>
                   ) : (
                     <div className="account_close_container">
                       <p
                         ref={accountRef}
                         className="material-symbols-sharp account-close"
-                        onClick={() => {
-                          dispatch(clickMenu());
-                        }}
+                        onClick={() =>
+                          setAccountMenuOnOff((cur) => (!cur ? true : false))
+                        }
                       >
                         <AiOutlineClose />
                       </p>
@@ -429,7 +364,7 @@ export default function Header_client() {
                 </MediaQuery>
 
                 <MediaQuery maxWidth={1144}>
-                  {!menuClicked ? (
+                  {!accountMenuOnOff ? (
                     <span
                       onClick={() => {
                         dispatch(clickMenu());
@@ -540,7 +475,7 @@ export default function Header_client() {
       </MediaQuery>
 
       {/* 반응형 버거 모달 */}
-      {burger === 'off' ? (
+      {burger === 'on' ? (
         <ul ref={burgerRef} className="burger_menu_list">
           <li>
             <p
@@ -576,12 +511,19 @@ export default function Header_client() {
 
       {/* 카트 모달 임 */}
       <CartModal
-        cartModalMenu={cartModalMenu}
-        className={`cart_modal ${offonKey}`}
+        closeOnClick={setCartOnOff}
+        isLogin={userData.isLogin}
+        cartModalMenuRef={cartModalMenu}
+        className={`cart_modal ${cartOnOff}`}
       />
 
       {/* ACCOUNT 메뉴 */}
-      {menuClicked && <MenuAccount menuAccountRef={menuAccountRef} />}
+      {accountMenuOnOff && (
+        <MenuAccount
+          closeOnClick={setAccountMenuOnOff}
+          menuAccountRef={menuAccountRef}
+        />
+      )}
     </>
   );
 }

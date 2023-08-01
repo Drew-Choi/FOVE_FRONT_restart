@@ -1,14 +1,14 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { update } from '../../../store/modules/cart';
-import { offon } from '../../../store/modules/cartmodal';
-import BTN_black_nomal_comp from '../../../styles/BTN_black_nomal_comp';
 import '../../../styles/cartModal.scss';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import getToken from '../../../store/modules/getToken';
+import { importdb } from '../../../store/modules/cart';
+import BTN_black_nomal_comp from '../../../styles/BTN_black_nomal_comp';
 
 const { REACT_APP_KEY_IMAGE } = process.env;
 
@@ -228,11 +228,21 @@ const RemoveIcon = styled.span`
   }
 `;
 
-export default function CartModal({ className, cartModalMenu }) {
-  // 로그인 여부 확인
-  const isLogin = useSelector((state) => state.user.isLogin);
-
+const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
+  // 백엔드 주소
   const { REACT_APP_KEY_BACK } = process.env;
+  // 현재 URI 담기
+  const location = useLocation();
+  const currentURL = location.pathname;
+  // 현재 URI의 쿼리나 파람스 담기
+  const { productCode, category } = useParams();
+  // 이동용
+  const navigate = useNavigate();
+
+  // 리덕스 디스패치
+  const dispatch = useDispatch();
+  // 카트 정보 리덕스state
+  const cartInfo = useSelector((state) => state.cart);
 
   //천단위 콤마
   const country = navigator.language;
@@ -246,11 +256,54 @@ export default function CartModal({ className, cartModalMenu }) {
     }
   };
 
-  const dispatch = useDispatch();
+  // 카트 정보 불러오키 API
+  const cartDataReq = async () => {
+    if (!isLogin) {
+      let nullCart = {
+        products: [],
+        cartQuantity: 0,
+      };
+      dispatch(importdb(nullCart));
+    } else {
+      try {
+        // indexedDB에서 토큰 받아오기
+        const tokenValue = await getToken();
+        const cartDataGet = await axios.post(
+          `${REACT_APP_KEY_BACK}/cart/list`,
+          {
+            token: tokenValue,
+          },
+        );
 
-  //리덕스
-  //상품정보 state
-  const cartInfo = useSelector((state) => state.cart);
+        if (cartDataGet.status === 200) {
+          dispatch(importdb(cartDataGet.data));
+        }
+      } catch (err) {
+        if (err.response.status === 404) {
+          let nullCart = {
+            products: [],
+            cartQuantity: 0,
+          };
+          dispatch(importdb(nullCart));
+          return;
+        }
+        console.error(err);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (
+      currentURL !== '/store/order_success' &&
+      currentURL !== '/store/order/checkout/fail' &&
+      currentURL !== '/login' &&
+      currentURL !== '/login/kakao/callback' &&
+      currentURL !== '/kakao/logout'
+    ) {
+      console.log('작동?');
+      cartDataReq();
+    }
+  }, [currentURL, isLogin]);
 
   //카트 상품 수량 빼기
   const minersCartItem = async (index) => {
@@ -373,8 +426,6 @@ export default function CartModal({ className, cartModalMenu }) {
     }
   };
 
-  const navigate = useNavigate();
-
   //카트 함에 담긴 물품들 합산
   const unitSum = (el) => {
     if (!el) {
@@ -392,11 +443,11 @@ export default function CartModal({ className, cartModalMenu }) {
 
   return (
     <>
-      <CartModal_Layout ref={cartModalMenu} className={className}>
+      <CartModal_Layout ref={cartModalMenuRef} className={className}>
         <CartTitle>ORDER SUMMERY</CartTitle>
 
         <CloseIcon
-          onClick={() => dispatch(offon())}
+          onClick={() => closeOnClick((cur) => (cur === 'on' ? 'off' : 'on'))}
           className="material-symbols-outlined"
         >
           close
@@ -425,7 +476,7 @@ export default function CartModal({ className, cartModalMenu }) {
               if (isLogin) {
                 if (cartInfo.cartProducts.length !== 0) {
                   navigate(`/store/cartorder`);
-                  dispatch(offon());
+                  closeOnClick((cur) => (cur === 'on' ? 'off' : 'on'));
                 } else {
                   alert('카트오류');
                   return navigate(`/store`);
@@ -500,4 +551,6 @@ export default function CartModal({ className, cartModalMenu }) {
       </CartModal_Layout>
     </>
   );
-}
+};
+
+export default React.memo(CartModal);

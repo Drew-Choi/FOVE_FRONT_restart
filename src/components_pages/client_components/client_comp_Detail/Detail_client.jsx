@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Detail_OrderMenu_client from './Detail_OrderMenu_client';
 import Detail_SubImage_client from './Detail_SubImage_client';
-import SubNav_client from '../client_comp_Header_Footer/SubNav_client';
+import SubNav_client from '../client_comp_Store/SubNav_client';
 import MediaQuery from 'react-responsive';
 import Loading from '../Loading';
 import { IoMdArrowBack } from 'react-icons/io';
