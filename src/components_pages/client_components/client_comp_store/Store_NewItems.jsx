@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import '../../../styles/store_client.scss';
-import Product_client_indiLayout from '../Product_client_indiLayout';
+import Product_client_indiLayout from './Product_client_indiLayout';
 import { Container, Row, Col } from 'react-bootstrap';
 import SwiperCore, { Navigation, Pagination, A11y, Mousewheel } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';

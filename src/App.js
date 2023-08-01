@@ -1,45 +1,39 @@
 /* eslint-disable no-undef */
 import './App.css';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Admin_main from './components_pages/admin_components/Admin_main';
 import ProductRegister_admin from './components_pages/admin_components/ProductRegister_admin';
-import Agreement_client from './components_pages/client_components/Agreement_client';
-import Privacy_client from './components_pages/client_components/Privacy_client';
 import Client_main from './components_pages/client_components/Client_main';
-import AboutUs_client from './components_pages/client_components/AboutUs_client';
-import Store_client from './components_pages/client_components/client_comp_store/Store_client';
-import Guide_client from './components_pages/client_components/Guide_client';
-import Detail_client from './components_pages/client_components/Detail_client';
-import Intro_movie_client from './components_pages/client_components/Intro_movie_clinet';
-import Mypage_client from './components_pages/client_components/Mypage_client';
-import AdSubmit_client from './components_pages/client_components/AdSubmit_client';
-import Adwrite_client from './components_pages/client_components/Adwrite_client';
-import Login_client from './components_pages/client_components/Login_client';
-import Order_client from './components_pages/client_components/Order_client';
-import Store_Categorys from './components_pages/client_components/client_comp_store/Store_Categorys';
+import AboutUs_client from './components_pages/client_components/client_comp_AboutUs/AboutUs_client';
+import Store_client from './components_pages/client_components/client_comp_Store/Store_client';
+import Detail_client from './components_pages/client_components/client_comp_Detail/Detail_client';
+import Intro_movie_client from './components_pages/client_components/client_comp_IntroMovie/Intro_movie_clinet';
+import Mypage_client from './components_pages/client_components/client_comp_MyPage/Mypage_client';
+import Login_client from './components_pages/client_components/client_comp_Kakao/Login_client';
+import Order_client from './components_pages/client_components/client_comp_Order-Toss/Order_client';
+import TossPay_Complete from './components_pages/client_components/client_comp_Order-Toss/TossPay_Complete';
+import { Toss_CheckOut } from './components_pages/client_components/client_comp_Order-Toss/Toss_CheckOut';
+import Store_Categorys from './components_pages/client_components/client_comp_Store/Store_Categorys';
 import Error404 from './components_pages/client_components/Error404';
-import TossPay_Complete from './components_pages/client_components/TossPay_Complete';
-import { Toss_CheckOut } from './components_pages/client_components/Toss_CheckOut';
 import React, { useEffect } from 'react';
 import axios from 'axios';
 import { keepLogin } from './store/modules/user';
-import EditInfo_client from './components_pages/client_components/EditInfo_client';
 import ProductList_admin from './components_pages/admin_components/ProductList_admin';
-import OrderList_client from './components_pages/client_components/OrderList_client';
-import Store_NewItems from './components_pages/client_components/client_comp_store/Store_NewItems';
+import OrderList_client from './components_pages/client_components/client_comp_MyPage/OrderList-Toss/OrderList_client';
+import Store_NewItems from './components_pages/client_components/client_comp_Store/Store_NewItems';
 import OrderList_admin from './components_pages/admin_components/OrderList_admin';
-import Kakao_Logout from './components_pages/client_components/Kakao_Logout';
-import Kakao_final from './components_pages/client_components/Kakao_final';
+import Kakao_Logout from './components_pages/client_components/client_comp_Kakao/Kakao_Logout';
+import Kakao_final from './components_pages/client_components/client_comp_Kakao/Kakao_final';
 import { openDB } from 'idb';
 import getToken from './store/modules/getToken';
-import OrderCancel_client from './components_pages/client_components/OrderCancel_client';
-import TossPay_Cancel_Complete from './components_pages/client_components/TossPay_Cancel_Complete';
-import OrderReturn_client from './components_pages/client_components/OrderReturn_client';
-import OrderReturnCheck_client from './components_pages/client_components/OrderReturnCheck_client';
+import OrderCancel_client from './components_pages/client_components/client_comp_MyPage/OrderList-Toss/OrderCancel_client';
+import TossPay_Cancel_Complete from './components_pages/client_components/client_comp_MyPage/OrderList-Toss/TossPay_Cancel_Complete';
+import OrderReturn_client from './components_pages/client_components/client_comp_MyPage/OrderList-Toss/OrderReturn_client';
+import OrderReturnCheck_client from './components_pages/client_components/client_comp_MyPage/OrderList-Toss/OrderReturnCheck_client';
 import OrderList_Indi_Admin from './components_pages/admin_components/OrderList_Indi_Admin';
-import OrderCancel_client_onlyOrder from './components_pages/client_components/OrderCancel_client_onlyOrder';
-import TossPay_Cancel_Complete_onlyOrder from './components_pages/client_components/TossPay_Cancel_Complete_onlyOrder';
+import OrderCancel_client_onlyOrder from './components_pages/client_components/client_comp_MyPage/OrderList-Toss/OrderCancel_client_onlyOrder';
+import TossPay_Cancel_Complete_onlyOrder from './components_pages/client_components/client_comp_MyPage/OrderList-Toss/TossPay_Cancel_Complete_onlyOrder';
 import ShippingCode_admin from './components_pages/admin_components/ShippingCode_admin';
 import FailPage from './components_pages/client_components/FailPage';
 
@@ -174,12 +168,9 @@ function App() {
             path="/store/order/checkout"
             element={isLogin ? <Toss_CheckOut /> : <Login_client />}
           />
-          {/* 토스페이먼츠 결제성공페이지 */}
+          {/* 토스페이먼츠 결제 성공 페이지 */}
           <Route path="store/order_success" element={<TossPay_Complete />} />
-          {/* account쪽 */}
-          {/* <Route path="/agreement" element={<Agreement_client />} />
-          <Route path="/privacy" element={<Privacy_client />} />
-          <Route path="/guide" element={<Guide_client />} /> */}
+          {/* 토스페이먼츠 결제실패시 페이지 */}
           <Route path="/store/order/checkout/fail" element={<FailPage />} />
           {/* 로그인 */}
           <Route path="/login" element={<Login_client />} />
@@ -190,11 +181,6 @@ function App() {
           <Route
             path="/mypage"
             element={isLogin ? <Mypage_client /> : <Login_client />}
-          />
-          {/* 회원정보 수정 */}
-          <Route
-            path="/mypage/editInfo"
-            element={isLogin ? <EditInfo_client /> : <Login_client />}
           />
           {/* 주문조회 */}
           <Route
@@ -237,16 +223,6 @@ function App() {
           <Route
             path="/mypage/orderlist/cancel/:orderId/:reason/complete"
             element={isLogin ? <TossPay_Cancel_Complete /> : <Login_client />}
-          />
-          {/* 배송 주소록 목록 */}
-          <Route
-            path="/mypage/checkAddress"
-            element={isLogin ? <AdSubmit_client /> : <Login_client />}
-          />
-          {/* 배송 주소지 수정 */}
-          <Route
-            path="/mypage/editAddress"
-            element={isLogin ? <Adwrite_client /> : <Login_client />}
           />
           <Route path="*" element={<Error404 />} />
         </Route>
