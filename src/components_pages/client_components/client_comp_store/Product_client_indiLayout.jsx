@@ -38,14 +38,13 @@ const ProductPrice = styled.p`
   margin: 0px;
 `;
 
-export default function Product_client_indiLayout({
+const Product_client_indiLayout = ({
   imgFileName,
   productName,
   price,
   onLoadEffect,
   isTouch,
-}) {
-  console.log('스토어내부 이미지 컴포넌트');
+}) => {
   //조건부 설정
   const [isHovered, setIsHovered] = useState(false);
 
@@ -84,4 +83,6 @@ export default function Product_client_indiLayout({
       </ProductInfoLayout>
     </ImageContainer>
   );
-}
+};
+
+export default React.memo(Product_client_indiLayout);

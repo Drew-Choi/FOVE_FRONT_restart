@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../../styles/store_client.scss';
 import Product_client_indiLayout from './Product_client_indiLayout';
@@ -13,7 +13,6 @@ import 'swiper/css/scrollbar';
 import SwiperPaginationBTN from '../../../styles/SwiperPaginationBTN';
 import SwiperPaginationContainer from '../../../styles/SwiperPaginationContainer';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import MediaQuery from 'react-responsive';
 import Loading2 from '../Loading2';
 
@@ -28,10 +27,8 @@ export default function Store_Categorys() {
   const currentURL = location.pathname;
   const { category } = useParams();
 
-  const searchText = useSelector((state) => state.search.searchData);
   const [isLoading, setIsLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
-  const orignData = useRef([]);
 
   const { REACT_APP_KEY_BACK } = process.env;
 
@@ -60,22 +57,6 @@ export default function Store_Categorys() {
   const [pagination3, setPagination3] = useState('off');
   const [pagination4, setPagination4] = useState('off');
   const [pagination5, setPagination5] = useState('off');
-
-  //상품검색
-  const searchProducts = (text) => {
-    setPd_Datas_Categorys((cur) => {
-      const newData = [...orignData.current];
-      const lowercaseText = text.toLowerCase();
-      if (lowercaseText !== '') {
-        return newData.filter((el) => {
-          const lowercaseProductName = el.productName.toLowerCase();
-          return lowercaseProductName.indexOf(lowercaseText) !== -1;
-        });
-      } else {
-        return newData;
-      }
-    });
-  };
 
   //엑시오스로 모든 상품 정보 요청
   const getCategoryProducts = async () => {
@@ -108,10 +89,6 @@ export default function Store_Categorys() {
 
     getCategoryProducts();
   }, [category]);
-
-  useEffect(() => {
-    searchProducts(searchText);
-  }, [searchText]);
 
   useEffect(() => {
     if (

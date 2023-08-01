@@ -140,7 +140,6 @@ export default function Detail_SubImage_client({ datas, isTouch }) {
               ></Sub_IMG2>
             ),
           )}
-          {/* {selectDot === datas.img[0] ? <FirstDot /> : <SecondDot />} */}
         </div>
         <MainImage selectImgFileName={selectImgFileName} />
       </MediaQuery>
@@ -158,7 +157,6 @@ export default function Detail_SubImage_client({ datas, isTouch }) {
               imgFileName={el}
             ></Sub_IMG>
           ))}
-          {/* {selectDot === datas.img[0] ? <FirstDot /> : <SecondDot />} */}
         </div>
       </MediaQuery>
     </div>

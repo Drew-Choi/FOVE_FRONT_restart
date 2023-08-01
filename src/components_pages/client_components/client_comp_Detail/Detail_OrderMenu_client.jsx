@@ -1,15 +1,15 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { add } from '../../../store/modules/cart';
 import { useNavigate } from 'react-router-dom';
 import { single } from '../../../store/modules/order';
-import Shipping_info_modal_client from './Shipping_info_modal_client';
-import Size_Modal_client from './Size_Modal_client';
 import detailOrderMenu from '../../../styles/detail_orderMenu.module.scss';
 import { MdAddShoppingCart } from 'react-icons/md';
 import getToken from '../../../store/modules/getToken';
+import Shipping_info_modal_client from './Shipping_info_modal_client';
+import Size_Modal_client from './Size_Modal_client';
 
 export default function Detail_OrderMenu_client({
   productName,
@@ -53,7 +53,8 @@ export default function Detail_OrderMenu_client({
   const [onM, setOnM] = useState(false);
   const [onL, setOnL] = useState(false);
 
-  const handle = (e) => {
+  // 인스턴스 재생성을 막기 위해 useCallback
+  const handle = useCallback((e) => {
     if (e.target.value === 'OS') {
       setOnOS(true);
       setSizeCheck('OS');
@@ -81,27 +82,26 @@ export default function Detail_OrderMenu_client({
     } else {
       setOnL(false);
     }
-  };
-
-  //상품재고에 따라 첫 사이즈 선택을 가능하게 하는 것
-  const sizeFistChecked = async () => {
-    const sizeArr = Object.entries(datas.size).map(([key, value]) => ({
-      size: key,
-      stock: value,
-    }));
-    const sizeFilter = await sizeArr.filter(
-      (el) => el.stock !== -1 && el.stock !== 0,
-    );
-    if (sizeFilter.length === 0) {
-      return;
-    } else {
-      // 아니라면,아래
-      setSizeCheck((cur) => sizeFilter[0].size);
-    }
-  };
+  }, []);
 
   //화면이 마운트되면 바로 초기 사이즈첵의 값을 재고에 따라 잡아준다.
   useEffect(() => {
+    //상품재고에 따라 첫 사이즈 선택을 가능하게 하는 것
+    const sizeFistChecked = async () => {
+      const sizeArr = Object.entries(datas.size).map(([key, value]) => ({
+        size: key,
+        stock: value,
+      }));
+      const sizeFilter = await sizeArr.filter(
+        (el) => el.stock !== -1 && el.stock !== 0,
+      );
+      if (sizeFilter.length === 0) {
+        return;
+      } else {
+        // 아니라면,아래
+        setSizeCheck((cur) => sizeFilter[0].size);
+      }
+    };
     sizeFistChecked();
   }, []);
 
@@ -140,7 +140,7 @@ export default function Detail_OrderMenu_client({
   }, [sizeCheck]);
 
   //카트에 추가하는 Post 요청
-  const addToCart = async () => {
+  const addToCart = useCallback(async () => {
     // 로그인 상태가 아니면, 로그인 페이지로 이동
     if (!isLogin) {
       alert('로그인이 필요한 서비스입니다.');
@@ -174,7 +174,6 @@ export default function Detail_OrderMenu_client({
             alert('카트를 확인해주세요.')
           );
       }
-
       // 카트 기존 수량과 추가하려는 수량의 합산이 재고 수량보다 작거나 같다면 아래 추가 진행
       const reqData = await axios.post(`${REACT_APP_KEY_BACK}/cart/add`, {
         token: await getToken(),
@@ -187,7 +186,6 @@ export default function Detail_OrderMenu_client({
         unitSumPrice: datas.price * count,
       });
       if (reqData.status === 200) {
-        // updateCart();
         const datasArr = reqData.data.userCart.products;
         const totalQuantity = datasArr.reduce(
           (sum, el) =>
@@ -199,10 +197,10 @@ export default function Detail_OrderMenu_client({
     } catch (err) {
       console.error(err);
     }
-  };
+  }, [sizeCheck, count, isLogin, datas]);
 
   //싱글상품 데이터
-  const singleDataSum = (datas, count, sizeCheck) => {
+  const singleDataSum = useCallback((datas, count, sizeCheck) => {
     let sumData = {
       productName: datas.productName,
       productCode: datas.productCode,
@@ -214,48 +212,36 @@ export default function Detail_OrderMenu_client({
       color: datas.color,
     };
     return sumData;
-  };
-
-  //콤마 찍기
-  const country = navigator.language;
-  const frontPriceComma = (price) => {
-    if (price && typeof price.toLocaleString === 'function') {
-      return price.toLocaleString(country, {
-        currency: 'KRW',
-      });
-    } else {
-      return price;
-    }
-  };
+  }, []);
 
   //배송정보 모달
   const [shipon, setShipon] = useState(false);
-  const handleOpenModal = () => {
+  const handleOpenModal = useCallback(() => {
     setShipon(true);
-  };
-  const handleCloseModal = () => {
+  }, []);
+  const handleCloseModal = useCallback(() => {
     setShipon(false);
-  };
+  }, []);
 
   //사이즈체크 모달
   const [beanieSizeOn, setBeanieSizeOn] = useState(false);
-  const handleOpenModal2 = () => {
+  const handleOpenModal2 = useCallback(() => {
     setBeanieSizeOn(true);
-  };
-  const handleCloseModal2 = () => {
+  }, []);
+  const handleCloseModal2 = useCallback(() => {
     setBeanieSizeOn(false);
-  };
+  }, []);
 
   // 바로 구매 시(Buy 버튼)
-  const buyNow = async () => {
+  const buyNow = useCallback(async () => {
     // 로그인 상태가 아니면, 로그인 페이지로 이동
     if (!isLogin) {
       alert('로그인이 필요한 서비스입니다.');
       return navigate(`/login`);
     }
-    await dispatch(single(singleDataSum(datas, count, sizeCheck)));
+    dispatch(single(singleDataSum(datas, count, sizeCheck)));
     navigate(`/store/order`);
-  };
+  }, [isLogin, count, sizeCheck, datas]);
 
   return (
     <div className={detailOrderMenu.Detail_Order}>
@@ -272,7 +258,7 @@ export default function Detail_OrderMenu_client({
       <p className={detailOrderMenu.pdTitle}>{productName}</p>
 
       <p className={detailOrderMenu.sumPrice}>
-        ₩ {frontPriceComma(count * price)}
+        ₩ {(count * price).toLocaleString('ko-KR')}
       </p>
       <div className={detailOrderMenu.infoContain}>
         {datas.size.OS !== -1 && datas.size.OS !== 0 ? (
