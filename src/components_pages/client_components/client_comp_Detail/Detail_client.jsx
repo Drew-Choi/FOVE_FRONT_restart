@@ -7,27 +7,33 @@ import { IoMdArrowBack } from 'react-icons/io';
 import Detail_OrderMenu_client from './Detail_OrderMenu_client';
 import Detail_SubImage_client from './Detail_SubImage_client';
 import Loading from '../Loading';
+import { MdNoCell } from 'react-icons/md';
+
+const { REACT_APP_KEY_BACK } = process.env;
 
 export default function Detail_client() {
   console.log('상세');
+
+  const navi = useNavigate();
   const { productCode } = useParams();
   const [productData, setProductData] = useState(null);
 
-  const { REACT_APP_KEY_BACK } = process.env;
-
-  const getSelectProduct = async () => {
-    const selectData = await axios.get(
-      `${REACT_APP_KEY_BACK}/store/productId/${productCode}`,
-    );
-    if (selectData.status === 200) {
-      setProductData(selectData.data[0]);
-      return;
-    } else {
-      return;
-    }
-  };
-
   useEffect(() => {
+    const getSelectProduct = async () => {
+      try {
+        const selectData = await axios.get(
+          `${REACT_APP_KEY_BACK}/store/productId/${productCode}`,
+        );
+        if (selectData.status === 200) {
+          setProductData(selectData.data[0]);
+        }
+      } catch (err) {
+        navi(
+          `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+        );
+        console.error(err);
+      }
+    };
     getSelectProduct();
   }, [productCode]);
 

@@ -2,7 +2,7 @@ import React from 'react';
 import MediaQuery from 'react-responsive';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { sub_menu } from '../@client_Controller/subNave_client_controller';
+import { sub_menu } from '../@client_Controller/subNav_client_controller';
 
 const NavBar = styled.nav`
   position: relative;

@@ -35,6 +35,7 @@ import OrderCancel_client_onlyOrder from './components_pages/client_components/c
 import TossPay_Cancel_Complete_onlyOrder from './components_pages/client_components/client_comp_MyPage/OrderList-Toss/TossPay_Cancel_Complete_onlyOrder';
 import ShippingCode_admin from './components_pages/admin_components/ShippingCode_admin';
 import FailPage from './components_pages/client_components/FailPage';
+import ErrorPage from './components_pages/client_components/ErrorPage';
 
 function App() {
   const isLogin = useSelector((state) => state.user.isLogin);
@@ -223,6 +224,7 @@ function App() {
             element={isLogin ? <TossPay_Cancel_Complete /> : <Login_client />}
           />
           <Route path="*" element={<Error404 />} />
+          <Route path="/error" element={<ErrorPage />} />
         </Route>
 
         {/* admin 영역 */}
