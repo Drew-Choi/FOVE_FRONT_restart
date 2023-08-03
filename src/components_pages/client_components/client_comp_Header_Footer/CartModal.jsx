@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { update } from '../../../store/modules/cart';
@@ -229,13 +229,13 @@ const RemoveIcon = styled.span`
 `;
 
 const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
+  console.log('리랜더링?');
   // 백엔드 주소
   const { REACT_APP_KEY_BACK } = process.env;
   // 현재 URI 담기
   const location = useLocation();
   const currentURL = location.pathname;
-  // 현재 URI의 쿼리나 파람스 담기
-  const { productCode, category } = useParams();
+
   // 이동용
   const navigate = useNavigate();
 
@@ -245,42 +245,8 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
   const cartInfo = useSelector((state) => state.cart);
 
   // 카트 정보 불러오키 API
-  const cartDataReq = async () => {
-    if (!isLogin) {
-      let nullCart = {
-        products: [],
-        cartQuantity: 0,
-      };
-      dispatch(importdb(nullCart));
-    } else {
-      try {
-        // indexedDB에서 토큰 받아오기
-        const tokenValue = await getToken();
-        const cartDataGet = await axios.post(
-          `${REACT_APP_KEY_BACK}/cart/list`,
-          {
-            token: tokenValue,
-          },
-        );
-
-        if (cartDataGet.status === 200) {
-          dispatch(importdb(cartDataGet.data));
-        }
-      } catch (err) {
-        if (err.response.status === 404) {
-          let nullCart = {
-            products: [],
-            cartQuantity: 0,
-          };
-          dispatch(importdb(nullCart));
-          return;
-        }
-        console.error(err);
-      }
-    }
-  };
-
   useEffect(() => {
+    console.log('전체 불러오기 작동?');
     if (
       currentURL !== '/store/order_success' &&
       currentURL !== '/store/order/checkout/fail' &&
@@ -288,102 +254,157 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
       currentURL !== '/login/kakao/callback' &&
       currentURL !== '/kakao/logout'
     ) {
+      const cartDataReq = async () => {
+        if (!isLogin) {
+          let nullCart = {
+            products: [],
+            cartQuantity: 0,
+          };
+          dispatch(importdb(nullCart));
+        } else {
+          try {
+            // indexedDB에서 토큰 받아오기
+            const tokenValue = await getToken();
+            const cartDataGet = await axios.post(
+              `${REACT_APP_KEY_BACK}/cart/list`,
+              {
+                token: tokenValue,
+              },
+            );
+
+            if (cartDataGet.status === 200) {
+              dispatch(importdb(cartDataGet.data));
+            }
+          } catch (err) {
+            if (err.response.status === 404) {
+              let nullCart = {
+                products: [],
+                cartQuantity: 0,
+              };
+              dispatch(importdb(nullCart));
+              return;
+            }
+            console.error(err);
+          }
+        }
+      };
       cartDataReq();
     }
   }, [currentURL, isLogin]);
 
-  //카트 상품 수량 빼기
-  const minersCartItem = async (index) => {
-    if (!isLogin) {
-      alert('로그인이 필요한 서비스입니다.');
-      return navigate(`/login`);
-    }
-    try {
-      const tokenValue = await getToken();
-      const downData = await axios.post(`${REACT_APP_KEY_BACK}/cart/qtyminus`, {
-        token: tokenValue,
-        index,
-      });
-      if (downData.status === 200) {
-        if (downData.data && downData.data.userCart) {
-          // 'cartObj' 객체가 null이 아니고 'products' 속성이 존재하는 경우에만 실행
-          // 이곳에서 'products' 속성을 사용하는 코드 작성
-          const datas = downData.data.userCart.products;
-          const totalQuantity = datas.reduce(
-            (sum, el) =>
-              sum + (el.quantity < 0 ? el.quantity - el.quantity : el.quantity),
-            0,
-          );
-          dispatch(update(datas, totalQuantity));
-        }
+  //카트 상품 수량 빼기 // useCallback으로 참조 재생성 및 리랜더링 막기
+  const minersCartItem = useCallback(
+    async (index) => {
+      console.log('수량삭제 작동?');
+      if (!isLogin) {
+        alert('로그인이 필요한 서비스입니다.');
+        return navigate(`/login`);
       }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  //카트 상품 수량 추가
-  const plusCartItem = async (index) => {
-    if (!isLogin) {
-      alert('로그인이 필요한 서비스입니다.');
-      return navigate(`/login`);
-    }
-    try {
-      const tokenValue = await getToken();
-      const upData = await axios.post(`${REACT_APP_KEY_BACK}/cart/qtyplus`, {
-        token: tokenValue,
-        index,
-      });
-      if (upData.status === 200) {
-        if (upData.data && upData.data.userCart) {
-          // 'cartObj' 객체가 null이 아니고 'products' 속성이 존재하는 경우에만 실행
-          // 이곳에서 'products' 속성을 사용하는 코드 작성
-          const datas = upData.data.userCart.products;
-          const totalQuantity = datas.reduce(
-            (sum, el) =>
-              sum + (el.quantity < 0 ? el.quantity - el.quantity : el.quantity),
-            0,
-          );
-          dispatch(update(datas, totalQuantity));
+      try {
+        const tokenValue = await getToken();
+        const downData = await axios.post(
+          `${REACT_APP_KEY_BACK}/cart/qtyminus`,
+          {
+            token: tokenValue,
+            index,
+          },
+        );
+        if (downData.status === 200) {
+          if (downData.data && downData.data.userCart) {
+            // 'cartObj' 객체가 null이 아니고 'products' 속성이 존재하는 경우에만 실행
+            // 이곳에서 'products' 속성을 사용하는 코드 작성
+            const datas = downData.data.userCart.products;
+            const totalQuantity = datas.reduce(
+              (sum, el) =>
+                sum +
+                (el.quantity < 0 ? el.quantity - el.quantity : el.quantity),
+              0,
+            );
+            dispatch(update(datas, totalQuantity));
+          }
         }
-      } else {
-        alert(upData.data);
-        return;
+      } catch (err) {
+        console.error(err);
       }
-    } catch (err) {
-      if (err.response.status === 400) return alert(err.response.data);
-      console.error(err);
-    }
-  };
+    },
+    [isLogin],
+  );
 
-  //개별 상품 삭제
-  const deletePD = async (index) => {
-    if (!isLogin) {
-      alert('로그인이 필요한 서비스입니다.');
-      return navigate(`/login`);
-    }
-    try {
-      const tokenValue = await getToken();
-      const deleteID = await axios.post(`${REACT_APP_KEY_BACK}/cart/remove`, {
-        token: tokenValue,
-        index,
-      });
-      if (deleteID.status === 200) {
-        if (deleteID.data && deleteID.data.updatedCart) {
-          // 'cartObj' 객체가 null이 아니고 'products' 속성이 존재하는 경우에만 실행
-          // 이곳에서 'products' 속성을 사용하는 코드 작성
-          const datas = deleteID.data.updatedCart.products;
-          const totalQuantity = datas.reduce((sum, el) => sum + el.quantity, 0);
-          await dispatch(update(datas, totalQuantity));
+  //카트 상품 수량 추가 // useCallback으로 참조 재생성 및 리랜더링 막기
+  const plusCartItem = useCallback(
+    async (index) => {
+      console.log('수량추가 작동?');
+      if (!isLogin) {
+        alert('로그인이 필요한 서비스입니다.');
+        return navigate(`/login`);
+      }
+      try {
+        const tokenValue = await getToken();
+        const upData = await axios.post(`${REACT_APP_KEY_BACK}/cart/qtyplus`, {
+          token: tokenValue,
+          index,
+        });
+        if (upData.status === 200) {
+          if (upData.data && upData.data.userCart) {
+            // 'cartObj' 객체가 null이 아니고 'products' 속성이 존재하는 경우에만 실행
+            // 이곳에서 'products' 속성을 사용하는 코드 작성
+            const datas = upData.data.userCart.products;
+            const totalQuantity = datas.reduce(
+              (sum, el) =>
+                sum +
+                (el.quantity < 0 ? el.quantity - el.quantity : el.quantity),
+              0,
+            );
+            dispatch(update(datas, totalQuantity));
+          }
+        } else {
+          alert(upData.data);
+          return;
         }
+      } catch (err) {
+        if (err.response.status === 400) return alert(err.response.data);
+        console.error(err);
       }
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    },
+    [isLogin],
+  );
 
-  //전체 삭제(카트 비움)
-  const allRemove = async () => {
+  //개별 상품 삭제 // useCallback으로 참조 재생성 및 리랜더링 막기
+  const deletePD = useCallback(
+    async (index) => {
+      console.log('개별삭제 작동?');
+      if (!isLogin) {
+        alert('로그인이 필요한 서비스입니다.');
+        return navigate(`/login`);
+      }
+      try {
+        const tokenValue = await getToken();
+        const deleteID = await axios.post(`${REACT_APP_KEY_BACK}/cart/remove`, {
+          token: tokenValue,
+          index,
+        });
+        if (deleteID.status === 200) {
+          if (deleteID.data && deleteID.data.updatedCart) {
+            // 'cartObj' 객체가 null이 아니고 'products' 속성이 존재하는 경우에만 실행
+            // 이곳에서 'products' 속성을 사용하는 코드 작성
+            const datas = deleteID.data.updatedCart.products;
+            const totalQuantity = datas.reduce(
+              (sum, el) => sum + el.quantity,
+              0,
+            );
+            await dispatch(update(datas, totalQuantity));
+          }
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    [isLogin],
+  );
+
+  //전체 삭제(카트 비움) // useCallback으로 참조 재생성 및 리랜더링 막기
+  const allRemove = useCallback(async () => {
+    console.log('전체삭제 작동?');
     if (!isLogin) {
       alert('로그인이 필요한 서비스입니다.');
       return navigate(`/login`);
@@ -411,12 +432,12 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
     } catch (err) {
       console.error(err);
     }
-  };
+  }, [isLogin]);
 
   //카트 함에 담긴 물품들 합산
   const unitSum = (el) => {
     if (!el) {
-      return <></>;
+      return;
     } else {
       let sum = 0;
       for (let i = 0; i < el.length; i += 1) {
@@ -427,6 +448,11 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
       return sum;
     }
   };
+  // 합산값이 그대로면 값을 계산하지 않게 useMemo하여 값을 메모리제이션
+  const unitSumMemo = useMemo(
+    () => unitSum(cartInfo.cartProducts),
+    [cartInfo.cartProducts],
+  );
 
   return (
     <>
@@ -443,7 +469,7 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
           <UnitSum>Total:&nbsp;&nbsp;&nbsp;₩</UnitSum>
           <UnitSumNum>
             {cartInfo.cartProducts.length !== 0
-              ? unitSum(cartInfo.cartProducts).toLocaleString('ko-KR')
+              ? unitSumMemo.toLocaleString('ko-KR')
               : 0}
           </UnitSumNum>
           <UnitSum>/ {cartInfo.cartProductsLength} ea</UnitSum>

@@ -9,9 +9,10 @@ import { AiOutlineClose, AiOutlineShopping } from 'react-icons/ai';
 import { MdOutlineLogin, MdOutlineAccountCircle } from 'react-icons/md';
 import { GrSearch } from 'react-icons/gr';
 import MenuAccount from './MenuAccount';
-import CartModal from '../client_comp_Cart/CartModal';
+import CartModal from './CartModal';
 
 export default function Header_client() {
+  console.log('헤더');
   //리덕스 디스패치(액션함수 전달용)
   const dispatch = useDispatch();
   // 이동용
@@ -31,127 +32,70 @@ export default function Header_client() {
   const accountRef = useRef(null);
   const accountRef2 = useRef(null);
   const menuAccountRef = useRef(null);
-  const cartModalRef = useRef(null);
-  const cartModalRef2 = useRef(null);
-  const cartModalMenu = useRef(null);
+  const cartModalRef = useRef();
+  const cartModalRef2 = useRef();
+  const cartModalMenu = useRef();
   const burgerBTNref = useRef(null);
   const burgerRef = useRef(null);
 
   // 모달용 state와 handler모음 ------------
+
+  //
   // 카트 모달용 state와 handler
   const [cartOnOff, setCartOnOff] = useState('off');
+
   // 장바구니 버튼(Shopping Bag) - 로그인 상태에서 사용 가능하게
   const clickShoppingBag = () => {
     if (!userData.isLogin) {
       alert('로그인이 필요한 서비스입니다.');
       return navigate(`/login`);
     }
-
     setCartOnOff((cur) => (cur === 'off' ? 'on' : 'off'));
   };
 
-  // account메뉴 모달용
-  const [accountMenuOnOff, setAccountMenuOnOff] = useState(false);
-
-  //로그인 로딩스피너
-  const [isVisible, setIsVisible] = useState(true);
-
-  // 서칭용 상태관리
-  const [searchOnOff, setSearchOnOff] = useState('off');
-  // 서치용 검색창 컨트롤
-  const handleClick = () => {
-    setSearchOnOff('on');
-  };
-  //검색창에 검색 안할떄
-  const [empty, setEmpty] = useState('상품검색');
-
-  //서칭용 엔터 핸들러
-  const handleKeyPress = async (e) => {
-    if (e.key === 'Enter') {
-      // 검색 로직 실행
-      if (currentURL !== '/store') {
-        await dispatch(searchinput(e.target.value));
-        navigate('store');
-      } else {
-        dispatch(searchinput(e.target.value));
-      }
-      if (!e.target.value) {
-        setEmpty('검색어를 입력해주세요.');
-      } else {
-        searchBTN.current.click();
-        e.target.value = '';
-      }
-    }
-  };
-
-  // 반응형 사용하는 검색창용
-  const [reactSearchModal, setReactSearchModal] = useState(false);
-
-  // 반응형 서칭용 엔터 핸들러
-  const handleKeyPress2 = async (e) => {
-    if (e.key === 'Enter') {
-      // 검색 로직 실행
-      if (currentURL !== '/store') {
-        await dispatch(searchinput(e.target.value));
-        navigate('store');
-      } else {
-        dispatch(searchinput(e.target.value));
-      }
-      if (!e.target.value) {
-        setEmpty('검색어를 입력해주세요.');
-      } else {
-        setReactSearchModal((cur) => false);
-        e.target.value = '';
-      }
-    }
-  };
-
-  //반응형 햄버거 메뉴용 state와 handler
-  const [burger, setBurger] = useState('off');
-  const burherHandler = () => {
-    setBurger((cur) => (cur === 'off' ? 'on' : 'off'));
-  };
-
-  // ------------------------
-
+  //윈도우 클릭시 기능해제, Cart메뉴
   useEffect(() => {
-    setTimeout(() => {
-      setIsVisible(false);
-    }, 500);
-  }, []);
-
-  //윈도우 클릭시 기능해제, 돋보기
-  useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside3 = (event) => {
       if (
-        searchBTN.current &&
-        !searchBTN.current.contains(event.target) &&
-        excludeRef.current &&
-        !excludeRef.current.contains(event.target)
+        cartOnOff === 'on' &&
+        ((cartModalRef.current &&
+          !cartModalRef.current.contains(event.target) &&
+          cartModalMenu.current &&
+          !cartModalMenu.current.contains(event.target)) ||
+          (cartModalRef2.current &&
+            !cartModalRef2.current.contains(event.target) &&
+            cartModalMenu.current &&
+            !cartModalMenu.current.contains(event.target)))
       ) {
-        setSearchOnOff('off');
+        setCartOnOff('off');
       }
+      return;
     };
 
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside3);
 
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside3);
     };
-  }, [searchBTN]);
+  }, [cartOnOff]);
+
+  //
+  // account메뉴 모달용
+  const [accountMenuOnOff, setAccountMenuOnOff] = useState(false);
 
   //윈도우 클릭시 기능해제, Account메뉴
   useEffect(() => {
     const handleClickOutside2 = (event) => {
       if (
-        (accountRef.current &&
+        accountMenuOnOff &&
+        ((accountRef.current &&
           !accountRef.current.contains(event.target) &&
           menuAccountRef.current &&
           !menuAccountRef.current.contains(event.target)) ||
-        (accountRef2.current &&
-          !accountRef2.current.contains(event.target) &&
-          menuAccountRef.current &&
-          !menuAccountRef.current.contains(event.target))
+          (accountRef2.current &&
+            !accountRef2.current.contains(event.target) &&
+            menuAccountRef.current &&
+            !menuAccountRef.current.contains(event.target)))
       ) {
         setAccountMenuOnOff(false);
       }
@@ -162,36 +106,117 @@ export default function Header_client() {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside2);
     };
-  }, [accountRef || accountRef2]);
+  }, [accountMenuOnOff]);
 
-  //윈도우 클릭시 기능해제, Cart메뉴
+  //
+  //로그인 로딩스피너
+  const [isVisible, setIsVisible] = useState(true);
+
+  // 로그인 버튼 로딩화면
   useEffect(() => {
-    const handleClickOutside3 = (event) => {
+    const time = setTimeout(() => {
+      setIsVisible(false);
+    }, 500);
+
+    return () => {
+      clearTimeout(time);
+    };
+  }, []);
+
+  //
+  // 서칭용 모음
+  const [searchOnOff, setSearchOnOff] = useState('off');
+
+  // 서치용 검색창 컨트롤
+  const handleClick = () => {
+    setSearchOnOff('on');
+  };
+
+  //검색창에 검색 안할떄
+  const [empty, setEmpty] = useState('상품검색');
+
+  //서칭용 엔터 핸들러
+  const handleKeyPress = async (e) => {
+    if (e.key === 'Enter') {
+      // 검색 로직 실행
+      if (currentURL !== '/store') {
+        dispatch(searchinput(e.target.value));
+        navigate('store');
+      } else {
+        dispatch(searchinput(e.target.value));
+      }
+      if (!e.target.value) {
+        setEmpty('검색어를 입력해주세요.');
+      } else {
+        searchBTN.current.click();
+        e.target.value = '';
+        setEmpty('상품검색');
+      }
+    }
+  };
+
+  //윈도우 클릭시 기능해제, 서치용 돋보기 기능해제
+  useEffect(() => {
+    const handleClickOutside = (event) => {
       if (
-        (cartModalRef.current &&
-          !cartModalRef.current.contains(event.target) &&
-          cartModalMenu.current &&
-          !cartModalMenu.current.contains(event.target)) ||
-        (cartModalRef2.current &&
-          !cartModalRef2.current.contains(event.target) &&
-          cartModalMenu.current &&
-          !cartModalMenu.current.contains(event.target))
+        searchOnOff === 'on' &&
+        searchBTN.current &&
+        !searchBTN.current.contains(event.target) &&
+        excludeRef.current &&
+        !excludeRef.current.contains(event.target)
       ) {
-        setCartOnOff('off');
+        setSearchOnOff('off');
+        setEmpty('상품검색');
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside3);
+    document.addEventListener('mousedown', handleClickOutside);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside3);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [cartModalRef] || [cartModalRef2]);
+  }, [searchOnOff]);
+
+  // 반응형 사용하는 검색창용
+  const [reactSearchModal, setReactSearchModal] = useState(false);
+
+  const handlerBgTouch = () => {
+    setReactSearchModal((cur) => !cur);
+    setEmpty('상품검색');
+  };
+
+  // 반응형 서칭용 엔터 핸들러
+  const handleKeyPress2 = async (e) => {
+    if (e.key === 'Enter') {
+      // 검색 로직 실행
+      if (currentURL !== '/store') {
+        dispatch(searchinput(e.target.value));
+        navigate('store');
+      } else {
+        dispatch(searchinput(e.target.value));
+      }
+      if (!e.target.value) {
+        setEmpty('검색어를 입력해주세요.');
+      } else {
+        setReactSearchModal((cur) => false);
+        e.target.value = '';
+        setEmpty('상품검색');
+      }
+    }
+  };
+
+  //
+  //반응형 햄버거 메뉴용 state와 handler
+  const [burger, setBurger] = useState('off');
+  const burherHandler = () => {
+    setBurger((cur) => (cur === 'off' ? 'on' : 'off'));
+  };
 
   //윈도우 클릭시 기능해제, Burger메뉴
   useEffect(() => {
     const handleOutsideBurger = (e) => {
       if (
+        burger === 'on' &&
         burgerBTNref.current &&
         !burgerBTNref.current.contains(e.target) &&
         burgerRef.current &&
@@ -205,7 +230,9 @@ export default function Header_client() {
     return () => {
       document.addEventListener('mousedown', handleOutsideBurger);
     };
-  }, [burgerBTNref]);
+  }, [burger]);
+
+  // ------------------------
 
   return (
     <>
@@ -215,14 +242,13 @@ export default function Header_client() {
           <div className="search_react_modal_container">
             <div
               className="search_react_modal_bg"
-              onClick={() => setReactSearchModal((cur) => !cur)}
+              onClick={handlerBgTouch}
             ></div>
             <input
               className="search_react_modal_input"
               type="text"
               placeholder={empty}
               onKeyDown={(e) => handleKeyPress2(e)}
-              // onClick={handleClick}
             />
             <p className="search_react_modal_desc">
               Enter keywords for searching
@@ -324,7 +350,6 @@ export default function Header_client() {
                 <></>
               ) : (
                 <span
-                  ref={searchBTN}
                   className="material-symbols-outlined search"
                   onClick={() => setReactSearchModal((cur) => !cur)}
                 >
