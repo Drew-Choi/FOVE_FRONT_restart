@@ -2,7 +2,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import '../../../styles/store_client.scss';
-import Product_client_indiLayout from './Product_client_indiLayout';
 import { Container, Row, Col } from 'react-bootstrap';
 import SwiperCore, { Navigation, Pagination, A11y, Mousewheel } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -10,18 +9,20 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import SwiperPaginationBTN from '../../../styles/SwiperPaginationBTN';
-import SwiperPaginationContainer from '../../../styles/SwiperPaginationContainer';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import MediaQuery from 'react-responsive';
 import Loading2 from '../../client_components/Loading2';
+import SwiperPaginationBTN from '../../../styles/SwiperPaginationBTN';
+import SwiperPaginationContainer from '../../../styles/SwiperPaginationContainer';
+import Product_client_indiLayout from './Product_client_indiLayout';
 
 // 스와이퍼 기능 설치
 SwiperCore.use([Navigation]);
 const { REACT_APP_KEY_BACK } = process.env;
 
 export default function Store_client() {
+  // 모든 상품 또는 카테고리별 상품 요청 위한 파람스 서칭
   const { category } = useParams();
   // All상품데이터 get
   const [pd_Datas, setPd_Datas] = useState([]);
@@ -50,13 +51,14 @@ export default function Store_client() {
 
   //상품데이터 db에서 가져오기 및 검색기능
   useEffect(() => {
+    // 스피너
     setIsLoading(true);
-
     const time = setTimeout(() => {
       setIsLoading(false);
     }, 500);
+    //--
 
-    //엑시오스로 모든 상품 정보 요청
+    //엑시오스로 모든 상품 정보 요청--
     const getAllProducts = async () => {
       if (!category) {
         try {
@@ -92,9 +94,9 @@ export default function Store_client() {
         }
       }
     };
+    // --
 
-    // 검색체크
-    // 상품검색
+    // 검색체크 및 상품검색 --
     const searchProducts = (text) => {
       if (text === '') return;
 
@@ -106,10 +108,13 @@ export default function Store_client() {
         });
       });
     };
+    //---
 
+    // 순차적으로 진행 --
     getAllProducts().then(() => {
       searchProducts(searchText);
     });
+    // -----
 
     return () => {
       clearTimeout(time);
@@ -127,7 +132,7 @@ export default function Store_client() {
             modules={[Navigation, Pagination, A11y, Mousewheel]}
             spaceBetween={50}
             slidesPerView={1}
-            onSwiper={(swiper) => setSwiperEl((cur) => swiper)}
+            onSwiper={(swiper) => setSwiperEl(swiper)}
             onActiveIndexChange={(swiper) => {
               swiper.activeIndex !== 0
                 ? setPagination1((cur) => 'off')

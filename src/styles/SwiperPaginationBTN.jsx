@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
 const PaginationNum = styled.span`
@@ -11,7 +11,7 @@ const PaginationNum = styled.span`
   }
 `;
 
-export default function SwiperPaginationBTN({
+const SwiperPaginationBTN = ({
   children,
   onClickEvent,
   fontSize,
@@ -19,7 +19,7 @@ export default function SwiperPaginationBTN({
   hoverColor,
   useRef,
   className,
-}) {
+}) => {
   return (
     <PaginationNum
       className={className}
@@ -32,10 +32,12 @@ export default function SwiperPaginationBTN({
       {children}
     </PaginationNum>
   );
-}
+};
 
 SwiperPaginationBTN.defaultProps = {
   fontSize: '15px',
   color: 'black',
   hoverColor: 'gray',
 };
+
+export default React.memo(SwiperPaginationBTN);

@@ -637,7 +637,6 @@ const Content = styled.p`
 
 // 컴포넌트 영역
 function MenuAccount({ menuAccountRef, closeOnClick }) {
-  console.log('메뉴어카운트리랜더?');
   const location = useLocation();
   const currentURL = location.pathname;
 

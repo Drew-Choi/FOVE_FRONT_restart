@@ -5,94 +5,106 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import getToken from '../../../store/modules/getToken';
 
+const { REACT_APP_KEY_BACK } = process.env;
+
 export default function TossPay_Complete() {
   const navigate = useNavigate();
   const location = useLocation();
   const searchQuery = new URLSearchParams(location.search);
   const [orderID, setOrderID] = useState('');
   const [orderTime, setOrderTime] = useState('');
-  const { REACT_APP_KEY_BACK } = process.env;
-
-  const getData = async () => {
-    try {
-      const sessionId = searchQuery.get('sessionID');
-      const paymentData = await axios.get(
-        `${REACT_APP_KEY_BACK}/toss/data?sessionID=${sessionId}`,
-      );
-
-      if (paymentData.status === 200) {
-        await localStorage.setItem(
-          'payments',
-          JSON.stringify(paymentData.data),
-        );
-        return;
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const finalOrderPost = async () => {
-    //로컬에서 주문내역 뺴서 가공
-    const products = await JSON.parse(localStorage.getItem('products'));
-    const recipien = await JSON.parse(localStorage.getItem('recipien'));
-    const payments = await JSON.parse(localStorage.getItem('payments'));
-
-    setOrderID((cur) => payments.orderId);
-    setOrderTime((cur) => payments.approvedAt);
-
-    //백으로 최종 주문내역서 보내기
-    try {
-      const tokenValue = await getToken();
-      const finalOrderData = await axios.post(
-        `${REACT_APP_KEY_BACK}/store/order`,
-        {
-          token: tokenValue,
-          //상품정보
-          products: products,
-          //받는 이 정보
-          message: recipien.message,
-          recipientName: recipien.recipientName,
-          recipientZipcode: recipien.recipientZipcode,
-          recipientAddress: recipien.recipientAddress,
-          recipientAddressDetail: recipien.recipientAddressDetail,
-          phoneCode: recipien.phoneCode,
-          phoneMidNum: recipien.phoneMidNum,
-          phoneLastNum: recipien.phoneLastNum,
-          payments: {
-            status: payments.status,
-            orderId: payments.orderId,
-            orderName: payments.orderName,
-            approvedAt: payments.approvedAt,
-            discount: payments.discount,
-            totalAmount: payments.totalAmount,
-            method: payments.method,
-          },
-        },
-      );
-      if (finalOrderData.status === 200) {
-        localStorage.clear();
-        return;
-      } else if (finalOrderData.status == 409) {
-        navigate('/store');
-        alert('중복된 주문 오류');
-        return;
-      } else {
-        navigate('/store');
-        alert('주문실패');
-        return;
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   useEffect(() => {
+    // 주문정보 가져오기
+    const getData = async () => {
+      try {
+        const sessionId = searchQuery.get('sessionID');
+        const paymentData = await axios.get(
+          `${REACT_APP_KEY_BACK}/toss/data?sessionID=${sessionId}`,
+        );
+
+        if (paymentData.status === 200) {
+          await localStorage.setItem(
+            'payments',
+            JSON.stringify(paymentData.data),
+          );
+          return;
+        }
+      } catch (err) {
+        navigate(
+          `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+        );
+        console.error(err);
+      }
+    };
+
+    // 로컬스토리지 정보 뺴오기
+    const finalOrderPost = async () => {
+      //로컬에서 주문내역 뺴서 가공
+      const products = await JSON.parse(localStorage.getItem('products'));
+      const recipien = await JSON.parse(localStorage.getItem('recipien'));
+      const payments = await JSON.parse(localStorage.getItem('payments'));
+
+      setOrderID((cur) => payments.orderId);
+      setOrderTime((cur) => payments.approvedAt);
+
+      //백으로 최종 주문내역서 보내기
+      try {
+        const tokenValue = await getToken();
+        const finalOrderData = await axios.post(
+          `${REACT_APP_KEY_BACK}/store/order`,
+          {
+            token: tokenValue,
+            //상품정보
+            products: products,
+            //받는 이 정보
+            message: recipien.message,
+            recipientName: recipien.recipientName,
+            recipientZipcode: recipien.recipientZipcode,
+            recipientAddress: recipien.recipientAddress,
+            recipientAddressDetail: recipien.recipientAddressDetail,
+            phoneCode: recipien.phoneCode,
+            phoneMidNum: recipien.phoneMidNum,
+            phoneLastNum: recipien.phoneLastNum,
+            payments: {
+              status: payments.status,
+              orderId: payments.orderId,
+              orderName: payments.orderName,
+              approvedAt: payments.approvedAt,
+              discount: payments.discount,
+              totalAmount: payments.totalAmount,
+              method: payments.method,
+            },
+          },
+        );
+        if (finalOrderData.status === 200) {
+          localStorage.clear();
+          return;
+        } else if (finalOrderData.status == 409) {
+          navigate('/store');
+          alert('중복된 주문 오류');
+          return;
+        } else {
+          navigate('/store');
+          alert('주문실패');
+          return;
+        }
+      } catch (err) {
+        navigate(
+          `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+        );
+        console.error(err);
+      }
+    };
+
     const array = async () => {
       try {
         await getData();
         await finalOrderPost();
       } catch (error) {
+        navigate(
+          `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+        );
         console.error('Error occurred:', error);
       }
     };

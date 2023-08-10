@@ -412,7 +412,7 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
               (sum, el) => sum + el.quantity,
               0,
             );
-            await dispatch(update(datas, totalQuantity));
+            dispatch(update(datas, totalQuantity));
           }
         }
       } catch (err) {

@@ -44,7 +44,6 @@ const Product_client_indiLayout = ({
   productName,
   price,
   onLoadEffect,
-  isTouch,
 }) => {
   //조건부 설정
   const [isHovered, setIsHovered] = useState(false);
