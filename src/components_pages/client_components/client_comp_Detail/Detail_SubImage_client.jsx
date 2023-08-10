@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import detailSubImage from '../../../styles/detail_subimage_client.module.scss';
 import MediaQuery from 'react-responsive';
+import { isMobile } from 'react-device-detect';
 
 const { REACT_APP_KEY_IMAGE } = process.env;
 
@@ -90,7 +91,7 @@ const Sub_IMG2 = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   margin-bottom: 20px;
-  ${({ selectImage }) => (selectImage ? 'opacity: 0.7;' : 'opacity: 1;')}
+  ${({ selectImage }) => (selectImage ? 'opacity: 0.5;' : 'opacity: 1;')}
 
   @media screen and (max-width: 280px) {
     width: 30px;
@@ -98,10 +99,10 @@ const Sub_IMG2 = styled.div`
   }
 `;
 
-export default function Detail_SubImage_client({ datas, isTouch }) {
+export default function Detail_SubImage_client({ datas }) {
   const [selectImgFileName, setSelectImgFileName] = useState(datas.img[0]);
   const [selector, setSelector] = useState([true, false, false, false, false]);
-
+  console.log('서브이미지 재랜더링');
   return (
     <div className={detailSubImage.detail_sub_image_totalContainer}>
       <MediaQuery minWidth={556}>
@@ -123,7 +124,7 @@ export default function Detail_SubImage_client({ datas, isTouch }) {
         <MainImage selectImgFileName={selectImgFileName} />
         <div className={detailSubImage.sub_image_wrap}>
           {datas.img.map((el, index) =>
-            !isTouch ? (
+            !isMobile ? (
               <Sub_IMG
                 onClick={() => {
                   setSelectImgFileName(el);

@@ -7,7 +7,6 @@ import { IoMdArrowBack } from 'react-icons/io';
 import Detail_OrderMenu_client from './Detail_OrderMenu_client';
 import Detail_SubImage_client from './Detail_SubImage_client';
 import Loading from '../Loading';
-import { isMobile } from 'react-device-detect';
 
 const { REACT_APP_KEY_BACK } = process.env;
 
@@ -45,13 +44,8 @@ export default function Detail_client() {
             <span className={detailClient.back} onClick={() => navigate(-1)}>
               <IoMdArrowBack className={detailClient.backIcon} />
             </span>
-            <Detail_SubImage_client datas={productData} isTouch={isMobile} />
-            <Detail_OrderMenu_client
-              productName={productData.productName}
-              detail={productData.detail}
-              price={productData.price}
-              datas={productData}
-            />
+            <Detail_SubImage_client datas={productData} />
+            <Detail_OrderMenu_client datas={productData} />
           </div>
         </>
       ) : (

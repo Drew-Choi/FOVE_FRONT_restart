@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { add } from '../../../store/modules/cart';
 import { useNavigate } from 'react-router-dom';
@@ -10,33 +10,14 @@ import { MdAddShoppingCart } from 'react-icons/md';
 import getToken from '../../../store/modules/getToken';
 import Shipping_info_modal_client from './Shipping_info_modal_client';
 import Size_Modal_client from './Size_Modal_client';
+import { isMobile } from 'react-device-detect';
 
-export default function Detail_OrderMenu_client({
-  productName,
-  price,
-  detail,
-  datas,
-}) {
+export default function Detail_OrderMenu_client({ datas }) {
   // 필요한 훅
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { REACT_APP_KEY_BACK } = process.env;
-
-  // 터치화면인지 인식하기 위한 로직 ------
-  const [isTouch, setIsTouch] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsTouch((cur) => true);
-    };
-
-    document.addEventListener('touchstart', checkMobile);
-
-    return () => {
-      document.removeEventListener('touchstart', checkMobile);
-    };
-  }, []);
 
   //주문으로 수량 자료 넘기려는 용도
   const [count, setCount] = useState(1);
@@ -84,62 +65,44 @@ export default function Detail_OrderMenu_client({
     }
   }, []);
 
-  //화면이 마운트되면 바로 초기 사이즈첵의 값을 재고에 따라 잡아준다.
-  useEffect(() => {
+  // 초기 사이즈 잡혀야 랜더링 완료 되도록 useLayoutEffect사용
+  useLayoutEffect(() => {
     //상품재고에 따라 첫 사이즈 선택을 가능하게 하는 것
     const sizeFistChecked = async () => {
-      const sizeArr = Object.entries(datas.size).map(([key, value]) => ({
-        size: key,
-        stock: value,
-      }));
-      const sizeFilter = await sizeArr.filter(
-        (el) => el.stock !== -1 && el.stock !== 0,
+      const sizeArr = Object.keys(datas.size).filter(
+        (key) => datas.size[key] !== -1 && datas.size[key] !== 0,
       );
-      if (sizeFilter.length === 0) {
+      if (sizeArr.length === 0) {
         return;
       } else {
         // 아니라면,아래
-        setSizeCheck((cur) => sizeFilter[0].size);
+        switch (sizeArr[0]) {
+          case 'OS':
+            setOnOS(true);
+            setSizeCheck('OS');
+            break;
+          case 'S':
+            setOnS(true);
+            setSizeCheck('S');
+            break;
+          case 'M':
+            setOnM(true);
+            setSizeCheck('M');
+            break;
+          case 'L':
+            setOnL(true);
+            setSizeCheck('L');
+            break;
+          default:
+            break;
+        }
       }
     };
     sizeFistChecked();
   }, []);
 
-  //이후 UI의 초기 사이즈 값을 설정 할 수 있도록 잡아준다. 이건 sizeCheck이 변경할 때마다 값을 가지게 조건부를 준다.
-  useEffect(() => {
-    if (sizeCheck === 'OS') {
-      setOnOS(true);
-    } else {
-      setOnOS(false);
-    }
-
-    if (sizeCheck === 'S') {
-      setOnS(true);
-    } else {
-      setOnS(false);
-    }
-
-    if (sizeCheck === 'M') {
-      setOnM(true);
-    } else {
-      setOnM(false);
-    }
-
-    if (sizeCheck === 'L') {
-      setOnL(true);
-    } else {
-      setOnL(false);
-    }
-
-    if (sizeCheck === '') {
-      setOnOS(false);
-      setOnS(false);
-      setOnM(false);
-      setOnL(false);
-    }
-  }, [sizeCheck]);
-
-  //카트에 추가하는 Post 요청
+  // 카트에 추가하는 Post 요청
+  // 요청 과정이 복잡하므로 useCallback으로 리랜더링 방지하고, 의존성 배열에 관련 데이터 변경에 따르게 설정
   const addToCart = useCallback(async () => {
     // 로그인 상태가 아니면, 로그인 페이지로 이동
     if (!isLogin) {
@@ -199,7 +162,7 @@ export default function Detail_OrderMenu_client({
     }
   }, [sizeCheck, count, isLogin, datas]);
 
-  //싱글상품 데이터
+  //싱글상품 데이터, 매개변수만 받으면 되니 useCallback
   const singleDataSum = useCallback((datas, count, sizeCheck) => {
     let sumData = {
       productName: datas.productName,
@@ -216,24 +179,18 @@ export default function Detail_OrderMenu_client({
 
   //배송정보 모달
   const [shipon, setShipon] = useState(false);
-  const handleOpenModal = useCallback(() => {
-    setShipon(true);
-  }, []);
-  const handleCloseModal = useCallback(() => {
-    setShipon(false);
-  }, []);
+  const handleOpenModal = () => setShipon(true);
+  // 자식 컴포넌트 리랜더링방지 useCallback
+  const handleCloseModal = useCallback(() => setShipon(false), []);
 
   //사이즈체크 모달
   const [beanieSizeOn, setBeanieSizeOn] = useState(false);
-  const handleOpenModal2 = useCallback(() => {
-    setBeanieSizeOn(true);
-  }, []);
-  const handleCloseModal2 = useCallback(() => {
-    setBeanieSizeOn(false);
-  }, []);
+  const handleOpenModal2 = () => setBeanieSizeOn(true);
+  // 자식 컴포넌트 리랜더링방지 useCallback
+  const handleCloseModal2 = useCallback(() => setBeanieSizeOn(false), []);
 
   // 바로 구매 시(Buy 버튼)
-  const buyNow = useCallback(async () => {
+  const buyNow = () => {
     // 로그인 상태가 아니면, 로그인 페이지로 이동
     if (!isLogin) {
       alert('로그인이 필요한 서비스입니다.');
@@ -241,7 +198,7 @@ export default function Detail_OrderMenu_client({
     }
     dispatch(single(singleDataSum(datas, count, sizeCheck)));
     navigate(`/store/order`);
-  }, [isLogin, count, sizeCheck, datas]);
+  };
 
   return (
     <div className={detailOrderMenu.Detail_Order}>
@@ -255,10 +212,10 @@ export default function Detail_OrderMenu_client({
         </>
       )}
 
-      <p className={detailOrderMenu.pdTitle}>{productName}</p>
+      <p className={detailOrderMenu.pdTitle}>{datas.productName}</p>
 
       <p className={detailOrderMenu.sumPrice}>
-        ₩ {(count * price).toLocaleString('ko-KR')}
+        ₩ {(count * datas.price).toLocaleString('ko-KR')}
       </p>
       <div className={detailOrderMenu.infoContain}>
         {datas.size.OS !== -1 && datas.size.OS !== 0 ? (
@@ -349,7 +306,7 @@ export default function Detail_OrderMenu_client({
           재고: {datas.size[sizeCheck]}
         </p>
 
-        <div className={detailOrderMenu.detailDesc}>{detail}</div>
+        <div className={detailOrderMenu.detailDesc}>{datas.detail}</div>
 
         <p className={detailOrderMenu.sizeFitCheck} onClick={handleOpenModal2}>
           {/* SIZE & FIT 모달창 '비니'만 만들어놨는데 카테고리 별로 다르게 떠야함 */}
@@ -417,7 +374,7 @@ export default function Detail_OrderMenu_client({
               </div>
               <button
                 className={
-                  !isTouch
+                  !isMobile
                     ? detailOrderMenu.addCart
                     : detailOrderMenu.addCart_mobile
                 }

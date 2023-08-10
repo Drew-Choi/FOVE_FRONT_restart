@@ -117,13 +117,9 @@ const ModalView = styled.div`
 `;
 
 export default function Size_Modal_client({ handleCloseModal }) {
-  const openModalHandler = () => {
-    handleCloseModal();
-  };
-
   return (
     <>
-      <ModalBackdrop onClick={openModalHandler}>
+      <ModalBackdrop onClick={handleCloseModal}>
         <ModalView>
           <div className="sizing">
             <div className="top_btn_box">

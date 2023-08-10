@@ -296,6 +296,10 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
               dispatch(importdb(nullCart));
               return;
             }
+            // 그외 오류는 로그 띄우고, 에러 페이지로 보내기
+            navigate(
+              `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+            );
             console.error(err);
           }
         }
@@ -335,6 +339,9 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
           }
         }
       } catch (err) {
+        navigate(
+          `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+        );
         console.error(err);
       }
     },
@@ -373,6 +380,10 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
         }
       } catch (err) {
         if (err.response.status === 400) return alert(err.response.data);
+
+        navigate(
+          `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+        );
         console.error(err);
       }
     },
@@ -405,6 +416,9 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
           }
         }
       } catch (err) {
+        navigate(
+          `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+        );
         console.error(err);
       }
     },
@@ -438,6 +452,9 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
         allRemoveCart.data.message;
       }
     } catch (err) {
+      navigate(
+        `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+      );
       console.error(err);
     }
   }, [isLogin]);
