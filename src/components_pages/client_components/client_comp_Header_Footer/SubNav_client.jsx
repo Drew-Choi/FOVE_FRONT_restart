@@ -44,8 +44,6 @@ const SelectCategorys = styled.select`
 `;
 
 export default function SubNav_client() {
-  // 여기서 형식에 맞춰 서브메뉴 추가하면 자동생성
-
   const navi = useNavigate();
   const category = useParams();
 
@@ -84,7 +82,7 @@ export default function SubNav_client() {
       <MediaQuery maxWidth={575}>
         <SelectCategorys
           value={selectCategory()}
-          onChange={(e) => handleCategoryChange(e, sub_menu)}
+          onChange={handleCategoryChange}
         >
           {sub_menu.map((el) => (
             <option value={el.label} key={el.label}>

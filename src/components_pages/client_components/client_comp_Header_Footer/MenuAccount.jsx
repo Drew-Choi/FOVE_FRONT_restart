@@ -78,13 +78,13 @@ const Content = styled.p`
   }
 `;
 
+// 컴포넌트 영역
 const MenuAccount = ({ menuAccountRef, closeOnClick }) => {
   const location = useLocation();
   const currentURL = location.pathname;
 
   //리덕스
   //유저정보 state
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userName = useSelector((state) => state.user.userName);

@@ -228,17 +228,30 @@ const RemoveIcon = styled.span`
   }
 `;
 
+//카트 함에 담긴 물품들 합산 계산용 함수
+const unitSum = (el) => {
+  if (!el) {
+    return;
+  } else {
+    let sum = 0;
+    for (let i = 0; i < el.length; i += 1) {
+      if (el[i].quantity > 0) {
+        sum += el[i].unitSumPrice;
+      }
+    }
+    return sum;
+  }
+};
+
+// 컴넌트 영역
 const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
-  console.log('리랜더링?');
   // 백엔드 주소
   const { REACT_APP_KEY_BACK } = process.env;
   // 현재 URI 담기
   const location = useLocation();
   const currentURL = location.pathname;
-
   // 이동용
   const navigate = useNavigate();
-
   // 리덕스 디스패치
   const dispatch = useDispatch();
   // 카트 정보 리덕스state
@@ -246,7 +259,6 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
 
   // 카트 정보 불러오키 API
   useEffect(() => {
-    console.log('전체 불러오기 작동?');
     if (
       currentURL !== '/store/order_success' &&
       currentURL !== '/store/order/checkout/fail' &&
@@ -295,7 +307,6 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
   //카트 상품 수량 빼기 // useCallback으로 참조 재생성 및 리랜더링 막기
   const minersCartItem = useCallback(
     async (index) => {
-      console.log('수량삭제 작동?');
       if (!isLogin) {
         alert('로그인이 필요한 서비스입니다.');
         return navigate(`/login`);
@@ -333,7 +344,6 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
   //카트 상품 수량 추가 // useCallback으로 참조 재생성 및 리랜더링 막기
   const plusCartItem = useCallback(
     async (index) => {
-      console.log('수량추가 작동?');
       if (!isLogin) {
         alert('로그인이 필요한 서비스입니다.');
         return navigate(`/login`);
@@ -372,7 +382,6 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
   //개별 상품 삭제 // useCallback으로 참조 재생성 및 리랜더링 막기
   const deletePD = useCallback(
     async (index) => {
-      console.log('개별삭제 작동?');
       if (!isLogin) {
         alert('로그인이 필요한 서비스입니다.');
         return navigate(`/login`);
@@ -404,7 +413,6 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
 
   //전체 삭제(카트 비움) // useCallback으로 참조 재생성 및 리랜더링 막기
   const allRemove = useCallback(async () => {
-    console.log('전체삭제 작동?');
     if (!isLogin) {
       alert('로그인이 필요한 서비스입니다.');
       return navigate(`/login`);
@@ -434,20 +442,6 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
     }
   }, [isLogin]);
 
-  //카트 함에 담긴 물품들 합산
-  const unitSum = (el) => {
-    if (!el) {
-      return;
-    } else {
-      let sum = 0;
-      for (let i = 0; i < el.length; i += 1) {
-        if (el[i].quantity > 0) {
-          sum += el[i].unitSumPrice;
-        }
-      }
-      return sum;
-    }
-  };
   // 합산값이 그대로면 값을 계산하지 않게 useMemo하여 값을 메모리제이션
   const unitSumMemo = useMemo(
     () => unitSum(cartInfo.cartProducts),

@@ -12,7 +12,6 @@ import MenuAccount from './MenuAccount';
 import CartModal from './CartModal';
 
 export default function Header_client() {
-  console.log('헤더');
   //리덕스 디스패치(액션함수 전달용)
   const dispatch = useDispatch();
   // 이동용

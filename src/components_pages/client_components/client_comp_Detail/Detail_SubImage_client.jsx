@@ -90,12 +90,7 @@ const Sub_IMG2 = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   margin-bottom: 20px;
-  opacity: 1;
-  cursor: pointer;
-
-  &:active {
-    opacity: 0.3;
-  }
+  ${({ selectImage }) => (selectImage ? 'opacity: 0.7;' : 'opacity: 1;')}
 
   @media screen and (max-width: 280px) {
     width: 30px;
@@ -111,35 +106,15 @@ export default function Detail_SubImage_client({ datas, isTouch }) {
     <div className={detailSubImage.detail_sub_image_totalContainer}>
       <MediaQuery minWidth={556}>
         <div className={detailSubImage.sub_image_wrap}>
-          {datas.img.map((el, index) =>
-            !isTouch ? (
-              <Sub_IMG
-                onClick={() => {
-                  setSelectImgFileName((cur) => el);
-                }}
-                key={index}
-                imgFileName={el}
-              ></Sub_IMG>
-            ) : (
-              <Sub_IMG2
-                className={selector[el] ? detailSubImage.subImg_on : <></>}
-                onClick={() => {
-                  setSelectImgFileName((cur) => el);
-                  setSelector((cur) => {
-                    let copy = [];
-                    for (let i = 0; i < cur.length; i += 1) {
-                      cur[i] = false;
-                      copy.push(cur[i]);
-                    }
-                    copy[el] = true;
-                    return copy;
-                  });
-                }}
-                key={index}
-                imgFileName={el}
-              ></Sub_IMG2>
-            ),
-          )}
+          {datas.img.map((el, index) => (
+            <Sub_IMG
+              onClick={() => {
+                setSelectImgFileName(el);
+              }}
+              key={index}
+              imgFileName={el}
+            ></Sub_IMG>
+          ))}
         </div>
         <MainImage selectImgFileName={selectImgFileName} />
       </MediaQuery>
@@ -147,16 +122,31 @@ export default function Detail_SubImage_client({ datas, isTouch }) {
       <MediaQuery maxWidth={555}>
         <MainImage selectImgFileName={selectImgFileName} />
         <div className={detailSubImage.sub_image_wrap}>
-          {datas.img.map((el, index) => (
-            <Sub_IMG
-              className="sub-IMG"
-              onClick={() => {
-                setSelectImgFileName((cur) => el);
-              }}
-              key={index}
-              imgFileName={el}
-            ></Sub_IMG>
-          ))}
+          {datas.img.map((el, index) =>
+            !isTouch ? (
+              <Sub_IMG
+                onClick={() => {
+                  setSelectImgFileName(el);
+                }}
+                key={index}
+                imgFileName={el}
+              ></Sub_IMG>
+            ) : (
+              <Sub_IMG2
+                onClick={() => {
+                  setSelectImgFileName(el);
+                  setSelector((cur) => {
+                    let newArr = cur.map((el) => false);
+                    newArr[index] = true;
+                    return newArr;
+                  });
+                }}
+                key={index}
+                imgFileName={el}
+                selectImage={selector[index]}
+              ></Sub_IMG2>
+            ),
+          )}
         </div>
       </MediaQuery>
     </div>

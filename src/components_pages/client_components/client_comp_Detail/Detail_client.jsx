@@ -7,13 +7,11 @@ import { IoMdArrowBack } from 'react-icons/io';
 import Detail_OrderMenu_client from './Detail_OrderMenu_client';
 import Detail_SubImage_client from './Detail_SubImage_client';
 import Loading from '../Loading';
-import { MdNoCell } from 'react-icons/md';
+import { isMobile } from 'react-device-detect';
 
 const { REACT_APP_KEY_BACK } = process.env;
 
 export default function Detail_client() {
-  console.log('상세');
-
   const navi = useNavigate();
   const { productCode } = useParams();
   const [productData, setProductData] = useState(null);
@@ -37,23 +35,6 @@ export default function Detail_client() {
     getSelectProduct();
   }, [productCode]);
 
-  const navigate = useNavigate();
-
-  // 터치화면인지 인식하기 위한 로직 ------
-  const [isTouch, setIsTouch] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsTouch((cur) => true);
-    };
-
-    document.addEventListener('touchstart', checkMobile);
-
-    return () => {
-      document.removeEventListener('touchstart', checkMobile);
-    };
-  }, []);
-
   return (
     <section className={detailClient.pd_detail}>
       {productData !== null ? (
@@ -64,7 +45,7 @@ export default function Detail_client() {
             <span className={detailClient.back} onClick={() => navigate(-1)}>
               <IoMdArrowBack className={detailClient.backIcon} />
             </span>
-            <Detail_SubImage_client datas={productData} isTouch={isTouch} />
+            <Detail_SubImage_client datas={productData} isTouch={isMobile} />
             <Detail_OrderMenu_client
               productName={productData.productName}
               detail={productData.detail}
