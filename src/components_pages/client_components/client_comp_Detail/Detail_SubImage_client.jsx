@@ -102,7 +102,6 @@ const Sub_IMG2 = styled.div`
 export default function Detail_SubImage_client({ datas }) {
   const [selectImgFileName, setSelectImgFileName] = useState(datas.img[0]);
   const [selector, setSelector] = useState([true, false, false, false, false]);
-  console.log('서브이미지 재랜더링');
   return (
     <div className={detailSubImage.detail_sub_image_totalContainer}>
       <MediaQuery minWidth={556}>

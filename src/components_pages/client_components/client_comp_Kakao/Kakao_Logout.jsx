@@ -10,12 +10,12 @@ export default function Kakao_Logout() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // db닫기 및 삭제
-  const deleteIndex = async () => {
-    await deleteDB('db');
-  };
-
   useEffect(() => {
+    // db닫기 및 삭제
+    const deleteIndex = async () => {
+      await deleteDB('db');
+    };
+
     deleteIndex();
     dispatch(logout()); // 로그아웃 처리
     dispatch(reset());
@@ -23,9 +23,5 @@ export default function Kakao_Logout() {
     navigate(`/store`); // 로그인 페이지로 이동
   }, []);
 
-  return (
-    <>
-      <Loading />
-    </>
-  );
+  return <Loading />;
 }

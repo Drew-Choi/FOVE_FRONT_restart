@@ -148,11 +148,12 @@ export default function Header_client() {
     if (e.key === 'Enter') {
       // 검색 로직 실행
       if (currentURL !== '/store') {
-        dispatch(searchinput(e.target.value));
         navigate('store');
+        dispatch(searchinput(e.target.value));
       } else {
         dispatch(searchinput(e.target.value));
       }
+
       if (!e.target.value) {
         setEmpty('검색어를 입력해주세요.');
       } else {

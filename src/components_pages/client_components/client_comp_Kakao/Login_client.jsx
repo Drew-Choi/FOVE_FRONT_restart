@@ -3,12 +3,15 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import loginCss from '../../../styles/login_client.module.scss';
 import Loading from '../Loading';
+import { useNavigate } from 'react-router-dom';
+
+const { REACT_APP_KEY_BACK } = process.env;
+const { REACT_APP_KEY_API } = process.env;
+const { REACT_APP_KEY_APICB } = process.env;
 
 export default function Login_client() {
-  const app = process.env.REACT_APP_KEY_API;
-  const cb = process.env.REACT_APP_KEY_APICB;
   const [isVisible, setIsVisible] = useState(true);
-  const { REACT_APP_KEY_BACK } = process.env;
+  const navi = useNavigate();
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -22,11 +25,17 @@ export default function Login_client() {
 
   const getKey = async (key) => {
     try {
-      const res = await axios.get(`${REACT_APP_KEY_BACK}/${app}`, {
-        params: { key },
-      });
+      const res = await axios.get(
+        `${REACT_APP_KEY_BACK}/${REACT_APP_KEY_API}`,
+        {
+          params: { key },
+        },
+      );
       return res.data.key;
     } catch (err) {
+      navi(
+        `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+      );
       console.error(err);
       return null;
     }
@@ -35,7 +44,7 @@ export default function Login_client() {
   const kakoHandleClick = async () => {
     const REST_API_KEY = await getKey('REST_API_KEY');
     const SCOPE = await getKey('SCOPE');
-    const REDIRECT_URI = `${REACT_APP_KEY_BACK}/${cb}`;
+    const REDIRECT_URI = `${REACT_APP_KEY_BACK}/${REACT_APP_KEY_APICB}`;
     const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${SCOPE}`;
     window.location.href = KAKAO_AUTH_URL;
   };

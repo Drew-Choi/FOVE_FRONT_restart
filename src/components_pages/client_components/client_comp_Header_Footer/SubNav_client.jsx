@@ -1,6 +1,6 @@
 import React from 'react';
 import MediaQuery from 'react-responsive';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { sub_menu } from '../@client_Controller/subNav_client_controller';
 
@@ -46,6 +46,8 @@ const SelectCategorys = styled.select`
 export default function SubNav_client() {
   const navi = useNavigate();
   const category = useParams();
+  const location = useLocation();
+  const currentURL = location.pathname;
 
   const handleCategoryChange = (e) => {
     let eValue = e.target.value;
@@ -65,32 +67,36 @@ export default function SubNav_client() {
     }
   };
 
-  return (
-    <>
-      <MediaQuery minWidth={576}>
-        <NavBar>
-          <Ul>
-            {sub_menu.map((el) => (
-              <Li key={el.label} onClick={() => navi(el.clickPath)}>
-                {el.label}
-              </Li>
-            ))}
-          </Ul>
-        </NavBar>
-      </MediaQuery>
+  // 인트로 화면에서는 안나오게 설정
+  if (currentURL !== '/')
+    return (
+      <>
+        <MediaQuery minWidth={576}>
+          <NavBar>
+            <Ul>
+              {sub_menu.map((el) => (
+                <Li key={el.label} onClick={() => navi(el.clickPath)}>
+                  {el.label}
+                </Li>
+              ))}
+            </Ul>
+          </NavBar>
+        </MediaQuery>
 
-      <MediaQuery maxWidth={575}>
-        <SelectCategorys
-          value={selectCategory()}
-          onChange={handleCategoryChange}
-        >
-          {sub_menu.map((el) => (
-            <option value={el.label} key={el.label}>
-              {el.label}
-            </option>
-          ))}
-        </SelectCategorys>
-      </MediaQuery>
-    </>
-  );
+        <MediaQuery maxWidth={575}>
+          <SelectCategorys
+            value={selectCategory()}
+            onChange={handleCategoryChange}
+          >
+            {sub_menu.map((el) => (
+              <option value={el.label} key={el.label}>
+                {el.label}
+              </option>
+            ))}
+          </SelectCategorys>
+        </MediaQuery>
+      </>
+    );
+
+  return <></>;
 }

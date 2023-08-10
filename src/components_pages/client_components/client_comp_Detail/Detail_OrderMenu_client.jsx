@@ -158,6 +158,9 @@ export default function Detail_OrderMenu_client({ datas }) {
         dispatch(add(datasArr, totalQuantity));
       }
     } catch (err) {
+      navigate(
+        `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+      );
       console.error(err);
     }
   }, [sizeCheck, count, isLogin, datas]);

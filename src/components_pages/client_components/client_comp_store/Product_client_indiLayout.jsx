@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import React, { useState } from 'react';
+import { isMobile } from 'react-device-detect';
 import styled from 'styled-components';
 
 const ImageContainer = styled.div`
@@ -61,7 +62,7 @@ const Product_client_indiLayout = ({
   };
 
   //마우스 오버 여부를 변수에 담는 곳, 이미지 파일들은 프롭스 받은 것들로 구성
-  const image = isTouch
+  const image = isMobile
     ? imgFileName[0]
     : isHovered
     ? imgFileName[1]

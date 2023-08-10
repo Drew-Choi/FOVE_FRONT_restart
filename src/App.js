@@ -14,7 +14,6 @@ import Login_client from './components_pages/client_components/client_comp_Kakao
 import Order_client from './components_pages/client_components/client_comp_Order-Toss/Order_client';
 import TossPay_Complete from './components_pages/client_components/client_comp_Order-Toss/TossPay_Complete';
 import { Toss_CheckOut } from './components_pages/client_components/client_comp_Order-Toss/Toss_CheckOut';
-import Store_Categorys from './components_pages/client_components/client_comp_Store/Store_Categorys';
 import Error404 from './components_pages/client_components/Error404';
 import React, { useEffect } from 'react';
 import axios from 'axios';
@@ -144,7 +143,7 @@ function App() {
           {/* 상품진열 */}
           <Route path="/store" element={<Store_client />} />
           {/* 카테고리별 아이템 분리 */}
-          <Route path="/store/:category" element={<Store_Categorys />} />
+          <Route path="/store/:category" element={<Store_client />} />
           {/* 상품상세페이지 */}
           <Route
             path="/store/detail/:productCode"
