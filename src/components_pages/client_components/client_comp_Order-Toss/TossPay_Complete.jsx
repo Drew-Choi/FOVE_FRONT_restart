@@ -218,15 +218,6 @@ export default function TossPay_Complete() {
             </p>
           </div>
         </div>
-
-        {/* <div>{`번호: ${searchParams.get("orderId")}`}</div> */}
-        {/* <div>{`주문번호: ${searchParams.get('orderId')}`}</div> */}
-        {/* <div>{}</div>
-        <div>{`결제 금액: ${
-          Number().toLocaleString()
-          searchParams.get('amount'),
-        }원`}</div> */}
-        {/* {/* <div>{`주문일자: ${now}`}</div> */}
       </div>
     </div>
   );

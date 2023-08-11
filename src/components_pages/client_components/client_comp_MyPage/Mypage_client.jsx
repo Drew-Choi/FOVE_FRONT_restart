@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
 import myPage from '../../../styles/mypage_client.module.scss';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,18 @@ import getToken from '../../../store/modules/getToken';
 import axios from 'axios';
 import Loading from '../Loading';
 import { IoCloseCircleOutline } from 'react-icons/io5';
+
+const { REACT_APP_KEY_BACK } = process.env;
+
+// constant
+// 다음 주소 위젯 스타일 지정
+const postCodeStyle2 = {
+  display: 'block',
+  position: 'relative',
+  height: '480px',
+  margin: '0px auto',
+  borderTop: '1px solid black',
+};
 
 export default function Mypage_client() {
   const navigate = useNavigate();
@@ -18,14 +30,6 @@ export default function Mypage_client() {
   const [addressInfo, setAddressInfo] = useState(null);
   const [phoneSplitData, setPhoneSplitData] = useState([]);
   const [disableCtr, setDisableCtr] = useState(true);
-  const { REACT_APP_KEY_BACK } = process.env;
-
-  const phoneNumSplit = (num) => {
-    if (!num || num === '') return;
-    //
-    const splitNum = num.split('-');
-    setPhoneSplitData((cur) => splitNum);
-  };
 
   // 인풋 정보 담아서 모으기
   const recipient = useRef();
@@ -35,16 +39,31 @@ export default function Mypage_client() {
   const phoneZoneCode = useRef();
   const message = useRef();
 
+  // 매개변수만 받으면되서 callback
+  const phoneNumSplit = useCallback((num) => {
+    if (!num || num === '') return;
+
+    const splitNum = num.split('-');
+    setPhoneSplitData(splitNum);
+  }, []);
+
+  // 전화번호 유효성 검사, 매개변수만 받으면되서 callback
+  const checkPhoneCode = useCallback((phoneData, index) => {
+    const splitData = phoneData.split('-');
+    return splitData[index];
+  }, []);
+
   // 전화번호 유효성검사
   const [regexValue_num1, setRegexValue_num1] = useState('');
   const [regexValue_num2, setRegexValue_num2] = useState('');
+
   // 유효성검사용 핸들
   const regexValue_num1_handle = (e) => {
     const value = e.target.value;
     const regex = /^\d+$/;
 
     if (regex.test(value) || value === '') {
-      setRegexValue_num1((cur) => value);
+      setRegexValue_num1(value);
     }
   };
 
@@ -58,18 +77,12 @@ export default function Mypage_client() {
     }
   };
 
-  // 전화번호 유효성 검사
-  const checkPhoneCode = (phoneData, index) => {
-    const splitData = phoneData.split('-');
-    return splitData[index];
-  };
-
   // 취소시 리셋
   const resetInput = () => {
     recipient.current.value = '';
     phoneZoneCode.current.value = checkPhoneCode(addressInfo.recipientPhone, 0);
-    setRegexValue_num1((cur) => '');
-    setRegexValue_num2((cur) => '');
+    setRegexValue_num1('');
+    setRegexValue_num2('');
     message.current.value = '';
     addressData.zonecode = '';
     addressData.address = '';
@@ -78,8 +91,8 @@ export default function Mypage_client() {
 
   const resetInput2 = () => {
     recipient.current.value = '';
-    setRegexValue_num1((cur) => '');
-    setRegexValue_num2((cur) => '');
+    setRegexValue_num1('');
+    setRegexValue_num2('');
     message.current.value = '';
     addressData.zonecode = '';
     addressData.address = '';
@@ -211,29 +224,6 @@ export default function Mypage_client() {
     }
   };
 
-  const getAddressInfo = async () => {
-    try {
-      const tokenValue = await getToken();
-
-      const response = await axios.post(
-        `${REACT_APP_KEY_BACK}/mypage/getAddress`,
-        {
-          token: tokenValue,
-        },
-      );
-
-      if (response.status !== 200) return alert('오류');
-      // 200번대 성공이라면,
-      setAddressInfo((cur) => response.data);
-      phoneNumSplit(response.data.recipientPhone);
-      return;
-    } catch (err) {
-      alert('오류');
-      console.error(err);
-      return;
-    }
-  };
-
   //다음주소 불러오기 기능 ----------------------------------------------
   const [openPostcode, setOpenPostcode] = useState(false);
   const [addressData, setAdressData] = useState({});
@@ -243,15 +233,6 @@ export default function Mypage_client() {
       copy.buildingName = event.target.value;
       return copy;
     });
-  };
-
-  // 위젯 스타일 지정
-  const postCodeStyle2 = {
-    display: 'block',
-    position: 'relative',
-    height: '480px',
-    margin: '0px auto',
-    borderTop: '1px solid black',
   };
 
   const handle = {
@@ -277,46 +258,83 @@ export default function Mypage_client() {
   };
   //------------------------------------------------------
 
-  const getOrderList = async () => {
-    try {
-      const tokenValue = await getToken();
-      const getOrderListData = await axios.post(
-        `${REACT_APP_KEY_BACK}/order_list/getMemberOrderList`,
-        { token: tokenValue },
-      );
-      if (getOrderListData.status === 200 && getOrderListData.data.length > 0) {
-        return setOrderListArray((cur) => getOrderListData.data);
-      } else {
-        return setOrderListArray((cur) => []);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const getCancelList = async () => {
-    try {
-      const tokenValue = await getToken();
-      const getCancelListData = await axios.post(
-        `${REACT_APP_KEY_BACK}/order_list/getCancelList`,
-        {
-          token: tokenValue,
-        },
-      );
-      if (
-        getCancelListData.status === 200 &&
-        getCancelListData.data.length > 0
-      ) {
-        return setCancelListArray((cur) => getCancelListData.data);
-      } else {
-        return setCancelListArray((cur) => []);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   useEffect(() => {
+    // 주문내역 불러오기
+    const getOrderList = async () => {
+      try {
+        const tokenValue = await getToken();
+        const getOrderListData = await axios.post(
+          `${REACT_APP_KEY_BACK}/order_list/getMemberOrderList`,
+          { token: tokenValue },
+        );
+        if (
+          getOrderListData.status === 200 &&
+          getOrderListData.data.length > 0
+        ) {
+          return setOrderListArray(getOrderListData.data);
+        } else {
+          return setOrderListArray([]);
+        }
+      } catch (err) {
+        navigate(
+          `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+        );
+        console.error(err);
+      }
+    };
+
+    // 취소내역 불러오기
+    const getCancelList = async () => {
+      try {
+        const tokenValue = await getToken();
+        const getCancelListData = await axios.post(
+          `${REACT_APP_KEY_BACK}/order_list/getCancelList`,
+          {
+            token: tokenValue,
+          },
+        );
+        if (
+          getCancelListData.status === 200 &&
+          getCancelListData.data.length > 0
+        ) {
+          return setCancelListArray((cur) => getCancelListData.data);
+        } else {
+          return setCancelListArray((cur) => []);
+        }
+      } catch (err) {
+        navigate(
+          `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+        );
+        console.error(err);
+      }
+    };
+
+    // 주소정보 불러오기
+    const getAddressInfo = async () => {
+      try {
+        const tokenValue = await getToken();
+
+        const response = await axios.post(
+          `${REACT_APP_KEY_BACK}/mypage/getAddress`,
+          {
+            token: tokenValue,
+          },
+        );
+
+        if (response.status !== 200) return alert('오류');
+        // 200번대 성공이라면,
+        setAddressInfo(response.data);
+        phoneNumSplit(response.data.recipientPhone);
+        return;
+      } catch (err) {
+        navigate(
+          `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+        );
+        console.error(err);
+        return;
+      }
+    };
+
     getOrderList();
     getCancelList();
     getAddressInfo();

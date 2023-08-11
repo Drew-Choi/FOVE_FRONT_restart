@@ -97,7 +97,7 @@ export default function Order_client() {
     const regex = /^\d+$/;
 
     if (regex.test(value) || value === '') {
-      setPhoneLastNum();
+      setPhoneLastNum(value);
     }
   };
   //-------------------------------------------------
@@ -135,7 +135,6 @@ export default function Order_client() {
       recipientName === '' ||
       recipientZipcode === '' ||
       recipientAddress === '' ||
-      recipientAddressDetail === '' ||
       phoneCode === '' ||
       phoneMidNum === '' ||
       phoneLastNum === ''
@@ -237,12 +236,12 @@ export default function Order_client() {
 
           if (response.status !== 200) return alert('오류');
           // 200번대 성공이라면,
-          setRecipientName((cur) => response.data.recipient);
-          setRecipientZipcode((cur) => response.data.zipCode);
-          setRecipientAddress((cur) => response.data.address);
-          setRecipientAddressDetail((cur) => response.data.addressDetail);
+          setRecipientName(response.data.recipient);
+          setRecipientZipcode(response.data.zipCode);
+          setRecipientAddress(response.data.address);
+          setRecipientAddressDetail(response.data.addressDetail);
           phoneNumSplit(response.data.recipientPhone);
-          setMessage((cur) => response.data.message_ad);
+          setMessage(response.data.message_ad);
           return;
         } catch (err) {
           navigate(
@@ -254,14 +253,14 @@ export default function Order_client() {
       };
       getAddress();
     } else {
-      setRecipientName((cur) => '');
-      setRecipientZipcode((cur) => '');
-      setRecipientAddress((cur) => '');
-      setRecipientAddressDetail((cur) => '');
-      setPhoneCode((cur) => '010');
-      setPhoneMidNum((cur) => '');
-      setPhoneLastNum((cur) => '');
-      setMessage((cur) => '');
+      setRecipientName('');
+      setRecipientZipcode('');
+      setRecipientAddress('');
+      setRecipientAddressDetail('');
+      setPhoneCode('010');
+      setPhoneMidNum('');
+      setPhoneLastNum('');
+      setMessage('');
     }
   }, [isChecked]);
 

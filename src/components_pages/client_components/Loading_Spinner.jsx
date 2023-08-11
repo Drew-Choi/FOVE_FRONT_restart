@@ -13,14 +13,12 @@ const fadeIn = keyframes`
 const AnimationText = styled.span`
   position: relative;
   top: 200px;
-  right: 100px;
   display: inline-block;
   animation: ${fadeIn} 1s ease-in-out both infinite;
   animation-delay: ${(props) => props.delay || '0s'};
   font-size: 50px;
   font-weight: 600;
   font-style: italic;
-  z-index: 6;
 
   @media screen and (max-width: 667px) {
     left: 20px;
@@ -33,6 +31,7 @@ const Container = styled.div`
   min-height: 700px;
   height: 100%;
   text-align: center;
+  z-index: 10;
 `;
 
 export default function Loading_Spinner() {

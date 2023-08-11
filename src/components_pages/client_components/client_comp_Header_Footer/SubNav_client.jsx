@@ -2,7 +2,6 @@ import React from 'react';
 import MediaQuery from 'react-responsive';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { sub_menu } from '../@client_Controller/subNav_client_controller';
 
 const NavBar = styled.nav`
   position: relative;
@@ -42,6 +41,34 @@ const SelectCategorys = styled.select`
   left: 10px;
   z-index: 6;
 `;
+
+// 서브메뉴 추가하는 곳
+const sub_menu = [
+  {
+    label: 'VIEW ALL',
+    clickPath: '/store',
+  },
+  {
+    label: 'NEW ARRIVALS',
+    clickPath: '/store/new',
+  },
+  {
+    label: 'BEANIE',
+    clickPath: '/store/beanie',
+  },
+  {
+    label: 'CAP',
+    clickPath: '/store/cap',
+  },
+  {
+    label: 'TRAINING',
+    clickPath: '/store/training',
+  },
+  {
+    label: 'WINDBREAKER',
+    clickPath: '/store/windbreaker',
+  },
+];
 
 export default function SubNav_client() {
   const navi = useNavigate();
