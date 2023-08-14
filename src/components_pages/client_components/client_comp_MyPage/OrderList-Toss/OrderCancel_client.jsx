@@ -8,12 +8,16 @@ import styled from 'styled-components';
 import Loading from '../../Loading';
 import Select_Custom from '../../../../components_elements/Select_Custom';
 
-const { REACT_APP_KEY_IMAGE } = process.env;
-
 const Pd_Images = styled.div`
   ${(props) =>
     props.img && `background-image: url('${REACT_APP_KEY_IMAGE}${props.img}')`}
 `;
+
+const { REACT_APP_KEY_IMAGE } = process.env;
+const { REACT_APP_KEY_BACK } = process.env;
+
+// 취소 사유 리스트 constant
+const cancelReason = ['단순변심', '다른 상품으로 다시 주문', '기타'];
 
 export default function OrderCancel_client() {
   const [orderCancelItem, setOrderCancelItem] = useState(null);
@@ -22,43 +26,31 @@ export default function OrderCancel_client() {
   const { orderId } = useParams();
   // 취소사유
   const cancelReasonSelet = useRef('단순변심');
-  const { REACT_APP_KEY_BACK } = process.env;
-
-  const getCancelItem = async () => {
-    try {
-      const tokenValue = await getToken();
-
-      const getCancelData = await axios.post(
-        `${REACT_APP_KEY_BACK}/order_list/getCancelItem`,
-        {
-          token: tokenValue,
-          orderId: orderId,
-        },
-      );
-      setOrderCancelItem(getCancelData.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   useEffect(() => {
+    // 상품 id로 선택한 상품 불러오기
+    const getCancelItem = async () => {
+      try {
+        const tokenValue = await getToken();
+
+        const getCancelData = await axios.post(
+          `${REACT_APP_KEY_BACK}/order_list/getCancelItem`,
+          {
+            token: tokenValue,
+            orderId: orderId,
+          },
+        );
+        setOrderCancelItem(getCancelData.data);
+      } catch (err) {
+        navigate(
+          `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+        );
+        console.error(err);
+      }
+    };
+
     getCancelItem();
   }, []);
-
-  //db Number타입을 스트링으로 바꾸고 천단위 컴마 찍어 프론트에 보내기
-  const country = navigator.language;
-  const frontPriceComma = (price) => {
-    if (price && typeof price.toLocaleString === 'function') {
-      return price.toLocaleString(country, {
-        currency: 'KRW',
-      });
-    } else {
-      return price;
-    }
-  };
-
-  // 취소 사유 리스트
-  const cancelReason = ['단순변심', '다른 상품으로 다시 주문', '기타'];
 
   return (
     <>
@@ -95,11 +87,11 @@ export default function OrderCancel_client() {
                       </p>
                       <p className={orderCancel.pdprice}>
                         <strong style={{ fontSize: '15px' }}>
-                          {frontPriceComma(el.unitSumPrice)}
+                          {el.unitSumPrice.toLocaleString('ko-KR')}
                         </strong>
                         KRW /{' '}
                         <strong style={{ fontSize: '15px' }}>
-                          {frontPriceComma(el.quantity)}
+                          {el.quantity.toLocaleString('ko-KR')}
                         </strong>{' '}
                         ea
                       </p>
@@ -123,16 +115,15 @@ export default function OrderCancel_client() {
                 <p className={orderCancel.older_detail_info}>
                   total ={' '}
                   <strong style={{ fontSize: '17px' }}>
-                    {frontPriceComma(orderCancelItem.payments.totalAmount)}{' '}
+                    {orderCancelItem.payments.totalAmount.toLocaleString(
+                      'ko-KR',
+                    )}{' '}
                   </strong>
                   KRW /{' '}
                   <strong style={{ fontSize: '17px' }}>
-                    {frontPriceComma(
-                      orderCancelItem.products.reduce(
-                        (acc, cur) => acc + cur.quantity,
-                        0,
-                      ),
-                    )}
+                    {orderCancelItem.products
+                      .reduce((acc, cur) => acc + cur.quantity, 0)
+                      .toLocaleString('ko-KR')}
                   </strong>{' '}
                   ea
                 </p>
