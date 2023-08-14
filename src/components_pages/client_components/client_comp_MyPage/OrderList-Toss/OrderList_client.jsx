@@ -8,12 +8,57 @@ import { useNavigate } from 'react-router-dom';
 import Loading from '../../Loading';
 import { BsArrowDownCircle } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
-const { REACT_APP_KEY_IMAGE } = process.env;
 
 const PD_Images = styled.div`
   ${(props) =>
     props.img && `background-image: url('${REACT_APP_KEY_IMAGE}${props.img}')`}
 `;
+
+const { REACT_APP_KEY_BACK } = process.env;
+const { REACT_APP_KEY_IMAGE } = process.env;
+
+//날짜 분활 / 매개변수만 받음 되서 고정
+const dateSplit = (date) => {
+  const splitData = date.split(/[T+]/);
+  const dataSum = `${splitData[0]}  /  ${splitData[1]}`;
+  return dataSum;
+};
+
+// 시간에 따라 반품신청 버튼 활성화 / 매개변수만 받음 되서 고정
+const timeCheck = (data) => {
+  // 현재시간 기준
+  if (
+    data.payments.status === 'DONE' &&
+    !data.isShipping &&
+    data.shippingCode !== 0 &&
+    data.isDelivered &&
+    !data.isCancel &&
+    !data.isReturn &&
+    !data.isRetrieved &&
+    !data.isRefund &&
+    !data.isReturnSubmit
+  ) {
+    const currentDate = new Date();
+
+    // 데이터 시간에 7일을 더하여 종료시점 잡기
+    const toDate = new Date(data.shippingAt);
+    const fixTime = new Date(toDate.getTime() - 9 * 60 * 60 * 1000);
+    const expireDay = new Date(fixTime.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+    if (currentDate > expireDay) return false;
+    return true;
+  } else {
+    return false;
+  }
+};
+
+// 필요한 날짜만 추리기  / 매개변수만 받음 되서 고정
+const filterTimeDay = (time) => {
+  const position = time.indexOf('T');
+  const day = time.slice(0, position);
+
+  return day;
+};
 
 export default function OrderList_client() {
   const [orderListArray, setOrderListArray] = useState([]);
@@ -27,38 +72,8 @@ export default function OrderList_client() {
   // 주문상세내역서용 - cancel
   const [detailInfoCancel, setDetailInfoCancel] = useState([]);
 
-  const { REACT_APP_KEY_BACK } = process.env;
-
   // 로그인여부확인
   const isLogin = useSelector((state) => state.user.isLogin);
-
-  // 시간에 따라 반품신청 버튼 활성화
-  const timeCheck = (data) => {
-    // 현재시간 기준
-    if (
-      data.payments.status === 'DONE' &&
-      !data.isShipping &&
-      data.shippingCode !== 0 &&
-      data.isDelivered &&
-      !data.isCancel &&
-      !data.isReturn &&
-      !data.isRetrieved &&
-      !data.isRefund &&
-      !data.isReturnSubmit
-    ) {
-      const currentDate = new Date();
-
-      // 데이터 시간에 7일을 더하여 종료시점 잡기
-      const toDate = new Date(data.shippingAt);
-      const fixTime = new Date(toDate.getTime() - 9 * 60 * 60 * 1000);
-      const expireDay = new Date(fixTime.getTime() + 7 * 24 * 60 * 60 * 1000);
-
-      if (currentDate > expireDay) return false;
-      return true;
-    } else {
-      return false;
-    }
-  };
 
   // 주문상세내역서용 핸들 - order
   const handleArrowDetail = (index) => {
@@ -84,86 +99,68 @@ export default function OrderList_client() {
     }
   };
 
-  //날짜 분활
-  const dateSplit = (date) => {
-    const splitData = date.split(/[T+]/);
-    const dataSum = `${splitData[0]}  /  ${splitData[1]}`;
-    return dataSum;
-  };
-
-  // 배송정보 DB업데이트 후 해당 회원의 전체 주문내역 가져오기
-  const getOrderList = async () => {
-    try {
-      const tokenValue = await getToken();
-      const getOrderListData = await axios.post(
-        `${REACT_APP_KEY_BACK}/order_list/getMemberOrderList`,
-        { token: tokenValue },
-      );
-      if (getOrderListData.status === 200 && getOrderListData.data.length > 0) {
-        setOrderListArray((cur) => getOrderListData.data);
-        setDetailInfo((cur) =>
-          new Array(getOrderListData.data.length).fill('off'),
-        );
-        return;
-      } else {
-        return setEmptyOrderArray((cur) => true);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const getCancelList = async () => {
-    try {
-      const tokenValue = await getToken();
-      const getCancelListData = await axios.post(
-        `${REACT_APP_KEY_BACK}/order_list/getCancelList`,
-        {
-          token: tokenValue,
-        },
-      );
-      if (
-        getCancelListData.status === 200 &&
-        getCancelListData.data.length > 0
-      ) {
-        setCancelListArray((cur) => getCancelListData.data);
-        setDetailInfoCancel((cur) =>
-          new Array(getCancelListData.data.length).fill('off'),
-        );
-        return;
-      } else {
-        return setEmptyCancelArray((cur) => true);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   // 마운트시 1회
   useEffect(() => {
+    // 배송정보 DB업데이트 후 해당 회원의 전체 주문내역 가져오기
+    const getOrderList = async () => {
+      try {
+        const tokenValue = await getToken();
+        const getOrderListData = await axios.post(
+          `${REACT_APP_KEY_BACK}/order_list/getMemberOrderList`,
+          { token: tokenValue },
+        );
+        if (
+          getOrderListData.status === 200 &&
+          getOrderListData.data.length > 0
+        ) {
+          setOrderListArray((cur) => getOrderListData.data);
+          setDetailInfo((cur) =>
+            new Array(getOrderListData.data.length).fill('off'),
+          );
+          return;
+        } else {
+          return setEmptyOrderArray((cur) => true);
+        }
+      } catch (err) {
+        navigate(
+          `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+        );
+        console.error(err);
+      }
+    };
+
+    const getCancelList = async () => {
+      try {
+        const tokenValue = await getToken();
+        const getCancelListData = await axios.post(
+          `${REACT_APP_KEY_BACK}/order_list/getCancelList`,
+          {
+            token: tokenValue,
+          },
+        );
+        if (
+          getCancelListData.status === 200 &&
+          getCancelListData.data.length > 0
+        ) {
+          setCancelListArray((cur) => getCancelListData.data);
+          setDetailInfoCancel((cur) =>
+            new Array(getCancelListData.data.length).fill('off'),
+          );
+          return;
+        } else {
+          return setEmptyCancelArray((cur) => true);
+        }
+      } catch (err) {
+        navigate(
+          `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+        );
+        console.error(err);
+      }
+    };
+
     getOrderList();
     getCancelList();
   }, []);
-
-  // 필요한 날짜만 추리기
-  const filterTimeDay = (time) => {
-    const position = time.indexOf('T');
-    const day = time.slice(0, position);
-
-    return day;
-  };
-
-  //db Number타입을 스트링으로 바꾸고 천단위 컴마 찍어 프론트에 보내기
-  const country = navigator.language;
-  const frontPriceComma = (price) => {
-    if (price && typeof price.toLocaleString === 'function') {
-      return price.toLocaleString(country, {
-        currency: 'KRW',
-      });
-    } else {
-      return price;
-    }
-  };
 
   return (
     <section className={orderList.orderList_container}>
@@ -266,11 +263,13 @@ export default function OrderList_client() {
                                 </p>
                                 <p className={orderList.pdprice}>
                                   <strong style={{ fontSize: '15px' }}>
-                                    {frontPriceComma(pdInfo.unitSumPrice)}{' '}
+                                    {pdInfo.unitSumPrice.toLocaleString(
+                                      'ko-KR',
+                                    )}{' '}
                                   </strong>
                                   KRW /{' '}
                                   <strong style={{ fontSize: '15px' }}>
-                                    {frontPriceComma(pdInfo.quantity)}
+                                    {pdInfo.quantity.toLocaleString('ko-KR')}
                                   </strong>{' '}
                                   ea
                                 </p>
@@ -329,14 +328,16 @@ export default function OrderList_client() {
                               할인:{' '}
                               {!el.payments.discount
                                 ? '0 ₩'
-                                : `${frontPriceComma(el.payments.discount)} ₩`}
+                                : `${el.payments.discount.toLocaleString(
+                                    'ko-KR',
+                                  )} ₩`}
                             </p>
                             <p className={orderList.payments_totalAmount}>
                               결제금액:{' '}
                               {!el.payments.totalAmount
                                 ? '0 ₩'
-                                : `${frontPriceComma(
-                                    el.payments.totalAmount,
+                                : `${el.payments.totalAmount.toLocaleString(
+                                    'ko-KR',
                                   )} ₩`}
                             </p>
                           </div>
@@ -381,16 +382,13 @@ export default function OrderList_client() {
                           <p className={orderList.older_detail_info}>
                             total ={' '}
                             <strong style={{ fontSize: '17px' }}>
-                              {frontPriceComma(el.payments.totalAmount)}{' '}
+                              {el.payments.totalAmount.toLocaleString('ko-KR')}{' '}
                             </strong>
                             KRW /{' '}
                             <strong style={{ fontSize: '17px' }}>
-                              {frontPriceComma(
-                                el.products.reduce(
-                                  (acc, cur) => acc + cur.quantity,
-                                  0,
-                                ),
-                              )}
+                              {el.products
+                                .reduce((acc, cur) => acc + cur.quantity, 0)
+                                .toLocaleString('ko-KR')}
                             </strong>{' '}
                             ea
                           </p>
@@ -794,11 +792,13 @@ export default function OrderList_client() {
                                   </p>
                                   <p className={orderList.pdprice}>
                                     <strong style={{ fontSize: '15px' }}>
-                                      {frontPriceComma(pdInfo.unitSumPrice)}{' '}
+                                      {pdInfo.unitSumPrice.toLocaleString(
+                                        'ko-KR',
+                                      )}{' '}
                                     </strong>
                                     KRW /{' '}
                                     <strong style={{ fontSize: '15px' }}>
-                                      {frontPriceComma(pdInfo.quantity)}
+                                      {pdInfo.quantity.toLocaleString('ko-KR')}
                                     </strong>{' '}
                                     ea
                                   </p>
@@ -860,16 +860,16 @@ export default function OrderList_client() {
                                 할인:{' '}
                                 {!el.payments.discount
                                   ? '0 ₩'
-                                  : `${frontPriceComma(
-                                      el.payments.discount,
+                                  : `${el.payments.discount.toLocaleString(
+                                      'ko-KR',
                                     )} ₩`}
                               </p>
                               <p className={orderList.payments_totalAmount}>
                                 취소금액:{' '}
                                 {!el.cancels.cancelAmount
                                   ? '0 ₩'
-                                  : `${frontPriceComma(
-                                      el.cancels.cancelAmount,
+                                  : `${el.cancels.cancelAmount.toLocaleString(
+                                      'ko-KR',
                                     )} ₩`}
                               </p>
                               <p className={orderList.payments_totalAmount}>
@@ -918,16 +918,15 @@ export default function OrderList_client() {
                             <p className={orderList.older_detail_info}>
                               total ={' '}
                               <strong style={{ fontSize: '17px' }}>
-                                {frontPriceComma(el.payments.totalAmount)}{' '}
+                                {el.payments.totalAmount.toLocaleString(
+                                  'kr-KR',
+                                )}{' '}
                               </strong>
                               KRW /{' '}
                               <strong style={{ fontSize: '17px' }}>
-                                {frontPriceComma(
-                                  el.products.reduce(
-                                    (acc, cur) => acc + cur.quantity,
-                                    0,
-                                  ),
-                                )}
+                                {el.products
+                                  .reduce((acc, cur) => acc + cur.quantity, 0)
+                                  .toLocaleString('ko-KR')}
                               </strong>{' '}
                               ea
                             </p>
