@@ -11,7 +11,7 @@ import Loading from '../Loading';
 const { REACT_APP_KEY_BACK } = process.env;
 
 export default function Detail_client() {
-  const navi = useNavigate();
+  const navigate = useNavigate();
   const { productCode } = useParams();
   const [productData, setProductData] = useState(null);
 
@@ -25,7 +25,7 @@ export default function Detail_client() {
           setProductData(selectData.data[0]);
         }
       } catch (err) {
-        navi(
+        navigate(
           `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
         );
         console.error(err);
@@ -41,7 +41,7 @@ export default function Detail_client() {
           {/* 비동기 특성으로 map이 아니면 데이터 불러오는데 시간이 걸린다.
       그래서 아래와 같이 데이터가 들어오면 컴포넌트를 띄울 수 있게 순서적으로 처리해줘야함 */}
           <div className={detailClient.image_info_container}>
-            <span className={detailClient.back} onClick={() => navi(-1)}>
+            <span className={detailClient.back} onClick={() => navigate(-1)}>
               <IoMdArrowBack className={detailClient.backIcon} />
             </span>
             <Detail_SubImage_client datas={productData} />

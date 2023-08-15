@@ -1,5 +1,11 @@
 /* eslint-disable no-undef */
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import getToken from '../../../../store/modules/getToken';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -10,7 +16,6 @@ import Select_Custom from '../../../../components_elements/Select_Custom';
 import BTN_black_nomal_comp from '../../../../styles/BTN_black_nomal_comp';
 import { useSelector } from 'react-redux';
 import Loading_Spinner from '../../Loading_Spinner';
-const { REACT_APP_KEY_IMAGE } = process.env;
 
 const Pd_Images = styled.div`
   ${(props) =>
@@ -42,54 +47,49 @@ const Preview = styled.img`
   }
 `;
 
+const { REACT_APP_KEY_IMAGE } = process.env;
+const { REACT_APP_KEY_BACK } = process.env;
+
+// 날짜 추출 / 매개변수만 받음 되서 고정
+const dateSlice = (date) => {
+  const sliceDate = date.substring(0, 19);
+  return sliceDate;
+};
+
 export default function OrderReturn_client() {
+  const navigate = useNavigate();
   // 스피너
   const [spinner, setSpinner] = useState(false);
-
   const [orderCancelItem, setOrderCancelItem] = useState(null);
-  const navigate = useNavigate();
   const { orderId } = useParams();
   const desc = useRef('');
-
-  const { REACT_APP_KEY_BACK } = process.env;
 
   // 로그인 정보
   const isLogin = useSelector((state) => state.user.isLogin);
 
-  const getCancelItem = async () => {
-    try {
-      const tokenValue = await getToken();
+  useEffect(() => {
+    const getCancelItem = async () => {
+      try {
+        const tokenValue = await getToken();
 
-      const getCancelData = await axios.post(
-        `${REACT_APP_KEY_BACK}/order_list/getCancelItem`,
-        {
-          token: tokenValue,
-          orderId: orderId,
-        },
-      );
-      setOrderCancelItem(getCancelData.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+        const getCancelData = await axios.post(
+          `${REACT_APP_KEY_BACK}/order_list/getCancelItem`,
+          {
+            token: tokenValue,
+            orderId: orderId,
+          },
+        );
+        setOrderCancelItem(getCancelData.data);
+      } catch (err) {
+        navigate(
+          `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+        );
+        console.error(err);
+      }
+    };
 
-  //db Number타입을 스트링으로 바꾸고 천단위 컴마 찍어 프론트에 보내기
-  const country = navigator.language;
-  const frontPriceComma = (price) => {
-    if (price && typeof price.toLocaleString === 'function') {
-      return price.toLocaleString(country, {
-        currency: 'KRW',
-      });
-    } else {
-      return price;
-    }
-  };
-
-  // 날짜 추출
-  const dateSlice = (date) => {
-    const sliceDate = date.substring(0, 19);
-    return sliceDate;
-  };
+    getCancelItem();
+  }, []);
 
   // 반품사유
   const cancelReasonSelet = useRef('상품파손');
@@ -97,8 +97,8 @@ export default function OrderReturn_client() {
   const [reasonChange, setReasonChange] = useState('상품파손');
   const reasonHandle = () => {
     if (cancelReasonSelet.current.value === '기타')
-      return setReasonChange((cur) => '기타');
-    return setReasonChange((cur) => '상품파손');
+      return setReasonChange('기타');
+    return setReasonChange('상품파손');
   };
 
   // 반품 사유가 되는 사진 업로드 ------
@@ -111,49 +111,53 @@ export default function OrderReturn_client() {
 
   // 이미지 업로드 팝업 클릭용
   const handleClickFileInput = () => {
-    fileInputRef.current?.click();
+    fileInputRef.current.click();
   };
 
   //및 이미지 숫자를 3개로 제한
   //Array.from은 배열과 유사한 것을 배열화 시킴, 이미지 갯수 때문에 배열화
-  const uploadProfile = async (e) => {
-    const selectedFiles = Array.from(e.target.files);
-    if (selectedFiles.length > 3) {
-      return alert('최대 3개까지 업로드 가능합니다.');
-    } else {
-      const fileList = e.target.files;
-      const length = fileList.length;
-      // 파일리스트 2번 가공함
-      // 첫 번째 가공배열 담을 배열
-      let copy = [];
-      // 두 번째 가공배열 담을 배열
-      let copyUpload = [];
+  //함수 구성이 복잡하므로 파일 업로드 시에만 callback
+  const uploadProfile = useCallback(
+    (e) => {
+      const fileList = [...e.target.files];
+      const fileLength = fileList.length;
+      if (fileLength > 3) {
+        return alert('최대 3개까지 업로드 가능합니다.');
+      } else {
+        // 파일리스트 2번 가공함
+        // 첫 번째 가공배열 담을 배열
+        let copy = [];
+        // 두 번째 가공배열 담을 배열
+        let copyUpload = [];
 
-      if (fileList) {
-        for (let i = 0; i < length; i += 1) {
-          // 파일리스트 첫 번째 가공: 프레뷰용으로 저장
-          const imgInfo = {
-            file: fileList[i],
-            thumbnail: URL.createObjectURL(fileList[i]),
-            type: fileList[i].type.slice(0, 5),
-          };
-          copy.push(imgInfo);
-          // 파일리스트 두 번째 가공: 업로드 백엔드 요청용으로 가공. 여기서 파일명을 주문번호(orderId)로 넣어주고 '_1,_2_,3'으로 정의해 주어
-          // 추후 어드민에서 해당 orderId의 고유번호로 찾을 수 있도록 한다. 그래서 오데이터를 없앤다.
-          const uploadInfo = {
-            file: new File(
-              [fileList[i]],
-              `${orderId}_${i + 1}.${fileList[i].name.split('.').pop()}`,
-              { type: fileList[i].type },
-            ),
-          };
-          copyUpload.push(uploadInfo);
+        if (fileList) {
+          fileList.forEach((el, index) => {
+            // 파일리스트 첫 번째 가공: 프레뷰용으로 저장
+            const imgInfo = {
+              file: el,
+              thumbnail: URL.createObjectURL(el),
+              type: el.type.slice(0, 5),
+            };
+            copy.push(imgInfo);
+
+            // 파일리스트 두 번째 가공: 업로드 백엔드 요청용으로 가공. 여기서 파일명을 주문번호(orderId)로 넣어주고 '_1,_2_,3'으로 정의해 주어
+            // 추후 어드민에서 해당 orderId의 고유번호로 찾을 수 있도록 한다. 그래서 오데이터를 없앤다.
+            const uploadInfo = {
+              file: new File(
+                [el],
+                `${orderId}_${index + 1}.${el.name.split('.').pop()}`,
+                { type: el.type },
+              ),
+            };
+            copyUpload.push(uploadInfo);
+          });
         }
+        setImageFile(copy);
+        pd_img.current = copyUpload;
       }
-      setImageFile((cur) => copy);
-      pd_img.current = copyUpload;
-    }
-  };
+    },
+    [fileInputRef],
+  );
 
   //이미지 뿌려주기, 유즈 메모로 image파일이 업로드 될때만 반응하도록
   const showImage = useMemo(() => {
@@ -162,7 +166,6 @@ export default function OrderReturn_client() {
     }
     return imageFile.map((el, index) => (
       <Preview
-        // thumbnail={el.thumbnail}
         key={index}
         onClick={handleClickFileInput}
         src={el.thumbnail}
@@ -186,10 +189,9 @@ export default function OrderReturn_client() {
 
     if (!updateConfirm) return alert('반품신청 취소');
     // true이면 아래 진행
-    setSpinner((cur) => true);
+    setSpinner(true);
     try {
       const tokenValue = await getToken();
-      // const message = desc.current.value || '';
       const reason = reasonChange;
       const formData = new FormData();
       // 이미지 체크 및 form에 담기
@@ -198,7 +200,7 @@ export default function OrderReturn_client() {
         pd_img.current === null ||
         pd_img.current.length === 0
       ) {
-        setSpinner((cur) => false);
+        setSpinner(false);
         return alert(
           '제품의 문제가 되는 부분의 사진을 최소 1장은 올려주세요.(필수사항)',
         );
@@ -209,13 +211,13 @@ export default function OrderReturn_client() {
             desc.current.value === null ||
             desc.current.value === undefined)
         ) {
-          setSpinner((cur) => false);
+          setSpinner(false);
           return alert('기타사유를 입력해주세요.');
         } else {
-          // 이미지가 여러개라 for문으로 담아줌
-          for (let i = 0; i < pd_img.current.length; i += 1) {
-            formData.append('img_return', pd_img.current[i].file);
-          }
+          // 이미지가 여러개라 각각 담아줌
+          pd_img.current.forEach((el) =>
+            formData.append('img_return', el.file),
+          );
 
           // 이미지외 자료들 담아주기
           formData.append(
@@ -240,25 +242,20 @@ export default function OrderReturn_client() {
 
           if (submitRes.status === 200) {
             const dataParse = await submitRes.json();
-            setReturnSubmitData((cur) => dataParse);
-            setCompleteStatus((cur) => true);
-            setSpinner((cur) => false);
-          } else {
-            console.log('전송실패');
-            setSpinner((cur) => false);
+            setReturnSubmitData(dataParse);
+            setCompleteStatus(true);
+            setSpinner(false);
           }
         }
       }
     } catch (err) {
       console.error(err);
-      setSpinner((cur) => false);
+      navigate(
+        `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+      );
+      setSpinner(false);
     }
-    setSpinner((cur) => false);
   };
-
-  useEffect(() => {
-    getCancelItem();
-  }, []);
 
   // 조건부 렌더링, submit이 완료되면 컴플릿트 페이지로 넘어감
   if (completeStatus)
@@ -364,11 +361,11 @@ export default function OrderReturn_client() {
                       </p>
                       <p className={orderReturn.pdprice}>
                         <strong style={{ fontSize: '15px' }}>
-                          {frontPriceComma(el.unitSumPrice)}
+                          {el.unitSumPrice.toLocaleString('ko-KR')}
                         </strong>
                         KRW /{' '}
                         <strong style={{ fontSize: '15px' }}>
-                          {frontPriceComma(el.quantity)}
+                          {el.quantity.toLocaleString('ko-KR')}
                         </strong>{' '}
                         ea
                       </p>
@@ -383,16 +380,13 @@ export default function OrderReturn_client() {
               <p className={orderReturn.older_detail_info}>
                 total ={' '}
                 <strong style={{ fontSize: '17px' }}>
-                  {frontPriceComma(orderCancelItem.payments.totalAmount)}{' '}
+                  {orderCancelItem.payments.totalAmount.toLocaleString('ko-KR')}{' '}
                 </strong>
                 KRW /{' '}
                 <strong style={{ fontSize: '17px' }}>
-                  {frontPriceComma(
-                    orderCancelItem.products.reduce(
-                      (acc, cur) => acc + cur.quantity,
-                      0,
-                    ),
-                  )}
+                  {orderCancelItem.products
+                    .reduce((acc, cur) => acc + cur.quantity, 0)
+                    .toLocaleString('ko-KR')}
                 </strong>{' '}
                 ea
               </p>

@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import getToken from '../../../../store/modules/getToken';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -8,6 +8,8 @@ import styled from 'styled-components';
 import Loading from '../../Loading';
 import { useSelector } from 'react-redux';
 import Loading_Spinner from '../../Loading_Spinner';
+
+const { REACT_APP_KEY_BACK } = process.env;
 const { REACT_APP_KEY_IMAGE } = process.env;
 
 const Pd_Images = styled.div`
@@ -48,42 +50,30 @@ export default function OrderReturnCheck_client() {
   const navigate = useNavigate();
   const { orderId } = useParams();
 
-  const { REACT_APP_KEY_BACK } = process.env;
-  const { REACT_APP_KEY_IMAGE } = process.env;
-
   // 로그인 여부 확인 - 장바구니 담기, 바로 구매 가능 여부 판단
   const isLogin = useSelector((state) => state.user.isLogin);
 
-  const getCancelItem = async () => {
-    try {
-      const tokenValue = await getToken();
-
-      const getCancelData = await axios.post(
-        `${REACT_APP_KEY_BACK}/order_list/getCancelItem`,
-        {
-          token: tokenValue,
-          orderId: orderId,
-        },
-      );
-      setOrderCancelItem(getCancelData.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  //db Number타입을 스트링으로 바꾸고 천단위 컴마 찍어 프론트에 보내기
-  const country = navigator.language;
-  const frontPriceComma = (price) => {
-    if (price && typeof price.toLocaleString === 'function') {
-      return price.toLocaleString(country, {
-        currency: 'KRW',
-      });
-    } else {
-      return price;
-    }
-  };
-
   useEffect(() => {
+    const getCancelItem = async () => {
+      try {
+        const tokenValue = await getToken();
+
+        const getCancelData = await axios.post(
+          `${REACT_APP_KEY_BACK}/order_list/getCancelItem`,
+          {
+            token: tokenValue,
+            orderId: orderId,
+          },
+        );
+        setOrderCancelItem(getCancelData.data);
+      } catch (err) {
+        navigate(
+          `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+        );
+        console.error(err);
+      }
+    };
+
     getCancelItem();
   }, []);
 
@@ -92,7 +82,7 @@ export default function OrderReturnCheck_client() {
       alert('로그인이 필요한 서비스입니다.');
       return navigate(`/login`);
     }
-    setSpinner((cur) => true);
+    setSpinner(true);
     try {
       const tokenValue = await getToken();
 
@@ -101,15 +91,19 @@ export default function OrderReturnCheck_client() {
         { token: tokenValue, orderId },
       );
 
-      if (response.status !== 200)
-        return setSpinner((cur) => false), alert('철회 오류');
-      // 200번대 성공이면,
-      alert('반품신청 철회 완료');
-      setSpinner((cur) => false);
-      return navigate('/mypage/orderlist');
+      if (response.status === 200) {
+        // 200번대 성공이면,
+        setSpinner(false);
+        alert('반품신청 철회 완료');
+        return navigate('/mypage/orderlist');
+      }
     } catch (err) {
       console.error(err);
-      setSpinner((cur) => false);
+      navigate(
+        `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+      );
+      setSpinner(false);
+      alert('철회 오류');
       return;
     }
   };
@@ -153,11 +147,11 @@ export default function OrderReturnCheck_client() {
                       </p>
                       <p className={orderReturnCheck.pdprice}>
                         <strong style={{ fontSize: '15px' }}>
-                          {frontPriceComma(el.unitSumPrice)}
+                          {el.unitSumPrice.toLocaleString('ko-KR')}
                         </strong>
                         KRW /{' '}
                         <strong style={{ fontSize: '15px' }}>
-                          {frontPriceComma(el.quantity)}
+                          {el.quantity.toLocaleString('ko-KR')}
                         </strong>{' '}
                         ea
                       </p>
@@ -172,16 +166,13 @@ export default function OrderReturnCheck_client() {
               <p className={orderReturnCheck.older_detail_info}>
                 total ={' '}
                 <strong style={{ fontSize: '17px' }}>
-                  {frontPriceComma(orderCancelItem.payments.totalAmount)}{' '}
+                  {orderCancelItem.payments.totalAmount.toLocaleString('ko-KR')}{' '}
                 </strong>
                 KRW /{' '}
                 <strong style={{ fontSize: '17px' }}>
-                  {frontPriceComma(
-                    orderCancelItem.products.reduce(
-                      (acc, cur) => acc + cur.quantity,
-                      0,
-                    ),
-                  )}
+                  {orderCancelItem.products
+                    .reduce((acc, cur) => acc + cur.quantity, 0)
+                    .toLocaleString('ko-KR')}
                 </strong>{' '}
                 ea
               </p>

@@ -6,53 +6,61 @@ import axios from 'axios';
 import getToken from '../../../../store/modules/getToken';
 import Loading from '../../Loading';
 
+const { REACT_APP_KEY_BACK } = process.env;
+
+// constant
+const timeFix = (time) => {
+  const timeFixed = time.replace(/[T]/g, ' T').replace(/\+.*/, '');
+  return timeFixed;
+};
+
+const filterUniqueCode = (time) => {
+  const uniqueKey = time.replace(/[-T:]/g, '').replace(/\+.*/, '');
+  return uniqueKey;
+};
+
 export default function TossPay_Cancel_Complete() {
   const { orderId } = useParams();
   const { reason } = useParams();
   const navigate = useNavigate();
-  const { REACT_APP_KEY_BACK } = process.env;
-
   const [cancelInfoData, setCancelInfoData] = useState(null);
 
-  const cancelProgress = async () => {
-    try {
-      const tokenValue = await getToken();
-      const cancelInfo = await axios.post(`${REACT_APP_KEY_BACK}/toss/cancel`, {
-        orderId,
-        reason,
-        token: tokenValue,
-      });
-
-      if (cancelInfo.status === 200) {
-        setCancelInfoData((cur) => cancelInfo.data);
-        return;
-      } else if (cancelInfo.status === 409) {
-        navigate('/store');
-        alert('중복된 취소 오류');
-        return;
-      } else {
-        navigate('/store');
-        alert('결제취소 오류로 실패');
-        return;
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   useEffect(() => {
+    const cancelProgress = async () => {
+      try {
+        const tokenValue = await getToken();
+        const cancelInfo = await axios.post(
+          `${REACT_APP_KEY_BACK}/toss/cancel`,
+          {
+            orderId,
+            reason,
+            token: tokenValue,
+          },
+        );
+
+        if (cancelInfo.status === 200) {
+          setCancelInfoData(cancelInfo.data);
+          return;
+        }
+      } catch (err) {
+        if (err.data.status === 409) {
+          alert('중복된 취소 오류');
+          navigate(
+            `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+          );
+          console.error(err);
+        }
+        // 409 외는 아래
+        alert('오류');
+        navigate(
+          `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+        );
+        console.error(err);
+      }
+    };
+
     cancelProgress();
   }, []);
-
-  const timeFix = (time) => {
-    const timeFixed = time.replace(/[T]/g, ' T').replace(/\+.*/, '');
-    return timeFixed;
-  };
-
-  const filterUniqueCode = (time) => {
-    const uniqueKey = time.replace(/[-T:]/g, '').replace(/\+.*/, '');
-    return uniqueKey;
-  };
 
   return (
     <>

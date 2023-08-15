@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import getToken from '../../../../store/modules/getToken';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';

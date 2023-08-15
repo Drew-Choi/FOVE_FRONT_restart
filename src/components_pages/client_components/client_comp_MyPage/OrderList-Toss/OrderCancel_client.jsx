@@ -21,7 +21,6 @@ const cancelReason = ['단순변심', '다른 상품으로 다시 주문', '기�
 
 export default function OrderCancel_client() {
   const [orderCancelItem, setOrderCancelItem] = useState(null);
-  // const [selectReason, setSelectReason] = useState('단순변심');
   const navigate = useNavigate();
   const { orderId } = useParams();
   // 취소사유
