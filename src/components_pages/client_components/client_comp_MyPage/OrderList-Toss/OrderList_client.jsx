@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import orderList from '../../../../styles/orderlist_client.module.scss';
 import axios from 'axios';
-import getToken from '../../../../store/modules/getToken';
+import getToken from '../../../../constant/getToken';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../../Loading';

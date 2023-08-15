@@ -23,7 +23,7 @@ export function onlyoff() {
 }
 
 // 리듀서 일해라. export default ; 이 파일을 import 하면 기본으로 나가는.
-export default function cartmodal(state = initState, action) {
+export default function cartmodal(state = initState, action: ReduxAction) {
   switch (action.type) {
     case OFFON:
       if (state.offon === 'off') {

@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+import React, { useEffect } from 'react';
 import './App.css';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,7 +16,6 @@ import Order_client from './components_pages/client_components/client_comp_Order
 import TossPay_Complete from './components_pages/client_components/client_comp_Order-Toss/TossPay_Complete';
 import { Toss_CheckOut } from './components_pages/client_components/client_comp_Order-Toss/Toss_CheckOut';
 import Error404 from './components_pages/client_components/Error404';
-import React, { useEffect } from 'react';
 import axios from 'axios';
 import { keepLogin } from './store/modules/user';
 import ProductList_admin from './components_pages/admin_components/ProductList_admin';
@@ -24,7 +24,7 @@ import OrderList_admin from './components_pages/admin_components/OrderList_admin
 import Kakao_Logout from './components_pages/client_components/client_comp_Kakao/Kakao_Logout';
 import Kakao_final from './components_pages/client_components/client_comp_Kakao/Kakao_final';
 import { openDB } from 'idb';
-import getToken from './store/modules/getToken';
+import getToken from './constant/getToken';
 import OrderCancel_client from './components_pages/client_components/client_comp_MyPage/OrderList-Toss/OrderCancel_client';
 import TossPay_Cancel_Complete from './components_pages/client_components/client_comp_MyPage/OrderList-Toss/TossPay_Cancel_Complete';
 import OrderReturn_client from './components_pages/client_components/client_comp_MyPage/OrderList-Toss/OrderReturn_client';
@@ -36,85 +36,35 @@ import ShippingCode_admin from './components_pages/admin_components/ShippingCode
 import FailPage from './components_pages/client_components/FailPage';
 import ErrorPage from './components_pages/client_components/ErrorPage';
 
+const { REACT_APP_KEY_BACK } = process.env;
+
+// constant
+// 트랜젝션 생성 함수 (빈 키를 하나 만들어서 로그인 과정에서 키에 업데이트 하도록 초기값 세팅)
+const createDatabase = async () => {
+  const db = await openDB('db', 1, {
+    upgrade(db) {
+      if (!db.objectStoreNames.contains('store')) {
+        db.createObjectStore('store');
+      }
+    },
+  });
+  const transaction = db.transaction(['store'], 'readwrite');
+  const store = transaction.objectStore('store');
+  // 여기서 부터는 Key값의 존재 여부에 따라 초긱값 설정을 할지 아니면 그냥 리턴할지 정하는 곳
+  const key = await store.get('t');
+  if (!key) {
+    store.add('', 't');
+    await transaction.done;
+  } else {
+    return;
+  }
+};
+
 function App() {
-  const isLogin = useSelector((state) => state.user.isLogin);
+  const isLogin = useSelector((state: IsLoginState) => state.user.isLogin);
   const dispatch = useDispatch();
   const location = useLocation();
   const currentURL = location.pathname;
-  const { REACT_APP_KEY_BACK } = process.env;
-
-  // 트랜젝션 생성 함수 (빈 키를 하나 만들어서 로그인 과정에서 키에 업데이트 하도록 초기값 세팅)
-  const createDatabase = async () => {
-    const db = await openDB('db', 1, {
-      upgrade(db) {
-        if (!db.objectStoreNames.contains('store')) {
-          db.createObjectStore('store');
-        }
-      },
-    });
-    const transaction = db.transaction(['store'], 'readwrite');
-    const store = transaction.objectStore('store');
-    // 여기서 부터는 Key값의 존재 여부에 따라 초긱값 설정을 할지 아니면 그냥 리턴할지 정하는 곳
-    const key = await store.get('t');
-    if (!key) {
-      store.add('', 't');
-      await transaction.done;
-    } else {
-      return;
-    }
-  };
-
-  // indexedDB에 저장 되어 있는 토큰이 있는지를 확인 후,
-  // 해당 토큰을 백엔드에 검증. 검증이 되면 바로 로그인 처리 / 인증 안되면 아무 반응 안함
-  const tokenLoginCheck = async () => {
-    // 홈페이지가 뜨면 indexedDB와 트랜젝션을 바로 생성해서 토큰 받을 준비를 한다.
-    // 키값도 빈값으로 추가해 놓음
-    await createDatabase();
-
-    //이후 토큰이 있으면 로그인 유지 작업을, 토큰이 없다면 토큰인증실패로 비로그인상태 유지
-    try {
-      const valueKey = await getToken();
-
-      if (valueKey) {
-        const userInfo = await axios.post(`${REACT_APP_KEY_BACK}/islogin`, {
-          token: valueKey,
-        });
-        if (userInfo.status === 200) {
-          dispatch(
-            keepLogin({
-              nickName: userInfo.data.nickName,
-              points: userInfo.data.points,
-              isAdmin: userInfo.data.isAdmin,
-              isLogin: userInfo.data.isLogin,
-            }),
-          );
-        }
-      } else {
-        dispatch(
-          keepLogin({
-            nickName: '',
-            points: 0,
-            isAdmin: false,
-            isLogin: false,
-          }),
-        );
-      }
-    } catch (err) {
-      const db = await openDB('db', 1);
-      const transaction = db.transaction(['store'], 'readwrite');
-      const store = transaction.objectStore('store');
-      store.put('', 't');
-      dispatch(
-        keepLogin({
-          nickName: '',
-          points: 0,
-          isAdmin: false,
-          isLogin: false,
-        }),
-      );
-      console.error;
-    }
-  };
 
   // 리액트 앱이 시작 되면 바로 토큰 검증 로직 실행 -> 토큰 로그인 수행
   useEffect(() => {
@@ -125,11 +75,54 @@ function App() {
       currentURL !== '/login/kakao/callback' &&
       currentURL !== '/kakao/logout'
     ) {
+      // indexedDB에 저장 되어 있는 토큰이 있는지를 확인 후,
+      // 해당 토큰을 백엔드에 검증. 검증이 되면 바로 로그인 처리 / 인증 안되면 아무 반응 안함
+      const tokenLoginCheck = async () => {
+        // 홈페이지가 뜨면 indexedDB와 트랜젝션을 바로 생성해서 토큰 받을 준비를 한다.
+        // 키값도 빈값으로 추가해 놓음
+        await createDatabase();
+
+        //이후 토큰이 있으면 로그인 유지 작업을, 토큰이 없다면 토큰인증실패로 비로그인상태 유지
+        try {
+          const valueKey = await getToken();
+
+          if (valueKey) {
+            const userInfo = await axios.post(`${REACT_APP_KEY_BACK}/islogin`, {
+              token: valueKey,
+            });
+            if (userInfo.status === 200) {
+              dispatch(
+                keepLogin({
+                  nickName: userInfo.data.nickName,
+                  points: userInfo.data.points,
+                  isAdmin: userInfo.data.isAdmin,
+                  isLogin: userInfo.data.isLogin,
+                }),
+              );
+            }
+          }
+        } catch (err) {
+          const db = await openDB('db', 1);
+          const transaction = db.transaction(['store'], 'readwrite');
+          const store = transaction.objectStore('store');
+          store.put('', 't');
+          dispatch(
+            keepLogin({
+              nickName: '',
+              points: 0,
+              isAdmin: false,
+              isLogin: false,
+            }),
+          );
+          console.error(err);
+        }
+      };
+
       tokenLoginCheck();
     }
   }, [currentURL]);
 
-  const isAdmin = useSelector((state) => state.user.isAdmin);
+  const isAdmin = useSelector((state: IsAdminState) => state.user.isAdmin);
 
   return (
     <>

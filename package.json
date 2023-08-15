@@ -8,6 +8,10 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@tosspayments/payment-widget-sdk": "^0.7.1",
+    "@types/jest": "^29.5.3",
+    "@types/node": "^20.5.0",
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
     "axios": "^1.3.5",
     "bootstrap": "^5.2.3",
     "browser": "^0.2.6",
@@ -39,6 +43,7 @@
     "stream-browserify": "^3.0.0",
     "styled-components": "^5.3.9",
     "swiper": "^9.2.0",
+    "typescript": "^4.9.5",
     "util": "^0.12.5",
     "web-vitals": "^2.1.4",
     "webpack-node-externals": "^3.0.0"
@@ -68,6 +73,8 @@
     ]
   },
   "devDependencies": {
+    "@types/css-modules": "^1.0.2",
+    "@types/react-router-dom": "^5.3.3",
     "dotenv": "^16.0.3",
     "eslint": "^8.37.0",
     "eslint-plugin-react": "^7.32.2",

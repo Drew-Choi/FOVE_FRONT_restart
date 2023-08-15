@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
-import getToken from '../../../../store/modules/getToken';
+import getToken from '../../../../constant/getToken';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import orderCancel from '../../../../styles/orderCancel_client.module.scss';

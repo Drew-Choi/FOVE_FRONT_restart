@@ -14,7 +14,7 @@ const SINGLE = 'order/SINGLE';
 const SINGLERESET = 'order/SINGLERESET';
 
 // 액션 생성 함수. 바깥에서 사용하므로 export.
-export function single(datas) {
+export function single(datas: ProductsType) {
   // 바깥에서 정보를 받아와야.
   return {
     type: SINGLE,
@@ -30,7 +30,7 @@ export function singleReset() {
 }
 
 // 리듀서 일해라. export default ; 이 파일을 import 하면 기본으로 나가는.
-export default function order(state = initState, action) {
+export default function order(state = initState, action: ReduxAction) {
   switch (action.type) {
     case SINGLE:
       return {

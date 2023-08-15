@@ -1,5 +1,4 @@
-/* eslint-disable no-undef */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import detailClient from '../../../styles/detail_client.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -24,7 +23,7 @@ export default function Detail_client() {
         if (selectData.status === 200) {
           setProductData(selectData.data[0]);
         }
-      } catch (err) {
+      } catch (err: any) {
         navigate(
           `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
         );

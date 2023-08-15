@@ -1,9 +1,6 @@
-import React from 'react';
 import style from '../../../styles/aboutus_client.module.scss';
-import { useNavigate } from 'react-router-dom';
 
 export default function AboutUs_client() {
-  const navigate = useNavigate();
   return (
     <>
       <div className={style.aboutus}>

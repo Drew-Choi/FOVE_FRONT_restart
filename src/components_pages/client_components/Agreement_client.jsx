@@ -1,9 +1,7 @@
 import React from 'react';
 import style from '../../styles/agreement_client.module.scss';
-import { useNavigate } from 'react-router-dom';
 
 export default function Agreement_client() {
-  const navigate = useNavigate();
   return (
     <>
       <div className={style.titleArea}>

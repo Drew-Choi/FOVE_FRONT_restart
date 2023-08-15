@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import tossPayComplete from '../../../../styles/tossPay_complete.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import getToken from '../../../../store/modules/getToken';
+import getToken from '../../../../constant/getToken';
 import Loading from '../../Loading';
 
 const { REACT_APP_KEY_BACK } = process.env;

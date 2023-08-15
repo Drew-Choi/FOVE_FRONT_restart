@@ -9,7 +9,7 @@ import Select_Custom from '../../../components_elements/Select_Custom';
 import TextArea_Custom from '../../../components_elements/TextArea_Custom';
 import DaumPostcode from 'react-daum-postcode';
 import Error404 from '../Error404';
-import getToken from '../../../store/modules/getToken';
+import getToken from '../../../constant/getToken';
 import axios from 'axios';
 import { IoCloseCircleOutline } from 'react-icons/io5';
 import Loading_Spinner from '../Loading_Spinner';

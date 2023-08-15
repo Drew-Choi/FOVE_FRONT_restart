@@ -22,7 +22,12 @@ export function login() {
   };
 }
 
-export function keepLogin(loginInfo) {
+export function keepLogin(loginInfo: {
+  nickName: string;
+  points: number;
+  isAdmin?: boolean;
+  isLogin: boolean;
+}) {
   return {
     type: KEEPLOGIN,
     payload: loginInfo,
@@ -36,7 +41,7 @@ export function logout() {
 }
 
 // 리듀서. export default ; 이 파일을 import 하면 기본으로 나가는.
-export default function user(state = initState, action) {
+export default function user(state = initState, action: ReduxAction) {
   switch (action.type) {
     case LOGIN:
       return {

@@ -1,31 +1,35 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
-import React, { useCallback, useLayoutEffect, useState } from 'react';
+import { useCallback, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { add } from '../../../store/modules/cart';
 import { useNavigate } from 'react-router-dom';
 import { single } from '../../../store/modules/order';
 import detailOrderMenu from '../../../styles/detail_orderMenu.module.scss';
 import { MdAddShoppingCart } from 'react-icons/md';
-import getToken from '../../../store/modules/getToken';
+import getToken from '../../../constant/getToken';
 import Shipping_info_modal_client from './Shipping_info_modal_client';
 import Size_Modal_client from './Size_Modal_client';
 import { isMobile } from 'react-device-detect';
 
-export default function Detail_OrderMenu_client({ datas }) {
+const { REACT_APP_KEY_BACK } = process.env;
+
+export default function Detail_OrderMenu_client({
+  datas,
+}: {
+  datas: ProductsType;
+}) {
   // 필요한 훅
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const { REACT_APP_KEY_BACK } = process.env;
 
   //주문으로 수량 자료 넘기려는 용도
   const [count, setCount] = useState(1);
 
   //리덕스 state 모음
   // 로그인 여부 확인 - 장바구니 담기, 바로 구매 가능 여부 판단
-  const isLogin = useSelector((state) => state.user.isLogin);
-  const cartInfo = useSelector((state) => state.cart);
+  const isLogin = useSelector((state: IsLoginState) => state.user.isLogin);
+  const cartInfo = useSelector((state: CartState) => state.cart);
 
   //상품 사이즈 첵
   const [sizeCheck, setSizeCheck] = useState('');
@@ -35,35 +39,38 @@ export default function Detail_OrderMenu_client({ datas }) {
   const [onL, setOnL] = useState(false);
 
   // 인스턴스 재생성을 막기 위해 useCallback
-  const handle = useCallback((e) => {
-    if (e.target.value === 'OS') {
-      setOnOS(true);
-      setSizeCheck('OS');
-    } else {
-      setOnOS(false);
-    }
+  const handle = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      if ((e.target as HTMLButtonElement).value === 'OS') {
+        setOnOS(true);
+        setSizeCheck('OS');
+      } else {
+        setOnOS(false);
+      }
 
-    if (e.target.value === 'S') {
-      setOnS(true);
-      setSizeCheck('S');
-    } else {
-      setOnS(false);
-    }
+      if ((e.target as HTMLButtonElement).value === 'S') {
+        setOnS(true);
+        setSizeCheck('S');
+      } else {
+        setOnS(false);
+      }
 
-    if (e.target.value === 'M') {
-      setOnM(true);
-      setSizeCheck('M');
-    } else {
-      setOnM(false);
-    }
+      if ((e.target as HTMLButtonElement).value === 'M') {
+        setOnM(true);
+        setSizeCheck('M');
+      } else {
+        setOnM(false);
+      }
 
-    if (e.target.value === 'L') {
-      setOnL(true);
-      setSizeCheck('L');
-    } else {
-      setOnL(false);
-    }
-  }, []);
+      if ((e.target as HTMLButtonElement).value === 'L') {
+        setOnL(true);
+        setSizeCheck('L');
+      } else {
+        setOnL(false);
+      }
+    },
+    [],
+  );
 
   // 초기 사이즈 잡혀야 랜더링 완료 되도록 useLayoutEffect사용
   useLayoutEffect(() => {
@@ -121,7 +128,7 @@ export default function Detail_OrderMenu_client({ datas }) {
       // 상품이 있다면 진행
       if (finderItem) {
         // 카트수량과 추가하려는 수량 합산
-        const sumQuantity = finderItem.quantity + count;
+        const sumQuantity = finderItem.quantity! + count;
         // 카트 수량과 count수량 합산이 상품 재고를 초과하는지 확인
         if (datas.size[sizeCheck] < sumQuantity)
           return (
@@ -129,9 +136,9 @@ export default function Detail_OrderMenu_client({ datas }) {
               `카트에 추가하려는 상품이\n기존 카트 수량과 합산하여 재고를 초과합니다.\n상품명: ${
                 datas.productName
               }\n사이즈: ${sizeCheck}\n카트에 추가 가능한 수량: ${
-                datas.size[sizeCheck] - finderItem.quantity < 0
+                datas.size[sizeCheck] - finderItem.quantity! < 0
                   ? 0
-                  : datas.size[sizeCheck] - finderItem.quantity
+                  : datas.size[sizeCheck] - finderItem.quantity!
               } 개`,
             ),
             alert('카트를 확인해주세요.')
@@ -151,13 +158,13 @@ export default function Detail_OrderMenu_client({ datas }) {
       if (reqData.status === 200) {
         const datasArr = reqData.data.userCart.products;
         const totalQuantity = datasArr.reduce(
-          (sum, el) =>
+          (sum: number, el: { quantity: number }) =>
             sum + (el.quantity < 0 ? el.quantity - el.quantity : el.quantity),
           0,
         );
         dispatch(add(datasArr, totalQuantity));
       }
-    } catch (err) {
+    } catch (err: any) {
       navigate(
         `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
       );
@@ -166,19 +173,22 @@ export default function Detail_OrderMenu_client({ datas }) {
   }, [sizeCheck, count, isLogin, datas]);
 
   //싱글상품 데이터, 매개변수만 받으면 되니 useCallback
-  const singleDataSum = useCallback((datas, count, sizeCheck) => {
-    let sumData = {
-      productName: datas.productName,
-      productCode: datas.productCode,
-      price: datas.price,
-      quantity: count,
-      size: sizeCheck,
-      totalPrice: datas.price * count,
-      img: datas.img[0],
-      color: datas.color,
-    };
-    return sumData;
-  }, []);
+  const singleDataSum = useCallback(
+    (datas: ProductsType, count: number, sizeCheck: string): ProductsType => {
+      let sumData = {
+        productName: datas.productName,
+        productCode: datas.productCode,
+        price: datas.price,
+        quantity: count,
+        size: sizeCheck,
+        totalPrice: datas.price! * count,
+        img: datas.img![0],
+        color: datas.color,
+      };
+      return sumData;
+    },
+    [],
+  );
 
   //배송정보 모달
   const [shipon, setShipon] = useState(false);

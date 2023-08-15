@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { update } from '../../../store/modules/cart';
 import '../../../styles/cartModal.scss';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import getToken from '../../../store/modules/getToken';
+import getToken from '../../../constant/getToken';
 import { importdb } from '../../../store/modules/cart';
 import BTN_black_nomal_comp from '../../../styles/BTN_black_nomal_comp';
 

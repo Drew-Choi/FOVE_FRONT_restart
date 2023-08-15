@@ -1,9 +1,7 @@
 import React from 'react';
 import '../../styles/privacy_client.scss';
-import { useNavigate } from 'react-router-dom';
 
 export default function Privacy_client() {
-  const navigate = useNavigate();
   return (
     <>
       <div className="titleArea">

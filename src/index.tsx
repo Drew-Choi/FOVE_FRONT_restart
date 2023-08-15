@@ -9,13 +9,16 @@ import { Provider } from 'react-redux';
 import rootReducer from './store';
 import { configureStore } from '@reduxjs/toolkit';
 
-//크롭 redux 도구 사용 세팅
-const reduxDevTool =
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
 //리덕스 store 세팅, 스토어장소 설정 후 Provider에 넣어줘야하고 reducer: 에는 combin한 JS파일을 임폴트해준다.
-const store = configureStore({ reducer: rootReducer }, reduxDevTool);
+const store = configureStore({
+  reducer: rootReducer,
+  // redux 도구 사용 세팅 // 개발환경에서만 활성화
+  devTools: process.env.NODE_ENV === 'development' ? true : false,
+});
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement,
+);
 root.render(
   <BrowserRouter>
     <Provider store={store}>

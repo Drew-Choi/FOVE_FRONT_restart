@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import getToken from '../../../../store/modules/getToken';
+import getToken from '../../../../constant/getToken';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import orderReturn from '../../../../styles/orderReturn_client.module.scss';

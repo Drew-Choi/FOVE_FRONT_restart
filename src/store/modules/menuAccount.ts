@@ -21,7 +21,7 @@ export function menuClose() {
 }
 
 // 리듀서
-export default function menuAccount(state = initState, action) {
+export default function menuAccount(state = initState, action: ReduxAction) {
   switch (action.type) {
     case CLICKED:
       if (state.clicked) {

@@ -4,7 +4,7 @@ import DaumPostcode from 'react-daum-postcode';
 import myPage from '../../../styles/mypage_client.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import getToken from '../../../store/modules/getToken';
+import getToken from '../../../constant/getToken';
 import axios from 'axios';
 import Loading from '../Loading';
 import { IoCloseCircleOutline } from 'react-icons/io5';
