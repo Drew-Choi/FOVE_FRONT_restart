@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import detailSubImage from '../../../styles/detail_subimage_client.module.scss';
 import MediaQuery from 'react-responsive';
@@ -7,7 +7,12 @@ import { isMobile } from 'react-device-detect';
 
 const { REACT_APP_KEY_IMAGE } = process.env;
 
-const MainImage = styled.div`
+// types
+type MainImageProps = {
+  selectImgFileName: string;
+};
+
+const MainImage = styled.div<MainImageProps>`
   position: relative;
   margin-right: 160px;
   ${(props) =>
@@ -52,7 +57,12 @@ const MainImage = styled.div`
   }
 `;
 
-const Sub_IMG = styled.div`
+// types
+type Sub_IMG_Props = {
+  imgFileName: string;
+};
+
+const Sub_IMG = styled.div<Sub_IMG_Props>`
   position: relative;
   display: block;
   ${(props) =>
@@ -79,7 +89,13 @@ const Sub_IMG = styled.div`
   }
 `;
 
-const Sub_IMG2 = styled.div`
+// types
+type Sub_IMG2_Props = {
+  imgFileName: string;
+  selectImage: boolean;
+};
+
+const Sub_IMG2 = styled.div<Sub_IMG2_Props>`
   position: relative;
   display: block;
   ${(props) =>
@@ -99,14 +115,18 @@ const Sub_IMG2 = styled.div`
   }
 `;
 
-export default function Detail_SubImage_client({ datas }) {
-  const [selectImgFileName, setSelectImgFileName] = useState(datas.img[0]);
+export default function Detail_SubImage_client({
+  datas,
+}: {
+  datas: ProductsType;
+}) {
+  const [selectImgFileName, setSelectImgFileName] = useState(datas.img![0]);
   const [selector, setSelector] = useState([true, false, false, false, false]);
   return (
     <div className={detailSubImage.detail_sub_image_totalContainer}>
       <MediaQuery minWidth={556}>
         <div className={detailSubImage.sub_image_wrap}>
-          {datas.img.map((el, index) => (
+          {datas.img!.map((el: string, index: number) => (
             <Sub_IMG
               onClick={() => {
                 setSelectImgFileName(el);
@@ -122,7 +142,7 @@ export default function Detail_SubImage_client({ datas }) {
       <MediaQuery maxWidth={555}>
         <MainImage selectImgFileName={selectImgFileName} />
         <div className={detailSubImage.sub_image_wrap}>
-          {datas.img.map((el, index) =>
+          {datas.img!.map((el, index) =>
             !isMobile ? (
               <Sub_IMG
                 onClick={() => {

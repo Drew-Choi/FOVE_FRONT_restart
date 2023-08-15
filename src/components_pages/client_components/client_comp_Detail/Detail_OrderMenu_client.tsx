@@ -76,8 +76,10 @@ export default function Detail_OrderMenu_client({
   useLayoutEffect(() => {
     //상품재고에 따라 첫 사이즈 선택을 가능하게 하는 것
     const sizeFistChecked = async () => {
-      const sizeArr = Object.keys(datas.size).filter(
-        (key) => datas.size[key] !== -1 && datas.size[key] !== 0,
+      const sizeArr = Object.keys(datas.size!).filter(
+        (key: string) =>
+          datas.size![key as keyof typeof datas.size] !== -1 &&
+          datas.size![key as keyof typeof datas.size] !== 0,
       );
       if (sizeArr.length === 0) {
         return;
@@ -130,15 +132,18 @@ export default function Detail_OrderMenu_client({
         // 카트수량과 추가하려는 수량 합산
         const sumQuantity = finderItem.quantity! + count;
         // 카트 수량과 count수량 합산이 상품 재고를 초과하는지 확인
-        if (datas.size[sizeCheck] < sumQuantity)
+        if (datas.size![sizeCheck as keyof typeof datas.size] < sumQuantity)
           return (
             alert(
               `카트에 추가하려는 상품이\n기존 카트 수량과 합산하여 재고를 초과합니다.\n상품명: ${
                 datas.productName
               }\n사이즈: ${sizeCheck}\n카트에 추가 가능한 수량: ${
-                datas.size[sizeCheck] - finderItem.quantity! < 0
+                datas.size![sizeCheck as keyof typeof datas.size] -
+                  finderItem.quantity! <
+                0
                   ? 0
-                  : datas.size[sizeCheck] - finderItem.quantity!
+                  : datas.size![sizeCheck as keyof typeof datas.size] -
+                    finderItem.quantity!
               } 개`,
             ),
             alert('카트를 확인해주세요.')
@@ -149,11 +154,11 @@ export default function Detail_OrderMenu_client({
         token: await getToken(),
         productName: datas.productName,
         productCode: datas.productCode,
-        img: datas.img[0],
+        img: datas.img![0],
         price: datas.price,
         size: sizeCheck,
         quantity: count,
-        unitSumPrice: datas.price * count,
+        unitSumPrice: datas.price! * count,
       });
       if (reqData.status === 200) {
         const datasArr = reqData.data.userCart.products;
@@ -174,11 +179,11 @@ export default function Detail_OrderMenu_client({
 
   //싱글상품 데이터, 매개변수만 받으면 되니 useCallback
   const singleDataSum = useCallback(
-    (datas: ProductsType, count: number, sizeCheck: string): ProductsType => {
+    (datas: ProductsType, count: number, sizeCheck: string): sumDataType => {
       let sumData = {
         productName: datas.productName,
         productCode: datas.productCode,
-        price: datas.price,
+        price: datas.price!,
         quantity: count,
         size: sizeCheck,
         totalPrice: datas.price! * count,
@@ -228,10 +233,10 @@ export default function Detail_OrderMenu_client({
       <p className={detailOrderMenu.pdTitle}>{datas.productName}</p>
 
       <p className={detailOrderMenu.sumPrice}>
-        ₩ {(count * datas.price).toLocaleString('ko-KR')}
+        ₩ {(count * datas.price!).toLocaleString('ko-KR')}
       </p>
       <div className={detailOrderMenu.infoContain}>
-        {datas.size.OS !== -1 && datas.size.OS !== 0 ? (
+        {datas.size!.OS !== -1 && datas.size!.OS !== 0 ? (
           <button
             className={`${detailOrderMenu.sizeBTN} ${
               onOS ? detailOrderMenu.on : ''
@@ -244,7 +249,7 @@ export default function Detail_OrderMenu_client({
           >
             OS
           </button>
-        ) : datas.size.OS === 0 ? (
+        ) : datas.size!.OS === 0 ? (
           <button className={detailOrderMenu.sizeBTN_soldOut}>
             <div className={detailOrderMenu.line}></div>
             <span>OS</span>
@@ -252,7 +257,7 @@ export default function Detail_OrderMenu_client({
         ) : (
           <></>
         )}
-        {datas.size.S !== -1 && datas.size.S !== 0 ? (
+        {datas.size!.S !== -1 && datas.size!.S !== 0 ? (
           <button
             className={`${detailOrderMenu.sizeBTN} ${
               onS ? detailOrderMenu.on : ''
@@ -265,7 +270,7 @@ export default function Detail_OrderMenu_client({
           >
             S
           </button>
-        ) : datas.size.S === 0 ? (
+        ) : datas.size!.S === 0 ? (
           <button className={detailOrderMenu.sizeBTN_soldOut}>
             <div className={detailOrderMenu.line}></div>
             <span>S</span>
@@ -273,7 +278,7 @@ export default function Detail_OrderMenu_client({
         ) : (
           <></>
         )}
-        {datas.size.M !== -1 && datas.size.M !== 0 ? (
+        {datas.size!.M !== -1 && datas.size!.M !== 0 ? (
           <button
             className={`${detailOrderMenu.sizeBTN} ${
               onM ? detailOrderMenu.on : ''
@@ -286,7 +291,7 @@ export default function Detail_OrderMenu_client({
           >
             M
           </button>
-        ) : datas.size.M === 0 ? (
+        ) : datas.size!.M === 0 ? (
           <button className={detailOrderMenu.sizeBTN_soldOut}>
             <div className={detailOrderMenu.line}></div>
             <span>M</span>
@@ -294,7 +299,7 @@ export default function Detail_OrderMenu_client({
         ) : (
           <></>
         )}
-        {datas.size.L !== -1 && datas.size.L !== 0 ? (
+        {datas.size!.L !== -1 && datas.size!.L !== 0 ? (
           <button
             className={`${detailOrderMenu.sizeBTN} ${
               onL ? detailOrderMenu.on : ''
@@ -307,7 +312,7 @@ export default function Detail_OrderMenu_client({
           >
             L
           </button>
-        ) : datas.size.L === 0 ? (
+        ) : datas.size!.L === 0 ? (
           <button className={detailOrderMenu.sizeBTN_soldOut}>
             <div className={detailOrderMenu.line}></div>
             <span>L</span>
@@ -316,7 +321,7 @@ export default function Detail_OrderMenu_client({
           <></>
         )}
         <p style={{ marginBottom: '15px', fontSize: '13px' }}>
-          재고: {datas.size[sizeCheck]}
+          재고: {datas.size![sizeCheck as keyof typeof datas.size]}
         </p>
 
         <div className={detailOrderMenu.detailDesc}>{datas.detail}</div>
@@ -364,7 +369,10 @@ export default function Detail_OrderMenu_client({
                 <span
                   className={detailOrderMenu.plus}
                   onClick={() => {
-                    if (datas.size[sizeCheck] === count) {
+                    if (
+                      datas.size![sizeCheck as keyof typeof datas.size] ===
+                      count
+                    ) {
                       return alert('재고초과');
                     } else {
                       setCount((cur) => cur + 1);

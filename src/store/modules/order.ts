@@ -14,7 +14,7 @@ const SINGLE = 'order/SINGLE';
 const SINGLERESET = 'order/SINGLERESET';
 
 // 액션 생성 함수. 바깥에서 사용하므로 export.
-export function single(datas: ProductsType) {
+export function single(datas: sumDataType) {
   // 바깥에서 정보를 받아와야.
   return {
     type: SINGLE,

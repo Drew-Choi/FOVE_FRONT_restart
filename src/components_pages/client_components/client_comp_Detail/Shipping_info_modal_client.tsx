@@ -64,7 +64,11 @@ const ModalView = styled.div`
   }
 `;
 
-export default function Shipping_info_modal_client({ handleCloseModal }) {
+export default function Shipping_info_modal_client({
+  handleCloseModal,
+}: {
+  handleCloseModal: () => void;
+}) {
   return (
     <>
       <ModalBackdrop onClick={handleCloseModal}>

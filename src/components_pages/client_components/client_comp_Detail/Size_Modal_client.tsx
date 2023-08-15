@@ -116,7 +116,11 @@ const ModalView = styled.div`
   }
 `;
 
-export default function Size_Modal_client({ handleCloseModal }) {
+export default function Size_Modal_client({
+  handleCloseModal,
+}: {
+  handleCloseModal: () => void;
+}) {
   return (
     <>
       <ModalBackdrop onClick={handleCloseModal}>

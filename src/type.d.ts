@@ -13,7 +13,18 @@ interface IsLoginState {
 
 interface CartState {
   cart: {
-    cartProducts: [ProductsType];
+    cartProducts: [
+      {
+        productName: string;
+        productCode: string;
+        img: string;
+        price: number;
+        size: string;
+        quantity: number;
+        unitSumPrice: number;
+        _id: string;
+      },
+    ];
     cartProductsLength: number;
   };
 }
@@ -22,14 +33,26 @@ type ReduxAction = {
   type?: string;
   payload?: any;
 };
+
+// 싱글 주문 redux 타입
+interface sumDataType {
+  productName: string;
+  productCode: string;
+  price: number;
+  quantity: number;
+  size: string;
+  totalPrice: number;
+  img: string;
+  color: string | undefined;
+}
 // ------
 
 interface ProductsType {
   productName: string;
   productCode: string;
-  img?: [string] | string;
+  img?: string[];
   price?: number;
-  size?: { [key: string]: number } | string;
+  size?: { OS: number; S: number; M: number; L: number };
   quantity?: number;
   unitSumPrice?: number;
   detail?: string;

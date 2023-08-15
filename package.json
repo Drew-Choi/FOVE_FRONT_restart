@@ -75,6 +75,7 @@
   "devDependencies": {
     "@types/css-modules": "^1.0.2",
     "@types/react-router-dom": "^5.3.3",
+    "@types/styled-components": "^5.1.26",
     "dotenv": "^16.0.3",
     "eslint": "^8.37.0",
     "eslint-plugin-react": "^7.32.2",
