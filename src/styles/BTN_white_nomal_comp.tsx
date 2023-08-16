@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { Dispatch, PropsWithChildren, SetStateAction } from 'react';
 import styled from 'styled-components';
 
-const Btn_white_nomal = styled.span`
+// type
+interface BTN_White_nomal_comp_Props extends PropsWithChildren {
+  onClickEvent?: (e?: any) => void | Dispatch<SetStateAction<unknown>>;
+  fontSize?: string;
+  transFontSize?: string;
+  className?: string;
+  padding?: string;
+  borderRadius?: string;
+}
+
+const Btn_white_nomal = styled.span<BTN_White_nomal_comp_Props>`
   cursor: pointer;
   background-color: #ffffff;
   color: #000000;
@@ -28,17 +38,15 @@ export default function BTN_white_nomal_comp({
   onClickEvent,
   fontSize,
   transFontSize,
-  type,
   className,
   padding,
   borderRadius,
-}) {
+}: BTN_White_nomal_comp_Props) {
   return (
     <Btn_white_nomal
       transFontSize={transFontSize}
       fontSize={fontSize}
       onClick={onClickEvent}
-      type={type}
       className={className}
       padding={padding}
       borderRadius={borderRadius}

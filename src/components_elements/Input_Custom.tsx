@@ -1,3 +1,27 @@
+import React, {
+  Dispatch,
+  MutableRefObject,
+  PropsWithChildren,
+  SetStateAction,
+} from 'react';
+
+// type
+interface Input_CustomType extends PropsWithChildren {
+  inputref?: MutableRefObject<HTMLInputElement | null>;
+  type?: string;
+  name?: string;
+  placeholder?: string;
+  onChangeEvent?: (e?: any) => void | Dispatch<SetStateAction<any>>;
+  value?: string;
+  onClickEvent?: (e?: any) => void | Dispatch<SetStateAction<any>>;
+  multiple: boolean;
+  accept: string;
+  disabled: boolean;
+  classNameNew: string;
+  classNameDiv: string;
+  maxLength: number;
+}
+
 export default function Input_Custom({
   children,
   inputref,
@@ -13,7 +37,7 @@ export default function Input_Custom({
   classNameNew,
   classNameDiv,
   maxLength,
-}) {
+}: Input_CustomType) {
   return (
     <div className={classNameDiv}>
       <p>{children}</p>

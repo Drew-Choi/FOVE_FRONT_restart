@@ -10,7 +10,7 @@ const fadeIn = keyframes`
   }
 `;
 
-const AnimationText = styled.span`
+const AnimationText = styled.span<{ delay: string }>`
   position: relative;
   top: 200px;
   display: inline-block;

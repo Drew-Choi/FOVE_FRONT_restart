@@ -343,12 +343,12 @@ export default function Agreement_client() {
         <br />
         <span>제11조(지급방법)</span>
         <br />
-        <sapn>
+        <span>
           “몰”에서 구매한 재화 또는 용역에 대한 대금지급방법은 다음 각 호의
           방법중 가용한 방법으로 할 수 있습니다. 단, “몰”은 이용자의 지급방법에
           대하여 재화 등의 대금에 어떠한 명목의 수수료도 추가하여 징수할 수
           없습니다.
-        </sapn>
+        </span>
         <br />
         <span>
           &nbsp;&nbsp;&nbsp;&nbsp;1. 폰뱅킹, 인터넷뱅킹, 메일 뱅킹 등의 각종

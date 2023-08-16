@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import admin_orderList from '../../styles/orderList_Admin.module.scss';
 import axios from 'axios';
 import LoadingAdmin from '../client_components/LoadingAdmin';
@@ -8,103 +8,112 @@ import MediaQuery from 'react-responsive';
 import { useDispatch, useSelector } from 'react-redux';
 import { orderFilter } from '../../store/modules/admin_orderList';
 
+const { REACT_APP_KEY_BACK } = process.env;
+
+// constant
+// 필터함수 - 주문내역-반품신청내역
+const filterSubmitReturnIndex = (data: Order_Cancel_ListType[]) => {
+  const filterData = data.filter(
+    (el) =>
+      el.payments.status === 'DONE' &&
+      el.isOrdered &&
+      !el.isShipping &&
+      el.shippingCode !== 0 &&
+      el.isDelivered &&
+      !el.isCancel &&
+      !el.isReturn &&
+      !el.isRetrieved &&
+      !el.isRefund &&
+      el.isReturnSubmit,
+  );
+  return filterData;
+};
+
+// 필터함수 - 주문내역-최종환불내역
+const filterFinalRefundIndex = (data: Order_Cancel_ListType[]) => {
+  const filterData = data.filter(
+    (el) =>
+      el.payments.status === 'DONE' &&
+      el.isOrdered &&
+      !el.isShipping &&
+      el.shippingCode !== 0 &&
+      !el.isDelivered &&
+      !el.isCancel &&
+      !el.isReturn &&
+      el.isRetrieved &&
+      el.isRefund &&
+      el.isReturnSubmit,
+  );
+  return filterData;
+};
+
 export default function OrderList_admin() {
-  const [orderData, setOrderData] = useState(null);
-  const [cancelData, setCancelData] = useState(null);
-  const [selector, setSelector] = useState('order');
+  const [orderData, setOrderData] = useState<Order_Cancel_ListType[] | null>(
+    null,
+  );
+  const [cancelData, setCancelData] = useState<Order_Cancel_ListType[] | null>(
+    null,
+  );
+  const [selector, setSelector] = useState<boolean>(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { REACT_APP_KEY_BACK } = process.env;
 
   // 필터용 함수 및 상태보관 ----------------------------
   // 필터용 셀렉트 - 주문내역
   const filterSelect = useSelector(
-    (state) => state.admin_orderList.orderFilterValue,
+    (state: { admin_orderList: { orderFilterValue: string } }) =>
+      state.admin_orderList.orderFilterValue,
   );
-  const handleFilterSelect = (e) => {
+  const handleFilterSelect = (e: ChangeEvent<HTMLSelectElement>) => {
     dispatch(orderFilter(e.target.value));
   };
 
-  // 필터함수 - 주문내역-반품신청내역
-  const filterSubmitReturnIndex = (data) => {
-    const filterData = data.filter(
-      (el) =>
-        el.payments.status === 'DONE' &&
-        el.isOrdered &&
-        !el.isShipping &&
-        el.shippingCode !== 0 &&
-        el.isDelivered &&
-        !el.isCancel &&
-        !el.isReturn &&
-        !el.isRetrieved &&
-        !el.isRefund &&
-        el.isReturnSubmit,
-    );
-    return filterData;
-  };
-
-  // 필터함수 - 주문내역-최종환불내역
-  const filterFinalRefundIndex = (data) => {
-    const filterData = data.filter(
-      (el) =>
-        el.payments.status === 'DONE' &&
-        el.isOrdered &&
-        !el.isShipping &&
-        el.shippingCode !== 0 &&
-        !el.isDelivered &&
-        !el.isCancel &&
-        !el.isReturn &&
-        el.isRetrieved &&
-        el.isRefund &&
-        el.isReturnSubmit,
-    );
-    return filterData;
-  };
-
-  const getOrderListInfo = async () => {
-    try {
-      const adminOrderListInfo = await axios.get(
-        `${REACT_APP_KEY_BACK}/admin/orderlist`,
-      );
-
-      if (adminOrderListInfo.status !== 200) return alert('데이터 오류');
-      // status 200이면,
-      setOrderData((cur) => adminOrderListInfo.data);
-      return;
-    } catch (err) {
-      console.error(err);
-      return;
-    }
-  };
-
-  const getCancelList = async () => {
-    try {
-      const adminCancelInfo = await axios.get(
-        `${REACT_APP_KEY_BACK}/admin/cancel_list`,
-      );
-
-      if (adminCancelInfo.status !== 200) return alert('데이터 오류');
-      // status 200이면,
-      setCancelData((cur) => adminCancelInfo.data);
-      return;
-    } catch (err) {
-      console.error(err);
-      return;
-    }
-  };
-
   useEffect(() => {
+    const getOrderListInfo = async () => {
+      try {
+        const adminOrderListInfo = await axios.get(
+          `${REACT_APP_KEY_BACK}/admin/orderlist`,
+        );
+
+        if (adminOrderListInfo.status !== 200) return alert('데이터 오류');
+        // status 200이면,
+        setOrderData(adminOrderListInfo.data);
+        return;
+      } catch (err: any) {
+        navigate(
+          `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+        );
+        console.error(err);
+        return;
+      }
+    };
+
+    const getCancelList = async () => {
+      try {
+        const adminCancelInfo = await axios.get(
+          `${REACT_APP_KEY_BACK}/admin/cancel_list`,
+        );
+
+        if (adminCancelInfo.status !== 200) return alert('데이터 오류');
+        // status 200이면,
+        setCancelData(adminCancelInfo.data);
+        return;
+      } catch (err: any) {
+        navigate(
+          `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+        );
+        console.error(err);
+        return;
+      }
+    };
+
     getOrderListInfo();
     getCancelList();
   }, []);
 
   // 핸들모음
   const handleSelector = () => {
-    if (selector === 'order') {
-      setSelector((cur) => 'cancel');
-    } else {
-      setSelector((cur) => 'order');
-    }
+    setSelector((cur) => (cur ? !cur : cur));
   };
 
   // 랜더링 부분
@@ -117,13 +126,13 @@ export default function OrderList_admin() {
 
       {orderData === null || cancelData === null ? (
         <LoadingAdmin />
-      ) : selector === 'order' ? (
+      ) : selector ? (
         <>
           <div className={admin_orderList.subMenu}>
             <p className={admin_orderList.selector}>
               <span
                 className={
-                  selector === 'order'
+                  selector
                     ? admin_orderList.selector_order_on
                     : admin_orderList.selector_order
                 }
@@ -134,7 +143,7 @@ export default function OrderList_admin() {
               &nbsp;&nbsp;/&nbsp;&nbsp;
               <span
                 className={
-                  selector === 'cancel'
+                  !selector
                     ? admin_orderList.selector_cancel_on
                     : admin_orderList.selector_cancel
                 }
@@ -145,7 +154,7 @@ export default function OrderList_admin() {
             </p>
             <p className={admin_orderList.totalOrderCount}>
               Total :{' '}
-              {selector === 'order' && orderData !== null && cancelData !== null
+              {selector && orderData !== null && cancelData !== null
                 ? orderData.length
                 : cancelData.length}
             </p>
@@ -348,7 +357,7 @@ export default function OrderList_admin() {
             <p className={admin_orderList.selector}>
               <span
                 className={
-                  selector === 'order'
+                  selector
                     ? admin_orderList.selector_order_on
                     : admin_orderList.selector_order
                 }
@@ -359,7 +368,7 @@ export default function OrderList_admin() {
               &nbsp;&nbsp;/&nbsp;&nbsp;
               <span
                 className={
-                  selector === 'cancel'
+                  !selector
                     ? admin_orderList.selector_cancel_on
                     : admin_orderList.selector_cancel
                 }
@@ -370,7 +379,7 @@ export default function OrderList_admin() {
             </p>
             <p className={admin_orderList.totalOrderCount}>
               Total :{' '}
-              {selector === 'order' && orderData !== null && cancelData !== null
+              {selector && orderData !== null && cancelData !== null
                 ? orderData.length
                 : cancelData.length}
             </p>

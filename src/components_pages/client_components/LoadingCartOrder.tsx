@@ -1,5 +1,4 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 
 const fadeIn = keyframes`
@@ -11,9 +10,9 @@ const fadeIn = keyframes`
   }
 `;
 
-const AnimationText = styled.span`
+const AnimationText = styled.span<{ delay: string }>`
   position: relative;
-  top: 50%;
+  top: 200px;
   transform: translateY(-50%);
   display: inline-block;
   animation: ${fadeIn} 1s ease-in-out both infinite;
@@ -29,27 +28,19 @@ const AnimationText = styled.span`
 
 const Container = styled.div`
   position: absolute;
-  width: 100vw;
-  min-height: 630px;
-  height: 100%;
+  left: -30px;
+  width: 110%;
+  height: 150vh;
   background-color: white;
   text-align: center;
   z-index: 5;
 
-  @media screen and (max-width: 991px) {
-    height: 94%;
-  }
-
-  @media screen and (max-width: 767px) {
-    height: 96%;
-  }
-
-  @media screen and (max-width: 575px) {
-    height: 99%;
+  @media screen and (max-width: 390px) {
+    left: -10px;
   }
 `;
 
-export default function Loading2() {
+export default function LoadingCartOrder() {
   const text = 'FOVV...';
 
   return (

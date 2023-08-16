@@ -10,9 +10,9 @@ const fadeIn = keyframes`
   }
 `;
 
-const AnimationText = styled.span`
+const AnimationText = styled.span<{ delay: string }>`
   position: relative;
-  top: 200px;
+  top: 50%;
   transform: translateY(-50%);
   display: inline-block;
   animation: ${fadeIn} 1s ease-in-out both infinite;
@@ -28,19 +28,27 @@ const AnimationText = styled.span`
 
 const Container = styled.div`
   position: absolute;
-  left: -30px;
-  width: 110%;
-  height: 150vh;
+  width: 100vw;
+  min-height: 630px;
+  height: 100%;
   background-color: white;
   text-align: center;
   z-index: 5;
 
-  @media screen and (max-width: 390px) {
-    left: -10px;
+  @media screen and (max-width: 991px) {
+    height: 94%;
+  }
+
+  @media screen and (max-width: 767px) {
+    height: 96%;
+  }
+
+  @media screen and (max-width: 575px) {
+    height: 99%;
   }
 `;
 
-export default function LoadingCartOrder() {
+export default function Loading2() {
   const text = 'FOVV...';
 
   return (

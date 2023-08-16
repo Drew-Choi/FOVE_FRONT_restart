@@ -4,18 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
-const Home = styled.span`
-  position: relative;
-  font-size: 13px;
-  cursor: pointer;
-  &:hover {
-    color: darkgray;
-  }
-  &:active {
-    color: white;
-  }
-`;
-
 const Emogy = styled.p`
   position: relative;
   margin-bottom: 0px;
@@ -29,7 +17,7 @@ const Emogy = styled.p`
 
 export default function Header_admin() {
   const navigate = useNavigate();
-  const adminName = useSelector((state) =>
+  const adminName = useSelector((state: { user: { userName: string } }) =>
     state.user.userName === '' ? '' : state.user.userName,
   );
 

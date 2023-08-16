@@ -15,34 +15,32 @@ export default function NavBar_admin() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const adminName = useSelector((state) =>
+  const adminName = useSelector((state: { user: { userName: string } }) =>
     state.user.userName === '' ? '' : state.user.userName,
   );
 
   // 버거 핸들러 생성
   // 버거 온오프
-  const [burgerOnOff, setBurgerOnOff] = useState('off');
+  const [burgerOnOff, setBurgerOnOff] = useState<'on' | 'off'>('off');
   const handleBurger = () => {
-    burgerOnOff === 'off'
-      ? setBurgerOnOff((cur) => 'on')
-      : setBurgerOnOff((cur) => 'off');
+    burgerOnOff === 'off' ? setBurgerOnOff('on') : setBurgerOnOff('off');
   };
   // 버거 팝업 컨트롤 외부 화면 클릭시 사라지게
-  const burgerRef = useRef(null);
-  const burgerBTNref = useRef(null);
-
-  const handleWindowBurger = (event) => {
-    if (
-      burgerRef.current &&
-      !burgerRef.current.contains(event.target) &&
-      burgerBTNref.current &&
-      !burgerBTNref.current.contains(event.target)
-    ) {
-      setBurgerOnOff((cur) => 'off');
-    }
-  };
+  const burgerRef = useRef<HTMLUListElement | null>(null);
+  const burgerBTNref = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
+    const handleWindowBurger = (event: MouseEvent) => {
+      if (
+        burgerRef.current &&
+        !burgerRef.current.contains(event.target as Node) &&
+        burgerBTNref.current &&
+        !burgerBTNref.current.contains(event.target as Node)
+      ) {
+        setBurgerOnOff('off');
+      }
+    };
+
     document.addEventListener('mousedown', handleWindowBurger);
 
     return () => {
@@ -56,18 +54,16 @@ export default function NavBar_admin() {
         <nav className={navBarAdmin.navbar_admin}>
           <ul>
             <li
-              className={currentURL === '/admin' ? navBarAdmin.on : <></>}
+              className={currentURL === '/admin' ? navBarAdmin.on : ''}
               onClick={() => navigate('/admin')}
             >
               송장입력
             </li>
             <li
               className={
-                currentURL === '/admin/orderlist' || hasOrderId ? (
-                  navBarAdmin.on
-                ) : (
-                  <></>
-                )
+                currentURL === '/admin/orderlist' || hasOrderId
+                  ? navBarAdmin.on
+                  : ''
               }
               onClick={() => {
                 dispatch(orderFilter('allIndex')), navigate('/admin/orderlist');
@@ -76,15 +72,13 @@ export default function NavBar_admin() {
               주문관리
             </li>
             <li
-              className={
-                currentURL === '/admin/register' ? navBarAdmin.on : <></>
-              }
+              className={currentURL === '/admin/register' ? navBarAdmin.on : ''}
               onClick={() => navigate('/admin/register')}
             >
               상품등록
             </li>
             <li
-              className={currentURL === '/admin/list' ? navBarAdmin.on : <></>}
+              className={currentURL === '/admin/list' ? navBarAdmin.on : ''}
               onClick={() => navigate('/admin/list')}
             >
               등록상품 조회
@@ -97,18 +91,16 @@ export default function NavBar_admin() {
         <nav className={navBarAdmin.navbar_admin_react}>
           <ul>
             <li
-              className={currentURL === '/admin' ? navBarAdmin.on : <></>}
+              className={currentURL === '/admin' ? navBarAdmin.on : ''}
               onClick={() => navigate('/admin')}
             >
               송장입력
             </li>
             <li
               className={
-                currentURL === '/admin/orderlist' || hasOrderId ? (
-                  navBarAdmin.on
-                ) : (
-                  <></>
-                )
+                currentURL === '/admin/orderlist' || hasOrderId
+                  ? navBarAdmin.on
+                  : ''
               }
               onClick={() => {
                 dispatch(orderFilter('allIndex')), navigate('/admin/orderlist');
@@ -117,15 +109,13 @@ export default function NavBar_admin() {
               주문관리
             </li>
             <li
-              className={
-                currentURL === '/admin/register' ? navBarAdmin.on : <></>
-              }
+              className={currentURL === '/admin/register' ? navBarAdmin.on : ''}
               onClick={() => navigate('/admin/register')}
             >
               상품등록
             </li>
             <li
-              className={currentURL === '/admin/list' ? navBarAdmin.on : <></>}
+              className={currentURL === '/admin/list' ? navBarAdmin.on : ''}
               onClick={() => navigate('/admin/list')}
             >
               등록상품 조회
@@ -163,7 +153,7 @@ export default function NavBar_admin() {
           ) : (
             <ul className={navBarAdmin.burger_modal_container} ref={burgerRef}>
               <li
-                className={currentURL === '/admin' ? navBarAdmin.on : <></>}
+                className={currentURL === '/admin' ? navBarAdmin.on : ''}
                 onClick={() => {
                   handleBurger(), navigate('/admin');
                 }}
@@ -172,11 +162,9 @@ export default function NavBar_admin() {
               </li>
               <li
                 className={
-                  currentURL === '/admin/orderlist' || hasOrderId ? (
-                    navBarAdmin.on
-                  ) : (
-                    <></>
-                  )
+                  currentURL === '/admin/orderlist' || hasOrderId
+                    ? navBarAdmin.on
+                    : ''
                 }
                 onClick={() => {
                   handleBurger(),
@@ -188,7 +176,7 @@ export default function NavBar_admin() {
               </li>
               <li
                 className={
-                  currentURL === '/admin/register' ? navBarAdmin.on : <></>
+                  currentURL === '/admin/register' ? navBarAdmin.on : ''
                 }
                 onClick={() => {
                   handleBurger(), navigate('/admin/register');
@@ -197,9 +185,7 @@ export default function NavBar_admin() {
                 상품등록
               </li>
               <li
-                className={
-                  currentURL === '/admin/list' ? navBarAdmin.on : <></>
-                }
+                className={currentURL === '/admin/list' ? navBarAdmin.on : ''}
                 onClick={() => {
                   handleBurger(), navigate('/admin/list');
                 }}
