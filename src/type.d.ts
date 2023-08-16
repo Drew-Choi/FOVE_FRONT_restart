@@ -23,6 +23,7 @@ interface CartState {
         quantity: number;
         unitSumPrice: number;
         _id: string;
+        color?: string | undefined;
       },
     ];
     cartProductsLength: number;

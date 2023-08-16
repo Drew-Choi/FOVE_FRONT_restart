@@ -14,7 +14,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react"
   },
   "include": ["src", "type.d.ts"],
   "exclude": ["node_modules"]

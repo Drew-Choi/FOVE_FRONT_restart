@@ -1,16 +1,24 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, {
+  Dispatch,
+  MutableRefObject,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { update } from '../../../store/modules/cart';
 import '../../../styles/cartModal.scss';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import getToken from '../../../constant/getToken';
 import { importdb } from '../../../store/modules/cart';
 import BTN_black_nomal_comp from '../../../styles/BTN_black_nomal_comp';
 
 const { REACT_APP_KEY_IMAGE } = process.env;
+const { REACT_APP_KEY_BACK } = process.env;
 
 const CartModal_Layout = styled.div`
   position: fixed;
@@ -97,7 +105,12 @@ const ContentContainer = styled.div`
   margin-right: auto;
 `;
 
-const Img = styled.div`
+// types
+type ImgProps = {
+  imgURL: string;
+};
+
+const Img = styled.div<ImgProps>`
   position: absolute;
   margin-top: auto;
   margin-bottom: auto;
@@ -227,26 +240,40 @@ const RemoveIcon = styled.span`
     color: #b4b4b4;
   }
 `;
-
+// type
+type UnitSumType = {
+  quantity: number;
+  unitSumPrice: number;
+};
 //카트 함에 담긴 물품들 합산 계산용 함수
-const unitSum = (el) => {
+const unitSum = (el: UnitSumType[]): number | undefined => {
   if (!el) {
     return;
   } else {
-    let sum = 0;
-    for (let i = 0; i < el.length; i += 1) {
-      if (el[i].quantity > 0) {
-        sum += el[i].unitSumPrice;
-      }
-    }
+    const sum = el.reduce(
+      (acc: number, cur: UnitSumType): number =>
+        cur.quantity > 0 ? (acc += cur.unitSumPrice) : acc,
+      0,
+    );
     return sum;
   }
 };
 
+// type
+interface CartModalProps {
+  className: string;
+  cartModalMenuRef: MutableRefObject<HTMLInputElement | null>;
+  isLogin: IsLoginState;
+  closeOnClick: Dispatch<SetStateAction<'on' | 'off'>>;
+}
+
 // 컴넌트 영역
-const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
-  // 백엔드 주소
-  const { REACT_APP_KEY_BACK } = process.env;
+const CartModal = ({
+  className,
+  cartModalMenuRef,
+  isLogin,
+  closeOnClick,
+}: CartModalProps) => {
   // 현재 URI 담기
   const location = useLocation();
   const currentURL = location.pathname;
@@ -255,7 +282,7 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
   // 리덕스 디스패치
   const dispatch = useDispatch();
   // 카트 정보 리덕스state
-  const cartInfo = useSelector((state) => state.cart);
+  const cartInfo = useSelector((state: CartState) => state.cart);
 
   // 카트 정보 불러오키 API
   useEffect(() => {
@@ -268,7 +295,7 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
     ) {
       const cartDataReq = async () => {
         if (!isLogin) {
-          let nullCart = {
+          const nullCart: { products: []; cartQuantity: number } = {
             products: [],
             cartQuantity: 0,
           };
@@ -287,9 +314,9 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
             if (cartDataGet.status === 200) {
               dispatch(importdb(cartDataGet.data));
             }
-          } catch (err) {
+          } catch (err: any) {
             if (err.response.status === 404) {
-              let nullCart = {
+              const nullCart: { products: []; cartQuantity: number } = {
                 products: [],
                 cartQuantity: 0,
               };
@@ -310,7 +337,7 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
 
   //카트 상품 수량 빼기 // useCallback으로 참조 재생성 및 리랜더링 막기
   const minersCartItem = useCallback(
-    async (index) => {
+    async (index: number) => {
       if (!isLogin) {
         alert('로그인이 필요한 서비스입니다.');
         return navigate(`/login`);
@@ -330,7 +357,7 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
             // 이곳에서 'products' 속성을 사용하는 코드 작성
             const datas = downData.data.userCart.products;
             const totalQuantity = datas.reduce(
-              (sum, el) =>
+              (sum: number, el: UnitSumType) =>
                 sum +
                 (el.quantity < 0 ? el.quantity - el.quantity : el.quantity),
               0,
@@ -338,7 +365,7 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
             dispatch(update(datas, totalQuantity));
           }
         }
-      } catch (err) {
+      } catch (err: any) {
         navigate(
           `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
         );
@@ -350,7 +377,7 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
 
   //카트 상품 수량 추가 // useCallback으로 참조 재생성 및 리랜더링 막기
   const plusCartItem = useCallback(
-    async (index) => {
+    async (index: number) => {
       if (!isLogin) {
         alert('로그인이 필요한 서비스입니다.');
         return navigate(`/login`);
@@ -367,7 +394,7 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
             // 이곳에서 'products' 속성을 사용하는 코드 작성
             const datas = upData.data.userCart.products;
             const totalQuantity = datas.reduce(
-              (sum, el) =>
+              (sum: number, el: UnitSumType) =>
                 sum +
                 (el.quantity < 0 ? el.quantity - el.quantity : el.quantity),
               0,
@@ -378,7 +405,7 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
           alert(upData.data);
           return;
         }
-      } catch (err) {
+      } catch (err: any) {
         if (err.response.status === 400) return alert(err.response.data);
 
         navigate(
@@ -392,7 +419,7 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
 
   //개별 상품 삭제 // useCallback으로 참조 재생성 및 리랜더링 막기
   const deletePD = useCallback(
-    async (index) => {
+    async (index: number) => {
       if (!isLogin) {
         alert('로그인이 필요한 서비스입니다.');
         return navigate(`/login`);
@@ -409,13 +436,13 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
             // 이곳에서 'products' 속성을 사용하는 코드 작성
             const datas = deleteID.data.updatedCart.products;
             const totalQuantity = datas.reduce(
-              (sum, el) => sum + el.quantity,
+              (sum: number, el: UnitSumType) => sum + el.quantity,
               0,
             );
             dispatch(update(datas, totalQuantity));
           }
         }
-      } catch (err) {
+      } catch (err: any) {
         navigate(
           `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
         );
@@ -444,14 +471,17 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
           // 'cartObj' 객체가 null이 아니고 'products' 속성이 존재하는 경우에만 실행
           // 이곳에서 'products' 속성을 사용하는 코드 작성
           const datas = allRemoveCart.data.userCart.products;
-          const totalQuantity = datas.reduce((sum, el) => sum + el.quantity, 0);
+          const totalQuantity = datas.reduce(
+            (sum: number, el: UnitSumType) => sum + el.quantity,
+            0,
+          );
           dispatch(update(datas, totalQuantity));
         }
         allRemoveCart.data.message;
       } else {
         allRemoveCart.data.message;
       }
-    } catch (err) {
+    } catch (err: any) {
       navigate(
         `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
       );
@@ -479,8 +509,8 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
         <ExtraTextContainer>
           <UnitSum>Total:&nbsp;&nbsp;&nbsp;₩</UnitSum>
           <UnitSumNum>
-            {cartInfo.cartProducts.length !== 0
-              ? unitSumMemo.toLocaleString('ko-KR')
+            {(cartInfo.cartProducts.length as number) !== 0
+              ? unitSumMemo?.toLocaleString('ko-KR')
               : 0}
           </UnitSumNum>
           <UnitSum>/ {cartInfo.cartProductsLength} ea</UnitSum>
@@ -498,7 +528,7 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
             padding="7px 30px"
             onClickEvent={() => {
               if (isLogin) {
-                if (cartInfo.cartProducts.length !== 0) {
+                if ((cartInfo.cartProducts.length as number) !== 0) {
                   navigate(`/store/cartorder`);
                   closeOnClick((cur) => (cur === 'on' ? 'off' : 'on'));
                 } else {
@@ -516,7 +546,7 @@ const CartModal = ({ className, cartModalMenuRef, isLogin, closeOnClick }) => {
         </ExtraTextContainer>
 
         {/* 카트에 담긴 상품 뿌려주는 곳 */}
-        {cartInfo.cartProducts.length !== 0 ? (
+        {(cartInfo.cartProducts.length as number) !== 0 ? (
           cartInfo.cartProducts.map((el, index) => (
             <ContentContainer key={index}>
               <Img imgURL={el.img}></Img>

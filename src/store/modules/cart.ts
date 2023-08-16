@@ -11,10 +11,7 @@ const UPDATE = 'cart/UPDATE';
 const RESET = 'cart/RESET';
 
 // 액션 생성 함수. 바깥에서 사용하므로 export.
-export function importdb(data: {
-  products: [ProductsType];
-  cartQuantity: number;
-}) {
+export function importdb(data: { products: []; cartQuantity: number }) {
   // 바깥에서 정보를 받아와야.
   return {
     type: IMPORTDB,

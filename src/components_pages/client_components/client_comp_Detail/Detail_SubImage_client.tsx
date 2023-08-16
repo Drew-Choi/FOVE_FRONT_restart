@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import detailSubImage from '../../../styles/detail_subimage_client.module.scss';
 import MediaQuery from 'react-responsive';
 import { isMobile } from 'react-device-detect';
+import React from 'react';
 
 const { REACT_APP_KEY_IMAGE } = process.env;
 
@@ -156,7 +157,7 @@ export default function Detail_SubImage_client({
                 onClick={() => {
                   setSelectImgFileName(el);
                   setSelector((cur) => {
-                    let newArr = cur.map((el) => false);
+                    const newArr = cur.map(() => false);
                     newArr[index] = true;
                     return newArr;
                   });

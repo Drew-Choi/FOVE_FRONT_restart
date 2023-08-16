@@ -1,5 +1,12 @@
 /* eslint-disable no-undef */
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  Dispatch,
+  MutableRefObject,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import '../../../styles/header_client.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,27 +37,30 @@ export default function Header_client() {
   const currentURL = location.pathname;
 
   // 유저정보 리덕스state
-  const userData = useSelector((state) => state.user);
+  const userData = useSelector(
+    (state: { user: { isLogin: IsLoginState; isAdmin: IsAdminState } }) =>
+      state.user,
+  );
   // 카트 정보 리덕스state
-  const cartInfo = useSelector((state) => state.cart);
+  const cartInfo = useSelector((state: CartState) => state.cart);
 
   // dom컨트롤용 useRef 모음
-  const excludeRef = useRef(null);
-  const searchBTN = useRef(null);
-  const accountRef = useRef(null);
-  const accountRef2 = useRef(null);
-  const menuAccountRef = useRef(null);
-  const cartModalRef = useRef();
-  const cartModalRef2 = useRef();
-  const cartModalMenu = useRef();
-  const burgerBTNref = useRef(null);
-  const burgerRef = useRef(null);
+  const excludeRef = useRef<HTMLInputElement | null>(null);
+  const searchBTN = useRef<HTMLInputElement | null>(null);
+  const accountRef = useRef<HTMLInputElement | null>(null);
+  const accountRef2 = useRef<HTMLInputElement | null>(null);
+  const menuAccountRef = useRef<HTMLDivElement | null>(null);
+  const cartModalRef = useRef<HTMLInputElement | null>(null);
+  const cartModalRef2 = useRef<HTMLInputElement | null>(null);
+  const cartModalMenu = useRef<HTMLInputElement | null>(null);
+  const burgerBTNref = useRef<HTMLInputElement | null>(null);
+  const burgerRef = useRef<HTMLUListElement | null>(null);
 
   // 모달용 state와 handler모음 ------------
 
   //
   // 카트 모달용 state와 handler
-  const [cartOnOff, setCartOnOff] = useState('off');
+  const [cartOnOff, setCartOnOff] = useState<'on' | 'off'>('off');
 
   // 장바구니 버튼(Shopping Bag) - 로그인 상태에서 사용 가능하게
   const clickShoppingBag = () => {
@@ -63,17 +73,17 @@ export default function Header_client() {
 
   //윈도우 클릭시 기능해제, Cart메뉴
   useEffect(() => {
-    const handleClickOutside3 = (event) => {
+    const handleClickOutside3 = (event: MouseEvent) => {
       if (
         cartOnOff === 'on' &&
         ((cartModalRef.current &&
-          !cartModalRef.current.contains(event.target) &&
+          !cartModalRef.current.contains(event.target as Node) &&
           cartModalMenu.current &&
-          !cartModalMenu.current.contains(event.target)) ||
+          !cartModalMenu.current.contains(event.target as Node)) ||
           (cartModalRef2.current &&
-            !cartModalRef2.current.contains(event.target) &&
+            !cartModalRef2.current.contains(event.target as Node) &&
             cartModalMenu.current &&
-            !cartModalMenu.current.contains(event.target)))
+            !cartModalMenu.current.contains(event.target as Node)))
       ) {
         setCartOnOff('off');
       }
@@ -89,21 +99,21 @@ export default function Header_client() {
 
   //
   // account메뉴 모달용
-  const [accountMenuOnOff, setAccountMenuOnOff] = useState(false);
+  const [accountMenuOnOff, setAccountMenuOnOff] = useState<boolean>(false);
 
   //윈도우 클릭시 기능해제, Account메뉴
   useEffect(() => {
-    const handleClickOutside2 = (event) => {
+    const handleClickOutside2 = (event: MouseEvent) => {
       if (
         accountMenuOnOff &&
         ((accountRef.current &&
-          !accountRef.current.contains(event.target) &&
+          !accountRef.current.contains(event.target as Node) &&
           menuAccountRef.current &&
-          !menuAccountRef.current.contains(event.target)) ||
+          !menuAccountRef.current.contains(event.target as Node)) ||
           (accountRef2.current &&
-            !accountRef2.current.contains(event.target) &&
+            !accountRef2.current.contains(event.target as Node) &&
             menuAccountRef.current &&
-            !menuAccountRef.current.contains(event.target)))
+            !menuAccountRef.current.contains(event.target as Node)))
       ) {
         setAccountMenuOnOff(false);
       }
@@ -118,7 +128,7 @@ export default function Header_client() {
 
   //
   //로그인 로딩스피너
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState<boolean>(true);
 
   // 로그인 버튼 로딩화면
   useEffect(() => {
@@ -133,7 +143,7 @@ export default function Header_client() {
 
   //
   // 서칭용 모음
-  const [searchOnOff, setSearchOnOff] = useState('off');
+  const [searchOnOff, setSearchOnOff] = useState<'on' | 'off'>('off');
 
   // 서치용 검색창 컨트롤
   const handleClick = () => {
@@ -141,24 +151,26 @@ export default function Header_client() {
   };
 
   //검색창에 검색 안할떄
-  const [empty, setEmpty] = useState('상품검색');
+  const [empty, setEmpty] = useState<
+    '상품검색' | '검색어를 입력해주세요.' | string
+  >('상품검색');
 
   //서칭용 엔터 핸들러
-  const handleKeyPress = async (e) => {
+  const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       // 검색 로직 실행
       if (currentURL !== '/store') {
         navigate('store');
-        dispatch(searchinput(e.target.value));
+        dispatch(searchinput(e.currentTarget.value));
       } else {
-        dispatch(searchinput(e.target.value));
+        dispatch(searchinput(e.currentTarget.value));
       }
 
-      if (!e.target.value) {
+      if (!e.currentTarget.value) {
         setEmpty('검색어를 입력해주세요.');
       } else {
-        searchBTN.current.click();
-        e.target.value = '';
+        searchBTN.current?.click();
+        e.currentTarget.value = '';
         setEmpty('상품검색');
       }
     }
@@ -166,13 +178,13 @@ export default function Header_client() {
 
   //윈도우 클릭시 기능해제, 서치용 돋보기 기능해제
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (
         searchOnOff === 'on' &&
         searchBTN.current &&
-        !searchBTN.current.contains(event.target) &&
+        !searchBTN.current.contains(event.target as Node) &&
         excludeRef.current &&
-        !excludeRef.current.contains(event.target)
+        !excludeRef.current.contains(event.target as Node)
       ) {
         setSearchOnOff('off');
         setEmpty('상품검색');
@@ -187,7 +199,7 @@ export default function Header_client() {
   }, [searchOnOff]);
 
   // 반응형 사용하는 검색창용
-  const [reactSearchModal, setReactSearchModal] = useState(false);
+  const [reactSearchModal, setReactSearchModal] = useState<boolean>(false);
 
   const handlerBgTouch = () => {
     setReactSearchModal((cur) => !cur);
@@ -195,20 +207,20 @@ export default function Header_client() {
   };
 
   // 반응형 서칭용 엔터 핸들러
-  const handleKeyPress2 = async (e) => {
+  const handleKeyPress2 = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       // 검색 로직 실행
       if (currentURL !== '/store') {
-        dispatch(searchinput(e.target.value));
+        dispatch(searchinput(e.currentTarget.value));
         navigate('store');
       } else {
-        dispatch(searchinput(e.target.value));
+        dispatch(searchinput(e.currentTarget.value));
       }
-      if (!e.target.value) {
+      if (!e.currentTarget.value) {
         setEmpty('검색어를 입력해주세요.');
       } else {
-        setReactSearchModal((cur) => false);
-        e.target.value = '';
+        setReactSearchModal(false);
+        e.currentTarget.value = '';
         setEmpty('상품검색');
       }
     }
@@ -216,20 +228,20 @@ export default function Header_client() {
 
   //
   //반응형 햄버거 메뉴용 state와 handler
-  const [burger, setBurger] = useState('off');
+  const [burger, setBurger] = useState<'on' | 'off'>('off');
   const burherHandler = () => {
     setBurger((cur) => (cur === 'off' ? 'on' : 'off'));
   };
 
   //윈도우 클릭시 기능해제, Burger메뉴
   useEffect(() => {
-    const handleOutsideBurger = (e) => {
+    const handleOutsideBurger = (e: MouseEvent) => {
       if (
         burger === 'on' &&
         burgerBTNref.current &&
-        !burgerBTNref.current.contains(e.target) &&
+        !burgerBTNref.current.contains(e.target as Node) &&
         burgerRef.current &&
-        !burgerRef.current.contains(e.target)
+        !burgerRef.current.contains(e.target as Node)
       ) {
         burherHandler();
       }
@@ -341,10 +353,8 @@ export default function Header_client() {
                 <span
                   ref={searchBTN}
                   className="material-symbols-outlined search"
-                  onClick={(cur) =>
-                    searchOnOff === 'off'
-                      ? setSearchOnOff('on')
-                      : setSearchOnOff('off')
+                  onClick={() =>
+                    setSearchOnOff((cur) => (cur === 'on' ? 'off' : 'on'))
                   }
                 >
                   <GrSearch />
@@ -636,7 +646,14 @@ const Content = styled.p`
 `;
 
 // 컴포넌트 영역
-function MenuAccount({ menuAccountRef, closeOnClick }) {
+
+function MenuAccount({
+  menuAccountRef,
+  closeOnClick,
+}: {
+  menuAccountRef: MutableRefObject<HTMLDivElement | null>;
+  closeOnClick: Dispatch<SetStateAction<boolean>>;
+}) {
   const location = useLocation();
   const currentURL = location.pathname;
 
@@ -644,10 +661,14 @@ function MenuAccount({ menuAccountRef, closeOnClick }) {
   //유저정보 state
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const userName = useSelector((state) => state.user.userName);
-  const userPoints = useSelector((state) => state.user.userPoints);
+  const userName = useSelector(
+    (state: { user: { userName: string } }) => state.user.userName,
+  );
+  const userPoints = useSelector(
+    (state: { user: { userPoints: number } }) => state.user.userPoints,
+  );
 
-  const getKey = async (key) => {
+  const getKey = async (key: string) => {
     try {
       const res = await axios.get(
         `${REACT_APP_KEY_BACK}/${REACT_APP_KEY_API}`,
@@ -656,7 +677,7 @@ function MenuAccount({ menuAccountRef, closeOnClick }) {
         },
       );
       return res.data.key;
-    } catch (err) {
+    } catch (err: any) {
       navigate(
         `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
       );
@@ -672,7 +693,7 @@ function MenuAccount({ menuAccountRef, closeOnClick }) {
       const YOUR_LOGOUT_REDIRECT_URI = `${REACT_APP_KEY_FRONT}/kakao/logout`;
       dispatch(clickMenu()); // MenuAccount 닫기
       window.location.href = `https://kauth.kakao.com/oauth/logout?client_id=${YOUR_REST_API_KEY}&logout_redirect_uri=${YOUR_LOGOUT_REDIRECT_URI}`;
-    } catch (err) {
+    } catch (err: any) {
       navigate(
         `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
       );

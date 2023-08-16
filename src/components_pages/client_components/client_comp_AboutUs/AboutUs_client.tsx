@@ -1,3 +1,4 @@
+import React from 'react';
 import style from '../../../styles/aboutus_client.module.scss';
 
 export default function AboutUs_client() {

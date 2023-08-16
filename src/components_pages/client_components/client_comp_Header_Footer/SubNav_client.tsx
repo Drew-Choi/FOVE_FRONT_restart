@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import MediaQuery from 'react-responsive';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -76,10 +76,10 @@ export default function SubNav_client() {
   const location = useLocation();
   const currentURL = location.pathname;
 
-  const handleCategoryChange = (e) => {
-    let eValue = e.target.value;
+  const handleCategoryChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const eValue = e.currentTarget.value;
 
-    for (let el of sub_menu) {
+    for (const el of sub_menu) {
       if (eValue === el.label) {
         return navi(`${el.clickPath}`);
       }
@@ -87,7 +87,7 @@ export default function SubNav_client() {
   };
 
   const selectCategory = () => {
-    for (let el of sub_menu) {
+    for (const el of sub_menu) {
       if (`/store/${category}` === el.clickPath) {
         return el.label;
       }

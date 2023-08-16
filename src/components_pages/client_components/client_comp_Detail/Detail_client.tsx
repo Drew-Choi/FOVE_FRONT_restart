@@ -6,13 +6,14 @@ import { IoMdArrowBack } from 'react-icons/io';
 import Detail_OrderMenu_client from './Detail_OrderMenu_client';
 import Detail_SubImage_client from './Detail_SubImage_client';
 import Loading from '../Loading';
+import React from 'react';
 
 const { REACT_APP_KEY_BACK } = process.env;
 
 export default function Detail_client() {
   const navigate = useNavigate();
   const { productCode } = useParams();
-  const [productData, setProductData] = useState(null);
+  const [productData, setProductData] = useState<ProductsType | null>(null);
 
   useEffect(() => {
     const getSelectProduct = async () => {

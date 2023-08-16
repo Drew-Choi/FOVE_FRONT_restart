@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import axios from 'axios';
 import { useCallback, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +10,7 @@ import getToken from '../../../constant/getToken';
 import Shipping_info_modal_client from './Shipping_info_modal_client';
 import Size_Modal_client from './Size_Modal_client';
 import { isMobile } from 'react-device-detect';
+import React from 'react';
 
 const { REACT_APP_KEY_BACK } = process.env;
 
@@ -24,7 +24,7 @@ export default function Detail_OrderMenu_client({
   const navigate = useNavigate();
 
   //주문으로 수량 자료 넘기려는 용도
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState<number>(1);
 
   //리덕스 state 모음
   // 로그인 여부 확인 - 장바구니 담기, 바로 구매 가능 여부 판단
@@ -32,45 +32,44 @@ export default function Detail_OrderMenu_client({
   const cartInfo = useSelector((state: CartState) => state.cart);
 
   //상품 사이즈 첵
-  const [sizeCheck, setSizeCheck] = useState('');
-  const [onOS, setOnOS] = useState(false);
-  const [onS, setOnS] = useState(false);
-  const [onM, setOnM] = useState(false);
-  const [onL, setOnL] = useState(false);
+  const [sizeCheck, setSizeCheck] = useState<string>('');
+  const [onOS, setOnOS] = useState<boolean>(false);
+  const [onS, setOnS] = useState<boolean>(false);
+  const [onM, setOnM] = useState<boolean>(false);
+  const [onL, setOnL] = useState<boolean>(false);
 
   // 인스턴스 재생성을 막기 위해 useCallback
-  const handle = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      if ((e.target as HTMLButtonElement).value === 'OS') {
-        setOnOS(true);
-        setSizeCheck('OS');
-      } else {
-        setOnOS(false);
-      }
+  const handle = useCallback((e: React.MouseEvent) => {
+    const target = e.currentTarget as HTMLButtonElement;
 
-      if ((e.target as HTMLButtonElement).value === 'S') {
-        setOnS(true);
-        setSizeCheck('S');
-      } else {
-        setOnS(false);
-      }
+    if (target.value === 'OS') {
+      setOnOS(true);
+      setSizeCheck('OS');
+    } else {
+      setOnOS(false);
+    }
 
-      if ((e.target as HTMLButtonElement).value === 'M') {
-        setOnM(true);
-        setSizeCheck('M');
-      } else {
-        setOnM(false);
-      }
+    if (target.value === 'S') {
+      setOnS(true);
+      setSizeCheck('S');
+    } else {
+      setOnS(false);
+    }
 
-      if ((e.target as HTMLButtonElement).value === 'L') {
-        setOnL(true);
-        setSizeCheck('L');
-      } else {
-        setOnL(false);
-      }
-    },
-    [],
-  );
+    if (target.value === 'M') {
+      setOnM(true);
+      setSizeCheck('M');
+    } else {
+      setOnM(false);
+    }
+
+    if (target.value === 'L') {
+      setOnL(true);
+      setSizeCheck('L');
+    } else {
+      setOnL(false);
+    }
+  }, []);
 
   // 초기 사이즈 잡혀야 랜더링 완료 되도록 useLayoutEffect사용
   useLayoutEffect(() => {
@@ -180,7 +179,7 @@ export default function Detail_OrderMenu_client({
   //싱글상품 데이터, 매개변수만 받으면 되니 useCallback
   const singleDataSum = useCallback(
     (datas: ProductsType, count: number, sizeCheck: string): sumDataType => {
-      let sumData = {
+      const sumData = {
         productName: datas.productName,
         productCode: datas.productCode,
         price: datas.price!,
@@ -243,7 +242,7 @@ export default function Detail_OrderMenu_client({
             }`}
             onClick={(e) => {
               handle(e);
-              setCount((cur) => 1);
+              setCount(1);
             }}
             value="OS"
           >
@@ -264,7 +263,7 @@ export default function Detail_OrderMenu_client({
             }`}
             onClick={(e) => {
               handle(e);
-              setCount((cur) => 1);
+              setCount(1);
             }}
             value="S"
           >
@@ -285,7 +284,7 @@ export default function Detail_OrderMenu_client({
             }`}
             onClick={(e) => {
               handle(e);
-              setCount((cur) => 1);
+              setCount(1);
             }}
             value="M"
           >
@@ -306,7 +305,7 @@ export default function Detail_OrderMenu_client({
             }`}
             onClick={(e) => {
               handle(e);
-              setCount((cur) => 1);
+              setCount(1);
             }}
             value="L"
           >

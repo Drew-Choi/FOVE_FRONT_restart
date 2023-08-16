@@ -10,7 +10,7 @@ const { REACT_APP_KEY_API } = process.env;
 const { REACT_APP_KEY_APICB } = process.env;
 
 export default function Login_client() {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState<boolean>(true);
   const navi = useNavigate();
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function Login_client() {
     };
   }, []);
 
-  const getKey = async (key) => {
+  const getKey = async (key: string) => {
     try {
       const res = await axios.get(
         `${REACT_APP_KEY_BACK}/${REACT_APP_KEY_API}`,
@@ -32,7 +32,7 @@ export default function Login_client() {
         },
       );
       return res.data.key;
-    } catch (err) {
+    } catch (err: any) {
       navi(
         `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
       );

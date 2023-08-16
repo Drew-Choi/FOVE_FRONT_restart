@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import rootReducer from './store';
 import { configureStore } from '@reduxjs/toolkit';
+import React from 'react';
 
 //리덕스 store 세팅, 스토어장소 설정 후 Provider에 넣어줘야하고 reducer: 에는 combin한 JS파일을 임폴트해준다.
 const store = configureStore({

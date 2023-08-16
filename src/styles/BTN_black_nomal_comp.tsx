@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { Dispatch, PropsWithChildren, SetStateAction } from 'react';
 import styled from 'styled-components';
 
-const Btn_blakc_nomal = styled.span`
+// type
+interface BTN_black_nomal_comp_Props extends PropsWithChildren {
+  onClickEvent?: () => void | Dispatch<SetStateAction<unknown>>;
+  fontSize?: string;
+  transFontSize?: string;
+  className?: string;
+  padding?: string;
+  borderRadius?: string;
+}
+
+const Btn_blakc_nomal = styled.span<BTN_black_nomal_comp_Props>`
   cursor: pointer;
   background-color: black;
   color: white;
@@ -23,22 +33,20 @@ const Btn_blakc_nomal = styled.span`
   }
 `;
 
-export default function BTN_black_nomal_comp({
+const BTN_black_nomal_comp: React.FC<BTN_black_nomal_comp_Props> = ({
   children,
   onClickEvent,
   fontSize,
   transFontSize,
-  type,
   className,
   padding,
   borderRadius,
-}) {
+}) => {
   return (
     <Btn_blakc_nomal
       transFontSize={transFontSize}
       fontSize={fontSize}
       onClick={onClickEvent}
-      type={type}
       className={className}
       padding={padding}
       borderRadius={borderRadius}
@@ -46,10 +54,12 @@ export default function BTN_black_nomal_comp({
       {children}
     </Btn_blakc_nomal>
   );
-}
+};
 
 BTN_black_nomal_comp.defaultProps = {
   fontSize: '15px',
   padding: '4px 10px',
   borderRadius: '5px',
 };
+
+export default BTN_black_nomal_comp;

@@ -9,7 +9,7 @@ export default function Kakao_final() {
 
   useEffect(() => {
     // indexedDB 생성 함수
-    const saveToIndexedDB = async (token) => {
+    const saveToIndexedDB = async (token: string) => {
       if (token) {
         const db = await openDB('db', 1);
         const transaction = db.transaction(['store'], 'readwrite');
@@ -24,7 +24,7 @@ export default function Kakao_final() {
     const token = queryParams.get('key');
 
     // indexedDB 등록
-    saveToIndexedDB(token);
+    saveToIndexedDB(token!);
     navigate('/store');
   }, []);
 

@@ -4,7 +4,7 @@ import Loading from '../Loading';
 import Iframe from 'react-iframe';
 
 export default function Intro_movie_clinet() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const time = setTimeout(() => {
@@ -25,7 +25,7 @@ export default function Intro_movie_clinet() {
           width="1680"
           height="945"
           className={style.content}
-          frameBorder="0"
+          frameBorder={0}
           allow="autoplay; picture-in-picture"
           allowFullScreen
           title="fovv_intro_example"

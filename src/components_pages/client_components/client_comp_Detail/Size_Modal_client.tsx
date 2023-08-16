@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 
 const ModalBackdrop = styled.div`
