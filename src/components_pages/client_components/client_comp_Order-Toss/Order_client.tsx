@@ -1,5 +1,12 @@
 /* eslint-disable no-undef */
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  CSSProperties,
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import orderClient from '../../../styles/order_client.module.scss';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -20,7 +27,7 @@ const { REACT_APP_KEY_BACK } = process.env;
 // constant---
 const selectList_celPhone = ['010', '011', '016', '017', '019'];
 
-const postCodeStyle2 = {
+const postCodeStyle2: CSSProperties = {
   display: 'block',
   position: 'relative',
   height: '480px',
@@ -29,14 +36,14 @@ const postCodeStyle2 = {
 };
 // ------
 
-const Pd_order_IMG = styled.div`
+const Pd_order_IMG = styled.div<{ img: string }>`
   ${(props) =>
     props.img && `background-image: url('${REACT_APP_KEY_IMAGE}${props.img}')`}
 `;
 
 export default function Order_client() {
   // 스피너
-  const [spinner, setSpinner] = useState(false);
+  const [spinner, setSpinner] = useState<boolean>(false);
 
   //카트에 담긴 상품들을 주문해 보자
   //일단, 현재 페이지의 url주소를 분석해서 싱글인지, 카트 상품인지 파악하자
@@ -45,44 +52,47 @@ export default function Order_client() {
   const navigate = useNavigate();
 
   // 로그인관련
-  const isLogin = useSelector((state) => state.user.isLogin);
+  const isLogin = useSelector((state: IsLoginState) => state.user.isLogin);
 
   //리덕스 state ---------------------------
   //오더메뉴에서 넘어오는 정보들(리덕스)
-  const singleOrder = useSelector((state) => state.order);
-  const cartOrderData = useSelector((state) => state.cart);
+  const singleOrder = useSelector(
+    (state: { order: sumDataType }) => state.order,
+  );
+  const cartOrderData = useSelector((state: CartState) => state.cart);
   //----------------------------------------------------------------
 
   //주문 정보 담기
   //1. 받는 분 성함
-  const [recipientName, setRecipientName] = useState('');
+  const [recipientName, setRecipientName] = useState<string>('');
   //핸들
-  const recipientName_handle = (e) => {
+  const recipientName_handle = (e: ChangeEvent<HTMLInputElement>) => {
     setRecipientName(e.target.value);
   };
   //2. 받는 분 우편번호
-  const [recipientZipcode, setRecipientZipcode] = useState('');
+  const [recipientZipcode, setRecipientZipcode] = useState<string>('');
 
   //3. 받는 분 기본 주소
-  const [recipientAddress, setRecipientAddress] = useState('');
+  const [recipientAddress, setRecipientAddress] = useState<string>('');
 
   //4. 받는 분 상세주소
-  const [recipientAddressDetail, setRecipientAddressDetail] = useState('');
+  const [recipientAddressDetail, setRecipientAddressDetail] =
+    useState<string>('');
   //상세주소 추가 입력 핸들
-  const recipientAddressDetail_handle = (e) => {
+  const recipientAddressDetail_handle = (e: ChangeEvent<HTMLInputElement>) => {
     setRecipientAddressDetail(e.target.value);
   };
 
   //------------휴대폰 번호는 합치는 작업 필요--------------
   //5. 받는 분 전화번호의 지역번호
   const [phoneCode, setPhoneCode] = useState('010');
-  const phoneCode_handle = (e) => {
+  const phoneCode_handle = (e: ChangeEvent<HTMLSelectElement>) => {
     setPhoneCode(e.target.value);
   };
 
   //6. 받는 분 전화번호의 중간번호
-  const [phoneMidNum, setPhoneMidNum] = useState('');
-  const phoneMidNum_handle = (e) => {
+  const [phoneMidNum, setPhoneMidNum] = useState<string>('');
+  const phoneMidNum_handle = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const regex = /^\d+$/;
 
@@ -91,8 +101,8 @@ export default function Order_client() {
     }
   };
   //7. 받는 분 전화번호의 마지막 번호
-  const [phoneLastNum, setPhoneLastNum] = useState('');
-  const phoneLastNum_handle = (e) => {
+  const [phoneLastNum, setPhoneLastNum] = useState<string>('');
+  const phoneLastNum_handle = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const regex = /^\d+$/;
 
@@ -104,7 +114,7 @@ export default function Order_client() {
 
   //기본 배송지 불러올때 합쳐진거 분리해서 뿌려주기
   // 기본배송지 불러올시 1번 사용되므로 callback
-  const phoneNumSplit = useCallback((num) => {
+  const phoneNumSplit = useCallback((num: string) => {
     if (!num || num === '') return;
     //
     const splitNum = num.split('-');
@@ -114,17 +124,17 @@ export default function Order_client() {
   }, []);
 
   //14. 기타 배송 메모
-  const [message, setMessage] = useState('');
-  const message_handle = (e) => {
+  const [message, setMessage] = useState<string>('');
+  const message_handle = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
   };
   //-------------------------------------------------
 
   // 기본배송지 주소 불러오기
   // 체크박스 컨트롤
-  const [isChecked, setIsChecked] = useState(true);
+  const [isChecked, setIsChecked] = useState<boolean>(true);
 
-  const isChecked_handle = (e) => {
+  const isChecked_handle = (e: ChangeEvent<HTMLInputElement>) => {
     setIsChecked(e.target.checked);
   };
 
@@ -206,12 +216,12 @@ export default function Order_client() {
   }, [cartOrderData]);
 
   //결제 동의 결과값
-  const checkoutRef = useRef(false);
-  const [agreement, setAgreement] = useState();
-  const [toggleModal, setToggleModal] = useState(false);
+  const checkoutRef = useRef<HTMLInputElement>(null);
+  const [agreement, setAgreement] = useState<boolean | undefined>(false);
+  const [toggleModal, setToggleModal] = useState<boolean>(false);
 
   //agreement 모달 스크롤기능
-  const [scrollPosition, setScrollPosition] = useState(0);
+  const [scrollPosition, setScrollPosition] = useState<number>(0);
   useEffect(() => {
     if (toggleModal) {
       setScrollPosition(window.pageYOffset);
@@ -243,7 +253,7 @@ export default function Order_client() {
           phoneNumSplit(response.data.recipientPhone);
           setMessage(response.data.message_ad);
           return;
-        } catch (err) {
+        } catch (err: any) {
           navigate(
             `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
           );
@@ -265,7 +275,7 @@ export default function Order_client() {
   }, [isChecked]);
 
   //다음주소 불러오기 기능 ----------------------------------------------
-  const [openPostcode, setOpenPostcode] = useState(false);
+  const [openPostcode, setOpenPostcode] = useState<boolean>(false);
 
   const handle = {
     // 버튼 클릭 이벤트
@@ -283,7 +293,7 @@ export default function Order_client() {
     },
 
     // 주소 선택 이벤트
-    selectAddress: (data) => {
+    selectAddress: (data: DaumPostInfo) => {
       setRecipientZipcode(data.zonecode);
       setRecipientAddress(data.address);
       setRecipientAddressDetail(data.buildingName);
@@ -500,7 +510,7 @@ export default function Order_client() {
                     className={`${orderClient.phonNum} ${orderClient.mid} ${orderClient.b}`}
                     type="tel"
                     placeholder="휴대폰"
-                    maxLength="4"
+                    maxLength={4}
                     pattern="[0-9]{4}"
                   />
                   <p className={orderClient.numMiners}>-</p>
@@ -509,7 +519,7 @@ export default function Order_client() {
                     onChange={phoneLastNum_handle}
                     className={`${orderClient.phonNum} ${orderClient.last} ${orderClient.b}`}
                     type="tel"
-                    maxLength="4"
+                    maxLength={4}
                     pattern="[0-9]{4}"
                   />
                 </div>
@@ -518,10 +528,9 @@ export default function Order_client() {
                   value={message}
                   onChangeEvent={message_handle}
                   styleArea={{ resize: 'none' }}
-                  maxLength="50"
-                  rows="3"
-                  cols="100"
-                  type="text"
+                  maxLength={50}
+                  rows={3}
+                  cols={100}
                   textAreaClassName={orderClient.textAreaClassName}
                   placeholder="배송 메세지"
                 />
@@ -596,7 +605,7 @@ export default function Order_client() {
                     >
                       <input
                         onClick={() =>
-                          setAgreement((cur) => checkoutRef.current.checked)
+                          setAgreement(checkoutRef.current?.checked)
                         }
                         ref={checkoutRef}
                         className={orderClient.checkcheck}

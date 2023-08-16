@@ -25,29 +25,38 @@ export default function Store_client() {
   // 모든 상품 또는 카테고리별 상품 요청 위한 파람스 서칭
   const { category } = useParams();
   // All상품데이터 get
-  const [pd_Datas, setPd_Datas] = useState([]);
+  const [pd_Datas, setPd_Datas] = useState<ProductsType[] | []>([]);
   // 검색용
-  const searchText = useSelector((state) => state.search.searchData);
-  const orignData = useRef([]);
+  const searchText = useSelector(
+    (state: { search: { searchData: string } }) => state.search.searchData,
+  );
+  // 오리진데이터 보관용
+  const orignData = useRef<any>([]);
   // 스피너
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   //네비게이트
   const navigate = useNavigate();
 
   //스와이퍼 커스텀
-  const [swiperEl, setSwiperEl] = useState(null);
-  const [pagination1, setPagination1] = useState('on');
-  const [pagination2, setPagination2] = useState('off');
-  const [pagination3, setPagination3] = useState('off');
-  const [pagination4, setPagination4] = useState('off');
-  const [pagination5, setPagination5] = useState('off');
+  const [swiperEl, setSwiperEl] = useState<any>(null);
+  const [pagination1, setPagination1] = useState<'on' | 'off'>('on');
+  const [pagination2, setPagination2] = useState<'on' | 'off'>('off');
+  const [pagination3, setPagination3] = useState<'on' | 'off'>('off');
+  const [pagination4, setPagination4] = useState<'on' | 'off'>('off');
+  const [pagination5, setPagination5] = useState<'on' | 'off'>('off');
 
   // 사이즈에 재고가 있는 지 확인 매개변수만 받으면 되서 callback
-  const stockCheck = useCallback((data) => {
-    const arr = Object.values(data);
-    const filter = arr.filter((el) => el !== -1 && el !== 0);
-    return filter;
-  }, []);
+  const stockCheck = useCallback(
+    (data: { OS: number; S: number; M: number; L: number } | undefined) => {
+      if (!data) {
+        return [];
+      }
+      const arr = Object.values(data);
+      const filter = arr.filter((el) => el !== -1 && el !== 0);
+      return filter;
+    },
+    [],
+  );
 
   //상품데이터 db에서 가져오기 및 검색기능
   useEffect(() => {
@@ -70,7 +79,7 @@ export default function Store_client() {
             setPd_Datas(productsData.data);
             return;
           }
-        } catch (err) {
+        } catch (err: any) {
           navigate(
             `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
           );
@@ -86,7 +95,7 @@ export default function Store_client() {
             setPd_Datas(productsData.data);
             return;
           }
-        } catch (err) {
+        } catch (err: any) {
           navigate(
             `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
           );
@@ -97,11 +106,11 @@ export default function Store_client() {
     // --
 
     // 검색체크 및 상품검색 --
-    const searchProducts = (text) => {
+    const searchProducts = (text: string) => {
       if (text === '') return;
 
       const lowercaseText = text.toLowerCase();
-      setPd_Datas((cur) => {
+      setPd_Datas((cur: ProductsType[]) => {
         return [...cur].filter((el) => {
           const lowercaseProductName = el.productName.toLowerCase();
           return lowercaseProductName.indexOf(lowercaseText) !== -1;
@@ -135,20 +144,20 @@ export default function Store_client() {
             onSwiper={(swiper) => setSwiperEl(swiper)}
             onActiveIndexChange={(swiper) => {
               swiper.activeIndex !== 0
-                ? setPagination1((cur) => 'off')
-                : setPagination1((cur) => 'on');
+                ? setPagination1('off')
+                : setPagination1('on');
               swiper.activeIndex !== 1
-                ? setPagination2((cur) => 'off')
-                : setPagination2((cur) => 'on');
+                ? setPagination2('off')
+                : setPagination2('on');
               swiper.activeIndex !== 2
-                ? setPagination3((cur) => 'off')
-                : setPagination3((cur) => 'on');
+                ? setPagination3('off')
+                : setPagination3('on');
               swiper.activeIndex !== 3
-                ? setPagination4((cur) => 'off')
-                : setPagination4((cur) => 'on');
+                ? setPagination4('off')
+                : setPagination4('on');
               swiper.activeIndex !== 4
-                ? setPagination5((cur) => 'off')
-                : setPagination5((cur) => 'on');
+                ? setPagination5('off')
+                : setPagination5('on');
             }}
             mousewheel={false}
             className="swiper_container"
@@ -173,7 +182,7 @@ export default function Store_client() {
                             price={
                               stockCheck(el.size).length === 0
                                 ? 'Sold-Out'
-                                : `₩ ${el.price.toLocaleString('ko-KR')}`
+                                : `₩ ${el.price?.toLocaleString('ko-KR')}`
                             }
                           />
                         </Col>
@@ -206,7 +215,7 @@ export default function Store_client() {
                               price={
                                 stockCheck(el.size).length === 0
                                   ? 'Sold-Out'
-                                  : `₩ ${el.price.toLocaleString('ko-KR')}`
+                                  : `₩ ${el.price?.toLocaleString('ko-KR')}`
                               }
                             />
                           </Col>
@@ -241,7 +250,7 @@ export default function Store_client() {
                               price={
                                 stockCheck(el.size).length === 0
                                   ? 'Sold-Out'
-                                  : `₩ ${el.price.toLocaleString('ko-KR')}`
+                                  : `₩ ${el.price?.toLocaleString('ko-KR')}`
                               }
                             />
                           </Col>
@@ -276,7 +285,7 @@ export default function Store_client() {
                               price={
                                 stockCheck(el.size).length === 0
                                   ? 'Sold-Out'
-                                  : `₩ ${el.price.toLocaleString('ko-KR')}`
+                                  : `₩ ${el.price?.toLocaleString('ko-KR')}`
                               }
                             />
                           </Col>
@@ -311,7 +320,7 @@ export default function Store_client() {
                               price={
                                 stockCheck(el.size).length === 0
                                   ? 'Sold-Out'
-                                  : `₩ ${el.price.toLocaleString('ko-KR')}`
+                                  : `₩ ${el.price?.toLocaleString('ko-KR')}`
                               }
                             />
                           </Col>
@@ -329,7 +338,7 @@ export default function Store_client() {
           {
             <Container>
               <Row xs={1}>
-                {pd_Datas.map((el, index) => {
+                {pd_Datas.map((el) => {
                   return (
                     <Col
                       onClick={() =>
@@ -345,7 +354,7 @@ export default function Store_client() {
                         price={
                           stockCheck(el.size).length === 0
                             ? 'Sold-Out'
-                            : `₩ ${el.price.toLocaleString('ko-KR')}`
+                            : `₩ ${el.price?.toLocaleString('ko-KR')}`
                         }
                       />
                     </Col>

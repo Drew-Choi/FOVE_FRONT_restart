@@ -510,7 +510,7 @@ const CartModal = ({
           <UnitSum>Total:&nbsp;&nbsp;&nbsp;₩</UnitSum>
           <UnitSumNum>
             {(cartInfo.cartProducts.length as number) !== 0
-              ? unitSumMemo?.toLocaleString('ko-KR')
+              ? unitSumMemo!.toLocaleString('ko-KR')
               : 0}
           </UnitSumNum>
           <UnitSum>/ {cartInfo.cartProductsLength} ea</UnitSum>

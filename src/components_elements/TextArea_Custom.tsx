@@ -1,7 +1,30 @@
+import React, {
+  CSSProperties,
+  Dispatch,
+  MutableRefObject,
+  PropsWithChildren,
+  SetStateAction,
+} from 'react';
+
+// type
+interface TextArea_Custom extends PropsWithChildren {
+  inputref?: MutableRefObject<HTMLTextAreaElement>;
+  name?: string;
+  placeholder?: string;
+  onChangeEvent?: (e?: any) => void | Dispatch<SetStateAction<any>>;
+  value?: string;
+  onClickEvent?: (e?: any) => void | Dispatch<SetStateAction<any>>;
+  maxLength?: number;
+  cols: number;
+  rows: number;
+  styleArea?: CSSProperties;
+  styleChildren?: CSSProperties;
+  textAreaClassName?: string;
+}
+
 export default function TextArea_Custom({
   children,
   inputref,
-  type,
   name,
   placeholder,
   onChangeEvent,
@@ -13,7 +36,7 @@ export default function TextArea_Custom({
   styleArea,
   styleChildren,
   textAreaClassName,
-}) {
+}: TextArea_Custom) {
   return (
     <div>
       <p style={styleChildren}>{children}</p>
@@ -21,7 +44,6 @@ export default function TextArea_Custom({
         // input 값을 ref로 보내기
         style={styleArea}
         ref={inputref}
-        type={type}
         name={name}
         value={value}
         placeholder={placeholder}

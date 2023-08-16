@@ -1,30 +1,25 @@
 /* eslint-disable no-undef */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import getToken from '../../../../constant/getToken';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import orderCancel from '../../../../styles/orderCancel_client.module.scss';
 import styled from 'styled-components';
 import Loading from '../../Loading';
-import Select_Custom from '../../../../components_elements/Select_Custom';
-
-const Pd_Images = styled.div`
-  ${(props) =>
-    props.img && `background-image: url('${REACT_APP_KEY_IMAGE}${props.img}')`}
-`;
 
 const { REACT_APP_KEY_IMAGE } = process.env;
 const { REACT_APP_KEY_BACK } = process.env;
 
-// 취소 사유 리스트 constant
-const cancelReason = ['단순변심', '다른 상품으로 다시 주문', '기타'];
+const Pd_Images = styled.div<{ img: string }>`
+  ${(props) =>
+    props.img && `background-image: url('${REACT_APP_KEY_IMAGE}${props.img}')`}
+`;
 
-export default function OrderCancel_client() {
-  const [orderCancelItem, setOrderCancelItem] = useState(null);
+export default function OrderCancel_client_onlyOrder() {
+  const [orderCancelItem, setOrderCancelItem] =
+    useState<Order_Cancel_ListType | null>(null);
   const navigate = useNavigate();
   const { orderId } = useParams();
-  // 취소사유
-  const cancelReasonSelet = useRef('단순변심');
 
   useEffect(() => {
     // 상품 id로 선택한 상품 불러오기
@@ -40,7 +35,7 @@ export default function OrderCancel_client() {
           },
         );
         setOrderCancelItem(getCancelData.data);
-      } catch (err) {
+      } catch (err: any) {
         navigate(
           `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
         );
@@ -50,6 +45,28 @@ export default function OrderCancel_client() {
 
     getCancelItem();
   }, []);
+
+  const readyCancel = async () => {
+    try {
+      const tokenValue = await getToken();
+
+      const response = await axios.post(
+        `${REACT_APP_KEY_BACK}/order_list/readyCancel`,
+        { orderId: orderId, token: tokenValue },
+      );
+
+      if (response.status !== 200) return alert('주문취소 실패');
+      // 200번대 성공이면
+      navigate(`/mypage/orderlist/cancel_onlyOrder/complete`);
+      return;
+    } catch (err: any) {
+      navigate(
+        `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+      );
+      console.error(err);
+      return;
+    }
+  };
 
   return (
     <>
@@ -103,14 +120,7 @@ export default function OrderCancel_client() {
                 );
               })}
               <div className={orderCancel.infoCancelContainer}>
-                <Select_Custom
-                  classNameChildren={orderCancel.reason_children}
-                  classNameSelect={orderCancel.reason_select}
-                  inputRef={cancelReasonSelet}
-                  selectList={cancelReason}
-                >
-                  * 취소 사유
-                </Select_Custom>
+                <p className={orderCancel.older_detail_info}>* 입금 전 취소</p>
                 <p className={orderCancel.older_detail_info}>
                   total ={' '}
                   <strong style={{ fontSize: '17px' }}>
@@ -134,11 +144,7 @@ export default function OrderCancel_client() {
                 </button>
                 <button
                   className={orderCancel.orderCancle}
-                  onClick={() =>
-                    navigate(
-                      `/mypage/orderlist/cancel/${orderCancelItem.payments.orderId}/${cancelReasonSelet.current.value}/complete`,
-                    )
-                  }
+                  onClick={() => readyCancel()}
                 >
                   취소진행
                 </button>

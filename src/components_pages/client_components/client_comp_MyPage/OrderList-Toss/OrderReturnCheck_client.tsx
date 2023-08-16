@@ -12,7 +12,7 @@ import Loading_Spinner from '../../Loading_Spinner';
 const { REACT_APP_KEY_BACK } = process.env;
 const { REACT_APP_KEY_IMAGE } = process.env;
 
-const Pd_Images = styled.div`
+const Pd_Images = styled.div<{ img: string }>`
   ${(props) =>
     props.img && `background-image: url('${REACT_APP_KEY_IMAGE}${props.img}')`}
 `;
@@ -44,14 +44,14 @@ const Preview = styled.img`
 
 export default function OrderReturnCheck_client() {
   // 스피너
-  const [spinner, setSpinner] = useState(false);
-
-  const [orderCancelItem, setOrderCancelItem] = useState(null);
+  const [spinner, setSpinner] = useState<boolean>(false);
+  const [orderCancelItem, setOrderCancelItem] =
+    useState<Order_Cancel_ListType | null>(null);
   const navigate = useNavigate();
   const { orderId } = useParams();
 
   // 로그인 여부 확인 - 장바구니 담기, 바로 구매 가능 여부 판단
-  const isLogin = useSelector((state) => state.user.isLogin);
+  const isLogin = useSelector((state: IsLoginState) => state.user.isLogin);
 
   useEffect(() => {
     const getCancelItem = async () => {
@@ -66,7 +66,7 @@ export default function OrderReturnCheck_client() {
           },
         );
         setOrderCancelItem(getCancelData.data);
-      } catch (err) {
+      } catch (err: any) {
         navigate(
           `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
         );
@@ -97,7 +97,7 @@ export default function OrderReturnCheck_client() {
         alert('반품신청 철회 완료');
         return navigate('/mypage/orderlist');
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
       navigate(
         `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
@@ -179,13 +179,13 @@ export default function OrderReturnCheck_client() {
               <p className={orderReturnCheck.return_reason}>
                 reason:{' '}
                 <span className={orderReturnCheck.reason_text}>
-                  {orderCancelItem.submitReturn.reason}
+                  {orderCancelItem.submitReturn?.reason}
                 </span>
               </p>
               <p className={orderReturnCheck.return_etc}>
                 message:{' '}
                 <span className={orderReturnCheck.reason_etc_text}>
-                  {orderCancelItem.submitReturn.return_message}
+                  {orderCancelItem.submitReturn?.return_message}
                 </span>
               </p>
               <p className={orderReturnCheck.return_reason}>
@@ -299,7 +299,7 @@ export default function OrderReturnCheck_client() {
               </p>
               <div className={orderReturnCheck.infoCancelContainer}>
                 <div className={orderReturnCheck.line}></div>
-                {orderCancelItem.submitReturn.return_img.map((el, index) => {
+                {orderCancelItem.submitReturn?.return_img?.map((el, index) => {
                   return (
                     <Preview
                       key={index}

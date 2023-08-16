@@ -7,12 +7,23 @@ import getToken from '../../../constant/getToken';
 
 const { REACT_APP_KEY_BACK } = process.env;
 
+// constant
+const filterUniqueCode = (time: string) => {
+  const uniqueKey = time.replace(/[-T:]/g, '').replace(/\+.*/, '');
+  return uniqueKey;
+};
+
+const timeFix = (time: string) => {
+  const timeFixed = time.replace(/[T]/g, ' T').replace(/\+.*/, '');
+  return timeFixed;
+};
+
 export default function TossPay_Complete() {
   const navigate = useNavigate();
   const location = useLocation();
   const searchQuery = new URLSearchParams(location.search);
-  const [orderID, setOrderID] = useState('');
-  const [orderTime, setOrderTime] = useState('');
+  const [orderID, setOrderID] = useState<string>('');
+  const [orderTime, setOrderTime] = useState<string>('');
 
   useEffect(() => {
     // 주문정보 가져오기
@@ -24,13 +35,10 @@ export default function TossPay_Complete() {
         );
 
         if (paymentData.status === 200) {
-          await localStorage.setItem(
-            'payments',
-            JSON.stringify(paymentData.data),
-          );
+          localStorage.setItem('payments', JSON.stringify(paymentData.data));
           return;
         }
-      } catch (err) {
+      } catch (err: any) {
         navigate(
           `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
         );
@@ -41,12 +49,15 @@ export default function TossPay_Complete() {
     // 로컬스토리지 정보 뺴오기
     const finalOrderPost = async () => {
       //로컬에서 주문내역 뺴서 가공
-      const products = await JSON.parse(localStorage.getItem('products'));
-      const recipien = await JSON.parse(localStorage.getItem('recipien'));
-      const payments = await JSON.parse(localStorage.getItem('payments'));
+      const productJSON = localStorage.getItem('products');
+      const products = productJSON ? await JSON.parse(productJSON) : null;
+      const recipienJSON = localStorage.getItem('recipien');
+      const recipien = recipienJSON ? await JSON.parse(recipienJSON) : null;
+      const paymentsJSON = localStorage.getItem('payments');
+      const payments = paymentsJSON ? await JSON.parse(paymentsJSON) : null;
 
-      setOrderID((cur) => payments.orderId);
-      setOrderTime((cur) => payments.approvedAt);
+      setOrderID(payments.orderId);
+      setOrderTime(payments.approvedAt);
 
       //백으로 최종 주문내역서 보내기
       try {
@@ -89,7 +100,7 @@ export default function TossPay_Complete() {
           alert('주문실패');
           return;
         }
-      } catch (err) {
+      } catch (err: any) {
         navigate(
           `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
         );
@@ -101,26 +112,16 @@ export default function TossPay_Complete() {
       try {
         await getData();
         await finalOrderPost();
-      } catch (error) {
+      } catch (err: any) {
         navigate(
           `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
         );
-        console.error('Error occurred:', error);
+        console.error('Error occurred:', err);
       }
     };
 
     array();
   }, []);
-
-  const filterUniqueCode = (time) => {
-    const uniqueKey = time.replace(/[-T:]/g, '').replace(/\+.*/, '');
-    return uniqueKey;
-  };
-
-  const timeFix = (time) => {
-    const timeFixed = time.replace(/[T]/g, ' T').replace(/\+.*/, '');
-    return timeFixed;
-  };
 
   return (
     <div className={tossPayComplete.toss_complete_container}>

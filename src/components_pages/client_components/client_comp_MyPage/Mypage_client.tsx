@@ -1,5 +1,12 @@
 /* eslint-disable no-undef */
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  CSSProperties,
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import DaumPostcode from 'react-daum-postcode';
 import myPage from '../../../styles/mypage_client.module.scss';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +20,7 @@ const { REACT_APP_KEY_BACK } = process.env;
 
 // constant
 // 다음 주소 위젯 스타일 지정
-const postCodeStyle2 = {
+const postCodeStyle2: CSSProperties = {
   display: 'block',
   position: 'relative',
   height: '480px',
@@ -23,24 +30,30 @@ const postCodeStyle2 = {
 
 export default function Mypage_client() {
   const navigate = useNavigate();
-  const userNameEncoded = useSelector((state) => state.user.userName);
-  const [orderListArray, setOrderListArray] = useState(null);
-  const [cancelListArray, setCancelListArray] = useState(null);
-  const [redirect, setRedirect] = useState(false);
-  const [addressInfo, setAddressInfo] = useState(null);
-  const [phoneSplitData, setPhoneSplitData] = useState([]);
-  const [disableCtr, setDisableCtr] = useState(true);
+  const userNameEncoded = useSelector(
+    (state: { user: { userName: string } }) => state.user.userName,
+  );
+  const [orderListArray, setOrderListArray] = useState<
+    Order_Cancel_ListType[] | null
+  >(null);
+  const [cancelListArray, setCancelListArray] = useState<
+    Order_Cancel_ListType[] | null
+  >(null);
+  const [redirect, setRedirect] = useState<boolean>(false);
+  const [addressInfo, setAddressInfo] = useState<AddressDefault | null>(null);
+  const [phoneSplitData, setPhoneSplitData] = useState<string[]>([]);
+  const [disableCtr, setDisableCtr] = useState<boolean>(true);
 
   // 인풋 정보 담아서 모으기
-  const recipient = useRef();
-  const zipCode = useRef();
-  const address = useRef();
-  const detailAddress = useRef();
-  const phoneZoneCode = useRef();
-  const message = useRef();
+  const recipient = useRef<HTMLInputElement | null>(null);
+  const zipCode = useRef<HTMLInputElement | null>(null);
+  const address = useRef<HTMLInputElement | null>(null);
+  const detailAddress = useRef<HTMLInputElement | null>(null);
+  const phoneZoneCode = useRef<HTMLSelectElement | null>(null);
+  const message = useRef<HTMLTextAreaElement | null>(null);
 
   // 매개변수만 받으면되서 callback
-  const phoneNumSplit = useCallback((num) => {
+  const phoneNumSplit = useCallback((num: string) => {
     if (!num || num === '') return;
 
     const splitNum = num.split('-');
@@ -48,17 +61,17 @@ export default function Mypage_client() {
   }, []);
 
   // 전화번호 유효성 검사, 매개변수만 받으면되서 callback
-  const checkPhoneCode = useCallback((phoneData, index) => {
+  const checkPhoneCode = useCallback((phoneData: string, index: number) => {
     const splitData = phoneData.split('-');
     return splitData[index];
   }, []);
 
   // 전화번호 유효성검사
-  const [regexValue_num1, setRegexValue_num1] = useState('');
-  const [regexValue_num2, setRegexValue_num2] = useState('');
+  const [regexValue_num1, setRegexValue_num1] = useState<string>('');
+  const [regexValue_num2, setRegexValue_num2] = useState<string>('');
 
   // 유효성검사용 핸들
-  const regexValue_num1_handle = (e) => {
+  const regexValue_num1_handle = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const regex = /^\d+$/;
 
@@ -68,35 +81,38 @@ export default function Mypage_client() {
   };
 
   // 유효성검사용 핸들
-  const regexValue_num2_handle = (e) => {
+  const regexValue_num2_handle = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const regex = /^\d+$/;
 
     if (regex.test(value) || value === '') {
-      setRegexValue_num2((cur) => value);
+      setRegexValue_num2(value);
     }
   };
 
   // 취소시 리셋
   const resetInput = () => {
-    recipient.current.value = '';
-    phoneZoneCode.current.value = checkPhoneCode(addressInfo.recipientPhone, 0);
+    recipient.current!.value = '';
+    phoneZoneCode.current!.value = checkPhoneCode(
+      addressInfo!.recipientPhone,
+      0,
+    );
     setRegexValue_num1('');
     setRegexValue_num2('');
-    message.current.value = '';
-    addressData.zonecode = '';
-    addressData.address = '';
-    addressData.buildingName = '';
+    message.current!.value = '';
+    addressData!.zonecode = '';
+    addressData!.address = '';
+    addressData!.buildingName = '';
   };
 
   const resetInput2 = () => {
-    recipient.current.value = '';
+    recipient.current!.value = '';
     setRegexValue_num1('');
     setRegexValue_num2('');
-    message.current.value = '';
-    addressData.zonecode = '';
-    addressData.address = '';
-    addressData.buildingName = '';
+    message.current!.value = '';
+    addressData!.zonecode = '';
+    addressData!.address = '';
+    addressData!.buildingName = '';
   };
 
   // 주소 업데이트 백엔드 요청
@@ -113,89 +129,89 @@ export default function Mypage_client() {
 
       const newAddress = {
         recipient:
-          recipient.current.value === ''
-            ? addressInfo.recipient
-            : recipient.current.value,
+          recipient.current?.value === ''
+            ? addressInfo?.recipient
+            : recipient.current?.value,
         address:
-          address.current.value === ''
-            ? addressInfo.address
-            : address.current.value,
+          address.current?.value === ''
+            ? addressInfo?.address
+            : address.current?.value,
         addressDetail:
-          detailAddress.current.value === ''
-            ? addressInfo.addressDetail
-            : detailAddress.current.value,
+          detailAddress.current?.value === ''
+            ? addressInfo?.addressDetail
+            : detailAddress.current?.value,
         zipCode:
-          zipCode.current.value === ''
-            ? addressInfo.zipCode
-            : zipCode.current.value,
+          zipCode.current?.value === ''
+            ? addressInfo?.zipCode
+            : zipCode.current?.value,
 
         recipientPhone:
-          phoneZoneCode.current.value ===
-            checkPhoneCode(addressInfo.recipientPhone, 0) &&
+          phoneZoneCode.current?.value ===
+            checkPhoneCode(addressInfo!.recipientPhone, 0) &&
           regexValue_num1 === '' &&
           regexValue_num2 === ''
-            ? addressInfo.recipientPhone
-            : phoneZoneCode.current.value !==
-                checkPhoneCode(addressInfo.recipientPhone, 0) &&
+            ? addressInfo?.recipientPhone
+            : phoneZoneCode.current?.value !==
+                checkPhoneCode(addressInfo!.recipientPhone, 0) &&
               regexValue_num1 === '' &&
               regexValue_num2 === ''
-            ? `${phoneZoneCode.current.value}-${checkPhoneCode(
-                addressInfo.recipientPhone,
+            ? `${phoneZoneCode.current?.value}-${checkPhoneCode(
+                addressInfo!.recipientPhone,
                 1,
-              )}-${checkPhoneCode(addressInfo.recipientPhone, 2)}`
-            : phoneZoneCode.current.value ===
-                checkPhoneCode(addressInfo.recipientPhone, 0) &&
+              )}-${checkPhoneCode(addressInfo!.recipientPhone, 2)}`
+            : phoneZoneCode.current?.value ===
+                checkPhoneCode(addressInfo!.recipientPhone, 0) &&
               regexValue_num1 !== '' &&
               regexValue_num2 === ''
             ? `${checkPhoneCode(
-                addressInfo.recipientPhone,
+                addressInfo!.recipientPhone,
                 0,
               )}-${regexValue_num1}-${checkPhoneCode(
-                addressInfo.recipientPhone,
+                addressInfo!.recipientPhone,
                 2,
               )}`
-            : phoneZoneCode.current.value ===
-                checkPhoneCode(addressInfo.recipientPhone, 0) &&
+            : phoneZoneCode.current?.value ===
+                checkPhoneCode(addressInfo!.recipientPhone, 0) &&
               regexValue_num1 === '' &&
               regexValue_num2 !== ''
             ? `${checkPhoneCode(
-                addressInfo.recipientPhone,
+                addressInfo!.recipientPhone,
                 0,
               )}-${checkPhoneCode(
-                addressInfo.recipientPhone,
+                addressInfo!.recipientPhone,
                 1,
               )}-${regexValue_num2}`
-            : phoneZoneCode.current.value !==
-                checkPhoneCode(addressInfo.recipientPhone, 0) &&
+            : phoneZoneCode.current?.value !==
+                checkPhoneCode(addressInfo!.recipientPhone, 0) &&
               regexValue_num1 !== '' &&
               regexValue_num2 === ''
             ? `${
-                phoneZoneCode.current.value
+                phoneZoneCode.current?.value
               }-${regexValue_num1}-${checkPhoneCode(
-                addressInfo.recipientPhone,
+                addressInfo!.recipientPhone,
                 2,
               )}`
-            : phoneZoneCode.current.value !==
-                checkPhoneCode(addressInfo.recipientPhone, 0) &&
+            : phoneZoneCode.current?.value !==
+                checkPhoneCode(addressInfo!.recipientPhone, 0) &&
               regexValue_num1 === '' &&
               regexValue_num2 !== ''
-            ? `${phoneZoneCode.current.value}-${checkPhoneCode(
-                addressInfo.recipientPhone,
+            ? `${phoneZoneCode.current?.value}-${checkPhoneCode(
+                addressInfo!.recipientPhone,
                 1,
               )}-${regexValue_num2}`
-            : phoneZoneCode.current.value ===
-                checkPhoneCode(addressInfo.recipientPhone, 0) &&
+            : phoneZoneCode.current?.value ===
+                checkPhoneCode(addressInfo!.recipientPhone, 0) &&
               regexValue_num1 !== '' &&
               regexValue_num2 !== ''
             ? `${checkPhoneCode(
-                addressInfo.recipientPhone,
+                addressInfo!.recipientPhone,
                 0,
               )}-${regexValue_num1}-${regexValue_num2}`
-            : `${phoneZoneCode.current.value}-${regexValue_num1}-${regexValue_num2}`,
+            : `${phoneZoneCode.current?.value}-${regexValue_num1}-${regexValue_num2}`,
         message_ad:
-          message.current.value === ''
-            ? addressInfo.message_ad
-            : message.current.value,
+          message.current?.value === ''
+            ? addressInfo?.message_ad
+            : message.current?.value,
         isDefault: true,
       };
 
@@ -211,11 +227,11 @@ export default function Mypage_client() {
       alert('기본배송주소 등록 성공');
       setRedirect((cur) => !cur);
       resetInput2();
-      phoneZoneCode.current.value = checkPhoneCode(
+      phoneZoneCode.current!.value = checkPhoneCode(
         response.data.recipientPhone,
         0,
       );
-      setDisableCtr((cur) => true);
+      setDisableCtr(true);
       return;
     } catch (err) {
       alert('오류\n등록실패');
@@ -225,11 +241,15 @@ export default function Mypage_client() {
   };
 
   //다음주소 불러오기 기능 ----------------------------------------------
-  const [openPostcode, setOpenPostcode] = useState(false);
-  const [addressData, setAdressData] = useState({});
-  const handleChange = (event) => {
+  const [openPostcode, setOpenPostcode] = useState<boolean>(false);
+  const [addressData, setAdressData] = useState<DaumPostInfo | null>(null);
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setAdressData((cur) => {
-      let copy = { ...cur };
+      if (cur === null) {
+        return null;
+      }
+      const copy: DaumPostInfo = { ...cur };
       copy.buildingName = event.target.value;
       return copy;
     });
@@ -251,7 +271,7 @@ export default function Mypage_client() {
     },
 
     // 주소 선택 이벤트
-    selectAddress: (data) => {
+    selectAddress: (data: DaumPostInfo) => {
       setAdressData(data);
       setOpenPostcode(false);
     },
@@ -275,7 +295,7 @@ export default function Mypage_client() {
         } else {
           return setOrderListArray([]);
         }
-      } catch (err) {
+      } catch (err: any) {
         navigate(
           `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
         );
@@ -297,11 +317,11 @@ export default function Mypage_client() {
           getCancelListData.status === 200 &&
           getCancelListData.data.length > 0
         ) {
-          return setCancelListArray((cur) => getCancelListData.data);
+          return setCancelListArray(getCancelListData.data);
         } else {
-          return setCancelListArray((cur) => []);
+          return setCancelListArray([]);
         }
-      } catch (err) {
+      } catch (err: any) {
         navigate(
           `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
         );
@@ -326,7 +346,7 @@ export default function Mypage_client() {
         setAddressInfo(response.data);
         phoneNumSplit(response.data.recipientPhone);
         return;
-      } catch (err) {
+      } catch (err: any) {
         navigate(
           `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
         );
@@ -636,7 +656,7 @@ export default function Mypage_client() {
                         ? addressInfo.zipCode
                         : '우편번호 없음'
                     }
-                    value={addressData === {} ? '' : addressData.zonecode}
+                    value={addressData === null ? '' : addressData.zonecode}
                     onChange={(e) => handleChange(e)}
                     disabled
                   />
@@ -672,7 +692,7 @@ export default function Mypage_client() {
                   placeholder={
                     addressInfo.address ? addressInfo.address : '주소 없음'
                   }
-                  value={addressData === {} ? '' : addressData.address}
+                  value={addressData === null ? '' : addressData.address}
                   ref={address}
                   onChange={(e) => handleChange(e)}
                   disabled
@@ -685,7 +705,7 @@ export default function Mypage_client() {
                       ? addressInfo.addressDetail
                       : '나머지 주소 없음'
                   }
-                  value={addressData === {} ? '' : addressData.buildingName}
+                  value={addressData === null ? '' : addressData.buildingName}
                   onChange={(e) => handleChange(e)}
                   disabled={disableCtr}
                 />
@@ -715,7 +735,7 @@ export default function Mypage_client() {
                     disabled={disableCtr}
                     value={regexValue_num1}
                     onChange={(e) => regexValue_num1_handle(e)}
-                    maxLength="4"
+                    maxLength={4}
                   />
                   <input
                     type="text"
@@ -727,15 +747,14 @@ export default function Mypage_client() {
                     disabled={disableCtr}
                     value={regexValue_num2}
                     onChange={(e) => regexValue_num2_handle(e)}
-                    maxLength="4"
+                    maxLength={4}
                   />
                 </div>
                 <textarea
                   ref={message}
-                  maxLength="50"
-                  rows="3"
-                  cols="100"
-                  type="text"
+                  maxLength={50}
+                  rows={3}
+                  cols={100}
                   className={myPage.textArea}
                   placeholder={
                     addressInfo.message_ad
@@ -749,7 +768,7 @@ export default function Mypage_client() {
                 {disableCtr ? (
                   <span
                     className={myPage.registerBTN_white}
-                    onClick={() => setDisableCtr((cur) => false)}
+                    onClick={() => setDisableCtr(false)}
                   >
                     수정
                   </span>
@@ -757,7 +776,7 @@ export default function Mypage_client() {
                   <span
                     className={myPage.registerBTN_white}
                     onClick={() => {
-                      setDisableCtr((cur) => true);
+                      setDisableCtr(true);
                       resetInput();
                     }}
                   >

@@ -9,21 +9,30 @@ import Loading from '../../Loading';
 const { REACT_APP_KEY_BACK } = process.env;
 
 // constant
-const timeFix = (time) => {
+const timeFix = (time: string) => {
   const timeFixed = time.replace(/[T]/g, ' T').replace(/\+.*/, '');
   return timeFixed;
 };
 
-const filterUniqueCode = (time) => {
+const filterUniqueCode = (time: string) => {
   const uniqueKey = time.replace(/[-T:]/g, '').replace(/\+.*/, '');
   return uniqueKey;
 };
+
+// type
+interface CancelDataType {
+  approvedAt: string;
+  orderId: string;
+  cancels: [{ canceledAt: string }];
+}
 
 export default function TossPay_Cancel_Complete() {
   const { orderId } = useParams();
   const { reason } = useParams();
   const navigate = useNavigate();
-  const [cancelInfoData, setCancelInfoData] = useState(null);
+  const [cancelInfoData, setCancelInfoData] = useState<CancelDataType | null>(
+    null,
+  );
 
   useEffect(() => {
     const cancelProgress = async () => {
@@ -42,7 +51,7 @@ export default function TossPay_Cancel_Complete() {
           setCancelInfoData(cancelInfo.data);
           return;
         }
-      } catch (err) {
+      } catch (err: any) {
         if (err.data.status === 409) {
           alert('중복된 취소 오류');
           navigate(

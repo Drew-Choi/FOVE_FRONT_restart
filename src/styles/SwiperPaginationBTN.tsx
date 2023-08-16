@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { Dispatch, PropsWithChildren, SetStateAction } from 'react';
 import styled from 'styled-components';
 
-const PaginationNum = styled.span`
+const PaginationNum = styled.span<{ fontSize: string; hoverColor: string }>`
   font-size: ${(props) => props.fontSize};
   padding: 10px;
   cursor: pointer;
@@ -11,15 +11,23 @@ const PaginationNum = styled.span`
   }
 `;
 
+// type
+interface SwiperPaginationBTNType extends PropsWithChildren {
+  onClickEvent: (e?: any) => void | Dispatch<SetStateAction<any>>;
+  fontSize: string;
+  color: string;
+  hoverColor: string;
+  className: string;
+}
+
 const SwiperPaginationBTN = ({
   children,
   onClickEvent,
   fontSize,
   color,
   hoverColor,
-  useRef,
   className,
-}) => {
+}: SwiperPaginationBTNType) => {
   return (
     <PaginationNum
       className={className}
@@ -27,7 +35,6 @@ const SwiperPaginationBTN = ({
       fontSize={fontSize}
       color={color}
       hoverColor={hoverColor}
-      useRef={useRef}
     >
       {children}
     </PaginationNum>

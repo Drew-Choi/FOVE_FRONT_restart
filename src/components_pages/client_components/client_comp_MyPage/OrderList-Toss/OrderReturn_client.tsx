@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import React, {
+  ChangeEvent,
   useCallback,
   useEffect,
   useMemo,
@@ -17,7 +18,7 @@ import BTN_black_nomal_comp from '../../../../styles/BTN_black_nomal_comp';
 import { useSelector } from 'react-redux';
 import Loading_Spinner from '../../Loading_Spinner';
 
-const Pd_Images = styled.div`
+const Pd_Images = styled.div<{ img: string }>`
   ${(props) =>
     props.img && `background-image: url('${REACT_APP_KEY_IMAGE}${props.img}')`}
 `;
@@ -51,7 +52,7 @@ const { REACT_APP_KEY_IMAGE } = process.env;
 const { REACT_APP_KEY_BACK } = process.env;
 
 // 날짜 추출 / 매개변수만 받음 되서 고정
-const dateSlice = (date) => {
+const dateSlice = (date: string) => {
   const sliceDate = date.substring(0, 19);
   return sliceDate;
 };
@@ -59,15 +60,29 @@ const dateSlice = (date) => {
 export default function OrderReturn_client() {
   const navigate = useNavigate();
   // 스피너
-  const [spinner, setSpinner] = useState(false);
-  const [orderCancelItem, setOrderCancelItem] = useState(null);
+  const [spinner, setSpinner] = useState<boolean>(false);
+  const [orderCancelItem, setOrderCancelItem] =
+    useState<Order_Cancel_ListType | null>(null);
   const { orderId } = useParams();
-  const desc = useRef('');
+  const desc = useRef<HTMLTextAreaElement>(null);
 
   // 로그인 정보
-  const isLogin = useSelector((state) => state.user.isLogin);
+  const isLogin = useSelector((state: IsLoginState) => state.user.isLogin);
+
+  // 반품사유
+  const cancelReasonSelet = useRef<HTMLSelectElement>(null);
+  const cancelReason = ['상품파손', '기타'];
+  const [reasonChange, setReasonChange] = useState<string>('상품파손');
+  const reasonHandle = () => {
+    if (cancelReasonSelet.current?.value === '기타')
+      return setReasonChange('기타');
+    return setReasonChange('상품파손');
+  };
 
   useEffect(() => {
+    if (cancelReasonSelet.current?.value === null) {
+      cancelReasonSelet.current.value = '상품파손';
+    }
     const getCancelItem = async () => {
       try {
         const tokenValue = await getToken();
@@ -80,7 +95,7 @@ export default function OrderReturn_client() {
           },
         );
         setOrderCancelItem(getCancelData.data);
-      } catch (err) {
+      } catch (err: any) {
         navigate(
           `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
         );
@@ -91,49 +106,38 @@ export default function OrderReturn_client() {
     getCancelItem();
   }, []);
 
-  // 반품사유
-  const cancelReasonSelet = useRef('상품파손');
-  const cancelReason = ['상품파손', '기타'];
-  const [reasonChange, setReasonChange] = useState('상품파손');
-  const reasonHandle = () => {
-    if (cancelReasonSelet.current.value === '기타')
-      return setReasonChange('기타');
-    return setReasonChange('상품파손');
-  };
-
   // 반품 사유가 되는 사진 업로드 ------
-  // 이미지 정보 Ref
-  const pd_img = useRef();
   //이미지 파일 업로드용 Ref
-  const fileInputRef = useRef();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   //이미지 url접근값 저장 state
-  const [imageFile, setImageFile] = useState(null);
+  const [imageFile, setImageFile] = useState<ImagePreviewType[] | null>(null);
+  // 업로드이미지정보
+  const [pd_img, setPd_img] = useState<ImagePreviewType[] | null>(null);
 
   // 이미지 업로드 팝업 클릭용
   const handleClickFileInput = () => {
-    fileInputRef.current.click();
+    fileInputRef.current?.click();
   };
 
   //및 이미지 숫자를 3개로 제한
   //Array.from은 배열과 유사한 것을 배열화 시킴, 이미지 갯수 때문에 배열화
   //함수 구성이 복잡하므로 파일 업로드 시에만 callback
   const uploadProfile = useCallback(
-    (e) => {
-      const fileList = [...e.target.files];
-      const fileLength = fileList.length;
-      if (fileLength > 3) {
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const fileList: FileList | null = e.target.files;
+      if (fileList!.length > 3) {
         return alert('최대 3개까지 업로드 가능합니다.');
       } else {
         // 파일리스트 2번 가공함
         // 첫 번째 가공배열 담을 배열
-        let copy = [];
+        const copy: ImagePreviewType[] = [];
         // 두 번째 가공배열 담을 배열
-        let copyUpload = [];
+        const copyUpload: ImagePreviewType[] = [];
 
         if (fileList) {
-          fileList.forEach((el, index) => {
+          Array.from(fileList).forEach((el, index) => {
             // 파일리스트 첫 번째 가공: 프레뷰용으로 저장
-            const imgInfo = {
+            const imgInfo: ImagePreviewType = {
               file: el,
               thumbnail: URL.createObjectURL(el),
               type: el.type.slice(0, 5),
@@ -142,7 +146,7 @@ export default function OrderReturn_client() {
 
             // 파일리스트 두 번째 가공: 업로드 백엔드 요청용으로 가공. 여기서 파일명을 주문번호(orderId)로 넣어주고 '_1,_2_,3'으로 정의해 주어
             // 추후 어드민에서 해당 orderId의 고유번호로 찾을 수 있도록 한다. 그래서 오데이터를 없앤다.
-            const uploadInfo = {
+            const uploadInfo: ImagePreviewType = {
               file: new File(
                 [el],
                 `${orderId}_${index + 1}.${el.name.split('.').pop()}`,
@@ -153,7 +157,7 @@ export default function OrderReturn_client() {
           });
         }
         setImageFile(copy);
-        pd_img.current = copyUpload;
+        setPd_img(copyUpload);
       }
     },
     [fileInputRef],
@@ -177,8 +181,9 @@ export default function OrderReturn_client() {
 
   // 반품 제출이 성공적이면 complete화면으로 이동
   // fetch요청으로 받은 데이터를 사용할거라 컴포넌트 내에서 처리
-  const [completeStatus, setCompleteStatus] = useState(false);
-  const [returnSubmitData, setReturnSubmitData] = useState(null);
+  const [completeStatus, setCompleteStatus] = useState<boolean>(false);
+  const [returnSubmitData, setReturnSubmitData] =
+    useState<Order_Cancel_ListType | null>(null);
 
   // 반품 신청서 제출
   const submitReturnInfo = async () => {
@@ -195,11 +200,7 @@ export default function OrderReturn_client() {
       const reason = reasonChange;
       const formData = new FormData();
       // 이미지 체크 및 form에 담기
-      if (
-        pd_img.current === undefined ||
-        pd_img.current === null ||
-        pd_img.current.length === 0
-      ) {
+      if (pd_img === undefined || pd_img === null || pd_img.length === 0) {
         setSpinner(false);
         return alert(
           '제품의 문제가 되는 부분의 사진을 최소 1장은 올려주세요.(필수사항)',
@@ -207,17 +208,15 @@ export default function OrderReturn_client() {
       } else {
         if (
           reasonChange === '기타' &&
-          (desc.current.value === '' ||
-            desc.current.value === null ||
-            desc.current.value === undefined)
+          (desc.current?.value === '' ||
+            desc.current?.value === null ||
+            desc.current?.value === undefined)
         ) {
           setSpinner(false);
           return alert('기타사유를 입력해주세요.');
         } else {
           // 이미지가 여러개라 각각 담아줌
-          pd_img.current.forEach((el) =>
-            formData.append('img_return', el.file),
-          );
+          pd_img.forEach((el) => formData.append('img_return', el.file));
 
           // 이미지외 자료들 담아주기
           formData.append(
@@ -225,7 +224,7 @@ export default function OrderReturn_client() {
             JSON.stringify({
               token: tokenValue,
               orderId,
-              message: reasonChange === '상품파손' ? '' : desc.current.value,
+              message: reasonChange === '상품파손' ? '' : desc.current?.value,
               reason,
             }),
           );
@@ -242,19 +241,19 @@ export default function OrderReturn_client() {
 
           if (submitRes.status === 200) {
             const dataParse = await submitRes.json();
+            console.log(dataParse);
             setReturnSubmitData(dataParse);
             setCompleteStatus(true);
-            setSpinner(false);
           }
         }
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
       navigate(
         `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
       );
-      setSpinner(false);
     }
+    setSpinner(false);
   };
 
   // 조건부 렌더링, submit이 완료되면 컴플릿트 페이지로 넘어감
@@ -283,7 +282,7 @@ export default function OrderReturn_client() {
               <p className={orderReturn.order_info_date}>
                 반품신청일자:{' '}
                 <span className={orderReturn.date}>
-                  {dateSlice(returnSubmitData.submitReturn.submitAt)}
+                  {dateSlice(String(returnSubmitData.submitReturn?.submitAt))}
                 </span>
               </p>
             </div>
@@ -328,6 +327,7 @@ export default function OrderReturn_client() {
 
   return (
     <section className={orderReturn.orderList_container}>
+      {spinner && <Loading_Spinner />}
       {orderCancelItem !== null && Object.keys(orderCancelItem).length > 0 ? (
         <>
           <div className={orderReturn.titleArea}>
@@ -404,11 +404,10 @@ export default function OrderReturn_client() {
                 {reasonChange === '기타' && (
                   <textarea
                     ref={desc}
-                    rows="5"
+                    rows={5}
                     wrap="hard"
-                    maxLength="200"
+                    maxLength={200}
                     className={orderReturn.reason_selfInput}
-                    type="text"
                     placeholder="기타 사유를 남겨주시면 검토 후 연락드리겠습니다. (최대 200자)"
                   />
                 )}

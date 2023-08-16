@@ -18,8 +18,6 @@ module.exports = {
   plugins: ['react', '@typescript-eslint'],
   rules: {
     'react/prop-types': 'off',
-    // 아래꺼는 나중에 뺴야함
-    'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
   },

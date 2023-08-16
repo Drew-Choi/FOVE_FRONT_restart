@@ -9,7 +9,10 @@ import Loading from '../../Loading';
 import { BsArrowDownCircle } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
 
-const PD_Images = styled.div`
+type PD_ImagesType = {
+  img: string;
+};
+const PD_Images = styled.div<PD_ImagesType>`
   ${(props) =>
     props.img && `background-image: url('${REACT_APP_KEY_IMAGE}${props.img}')`}
 `;
@@ -18,14 +21,14 @@ const { REACT_APP_KEY_BACK } = process.env;
 const { REACT_APP_KEY_IMAGE } = process.env;
 
 //날짜 분활 / 매개변수만 받음 되서 고정
-const dateSplit = (date) => {
+const dateSplit = (date: string) => {
   const splitData = date.split(/[T+]/);
   const dataSum = `${splitData[0]}  /  ${splitData[1]}`;
   return dataSum;
 };
 
 // 시간에 따라 반품신청 버튼 활성화 / 매개변수만 받음 되서 고정
-const timeCheck = (data) => {
+const timeCheck = (data: Order_Cancel_ListType) => {
   // 현재시간 기준
   if (
     data.payments.status === 'DONE' &&
@@ -53,7 +56,7 @@ const timeCheck = (data) => {
 };
 
 // 필요한 날짜만 추리기  / 매개변수만 받음 되서 고정
-const filterTimeDay = (time) => {
+const filterTimeDay = (time: string) => {
   const position = time.indexOf('T');
   const day = time.slice(0, position);
 
@@ -61,22 +64,26 @@ const filterTimeDay = (time) => {
 };
 
 export default function OrderList_client() {
-  const [orderListArray, setOrderListArray] = useState([]);
-  const [emptyOrderArray, setEmptyOrderArray] = useState(false);
-  const [cancelListArray, setCancelListArray] = useState([]);
-  const [emptyCancelArray, setEmptyCancelArray] = useState(false);
+  const [orderListArray, setOrderListArray] = useState<
+    Order_Cancel_ListType[] | null
+  >(null);
+  const [emptyOrderArray, setEmptyOrderArray] = useState<boolean>(false);
+  const [cancelListArray, setCancelListArray] = useState<
+    Order_Cancel_ListType[] | null
+  >(null);
+  const [emptyCancelArray, setEmptyCancelArray] = useState<boolean>(false);
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   // 주문상세내역서용 - order
-  const [detailInfo, setDetailInfo] = useState([]);
+  const [detailInfo, setDetailInfo] = useState<string[]>([]);
   // 주문상세내역서용 - cancel
-  const [detailInfoCancel, setDetailInfoCancel] = useState([]);
+  const [detailInfoCancel, setDetailInfoCancel] = useState<string[]>([]);
 
   // 로그인여부확인
-  const isLogin = useSelector((state) => state.user.isLogin);
+  const isLogin = useSelector((state: IsLoginState) => state.user.isLogin);
 
   // 주문상세내역서용 핸들 - order
-  const handleArrowDetail = (index) => {
+  const handleArrowDetail = (index: number) => {
     if (detailInfo[index] === 'off') {
       setDetailInfo((cur) => cur.map((el, num) => (num === index ? 'on' : el)));
     } else {
@@ -87,7 +94,7 @@ export default function OrderList_client() {
   };
 
   // 주문상세내역서용 핸들 - cancel
-  const handleArrowDetailCancel = (index) => {
+  const handleArrowDetailCancel = (index: number) => {
     if (detailInfoCancel[index] === 'off') {
       setDetailInfoCancel((cur) =>
         cur.map((el, num) => (num === index ? 'on' : el)),
@@ -113,15 +120,13 @@ export default function OrderList_client() {
           getOrderListData.status === 200 &&
           getOrderListData.data.length > 0
         ) {
-          setOrderListArray((cur) => getOrderListData.data);
-          setDetailInfo((cur) =>
-            new Array(getOrderListData.data.length).fill('off'),
-          );
+          setOrderListArray(getOrderListData.data);
+          setDetailInfo(new Array(getOrderListData.data.length).fill('off'));
           return;
         } else {
-          return setEmptyOrderArray((cur) => true);
+          return setEmptyOrderArray(true);
         }
-      } catch (err) {
+      } catch (err: any) {
         navigate(
           `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
         );
@@ -142,15 +147,15 @@ export default function OrderList_client() {
           getCancelListData.status === 200 &&
           getCancelListData.data.length > 0
         ) {
-          setCancelListArray((cur) => getCancelListData.data);
-          setDetailInfoCancel((cur) =>
+          setCancelListArray(getCancelListData.data);
+          setDetailInfoCancel(
             new Array(getCancelListData.data.length).fill('off'),
           );
           return;
         } else {
-          return setEmptyCancelArray((cur) => true);
+          return setEmptyCancelArray(true);
         }
-      } catch (err) {
+      } catch (err: any) {
         navigate(
           `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
         );
@@ -166,19 +171,19 @@ export default function OrderList_client() {
     <section className={orderList.orderList_container}>
       {
         // 조건1, 주문내역과 취소내역이 모두 데이터가 있을때
-        (orderListArray !== [] &&
+        (orderListArray !== null &&
           orderListArray.length > 0 &&
-          cancelListArray !== [] &&
+          cancelListArray !== null &&
           cancelListArray.length > 0) ||
         // 또는 조건2, 주문내역과 취소내역이 모두 데이터가 없을때
         (emptyOrderArray && emptyCancelArray) ||
         // 또는 조건3, 주문내역은 데이터가 있는데, 취소내역이 데이터가 없을때
-        (orderListArray !== [] &&
+        (orderListArray !== null &&
           orderListArray.length > 0 &&
           emptyCancelArray) ||
         // 또는 조건4, 주문내역은 데이터가 없는데, 취소내역이 데이터가 있을때
         (emptyOrderArray &&
-          cancelListArray !== [] &&
+          cancelListArray !== null &&
           cancelListArray.length > 0) ? (
           <>
             {/* 주문조회 (ORDER LIST) 제목 위치 */}
@@ -194,10 +199,10 @@ export default function OrderList_client() {
                       ? `${orderList.order_list_check} ${orderList.on}`
                       : orderList.order_list_check
                   }
-                  onClick={() => setPage((cur) => 1)}
+                  onClick={() => setPage(1)}
                 >
                   주문내역조회
-                  <span>({orderListArray.length})</span>
+                  <span>({orderListArray?.length})</span>
                 </span>
                 <span
                   className={
@@ -205,12 +210,12 @@ export default function OrderList_client() {
                       ? `${orderList.order_list_check} ${orderList.on}`
                       : orderList.order_list_check
                   }
-                  onClick={() => setPage((cur) => 2)}
+                  onClick={() => setPage(2)}
                 >
                   취소내역
                   <span>
                     (
-                    {cancelListArray.reduce((acc, cur) => {
+                    {cancelListArray?.reduce((acc, cur) => {
                       if (cur.isCancel) {
                         return acc + 1;
                       }
@@ -222,7 +227,7 @@ export default function OrderList_client() {
               </div>
               {page === 1 ? (
                 <>
-                  {orderListArray.map((el, index) => {
+                  {orderListArray?.map((el, index) => {
                     return (
                       <div
                         key={index}
@@ -328,9 +333,9 @@ export default function OrderList_client() {
                               할인:{' '}
                               {!el.payments.discount
                                 ? '0 ₩'
-                                : `${el.payments.discount.toLocaleString(
-                                    'ko-KR',
-                                  )} ₩`}
+                                : `${Number(
+                                    el.payments.discount,
+                                  ).toLocaleString('ko-KR')} ₩`}
                             </p>
                             <p className={orderList.payments_totalAmount}>
                               결제금액:{' '}
@@ -749,7 +754,7 @@ export default function OrderList_client() {
                 </>
               ) : page === 2 ? (
                 <>
-                  {cancelListArray.map((el, index) => {
+                  {cancelListArray?.map((el, index) => {
                     if (el.isCancel)
                       return (
                         <div
@@ -860,9 +865,9 @@ export default function OrderList_client() {
                                 할인:{' '}
                                 {!el.payments.discount
                                   ? '0 ₩'
-                                  : `${el.payments.discount.toLocaleString(
-                                      'ko-KR',
-                                    )} ₩`}
+                                  : `${Number(
+                                      el.payments.discount,
+                                    ).toLocaleString('ko-KR')} ₩`}
                               </p>
                               <p className={orderList.payments_totalAmount}>
                                 취소금액:{' '}

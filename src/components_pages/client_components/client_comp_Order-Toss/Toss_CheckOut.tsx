@@ -1,12 +1,16 @@
 /* eslint-disable no-undef */
 //유저 정보 받아서 데이터 바인딩 해야함
 import { useEffect, useRef } from 'react';
-import { loadPaymentWidget } from '@tosspayments/payment-widget-sdk';
+import {
+  PaymentWidgetInstance,
+  loadPaymentWidget,
+} from '@tosspayments/payment-widget-sdk';
 import { nanoid } from 'nanoid';
 import tossCheckOut from '../../../styles/toss_checkOut.module.scss';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import React from 'react';
 
 const { REACT_APP_KEY_BACK, REACT_APP_KEY_FRONT, REACT_APP_KEY_API } =
   process.env;
@@ -16,10 +20,10 @@ const selector = '#payment-widget';
 
 export function Toss_CheckOut() {
   // 로그인 확인하기
-  const isLogin = useSelector((state) => state.user.isLogin);
+  const isLogin = useSelector((state: IsLoginState) => state.user.isLogin);
   const navigate = useNavigate();
 
-  const getKey = async (key) => {
+  const getKey = async (key: string) => {
     try {
       const res = await axios.get(
         `${REACT_APP_KEY_BACK}/${REACT_APP_KEY_API}`,
@@ -28,7 +32,7 @@ export function Toss_CheckOut() {
         },
       );
       return res.data.key;
-    } catch (err) {
+    } catch (err: any) {
       navigate(
         `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
       );
@@ -37,25 +41,31 @@ export function Toss_CheckOut() {
     }
   };
 
-  const paymentWidgetRef = useRef(null);
-  const paymentMethodsWidgetRef = useRef(null);
-  const price = 0;
-  const userInfo = useSelector((state) => state.user);
+  const paymentWidgetRef = useRef<PaymentWidgetInstance | null>(null);
+  const paymentMethodsWidgetRef = useRef<ReturnType<
+    PaymentWidgetInstance['renderPaymentMethods']
+  > | null>(null);
+  const userInfo = useSelector(
+    (state: { user: { userID: string } }) => state.user,
+  );
 
   //로컬에서 주문내역 뺴서 가공 (배열로 들어옴)
-  const importLocalProducts = JSON.parse(localStorage.getItem('products'));
+  const importLocalProducts = localStorage.getItem('products');
+  const importLocalProductsParser: ProductsType[] = importLocalProducts
+    ? JSON.parse(importLocalProducts)
+    : null;
 
   // 쿼리로 보내기위한 로컬스토리지 주문정보 json화
   const importLocalProductsJSON = JSON.stringify(importLocalProducts);
 
   //이게 최종 금액
-  let orderPrice = importLocalProducts.reduce(
-    (acc, cur) => acc + cur.unitSumPrice,
+  const orderPrice = importLocalProductsParser.reduce(
+    (acc, cur) => acc + cur.unitSumPrice!,
     0,
   );
 
   //상품이름 출력
-  const productName = importLocalProducts[0].productName;
+  const productName = importLocalProductsParser[0].productName;
 
   useEffect(() => {
     const initPayment = async () => {
@@ -90,7 +100,7 @@ export function Toss_CheckOut() {
                 await paymentWidget?.requestPayment({
                   orderId: nanoid(7),
                   orderName: `${
-                    importLocalProducts.length > 1
+                    importLocalProducts!.length > 1
                       ? '상품명: ' + productName + '외 다수'
                       : '상품명: ' + productName
                   }`,

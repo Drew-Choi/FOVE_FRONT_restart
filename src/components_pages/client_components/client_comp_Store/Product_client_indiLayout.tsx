@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import styled from 'styled-components';
 
+const { REACT_APP_KEY_IMAGE } = process.env;
+
 const ImageContainer = styled.div`
   position: relative;
   background-color: white;
@@ -39,16 +41,20 @@ const ProductPrice = styled.p`
   margin: 0px;
 `;
 
+// type
+interface Product_client_indiLayoutType {
+  imgFileName: string[] | undefined;
+  productName: string;
+  price: string;
+}
+
 const Product_client_indiLayout = ({
   imgFileName,
   productName,
   price,
-  onLoadEffect,
-}) => {
+}: Product_client_indiLayoutType) => {
   //조건부 설정
-  const [isHovered, setIsHovered] = useState(false);
-
-  const { REACT_APP_KEY_IMAGE } = process.env;
+  const [isHovered, setIsHovered] = useState<boolean>(false);
 
   //마우스엔터 핸들러
   const handleMouseEnter = () => {
@@ -62,10 +68,10 @@ const Product_client_indiLayout = ({
 
   //마우스 오버 여부를 변수에 담는 곳, 이미지 파일들은 프롭스 받은 것들로 구성
   const image = isMobile
-    ? imgFileName[0]
+    ? imgFileName![0]
     : isHovered
-    ? imgFileName[1]
-    : imgFileName[0];
+    ? imgFileName![1]
+    : imgFileName![0];
 
   return (
     <ImageContainer
@@ -73,10 +79,7 @@ const Product_client_indiLayout = ({
       onMouseLeave={handleMouseLeave}
     >
       {/* 위에서 선별된 이미지를 실제로 쏴준다. */}
-      <ImageLayout
-        src={`${REACT_APP_KEY_IMAGE}` + image}
-        onLoad={onLoadEffect}
-      />
+      <ImageLayout src={`${REACT_APP_KEY_IMAGE}` + image} />
       <ProductInfoLayout>
         <ProductName>{productName}</ProductName>
         <ProductPrice>{price}</ProductPrice>
