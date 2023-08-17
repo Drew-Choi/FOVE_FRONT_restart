@@ -8,15 +8,15 @@ import React, {
 
 // type
 interface TextArea_Custom extends PropsWithChildren {
-  inputref?: MutableRefObject<HTMLTextAreaElement>;
+  inputref?: MutableRefObject<HTMLTextAreaElement | null>;
   name?: string;
   placeholder?: string;
   onChangeEvent?: (e?: any) => void | Dispatch<SetStateAction<any>>;
   value?: string;
   onClickEvent?: (e?: any) => void | Dispatch<SetStateAction<any>>;
   maxLength?: number;
-  cols: number;
-  rows: number;
+  cols?: number;
+  rows?: number;
   styleArea?: CSSProperties;
   styleChildren?: CSSProperties;
   textAreaClassName?: string;

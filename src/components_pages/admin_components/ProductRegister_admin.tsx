@@ -1,5 +1,12 @@
 /* eslint-disable no-undef */
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import productRegister from '../../styles/productRegister_admin.module.scss';
 import Input_Custom from '../../components_elements/Input_Custom';
 import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
@@ -10,7 +17,7 @@ import axios from 'axios';
 import MediaQuery from 'react-responsive';
 import Loading_Spinner from '../client_components/Loading_Spinner';
 
-const Preview = styled.div`
+const Preview = styled.div<{ thumbnail: string }>`
   position: relative;
   display: block;
   width: 600px;
@@ -49,86 +56,94 @@ const ImageOrder = styled.p`
   margin-bottom: 60px;
 `;
 
+const { REACT_APP_KEY_BACK } = process.env;
+
+// constant
+// 한국시간 구하기
+// UTC기준 시간을 한국 시간으로 바꾸기 시차 9시간
+const nowDayTime = () => {
+  const utcTimeNow = Date.now();
+  // 9시간 더하기
+  const kstTimeStamp = utcTimeNow + 9 * 60 * 60 * 1000;
+  // 9시간 더한 밀리세컨드를 Date로 생성
+  const kstData = new Date(kstTimeStamp);
+
+  return kstData;
+};
+
+//천단위 콤마생성
+const changeEnteredNumComma = (el: number | string) => {
+  const comma = (el: number | string) => {
+    el = String(el);
+    return el.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+  };
+  const uncomma = (el: number | string) => {
+    el = String(el);
+    return el.replace(/[^\d]+/g, '');
+  };
+  return comma(uncomma(el));
+};
+
+//콤마제거하고 연산 가능한 숫자로 바꾸기
+const resultCommaRemove = (el: string) => {
+  return Number(el.split(',').reduce((cur, acc) => cur + acc, ''));
+};
+//-------
+
+//카테고리 모음
+const kindArr = ['BEANIE', 'CAP', 'TRAINING', 'WINDBREAKER'];
+
 export default function ProductRegister_admin() {
   // 스피너
-  const [spinner, setSpinner] = useState(false);
-  // 한국시간 구하기
-  // UTC기준 시간을 한국 시간으로 바꾸기 시차 9시간
-  const nowDayTime = () => {
-    const utcTimeNow = Date.now();
-    // 9시간 더하기
-    const kstTimeStamp = utcTimeNow + 9 * 60 * 60 * 1000;
-    // 9시간 더한 밀리세컨드를 Date로 생성
-    const kstData = new Date(kstTimeStamp);
-
-    return kstData;
-  };
-  const { REACT_APP_KEY_BACK } = process.env;
-
-  //고유번호를 위해 ref값을 실식간 렌더링
-  const [selectCategory, setSeloectCategory] = useState('BEANIE');
-
+  const [spinner, setSpinner] = useState<boolean>(false);
+  //고유번호를 위해 값을 실식간 렌더링
+  const [selectCategory, setSeloectCategory] = useState<string>('BEANIE');
   //상품고유코드 저장하는 곳
-  const [pdCode, setPdCode] = useState('');
+  const [pdCode, setPdCode] = useState<string>('');
 
   //-------
   //가격 콤마용
-  const [enterNumPrice, setEnterNumPrice] = useState('');
+  const [enterNumPrice, setEnterNumPrice] = useState<string>('');
   //재고수량 콤마용
-  const [enterNumQuantity1, setEnterNumQuantity1] = useState('');
-  const [enterNumQuantity2, setEnterNumQuantity2] = useState('');
-  const [enterNumQuantity3, setEnterNumQuantity3] = useState('');
-  const [enterNumQuantity4, setEnterNumQuantity4] = useState('');
-
-  //카테고리 모음
-  const kindArr = ['BEANIE', 'CAP', 'TRAINING', 'WINDBREAKER'];
-
-  //천단위 콤마생성
-  const changeEnteredNumComma = (el) => {
-    const comma = (el) => {
-      el = String(el);
-      return el.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
-    };
-    const uncomma = (el) => {
-      el = String(el);
-      return el.replace(/[^\d]+/g, '');
-    };
-    return comma(uncomma(el));
-  };
-
-  //콤마제거하고 연산 가능한 숫자로 바꾸기
-  const resultCommaRemove = (el) => {
-    return Number(el.split(',').reduce((curr, acc) => curr + acc, ''));
-  };
-  //-------
+  const [enterNumQuantity1, setEnterNumQuantity1] = useState<string>('');
+  const [enterNumQuantity2, setEnterNumQuantity2] = useState<string>('');
+  const [enterNumQuantity3, setEnterNumQuantity3] = useState<string>('');
+  const [enterNumQuantity4, setEnterNumQuantity4] = useState<string>('');
 
   // 재고 유효사항을 위한 상태관리
   // OS사이즈
-  const [os_Value, setOS_Value] = useState('');
+  const [os_Value, setOS_Value] = useState<string>('');
   // S사이즈
-  const [s_Value, setS_Value] = useState('');
+  const [s_Value, setS_Value] = useState<string>('');
   // M사이즈
-  const [m_Value, setM_Value] = useState('');
+  const [m_Value, setM_Value] = useState<string>('');
   // L사이즈
-  const [l_Value, setL_Value] = useState('');
+  const [l_Value, setL_Value] = useState<string>('');
 
   //input 값을 받을 useRef생성
-  const pd_code = useRef();
-  const pd_productName = useRef();
-  const pd_price = useRef();
-  const pd_category = useRef();
-  const pd_sizeOS = useRef();
-  const pd_sizeS = useRef();
-  const pd_sizeM = useRef();
-  const pd_sizeL = useRef();
-  const pd_detail = useRef();
-  const pd_img = useRef();
+  const pd_code = useRef<HTMLInputElement>(null);
+  const pd_productName = useRef<HTMLInputElement>(null);
+  const pd_price = useRef<HTMLInputElement>(null);
+  const pd_category = useRef<HTMLSelectElement>(null);
+  const pd_sizeOS = useRef<HTMLInputElement>(null);
+  const pd_sizeS = useRef<HTMLInputElement>(null);
+  const pd_sizeM = useRef<HTMLInputElement>(null);
+  const pd_sizeL = useRef<HTMLInputElement>(null);
+  const pd_detail = useRef<HTMLTextAreaElement>(null);
+  const [pd_img, setPd_img] = useState<{ file: File }[] | null>(null);
 
   //--------이미지 영역 특수해서 따로 분리----------
   //이미지 파일 업로드용 Ref
-  const fileInputRef = useRef();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   //이미지 url접근값 저장 state
-  const [imageFile, setImageFile] = useState(null);
+  const [imageFile, setImageFile] = useState<
+    | {
+        file: File;
+        thumbnail: string;
+        type: string;
+      }[]
+    | null
+  >(null);
   //이미지인풋클릭 함수
   const handleClickFileInput = () => {
     fileInputRef.current?.click();
@@ -138,47 +153,49 @@ export default function ProductRegister_admin() {
   //및 이미지 숫자를 5개로 제한
   //Array.from은 배열과 유사한 것을 배열화 시킴, 이미지 갯수 대문에 배열화
 
-  const uploadProfile = (e) => {
-    const selectedFiles = Array.from(e.target.files);
-    if (selectedFiles.length > 5) {
-      alert('최대 5개까지 업로드 가능합니다.');
-    } else {
-      const fileList = e.target.files;
-      const length = fileList.length;
-      // 파일리스트 2번 가공함
-      // 첫 번째 가공배열 담을 배열
-      let copy = [];
-      // 두 번째 가공배열 담을 배열
-      let copyUpload = [];
+  const uploadProfile = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const selectedFiles = e.target.files;
+      const selectedFilesLength = selectedFiles!.length;
+      if (selectedFilesLength > 5) {
+        alert('최대 5개까지 업로드 가능합니다.');
+      } else {
+        // 파일리스트 2번 가공함
+        // 첫 번째 가공배열 담을 배열
+        const copy = [];
+        // 두 번째 가공배열 담을 배열
+        const copyUpload = [];
 
-      if (fileList) {
-        for (let i = 0; i < length; i += 1) {
-          const imgInfo = {
-            file: fileList[i],
-            thumbnail: URL.createObjectURL(fileList[i]),
-            type: fileList[i].type.slice(0, 5),
-          };
-          copy.push(imgInfo);
-          // 파일리스트 두 번째 가공: 업로드 백엔드 요청용으로 가공.
-          // 파일명을 상품코드로 작성하여 정리함
-          const uploadPdInfo = {
-            file: new File(
-              [fileList[i]],
-              `${pdCode}_${i + 1}.${fileList[i].name.split('.').pop()}`,
-              { type: fileList[i].type },
-            ),
-          };
-          copyUpload.push(uploadPdInfo);
+        if (selectedFiles) {
+          for (let i = 0; i < length; i += 1) {
+            const imgInfo = {
+              file: selectedFiles[i],
+              thumbnail: URL.createObjectURL(selectedFiles[i]),
+              type: selectedFiles[i].type.slice(0, 5),
+            };
+            copy.push(imgInfo);
+            // 파일리스트 두 번째 가공: 업로드 백엔드 요청용으로 가공.
+            // 파일명을 상품코드로 작성하여 정리함
+            const uploadPdInfo = {
+              file: new File(
+                [selectedFiles[i]],
+                `${pdCode}_${i + 1}.${selectedFiles[i].name.split('.').pop()}`,
+                { type: selectedFiles[i].type },
+              ),
+            };
+            copyUpload.push(uploadPdInfo);
+          }
         }
+        setImageFile(copy);
+        setPd_img(copyUpload);
       }
-      setImageFile((cur) => copy);
-      pd_img.current = copyUpload;
-    }
-  };
+    },
+    [fileInputRef],
+  );
 
   //이미지 뿌려주기, 유즈 메모로 image파일이 업로드 될때만 반응하도록
   const showImage = useMemo(() => {
-    if (imageFile === null || imageFile === [] || imageFile.length === 0) {
+    if (imageFile === null || imageFile.length === 0) {
       return (
         <>
           <MediaQuery minWidth={426}>
@@ -214,31 +231,27 @@ export default function ProductRegister_admin() {
   //express에서는 이 값을 req.body.data / 혹은 req.files로 받는다.
 
   const newProductPost = async () => {
-    setSpinner((cur) => true);
+    setSpinner(true);
     try {
       //이미지 외 자료들 남기
-      let productCode = pd_code.current.value;
-      let productName = pd_productName.current.value;
-      let price = resultCommaRemove(pd_price.current.value);
-      let sizeOS =
-        os_Value === 'OS' ? resultCommaRemove(pd_sizeOS.current.value) : -1;
-      let sizeS =
-        s_Value === 'S' ? resultCommaRemove(pd_sizeS.current.value) : -1;
-      let sizeM =
-        m_Value === 'M' ? resultCommaRemove(pd_sizeM.current.value) : -1;
-      let sizeL =
-        l_Value === 'L' ? resultCommaRemove(pd_sizeL.current.value) : -1;
-      let category = pd_category.current.value;
-      let detail = pd_detail.current.value;
+      const productCode = pd_code.current?.value;
+      const productName = pd_productName.current?.value;
+      const price = resultCommaRemove(pd_price.current!.value);
+      const sizeOS =
+        os_Value === 'OS' ? resultCommaRemove(pd_sizeOS.current!.value) : -1;
+      const sizeS =
+        s_Value === 'S' ? resultCommaRemove(pd_sizeS.current!.value) : -1;
+      const sizeM =
+        m_Value === 'M' ? resultCommaRemove(pd_sizeM.current!.value) : -1;
+      const sizeL =
+        l_Value === 'L' ? resultCommaRemove(pd_sizeL.current!.value) : -1;
+      const category = pd_category.current?.value;
+      const detail = pd_detail.current?.value;
 
       //이미지 폼데이터 만들기
       const formData = new FormData();
       //이미지 체크 및 form에 담기
-      if (
-        pd_img.current === undefined ||
-        pd_img.current === null ||
-        pd_img.current.length < 2
-      ) {
+      if (pd_img === undefined || pd_img === null || pd_img.length < 2) {
         return alert('제품 사진을 최소 2개 이상 올려주세요.(필수사항)');
       } else {
         if (
@@ -250,7 +263,6 @@ export default function ProductRegister_admin() {
           productName === '' ||
           price === undefined ||
           price === null ||
-          price === '' ||
           price === 0 ||
           category === undefined ||
           category === null ||
@@ -259,29 +271,17 @@ export default function ProductRegister_admin() {
           return alert('상품 필수 정보를 모두 입력해주세요.');
         } else {
           if (
-            (sizeOS === -1 ||
-              sizeOS === undefined ||
-              sizeOS === null ||
-              sizeOS === '') &&
-            (sizeS === -1 ||
-              sizeS === undefined ||
-              sizeS === null ||
-              sizeS === '') &&
-            (sizeM === -1 ||
-              sizeM === undefined ||
-              sizeM === null ||
-              sizeM === '') &&
-            (sizeL === -1 ||
-              sizeL === undefined ||
-              sizeL === null ||
-              sizeL === '')
+            (sizeOS === -1 || sizeOS === undefined || sizeOS === null) &&
+            (sizeS === -1 || sizeS === undefined || sizeS === null) &&
+            (sizeM === -1 || sizeM === undefined || sizeM === null) &&
+            (sizeL === -1 || sizeL === undefined || sizeL === null)
           ) {
             return alert('최소 1개의 사이즈를 입력해주세요.');
           } else {
             //여러 이미지라 formdata에 담아줌
-            for (let i = 0; i < pd_img.current.length; i += 1) {
-              formData.append('img', pd_img.current[i].file);
-            }
+            pd_img.forEach((el) => {
+              formData.append('img', el.file);
+            });
             //이미지 외 자료들 formdata에 담음
             formData.append(
               'data',
@@ -314,68 +314,66 @@ export default function ProductRegister_admin() {
               },
             );
             //페이지 요청 성공하면 200번, 아니면 오류표시
-
-            switch (newPdPostData.status) {
-              case 200:
-                alert(await newPdPostData.json());
-                setSpinner((cur) => false);
-                return window.location.reload();
-
-              case 400:
-                setSpinner((cur) => false);
-                return alert(await newPdPostData.json());
-
-              case 500:
-                setSpinner((cur) => false);
-                return alert(await newPdPostData.json());
+            if (newPdPostData.status === 200) {
+              alert(await newPdPostData.json());
+              setSpinner(false);
+              return window.location.reload();
             }
           }
         }
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      return;
-    }
-    setSpinner((cur) => false);
-  };
-
-  //고유번호 자동생성 함수
-  const productCodeCreat = async () => {
-    try {
-      let code = 'F';
-
-      if (selectCategory === 'BEANIE') {
-        code += 'BE_';
-      } else if (selectCategory === 'CAP') {
-        code += 'CA_';
-      } else if (selectCategory === 'TRAINING') {
-        code += 'TR_';
-      } else if (selectCategory === 'WINDBREAKER') {
-        code += 'WI_';
+      if (err.response.status === 400) {
+        setSpinner(false);
+        return alert(await err.response.data.json());
+      } else if (err.response.status === 500) {
+        setSpinner(false);
+        return alert(await err.response.data.json());
       } else {
-        return;
+        setSpinner(false);
+        return alert(await err.response.data.json());
       }
-
-      const getUniqueCode = await axios.post(
-        `${REACT_APP_KEY_BACK}/admin/register-product/uniqueCheck`,
-        { headCode: code },
-      );
-
-      const uniqueCode = getUniqueCode.data;
-
-      if (getUniqueCode.status === 200 && uniqueCode.uniqueNumber) {
-        setPdCode((cur) => uniqueCode.uniqueNumber);
-        return;
-      } else {
-        return;
-      }
-    } catch (err) {
-      console.error(err);
-      return;
     }
   };
 
   useEffect(() => {
+    //고유번호 자동생성 함수
+    const productCodeCreat = async () => {
+      try {
+        let code = 'F';
+
+        if (selectCategory === 'BEANIE') {
+          code += 'BE_';
+        } else if (selectCategory === 'CAP') {
+          code += 'CA_';
+        } else if (selectCategory === 'TRAINING') {
+          code += 'TR_';
+        } else if (selectCategory === 'WINDBREAKER') {
+          code += 'WI_';
+        } else {
+          return;
+        }
+
+        const getUniqueCode = await axios.post(
+          `${REACT_APP_KEY_BACK}/admin/register-product/uniqueCheck`,
+          { headCode: code },
+        );
+
+        const uniqueCode = getUniqueCode.data;
+
+        if (getUniqueCode.status === 200 && uniqueCode.uniqueNumber) {
+          setPdCode(uniqueCode.uniqueNumber);
+          return;
+        } else {
+          return;
+        }
+      } catch (err) {
+        console.error(err);
+        return;
+      }
+    };
+
     productCodeCreat();
   }, [selectCategory]);
 
@@ -396,9 +394,7 @@ export default function ProductRegister_admin() {
             selectList={kindArr}
             inputRef={pd_category}
             name="category"
-            onChangeEvent={(cur) =>
-              setSeloectCategory(pd_category.current.value)
-            }
+            onChangeEvent={() => setSeloectCategory(pd_category.current!.value)}
           />
         </div>
 
@@ -426,7 +422,7 @@ export default function ProductRegister_admin() {
             type="text"
             name="productName"
             placeholder="상품이름을 입력해주세요."
-            maxLength="30"
+            maxLength={30}
           />
         </div>
 
@@ -441,7 +437,7 @@ export default function ProductRegister_admin() {
             placeholder="가격을 입력해주세요."
             value={enterNumPrice}
             onChangeEvent={() =>
-              setEnterNumPrice(changeEnteredNumComma(pd_price.current.value))
+              setEnterNumPrice(changeEnteredNumComma(pd_price.current!.value))
             }
           />
         </div>
@@ -463,9 +459,7 @@ export default function ProductRegister_admin() {
             type="checkbox"
             value="OS"
             onChange={(e) => {
-              e.target.checked
-                ? setOS_Value((cur) => e.target.value)
-                : setOS_Value((cur) => '');
+              e.target.checked ? setOS_Value(e.target.value) : setOS_Value('');
             }}
           />
           <span>S</span>
@@ -474,9 +468,7 @@ export default function ProductRegister_admin() {
             type="checkbox"
             value="S"
             onChange={(e) => {
-              e.target.checked
-                ? setS_Value((cur) => e.target.value)
-                : setS_Value((cur) => '');
+              e.target.checked ? setS_Value(e.target.value) : setS_Value('');
             }}
           />
           <span>M</span>
@@ -485,9 +477,7 @@ export default function ProductRegister_admin() {
             type="checkbox"
             value="M"
             onChange={(e) => {
-              e.target.checked
-                ? setM_Value((cur) => e.target.value)
-                : setM_Value((cur) => '');
+              e.target.checked ? setM_Value(e.target.value) : setM_Value('');
             }}
           />
           <span>L</span>
@@ -496,9 +486,7 @@ export default function ProductRegister_admin() {
             type="checkbox"
             value="L"
             onChange={(e) => {
-              e.target.checked
-                ? setL_Value((cur) => e.target.value)
-                : setL_Value((cur) => '');
+              e.target.checked ? setL_Value(e.target.value) : setL_Value('');
             }}
           />
         </div>
@@ -517,7 +505,7 @@ export default function ProductRegister_admin() {
               value={enterNumQuantity1}
               onChangeEvent={() =>
                 setEnterNumQuantity1(
-                  changeEnteredNumComma(pd_sizeOS.current.value),
+                  changeEnteredNumComma(pd_sizeOS.current!.value),
                 )
               }
             />
@@ -538,7 +526,7 @@ export default function ProductRegister_admin() {
               value={enterNumQuantity2}
               onChangeEvent={() =>
                 setEnterNumQuantity2(
-                  changeEnteredNumComma(pd_sizeS.current.value),
+                  changeEnteredNumComma(pd_sizeS.current!.value),
                 )
               }
             />
@@ -559,7 +547,7 @@ export default function ProductRegister_admin() {
               value={enterNumQuantity3}
               onChangeEvent={() =>
                 setEnterNumQuantity3(
-                  changeEnteredNumComma(pd_sizeM.current.value),
+                  changeEnteredNumComma(pd_sizeM.current!.value),
                 )
               }
             />
@@ -580,7 +568,7 @@ export default function ProductRegister_admin() {
               value={enterNumQuantity4}
               onChangeEvent={() =>
                 setEnterNumQuantity4(
-                  changeEnteredNumComma(pd_sizeL.current.value),
+                  changeEnteredNumComma(pd_sizeL.current!.value),
                 )
               }
             />
@@ -623,7 +611,6 @@ export default function ProductRegister_admin() {
             <TextArea_Custom
               textAreaClassName={productRegister.textArea}
               inputref={pd_detail}
-              type="text"
               name="detail"
               placeholder=" ex )
             Jacquard and embroidery artwork (상품상세설명)

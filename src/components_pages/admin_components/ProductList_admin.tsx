@@ -38,6 +38,25 @@ const generateArr = (item: string[] | undefined) => {
   return imageArray;
 };
 
+//천단위 콤마생성
+const changeEnteredNumComma = (el: number | string) => {
+  const comma = (el: number | string) => {
+    el = String(el);
+    return el.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+  };
+  const uncomma = (el: number | string) => {
+    el = String(el);
+    return el.replace(/[^\d]+/g, '');
+  };
+  return comma(uncomma(el));
+};
+
+//콤마제거하고 연산 가능한 숫자로 바꾸기
+const resultCommaRemove = (el: string) => {
+  return Number(el.split(',').reduce((cur, acc) => cur + acc, ''));
+};
+//-------
+
 export default function ProductList_admin() {
   const [data, setData] = useState<ProductsType[]>([]);
   const [disableControll, setDisableControll] = useState<Array<boolean>>([]);
@@ -55,25 +74,9 @@ export default function ProductList_admin() {
   const category = useRef<HTMLSelectElement[]>([]);
 
   // 가격 설정 컴마 및 숫자만 입력을 위한 것-----------
-  const [enterNum, setEnterNum] = useState<EnterNumType[] | null>(null);
-
-  // value를 얻기위한 핸들
-  const handleChange = (index: number, value: string, key: string) => {
-    const regex = /^-?\d*$/;
-
-    if (regex.test(value) || value === '') {
-      setEnterNum((pre) => {
-        if (pre) {
-          const copy = pre.map((el, num) =>
-            num === index ? { ...el, [key]: value } : el,
-          );
-          return copy;
-        } else {
-          return null;
-        }
-      });
-    }
-  };
+  const [enterNum, setEnterNum] = useState<EnterNumType[] | null | undefined>(
+    null,
+  );
 
   // 컴포넌트가 마운트될때 API 요청을 보냄
   useEffect(() => {
@@ -228,6 +231,7 @@ export default function ProductList_admin() {
         );
       // 만약 사용자가 확인을 눌렀다면
       try {
+        setIsVisible(true);
         if (
           // 변경사항 있는지 체크, 변경사항 모든 항목이 없으면 그냥 끝냄
           category.current![index].value === data[index].category &&
@@ -243,89 +247,84 @@ export default function ProductList_admin() {
           return alert('변경사항 없음');
         } else {
           // 이름 유효성 한번 더 검사
-          if (productName.current![index].value !== '') {
-            const result = data.reduce(
-              (acc: number, cur: ProductsType) =>
-                cur.productName === productName.current![index].value
-                  ? acc + 1
-                  : acc,
-              0,
-            );
+          const result = data.reduce(
+            (acc: number, cur: ProductsType) =>
+              cur.productName === productName.current![index].value
+                ? acc + 1
+                : acc,
+            0,
+          );
+          console.log(result);
 
-            if (result > 0) {
-              alert(
-                `상품명이 존재합니다.\n중복상품명: ${
-                  productName.current![index].value
-                } \n다른 이름을 사용해주세요.`,
-              );
-              return;
-            }
+          if (result > 0) {
+            alert(
+              `상품명이 존재합니다.\n중복상품명: ${
+                productName.current![index].value
+              } \n다른 이름을 사용해주세요.`,
+            );
+            return;
           } else {
             // Ref값 가져오기
-            const result = () => {
-              return {
-                OS:
-                  os.current![index].value === ''
-                    ? data[index].size?.OS
-                    : os.current![index].value,
-                S:
-                  s.current![index].value === ''
-                    ? data[index].size?.S
-                    : s.current![index].value,
-                M:
-                  m.current![index].value === ''
-                    ? data[index].size?.M
-                    : m.current![index].value,
-                L:
-                  l.current![index].value === ''
-                    ? data[index].size?.L
-                    : l.current![index].value,
-                productName:
-                  productName.current![index].value === ''
-                    ? data[index].productName
-                    : productName.current![index].value,
-                price:
-                  price.current![index].value === ''
-                    ? data[index].price
-                    : price.current![index].value,
-                detail:
-                  detail.current![index].value === ''
-                    ? data[index].detail
-                    : detail.current![index].value,
-                category:
-                  category.current![index].value === data[index].category
-                    ? data[index].category
-                    : category.current![index].value,
-              };
+            const result = {
+              OS:
+                os.current![index].value === ''
+                  ? data[index].size?.OS
+                  : resultCommaRemove(os.current![index].value),
+              S:
+                s.current![index].value === ''
+                  ? data[index].size?.S
+                  : resultCommaRemove(s.current![index].value),
+              M:
+                m.current![index].value === ''
+                  ? data[index].size?.M
+                  : resultCommaRemove(m.current![index].value),
+              L:
+                l.current![index].value === ''
+                  ? data[index].size?.L
+                  : resultCommaRemove(l.current![index].value),
+              productName:
+                productName.current![index].value === ''
+                  ? data[index].productName
+                  : productName.current![index].value,
+              price:
+                price.current![index].value === ''
+                  ? data[index].price
+                  : resultCommaRemove(price.current![index].value),
+              detail:
+                detail.current![index].value === ''
+                  ? data[index].detail
+                  : detail.current![index].value,
+              category:
+                category.current![index].value === data[index].category
+                  ? data[index].category
+                  : category.current![index].value,
             };
-            // 업데이트 자료 담기
-            const updateResult = await result();
 
-            // 이미지 외 자료들 formdata에 담음
+            // 사이즈 객체로 다시 만들어야해서 한번 가공
             const size = {
-              OS: updateResult.OS,
-              S: updateResult.S,
-              M: updateResult.M,
-              L: updateResult.L,
+              OS: result.OS,
+              S: result.S,
+              M: result.M,
+              L: result.L,
             };
 
+            // 폼데이터 생성
             const formData = new FormData();
 
+            // 이미지 담기
             const filterImageArr = imgFile.current.filter((el) => el !== null);
+            filterImageArr.forEach((el) => formData.append('img', el!.file));
 
-            for (let i = 0; i < filterImageArr.length; i += 1) {
-              formData.append('img', filterImageArr[i]!.file);
-            }
-
+            // 이미지 외 자료들 formdata에 담음
             formData.append(
               'data',
               //제이슨 형식으로 바꿔줘야함
               JSON.stringify({
-                productName: updateResult.productName,
+                productName: result.productName,
                 size: size,
-                price: updateResult.price,
-                detail: updateResult.detail,
-                category: updateResult.category,
+                price: result.price,
+                detail: result.detail,
+                category: result.category,
               }),
             );
 
@@ -357,6 +356,7 @@ export default function ProductList_admin() {
           alert('수정오류, 서버오류')
         );
       }
+      setIsVisible(false);
     },
     [disableControll],
   );
@@ -439,6 +439,7 @@ export default function ProductList_admin() {
 
     // confirm이 true이면 아래 진행
     try {
+      setIsVisible(true);
       const response = await axios.post(
         `${REACT_APP_KEY_BACK}/admin/productlist/delete/${productCode}`,
       );
@@ -451,12 +452,11 @@ export default function ProductList_admin() {
             `상품명: ${productName}\n상품코드: ${productCode}\n삭제되었습니다`,
           )
         );
-
-      // status코드 200이 아니면
+    } catch (err: any) {
+      console.error(err);
       return alert('수정오류');
-    } catch (error) {
-      console.error(error);
     }
+    setIsVisible(false);
   };
 
   // Sub_2~4번까지 개별 사진 삭제
@@ -478,6 +478,7 @@ export default function ProductList_admin() {
       return alert('삭제 할 이미지가 없습니다.');
     // null이 아니라면,
     try {
+      setIsVisible(true);
       const response = await axios.post(
         `${REACT_APP_KEY_BACK}/admin/productlist/imgDelete`,
         { productCode: productCode, imgURL: imgURL },
@@ -487,12 +488,33 @@ export default function ProductList_admin() {
         setRedirect((cur) => !cur);
         window.location.reload();
         return alert('이미지 삭제 완료');
-      } else {
-        return alert('삭제오류');
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
       return alert('서버오류');
+    }
+    setIsVisible(false);
+  };
+
+  const sizeHandler = (
+    index: number,
+    e: ChangeEvent<HTMLInputElement>,
+    key: string,
+  ) => {
+    const regex = /^-?\d*$/;
+
+    if (regex.test(e.target.value) || e.target.value === '') {
+      setEnterNum((pre) => {
+        const copy = pre?.map((el, num) =>
+          num === index
+            ? {
+                ...el,
+                [key]: e.target.value,
+              }
+            : el,
+        );
+        return copy;
+      });
     }
   };
 
@@ -632,9 +654,23 @@ export default function ProductList_admin() {
               }
             }}
             value={enterNum![index].value}
-            onChange={() =>
-              handleChange(index, price.current![index].value, 'value')
-            }
+            onChange={(e) => {
+              setEnterNum((pre) => {
+                if (pre) {
+                  const copy = pre.map((el, num) =>
+                    num === index
+                      ? {
+                          ...el,
+                          value: changeEnteredNumComma(e.target.value),
+                        }
+                      : el,
+                  );
+                  return copy;
+                } else {
+                  return null;
+                }
+              });
+            }}
             type="text"
             name="price"
             placeholder={item?.price?.toLocaleString('ko-KR')}
@@ -651,7 +687,7 @@ export default function ProductList_admin() {
             }}
             value={enterNum![index].OS}
             type="text"
-            onChange={(e) => handleChange(index, e.target.value, 'OS')}
+            onChange={(e) => sizeHandler(index, e, 'OS')}
             name="sizeOS"
             placeholder={
               item.size?.OS === 0
@@ -675,7 +711,7 @@ export default function ProductList_admin() {
               }
             }}
             value={enterNum![index].S}
-            onChange={(e) => handleChange(index, e.target.value, 'S')}
+            onChange={(e) => sizeHandler(index, e, 'S')}
             type="text"
             name="sizeS"
             placeholder={
@@ -695,7 +731,7 @@ export default function ProductList_admin() {
               }
             }}
             value={enterNum![index].M}
-            onChange={(e) => handleChange(index, e.target.value, 'M')}
+            onChange={(e) => sizeHandler(index, e, 'M')}
             type="text"
             name="sizeM"
             placeholder={
@@ -720,7 +756,7 @@ export default function ProductList_admin() {
               }
             }}
             value={enterNum![index].L}
-            onChange={(e) => handleChange(index, e.target.value, 'L')}
+            onChange={(e) => sizeHandler(index, e, 'L')}
             type="text"
             name="sizeL"
             placeholder={

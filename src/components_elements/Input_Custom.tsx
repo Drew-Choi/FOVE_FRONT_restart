@@ -14,12 +14,12 @@ interface Input_CustomType extends PropsWithChildren {
   onChangeEvent?: (e?: any) => void | Dispatch<SetStateAction<any>>;
   value?: string;
   onClickEvent?: (e?: any) => void | Dispatch<SetStateAction<any>>;
-  multiple: boolean;
-  accept: string;
-  disabled: boolean;
-  classNameNew: string;
-  classNameDiv: string;
-  maxLength: number;
+  multiple?: boolean;
+  accept?: string;
+  disabled?: boolean;
+  classNameNew?: string;
+  classNameDiv?: string;
+  maxLength?: number;
 }
 
 export default function Input_Custom({
