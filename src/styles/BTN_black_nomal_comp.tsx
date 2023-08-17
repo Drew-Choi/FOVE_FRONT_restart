@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 // type
 interface BTN_black_nomal_comp_Props extends PropsWithChildren {
-  onClickEvent?: (e?: any) => void | Dispatch<SetStateAction<unknown>>;
+  onClickEvent?: (e?: any) => (void | any) | Dispatch<SetStateAction<unknown>>;
   fontSize?: string;
   transFontSize?: string;
   className?: string;

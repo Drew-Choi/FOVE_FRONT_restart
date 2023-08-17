@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import orderListIndi from '../../styles/orderList_Indi_Admin.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -8,8 +8,9 @@ import LoadingAdmin from '../client_components/LoadingAdmin';
 import Loading_Spinner from '../client_components/Loading_Spinner';
 
 const { REACT_APP_KEY_IMAGE } = process.env;
+const { REACT_APP_KEY_BACK } = process.env;
 
-const Pd_Images = styled.div`
+const Pd_Images = styled.div<{ img: string }>`
   ${(props) =>
     props.img && `background-image: url('${REACT_APP_KEY_IMAGE}${props.img}')`}
 `;
@@ -38,34 +39,42 @@ const Preview = styled.img`
   }
 `;
 
+// constant
+const dateSplit = (date: string) => {
+  const splitData = date.split(/[T+]/);
+  const dataSum = `${splitData[0]}  /  ${splitData[1]}`;
+  return dataSum;
+};
+
 export default function OrderList_Indi_Admin() {
-  const { REACT_APP_KEY_BACK } = process.env;
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<Order_Cancel_ListType | null>(null);
   const navigate = useNavigate();
   const { orderId } = useParams();
-  const [status, setStatus] = useState(null);
-  const [redirect, setRedirect] = useState(true);
+  const [status, setStatus] = useState<string | null>(null);
+  const [redirect, setRedirect] = useState<boolean>(true);
 
   // 스피너 상태 훅
-  const [spinner, setSpinner] = useState(false);
+  const [spinner, setSpinner] = useState<boolean>(false);
 
   // 라디오 박스 useState - 관리자 컨트롤 부분 - 배송상태
-  const [adminShippingCondition, setAdminShippingCondition] = useState(null);
+  const [adminShippingCondition, setAdminShippingCondition] = useState<
+    string | null
+  >(null);
   // 라디오 박스 활성화 - 배송상태
   const [disableShipping, setDisableShipping] = useState(true);
   // 라디오 박스 체크시 상태값 변경 - 배송상태
-  const handleAdminShippingCondition = (e) => {
-    setAdminShippingCondition((cur) => e.target.value);
+  const handleAdminShippingCondition = (e: ChangeEvent<HTMLInputElement>) => {
+    setAdminShippingCondition(e.target.value);
   };
   // 송장번호 입력
-  const [shippingCodeChange, setShippingCodeChange] = useState('');
+  const [shippingCodeChange, setShippingCodeChange] = useState<string>('');
   // 송장번호 수정 핸들
-  const handleShippingCode = (e) => {
+  const handleShippingCode = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const regex = /^\d+$/;
 
     if (regex.test(value) || value === '') {
-      setShippingCodeChange((cur) => value);
+      setShippingCodeChange(value);
     }
   };
 
@@ -84,7 +93,7 @@ export default function OrderList_Indi_Admin() {
       return alert("'배송 중'으로 변경 시에는 유효한 송장번호를 입력해주세요.");
 
     //아니라면 아래
-    setSpinner((cur) => true);
+    setSpinner(true);
     try {
       const response = await axios.post(
         `${REACT_APP_KEY_BACK}/admin/orderlist/detail/shippingCondition`,
@@ -98,47 +107,45 @@ export default function OrderList_Indi_Admin() {
       if (response.status === 200) {
         // 200번대 성공이라면,
         setRedirect((cur) => !cur);
-        setDisableShipping((cur) => true);
-        setSpinner((cur) => false);
+        setDisableShipping(true);
+        setSpinner(false);
         alert('변경성공');
         return;
-      } else if (response.status === 404) {
-        // 404번대 오류라면,
-        setRedirect((cur) => !cur);
-        alert(response.data);
-        setSpinner((cur) => false);
-        return;
-      } else {
-        return alert('변경실패');
       }
-    } catch (err) {
+    } catch (err: any) {
       if (err.response.status === 404) {
         setRedirect((cur) => !cur);
         alert(err.response.data);
-        setSpinner((cur) => false);
+        setSpinner(false);
       }
-      setSpinner((cur) => false);
+      navigate(
+        `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+      );
+      setSpinner(false);
       return;
     }
   };
 
   // 라디오 박스 useState - 관리자 컨트롤 부분 - 교환진행상태
-  const [adminChangeCondition, setAdminChangeCondition] = useState(null);
+  const [adminChangeCondition, setAdminChangeCondition] = useState<
+    string | null
+  >(null);
   // 라디오 박스 활성화 - 교환진행상태
-  const [disableChange, setDisableChange] = useState(true);
+  const [disableChange, setDisableChange] = useState<boolean>(true);
   // 라디오 박스 체크시 상태값 변경 - 교환진행상태
-  const handleadminChangeCondition = (e) => {
-    setAdminChangeCondition((cur) => e.target.value);
+  const handleadminChangeCondition = (e: ChangeEvent<HTMLInputElement>) => {
+    setAdminChangeCondition(e.target.value);
   };
   // 송장번호 입력-교환진행상태
-  const [changeShippingCodeChagne, setChangeShippingCodeChagne] = useState('');
+  const [changeShippingCodeChagne, setChangeShippingCodeChagne] =
+    useState<string>('');
   // 송장번호 수정 핸들-교환진행상태
-  const handleChangeShippingCodeChagne = (e) => {
+  const handleChangeShippingCodeChagne = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const regex = /^\d+$/;
 
     if (regex.test(value) || value === '') {
-      setChangeShippingCodeChagne((cur) => value);
+      setChangeShippingCodeChagne(value);
     }
   };
 
@@ -153,7 +160,7 @@ export default function OrderList_Indi_Admin() {
     if (changeShippingCodeChagne.length < 10)
       return alert('유효한 송장번호는 10자 이상입니다.');
     // true이면 아래 진행
-    setSpinner((cur) => true);
+    setSpinner(true);
     try {
       const response = await axios.post(
         `${REACT_APP_KEY_BACK}/admin/orderlist/detail/changeCondition`,
@@ -167,36 +174,22 @@ export default function OrderList_Indi_Admin() {
       if (response.status === 200) {
         // 200번대 성공이라면,
         setRedirect((cur) => !cur);
-        setDisableChange((cur) => true);
+        setDisableChange(true);
         alert('변경성공');
-        setSpinner((cur) => false);
+        setSpinner(false);
         return;
-      } else if (response.status === 404) {
-        // 404번대 오류라면,
-        setRedirect((cur) => !cur);
-        alert(response.data);
-        setSpinner((cur) => false);
-        return;
-      } else if (response.status === 400) {
-        setRedirect((cur) => !cur);
-        alert(response.data);
-        setSpinner((cur) => false);
-        return;
-      } else {
-        setSpinner((cur) => false);
-        return alert('변경실패');
       }
-    } catch (err) {
+    } catch (err: any) {
       if (err.response.status === 404) {
         setRedirect((cur) => !cur);
         alert(err.response.data);
-        setSpinner((cur) => false);
+        setSpinner(false);
       } else if (err.response.status === 400) {
         setRedirect((cur) => !cur);
         alert(err.response.data);
-        setSpinner((cur) => false);
+        setSpinner(false);
       } else {
-        setSpinner((cur) => false);
+        setSpinner(false);
         return alert('변경실패');
       }
       return;
@@ -204,23 +197,26 @@ export default function OrderList_Indi_Admin() {
   };
 
   // 라디오 박스 useState - 관리자 컨트롤 부분 - 환불진행상태
-  const [adminSubmitReturnCondition, setAdminSubmitReturnCondition] =
-    useState(null);
+  const [adminSubmitReturnCondition, setAdminSubmitReturnCondition] = useState<
+    string | null
+  >(null);
   // 라디오 박스 활성화 - 환불진행상태
-  const [disableReturn, setDisableReturn] = useState(true);
+  const [disableReturn, setDisableReturn] = useState<boolean>(true);
   // 라디오 박스 체크시 상태값 변경 - 환불진행상태
-  const handleadminSubmitReturnCondition = (e) => {
-    setAdminSubmitReturnCondition((cur) => e.target.value);
+  const handleadminSubmitReturnCondition = (
+    e: ChangeEvent<HTMLInputElement>,
+  ) => {
+    setAdminSubmitReturnCondition(e.target.value);
   };
   // 송장번호 입력-환불진행상태
-  const [returnCodeChange, setReturnCodeChange] = useState('');
+  const [returnCodeChange, setReturnCodeChange] = useState<string>('');
   // 송장번호 수정 핸들-환불진행상태
-  const handleReturnCodeChange = (e) => {
+  const handleReturnCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const regex = /^\d+$/;
 
     if (regex.test(value) || value === '') {
-      setReturnCodeChange((cur) => value);
+      setReturnCodeChange(value);
     }
   };
 
@@ -235,7 +231,7 @@ export default function OrderList_Indi_Admin() {
     if (returnCodeChange.length < 10)
       return alert('유효한 송장번호는 10자 이상입니다.');
     // true라면 아래 진행
-    setSpinner((cur) => true);
+    setSpinner(true);
     try {
       const response = await axios.post(
         `${REACT_APP_KEY_BACK}/admin/orderlist/detail/submitReturnCondition`,
@@ -249,294 +245,251 @@ export default function OrderList_Indi_Admin() {
       if (response.status === 200) {
         // 200번대 성공이라면,
         setRedirect((cur) => !cur);
-        setDisableReturn((cur) => true);
+        setDisableReturn(true);
         alert('변경성공');
-        setSpinner((cur) => false);
+        setSpinner(false);
         return;
-      } else if (response.status === 404) {
-        // 404번대 오류라면,
-        setRedirect((cur) => !cur);
-        alert(response.data);
-        setSpinner((cur) => false);
-        return;
-      } else if (response.status === 400) {
-        setRedirect((cur) => !cur);
-        alert(response.data);
-        setSpinner((cur) => false);
-        return;
-      } else {
-        setSpinner((cur) => false);
-        return alert('변경실패');
       }
-    } catch (err) {
+    } catch (err: any) {
       if (err.response.status === 404) {
         setRedirect((cur) => !cur);
         alert(err.response.data);
-        setSpinner((cur) => false);
+        setSpinner(false);
       } else if (err.response.status === 400) {
         setRedirect((cur) => !cur);
         alert(err.response.data);
-        setSpinner((cur) => false);
+        setSpinner(false);
       } else {
-        setSpinner((cur) => false);
+        setSpinner(false);
         return alert('변경실패');
       }
-      setSpinner((cur) => false);
+      setSpinner(false);
       return;
     }
   };
 
-  //db Number타입을 스트링으로 바꾸고 천단위 컴마 찍어 프론트에 보내기
-  const country = navigator.language;
-  const frontPriceComma = (price) => {
-    if (price && typeof price.toLocaleString === 'function') {
-      return price.toLocaleString(country, {
-        currency: 'KRW',
-      });
-    } else {
-      return price;
-    }
-  };
-
-  const statusCheck = (data) => {
-    if (
-      data.payments.status !== 'DONE' &&
-      !data.isShipping &&
-      data.shippingCode === 0 &&
-      !data.isDelivered &&
-      !data.isCancel &&
-      !data.isReturn &&
-      !data.isRetrieved &&
-      !data.isRefund &&
-      !data.isReturnSubmit
-    ) {
-      setStatus((cur) => '결제 전');
-      setAdminShippingCondition((cur) => '결제 전');
-      return;
-    } else if (
-      data.payments.status === 'DONE' &&
-      !data.isShipping &&
-      data.shippingCode === 0 &&
-      !data.isDelivered &&
-      !data.isCancel &&
-      !data.isReturn &&
-      !data.isRetrieved &&
-      !data.isRefund &&
-      !data.isReturnSubmit
-    ) {
-      setStatus((cur) => '결제완료 (배송 전)');
-      setAdminShippingCondition((cur) => '결제완료 (배송 전)');
-      return;
-    } else if (
-      data.payments.status === 'DONE' &&
-      data.isShipping &&
-      data.shippingCode !== 0 &&
-      !data.isDelivered &&
-      !data.isCancel &&
-      !data.isReturn &&
-      !data.isRetrieved &&
-      !data.isRefund &&
-      !data.isReturnSubmit
-    ) {
-      setStatus((cur) => '배송 중');
-      setAdminShippingCondition((cur) => '배송 중');
-      return;
-    } else if (
-      data.payments.status === 'DONE' &&
-      !data.isShipping &&
-      data.shippingCode !== 0 &&
-      data.isDelivered &&
-      !data.isCancel &&
-      !data.isReturn &&
-      !data.isRetrieved &&
-      !data.isRefund &&
-      !data.isReturnSubmit
-    ) {
-      setStatus((cur) => '배송완료');
-      setAdminShippingCondition((cur) => '배송완료');
-      return;
-    } else if (
-      data.payments.status === 'DONE' &&
-      !data.isShipping &&
-      data.shippingCode !== 0 &&
-      data.isDelivered &&
-      !data.isCancel &&
-      !data.isReturn &&
-      !data.isRetrieved &&
-      !data.isRefund &&
-      data.isReturnSubmit
-    ) {
-      setStatus((cur) => '반품신청 중');
-      setAdminShippingCondition((cur) => '배송완료');
-      return;
-    } else if (
-      data.payments.status === 'DONE' &&
-      !data.isShipping &&
-      data.shippingCode !== 0 &&
-      data.isDelivered &&
-      !data.isCancel &&
-      !data.isReturn &&
-      !data.isRetrieved &&
-      data.isRefund &&
-      data.isReturnSubmit
-    ) {
-      setStatus((cur) => '환불신청완료');
-      setAdminShippingCondition((cur) => '배송완료');
-      setAdminSubmitReturnCondition((cur) => '환불신청완료');
-      return;
-    } else if (
-      data.payments.status === 'DONE' &&
-      data.isShipping &&
-      data.shippingCode !== 0 &&
-      data.isDelivered &&
-      !data.isCancel &&
-      !data.isReturn &&
-      !data.isRetrieved &&
-      data.isRefund &&
-      data.isReturnSubmit
-    ) {
-      setStatus((cur) => '상품회수 중 (환불)');
-      setAdminShippingCondition((cur) => '');
-      setAdminSubmitReturnCondition((cur) => '상품회수 중 (환불)');
-      return;
-    } else if (
-      data.payments.status === 'DONE' &&
-      !data.isShipping &&
-      data.shippingCode !== 0 &&
-      !data.isDelivered &&
-      !data.isCancel &&
-      !data.isReturn &&
-      data.isRetrieved &&
-      data.isRefund &&
-      data.isReturnSubmit
-    ) {
-      setStatus((cur) => '상품회수 완료 (환불)');
-      setAdminShippingCondition((cur) => '');
-      setAdminSubmitReturnCondition((cur) => '상품회수 완료 (환불)');
-      return;
-    } else if (
-      data.payments.status === 'DONE' &&
-      !data.isShipping &&
-      data.shippingCode !== 0 &&
-      data.isDelivered &&
-      !data.isCancel &&
-      data.isReturn &&
-      !data.isRetrieved &&
-      !data.isRefund &&
-      data.isReturnSubmit
-    ) {
-      setStatus((cur) => '교환신청 완료');
-      setAdminShippingCondition((cur) => '배송완료');
-      setAdminChangeCondition((cur) => '교환신청 완료');
-      return;
-    } else if (
-      data.payments.status === 'DONE' &&
-      data.isShipping &&
-      data.shippingCode !== 0 &&
-      data.isDelivered &&
-      !data.isCancel &&
-      data.isReturn &&
-      !data.isRetrieved &&
-      !data.isRefund &&
-      data.isReturnSubmit
-    ) {
-      setStatus((cur) => '상품회수 중 (교환)');
-      setAdminShippingCondition((cur) => '');
-      setAdminChangeCondition((cur) => '상품회수 중 (교환)');
-      return;
-    } else if (
-      data.payments.status === 'DONE' &&
-      !data.isShipping &&
-      data.shippingCode !== 0 &&
-      !data.isDelivered &&
-      !data.isCancel &&
-      data.isReturn &&
-      data.isRetrieved &&
-      !data.isRefund &&
-      data.isReturnSubmit
-    ) {
-      setStatus((cur) => '상품회수 완료 (교환)');
-      setAdminShippingCondition((cur) => '');
-      setAdminChangeCondition((cur) => '상품회수 완료 (교환)');
-      return;
-    } else if (
-      data.payments.status === 'DONE' &&
-      data.isShipping &&
-      data.shippingCode !== 0 &&
-      !data.isDelivered &&
-      !data.isCancel &&
-      data.isReturn &&
-      data.isRetrieved &&
-      !data.isRefund &&
-      data.isReturnSubmit
-    ) {
-      setStatus((cur) => '교환상품 배송 중');
-      setAdminShippingCondition((cur) => '');
-      setAdminChangeCondition((cur) => '교환상품 배송 중');
-      return;
-    } else if (
-      data.payments.status === 'DONE' &&
-      !data.isShipping &&
-      data.shippingCode !== 0 &&
-      data.isDelivered &&
-      !data.isCancel &&
-      data.isReturn &&
-      !data.isRetrieved &&
-      !data.isRefund &&
-      !data.isReturnSubmit
-    ) {
-      setStatus((cur) => '교환상품 배송완료');
-      setAdminShippingCondition((cur) => '');
-      setAdminChangeCondition((cur) => '교환상품 배송완료');
-      return;
-    } else if (
-      data.payments.status === 'CANCELED' &&
-      !data.isShipping &&
-      data.shippingCode === 0 &&
-      !data.isDelivered &&
-      data.isCancel &&
-      !data.isReturn &&
-      !data.isRetrieved &&
-      !data.isRefund &&
-      !data.isReturnSubmit
-    ) {
-      setStatus((cur) => '결제취소');
-      return;
-    } else if (
-      data.payments.status === 'CANCELED' &&
-      !data.isShipping &&
-      data.shippingCode !== 0 &&
-      !data.isDelivered &&
-      data.isCancel &&
-      !data.isReturn &&
-      data.isRetrieved &&
-      data.isRefund &&
-      data.isReturnSubmit
-    ) {
-      setStatus((cur) => '환불완료');
-      return;
-    }
-  };
-
-  const getOrderIdInfo = async () => {
-    try {
-      const response = await axios.get(
-        `${REACT_APP_KEY_BACK}/admin/orderlist/detail/${orderId}`,
-        {},
-      );
-
-      if (response.status !== 200) return alert('데이터오류');
-      // 200번대 성공이면
-      statusCheck(response.data);
-      setShippingCodeChange((cur) => response.data.shippingCode);
-      setReturnCodeChange((cur) => response.data.shippingCode);
-      setChangeShippingCodeChagne((cur) => response.data.shippingCode);
-      setData((cur) => response.data);
-      return;
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const statusCheck = useCallback(
+    (data: Order_Cancel_ListType) => {
+      if (
+        data.payments.status !== 'DONE' &&
+        !data.isShipping &&
+        data.shippingCode === 0 &&
+        !data.isDelivered &&
+        !data.isCancel &&
+        !data.isReturn &&
+        !data.isRetrieved &&
+        !data.isRefund &&
+        !data.isReturnSubmit
+      ) {
+        setStatus('결제 전');
+        setAdminShippingCondition('결제 전');
+        return;
+      } else if (
+        data.payments.status === 'DONE' &&
+        !data.isShipping &&
+        data.shippingCode === 0 &&
+        !data.isDelivered &&
+        !data.isCancel &&
+        !data.isReturn &&
+        !data.isRetrieved &&
+        !data.isRefund &&
+        !data.isReturnSubmit
+      ) {
+        setStatus('결제완료 (배송 전)');
+        setAdminShippingCondition('결제완료 (배송 전)');
+        return;
+      } else if (
+        data.payments.status === 'DONE' &&
+        data.isShipping &&
+        data.shippingCode !== 0 &&
+        !data.isDelivered &&
+        !data.isCancel &&
+        !data.isReturn &&
+        !data.isRetrieved &&
+        !data.isRefund &&
+        !data.isReturnSubmit
+      ) {
+        setStatus('배송 중');
+        setAdminShippingCondition('배송 중');
+        return;
+      } else if (
+        data.payments.status === 'DONE' &&
+        !data.isShipping &&
+        data.shippingCode !== 0 &&
+        data.isDelivered &&
+        !data.isCancel &&
+        !data.isReturn &&
+        !data.isRetrieved &&
+        !data.isRefund &&
+        !data.isReturnSubmit
+      ) {
+        setStatus('배송완료');
+        setAdminShippingCondition('배송완료');
+        return;
+      } else if (
+        data.payments.status === 'DONE' &&
+        !data.isShipping &&
+        data.shippingCode !== 0 &&
+        data.isDelivered &&
+        !data.isCancel &&
+        !data.isReturn &&
+        !data.isRetrieved &&
+        !data.isRefund &&
+        data.isReturnSubmit
+      ) {
+        setStatus('반품신청 중');
+        setAdminShippingCondition('배송완료');
+        return;
+      } else if (
+        data.payments.status === 'DONE' &&
+        !data.isShipping &&
+        data.shippingCode !== 0 &&
+        data.isDelivered &&
+        !data.isCancel &&
+        !data.isReturn &&
+        !data.isRetrieved &&
+        data.isRefund &&
+        data.isReturnSubmit
+      ) {
+        setStatus('환불신청완료');
+        setAdminShippingCondition('배송완료');
+        setAdminSubmitReturnCondition('환불신청완료');
+        return;
+      } else if (
+        data.payments.status === 'DONE' &&
+        data.isShipping &&
+        data.shippingCode !== 0 &&
+        data.isDelivered &&
+        !data.isCancel &&
+        !data.isReturn &&
+        !data.isRetrieved &&
+        data.isRefund &&
+        data.isReturnSubmit
+      ) {
+        setStatus('상품회수 중 (환불)');
+        setAdminShippingCondition('');
+        setAdminSubmitReturnCondition('상품회수 중 (환불)');
+        return;
+      } else if (
+        data.payments.status === 'DONE' &&
+        !data.isShipping &&
+        data.shippingCode !== 0 &&
+        !data.isDelivered &&
+        !data.isCancel &&
+        !data.isReturn &&
+        data.isRetrieved &&
+        data.isRefund &&
+        data.isReturnSubmit
+      ) {
+        setStatus('상품회수 완료 (환불)');
+        setAdminShippingCondition('');
+        setAdminSubmitReturnCondition('상품회수 완료 (환불)');
+        return;
+      } else if (
+        data.payments.status === 'DONE' &&
+        !data.isShipping &&
+        data.shippingCode !== 0 &&
+        data.isDelivered &&
+        !data.isCancel &&
+        data.isReturn &&
+        !data.isRetrieved &&
+        !data.isRefund &&
+        data.isReturnSubmit
+      ) {
+        setStatus('교환신청 완료');
+        setAdminShippingCondition('배송완료');
+        setAdminChangeCondition('교환신청 완료');
+        return;
+      } else if (
+        data.payments.status === 'DONE' &&
+        data.isShipping &&
+        data.shippingCode !== 0 &&
+        data.isDelivered &&
+        !data.isCancel &&
+        data.isReturn &&
+        !data.isRetrieved &&
+        !data.isRefund &&
+        data.isReturnSubmit
+      ) {
+        setStatus('상품회수 중 (교환)');
+        setAdminShippingCondition('');
+        setAdminChangeCondition('상품회수 중 (교환)');
+        return;
+      } else if (
+        data.payments.status === 'DONE' &&
+        !data.isShipping &&
+        data.shippingCode !== 0 &&
+        !data.isDelivered &&
+        !data.isCancel &&
+        data.isReturn &&
+        data.isRetrieved &&
+        !data.isRefund &&
+        data.isReturnSubmit
+      ) {
+        setStatus('상품회수 완료 (교환)');
+        setAdminShippingCondition('');
+        setAdminChangeCondition('상품회수 완료 (교환)');
+        return;
+      } else if (
+        data.payments.status === 'DONE' &&
+        data.isShipping &&
+        data.shippingCode !== 0 &&
+        !data.isDelivered &&
+        !data.isCancel &&
+        data.isReturn &&
+        data.isRetrieved &&
+        !data.isRefund &&
+        data.isReturnSubmit
+      ) {
+        setStatus('교환상품 배송 중');
+        setAdminShippingCondition('');
+        setAdminChangeCondition('교환상품 배송 중');
+        return;
+      } else if (
+        data.payments.status === 'DONE' &&
+        !data.isShipping &&
+        data.shippingCode !== 0 &&
+        data.isDelivered &&
+        !data.isCancel &&
+        data.isReturn &&
+        !data.isRetrieved &&
+        !data.isRefund &&
+        !data.isReturnSubmit
+      ) {
+        setStatus('교환상품 배송완료');
+        setAdminShippingCondition('');
+        setAdminChangeCondition('교환상품 배송완료');
+        return;
+      } else if (
+        data.payments.status === 'CANCELED' &&
+        !data.isShipping &&
+        data.shippingCode === 0 &&
+        !data.isDelivered &&
+        data.isCancel &&
+        !data.isReturn &&
+        !data.isRetrieved &&
+        !data.isRefund &&
+        !data.isReturnSubmit
+      ) {
+        setStatus('결제취소');
+        return;
+      } else if (
+        data.payments.status === 'CANCELED' &&
+        !data.isShipping &&
+        data.shippingCode !== 0 &&
+        !data.isDelivered &&
+        data.isCancel &&
+        !data.isReturn &&
+        data.isRetrieved &&
+        data.isRefund &&
+        data.isReturnSubmit
+      ) {
+        setStatus('환불완료');
+        return;
+      }
+    },
+    [redirect],
+  );
 
   // 배송 전 결제
   const pdCancel = async () => {
@@ -547,22 +500,26 @@ export default function OrderList_Indi_Admin() {
     if (!updateConfirm) return setRedirect((cur) => !cur), alert('실행 취소');
 
     // confirm이 true이면
-    setSpinner((cur) => true);
+    setSpinner(true);
     try {
       const cancelInfo = await axios.post(
         `${REACT_APP_KEY_BACK}/admin/orderlist/detail/cancel`,
         { orderId },
       );
 
-      if (cancelInfo.status !== 200) return alert('결제취소 실패');
-      // 200번대 성공이면,
-      alert(`주문번호: ${orderId}\n결제취소(환불) 완료`);
-      navigate('/admin/orderlist');
-      setSpinner((cur) => false);
-      return;
-    } catch (err) {
+      if (cancelInfo.status === 200) {
+        // 200번대 성공이면,
+        alert(`주문번호: ${orderId}\n결제취소(환불) 완료`);
+        navigate('/admin/orderlist');
+        setSpinner(false);
+        return;
+      }
+    } catch (err: any) {
+      navigate(
+        `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+      );
       console.error(err);
-      setSpinner((cur) => false);
+      setSpinner(false);
       return;
     }
   };
@@ -575,24 +532,28 @@ export default function OrderList_Indi_Admin() {
 
     if (!updateConfirm) return alert('환불 진행 취소');
     //true 라면 아래
-    setSpinner((cur) => true);
+    setSpinner(true);
     try {
       const cancelInfo = await axios.post(
         `${REACT_APP_KEY_BACK}/admin//orderlist/detail/cancelRefund`,
         { orderId },
       );
 
-      if (cancelInfo.status !== 200) return alert('환불 실패');
-      // 200번대 성공이면,
-      setRedirect((cur) => !cur);
-      alert(
-        `주문번호: ${orderId}\n환불을 완료했습니다.\n'상품회수 목록'을 통해 상품회수를 진행하십시오.`,
+      if (cancelInfo.status === 200) {
+        // 200번대 성공이면,
+        setRedirect((cur) => !cur);
+        alert(
+          `주문번호: ${orderId}\n환불을 완료했습니다.\n'상품회수 목록'을 통해 상품회수를 진행하십시오.`,
+        );
+        setSpinner(false);
+        return;
+      }
+    } catch (err: any) {
+      navigate(
+        `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
       );
-      setSpinner((cur) => false);
-      return;
-    } catch (err) {
       console.error(err);
-      setSpinner((cur) => false);
+      setSpinner(false);
       return;
     }
   };
@@ -610,22 +571,26 @@ export default function OrderList_Indi_Admin() {
 
     if (!updateConfirm) return alert('철회 취소');
     // true이면,
-    setSpinner((cur) => true);
+    setSpinner(true);
     try {
       const cancelInfo = await axios.post(
         `${REACT_APP_KEY_BACK}/admin//orderlist/detail/cancelRefund/cancel`,
         { orderId },
       );
 
-      if (cancelInfo.status !== 200) return alert('철회 실패');
-      // 200번대 성공이면,
-      setRedirect((cur) => !cur);
-      alert(`주문번호: ${orderId}\n환불신청 철회 완료`);
-      setSpinner((cur) => false);
-      return;
-    } catch (err) {
+      if (cancelInfo.status === 200) {
+        // 200번대 성공이면,
+        setRedirect((cur) => !cur);
+        alert(`주문번호: ${orderId}\n환불신청 철회 완료`);
+        setSpinner(false);
+        return;
+      }
+    } catch (err: any) {
+      navigate(
+        `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+      );
       console.error(err);
-      setSpinner((cur) => false);
+      setSpinner(false);
       return;
     }
   };
@@ -643,22 +608,26 @@ export default function OrderList_Indi_Admin() {
 
     if (!updateConfirm) return alert('철회 취소');
     // true이면,
-    setSpinner((cur) => true);
+    setSpinner(true);
     try {
       const cancelInfo = await axios.post(
         `${REACT_APP_KEY_BACK}/admin/orderlist/detail/cancelRefund/cancel`,
         { orderId },
       );
 
-      if (cancelInfo.status !== 200) return alert('철회 실패');
-      // 200번대 성공이면,
-      setRedirect((cur) => !cur);
-      alert(`주문번호: ${orderId}\n교환신청 철회 완료`);
-      setSpinner((cur) => false);
-      return;
-    } catch (err) {
+      if (cancelInfo.status === 200) {
+        // 200번대 성공이면,
+        setRedirect((cur) => !cur);
+        alert(`주문번호: ${orderId}\n교환신청 철회 완료`);
+        setSpinner(false);
+        return;
+      }
+    } catch (err: any) {
+      navigate(
+        `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+      );
       console.error(err);
-      setSpinner((cur) => false);
+      setSpinner(false);
       return;
     }
   };
@@ -679,23 +648,27 @@ export default function OrderList_Indi_Admin() {
       return setRedirect((cur) => !cur), alert('환불진행 취소');
 
     // confirm이 true이면
-    setSpinner((cur) => true);
+    setSpinner(true);
     try {
       const cancelInfo = await axios.post(
         `${REACT_APP_KEY_BACK}/admin/orderlist/detail/cancelRefund/complete`,
         { orderId },
       );
 
-      if (cancelInfo.status !== 200) return alert('환불 실패');
-      // 200번대 성공이면,
-      setSpinner((cur) => false);
-      alert(`주문번호: ${orderId}\n환불을 완료했습니다.`);
-      navigate('/admin/orderlist');
-      return;
-    } catch (err) {
+      if (cancelInfo.status === 200) {
+        // 200번대 성공이면,
+        setSpinner(false);
+        alert(`주문번호: ${orderId}\n환불을 완료했습니다.`);
+        navigate('/admin/orderlist');
+        return;
+      }
+    } catch (err: any) {
+      navigate(
+        `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+      );
       console.error(err);
     }
-    setSpinner((cur) => false);
+    setSpinner(false);
   };
 
   // 반품신청 취소
@@ -706,24 +679,27 @@ export default function OrderList_Indi_Admin() {
 
     if (!updateConfirm) return alert('철회진행 취소');
     // true이면 아래 진행
-    setSpinner((cur) => true);
+    setSpinner(true);
     try {
       const response = await axios.post(
         `${REACT_APP_KEY_BACK}/admin/orderlist/detail/cancel_return_submit`,
         { orderId },
       );
 
-      if (response.status !== 200) return alert('철회진행 실패');
-      // 200번대 성공이면
-      alert(`주문번호: ${orderId}\n반품신청철회 완료`);
-      setRedirect((cur) => !cur);
-      setSpinner((cur) => false);
-      return;
-    } catch (err) {
+      if (response.status === 200) {
+        // 200번대 성공이면
+        alert(`주문번호: ${orderId}\n반품신청철회 완료`);
+        setRedirect((cur) => !cur);
+        setSpinner(false);
+        return;
+      }
+    } catch (err: any) {
+      navigate(
+        `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+      );
       console.error(err);
-      setSpinner((cur) => false);
+      setSpinner(false);
     }
-    setSpinner((cur) => false);
   };
 
   // 강제주문취소
@@ -732,21 +708,25 @@ export default function OrderList_Indi_Admin() {
 
     if (!updateConfirm) return alert('주문내역 삭제 진행 취소');
     //true라면,
-    setSpinner((cur) => true);
+    setSpinner(true);
     try {
       const response = await axios.get(
         `${REACT_APP_KEY_BACK}/admin/orderlist/detail/order_delete/${orderId}`,
       );
 
-      if (response.status !== 200) return alert('진행 오류');
-      //200번대 잘 들어온다면,
-      alert(`주문번호: ${orderId}\n입금 전 강제주문취소 완료`);
-      navigate('/admin/orderlist');
-      setSpinner((cur) => false);
-      return;
-    } catch (err) {
+      if (response.status === 200) {
+        //200번대 잘 들어온다면,
+        alert(`주문번호: ${orderId}\n입금 전 강제주문취소 완료`);
+        navigate('/admin/orderlist');
+        setSpinner(false);
+        return;
+      }
+    } catch (err: any) {
+      navigate(
+        `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+      );
       console.error(err);
-      setSpinner((cur) => false);
+      setSpinner(false);
     }
   };
 
@@ -758,34 +738,55 @@ export default function OrderList_Indi_Admin() {
 
     if (!updateConfirm) return alert('교환진행 취소');
     // true라면,
-    setSpinner((cur) => true);
+    setSpinner(true);
     try {
       const response = await axios.get(
         `${REACT_APP_KEY_BACK}/admin/orderlist/detail/order_return/${orderId}`,
       );
 
-      if (response.status !== 200) return alert('교환신청 실패');
-      // 200번대 성공이라면,
-      alert(`주문번호: ${orderId}\n교환진행 완료`);
-      setRedirect((cur) => !cur);
-      setSpinner((cur) => false);
-      return;
-    } catch (err) {
+      if (response.status === 200) {
+        // 200번대 성공이라면,
+        alert(`주문번호: ${orderId}\n교환진행 완료`);
+        setRedirect((cur) => !cur);
+        setSpinner(false);
+        return;
+      }
+    } catch (err: any) {
+      navigate(
+        `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+      );
       console.error(err);
-      setSpinner((cur) => false);
+      setSpinner(false);
       return;
     }
   };
 
   useEffect(() => {
+    const getOrderIdInfo = async () => {
+      try {
+        const response = await axios.get(
+          `${REACT_APP_KEY_BACK}/admin/orderlist/detail/${orderId}`,
+          {},
+        );
+
+        if (response.status !== 200) return alert('데이터오류');
+        // 200번대 성공이면
+        statusCheck(response.data);
+        setShippingCodeChange(response.data.shippingCode);
+        setReturnCodeChange(response.data.shippingCode);
+        setChangeShippingCodeChagne(response.data.shippingCode);
+        setData(response.data);
+        return;
+      } catch (err: any) {
+        navigate(
+          `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+        );
+        console.error(err);
+      }
+    };
+
     getOrderIdInfo();
   }, [redirect]);
-
-  const dateSplit = (date) => {
-    const splitData = date.split(/[T+]/);
-    const dataSum = `${splitData[0]}  /  ${splitData[1]}`;
-    return dataSum;
-  };
 
   return (
     <div className={orderListIndi.wholContainer}>
@@ -817,11 +818,11 @@ export default function OrderList_Indi_Admin() {
                     <p className={orderListIndi.pdname}>{el.productName}</p>
                     <p className={orderListIndi.pdprice}>
                       <strong style={{ fontSize: '15px' }}>
-                        {frontPriceComma(el.unitSumPrice)}
+                        {el.unitSumPrice.toLocaleString('ko-KR')}
                       </strong>
                       KRW /{' '}
                       <strong style={{ fontSize: '15px' }}>
-                        {frontPriceComma(el.quantity)}
+                        {el.quantity.toLocaleString('ko-KR')}
                       </strong>{' '}
                       ea
                     </p>
@@ -836,13 +837,13 @@ export default function OrderList_Indi_Admin() {
             <p className={orderListIndi.older_detail_info}>
               total ={' '}
               <strong style={{ fontSize: '17px' }}>
-                {frontPriceComma(data.payments.totalAmount)}{' '}
+                {data.payments.totalAmount.toLocaleString('ko-KR')}{' '}
               </strong>
               KRW /{' '}
               <strong style={{ fontSize: '17px' }}>
-                {frontPriceComma(
-                  data.products.reduce((acc, cur) => acc + cur.quantity, 0),
-                )}
+                {data.products
+                  .reduce((acc, cur) => acc + cur.quantity, 0)
+                  .toLocaleString('ko-KR')}
               </strong>{' '}
               ea
             </p>
@@ -860,13 +861,13 @@ export default function OrderList_Indi_Admin() {
                 <p className={orderListIndi.return_reason}>
                   reason:{' '}
                   <span className={orderListIndi.reason_text}>
-                    {data.submitReturn.reason}
+                    {data.submitReturn?.reason}
                   </span>
                 </p>
                 <p className={orderListIndi.return_etc}>
                   message:{' '}
                   <span className={orderListIndi.reason_etc_text}>
-                    {data.submitReturn.return_message}
+                    {data.submitReturn?.return_message}
                   </span>
                 </p>
               </>
@@ -888,7 +889,7 @@ export default function OrderList_Indi_Admin() {
               status === '상품회수 완료 (교환)' ||
               status === '교환상품 배송 중' ||
               status === '교환상품 배송완료' ? (
-                data.submitReturn.return_img.map((el, index) => {
+                data.submitReturn?.return_img?.map((el, index) => {
                   return (
                     <Preview
                       key={index}
@@ -939,21 +940,27 @@ export default function OrderList_Indi_Admin() {
                     할인:{' '}
                     {!data.payments.discount
                       ? '0 ₩'
-                      : `${frontPriceComma(data.payments.discount)} ₩`}
+                      : `${Number(data.payments.discount).toLocaleString(
+                          'ko-KR',
+                        )} ₩`}
                   </p>
                   {status === '결제취소' || status === '환불완료' ? (
                     <p className={orderListIndi.payments_totalAmount}>
                       취소금액:{' '}
                       {!data.payments.totalAmount
                         ? '0 ₩'
-                        : `${frontPriceComma(data.cancels.cancelAmount)} ₩`}
+                        : `${data.cancels.cancelAmount.toLocaleString(
+                            'ko-KR',
+                          )} ₩`}
                     </p>
                   ) : (
                     <p className={orderListIndi.payments_totalAmount}>
                       결제금액:{' '}
                       {!data.payments.totalAmount
                         ? '0 ₩'
-                        : `${frontPriceComma(data.payments.totalAmount)} ₩`}
+                        : `${data.payments.totalAmount.toLocaleString(
+                            'ko-KR',
+                          )} ₩`}
                     </p>
                   )}
                   {status === '결제취소' || status === '환불완료' ? (
@@ -971,7 +978,7 @@ export default function OrderList_Indi_Admin() {
                       취소이유:{' '}
                       {status === '환불완료' ? (
                         <span className={orderListIndi.cancel_reason}>
-                          {data.submitReturn.reason} /{' '}
+                          {data.submitReturn?.reason} /{' '}
                           {data.cancels.cancelReason}
                         </span>
                       ) : (
@@ -1061,7 +1068,7 @@ export default function OrderList_Indi_Admin() {
                                   setDisableShipping((cur) =>
                                     cur === true ? false : true,
                                   );
-                                  setAdminShippingCondition((cur) => status);
+                                  setAdminShippingCondition(status);
                                 }}
                                 className={
                                   orderListIndi.adminShippingConditionBTN2
@@ -1172,7 +1179,7 @@ export default function OrderList_Indi_Admin() {
                                       setDisableChange((cur) =>
                                         cur === true ? false : true,
                                       );
-                                      setAdminChangeCondition((cur) => status);
+                                      setAdminChangeCondition(status);
                                     }}
                                     className={
                                       orderListIndi.adminChangeConditionBTN2
@@ -1320,9 +1327,7 @@ export default function OrderList_Indi_Admin() {
                                       setDisableReturn((cur) =>
                                         cur === true ? false : true,
                                       );
-                                      setAdminSubmitReturnCondition(
-                                        (cur) => status,
-                                      );
+                                      setAdminSubmitReturnCondition(status);
                                     }}
                                     className={
                                       orderListIndi.adminSubmitReturnConditionBTN2

@@ -178,3 +178,17 @@ interface ImagePreviewType {
   thumbnail?: string;
   type?: string;
 }
+
+//----------------------------------------------
+//----------------------------------------------
+//-------------------관리자페이지------------------
+
+// productList
+// 수정을 위한 배열
+interface EnterNumType {
+  L: string;
+  M: string;
+  OS: string;
+  S: string;
+  value: string;
+}
