@@ -14,6 +14,7 @@ import BTN_white_nomal_comp from '../../styles/BTN_white_nomal_comp';
 import MediaQuery from 'react-responsive';
 import LoadingAdmin from '../client_components/LoadingAdmin';
 import { useNavigate } from 'react-router-dom';
+import { changeEnteredNumComma, resultCommaRemove } from '../../constant/comma';
 
 const { REACT_APP_KEY_BACK } = process.env;
 const { REACT_APP_KEY_IMAGE } = process.env;
@@ -37,25 +38,6 @@ const generateArr = (item: string[] | undefined) => {
 
   return imageArray;
 };
-
-//천단위 콤마생성
-const changeEnteredNumComma = (el: number | string) => {
-  const comma = (el: number | string) => {
-    el = String(el);
-    return el.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
-  };
-  const uncomma = (el: number | string) => {
-    el = String(el);
-    return el.replace(/[^\d]+/g, '');
-  };
-  return comma(uncomma(el));
-};
-
-//콤마제거하고 연산 가능한 숫자로 바꾸기
-const resultCommaRemove = (el: string) => {
-  return Number(el.split(',').reduce((cur, acc) => cur + acc, ''));
-};
-//-------
 
 export default function ProductList_admin() {
   const [data, setData] = useState<ProductsType[]>([]);
