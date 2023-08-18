@@ -21,6 +21,7 @@ export default function Intro_movie_clinet() {
       <div className={style.intro_moive_container}>
         {isLoading && <Loading />}
         <Iframe
+          loading="eager"
           url="https://player.vimeo.com/video/837875796?title=0&amp;byline=0&amp;autoplay=1&amp;speed=0&amp;muted=1&amp;controls=0&amp;loop=1&amp;quality=auto&amp;app_id=122963"
           width="1680"
           height="945"

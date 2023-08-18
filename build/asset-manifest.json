@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.b2d057b1.css",
+    "main.js": "/static/js/main.9969c269.js",
+    "static/js/787.e282a9b2.chunk.js": "/static/js/787.e282a9b2.chunk.js",
+    "static/media/FOVV_mainLogo.png": "/static/media/FOVV_mainLogo.2299d1b3de666907541e.png",
+    "index.html": "/index.html",
+    "main.b2d057b1.css.map": "/static/css/main.b2d057b1.css.map",
+    "main.9969c269.js.map": "/static/js/main.9969c269.js.map",
+    "787.e282a9b2.chunk.js.map": "/static/js/787.e282a9b2.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b2d057b1.css",
+    "static/js/main.9969c269.js"
+  ]
+}
