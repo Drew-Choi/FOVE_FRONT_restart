@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import axios from 'axios';
 import LoadingAdmin from '../client_components/LoadingAdmin';
 import Loading_Spinner from '../client_components/Loading_Spinner';
+import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
+import BTN_white_nomal_comp from '../../styles/BTN_white_nomal_comp';
 
 const { REACT_APP_KEY_IMAGE } = process.env;
 const { REACT_APP_KEY_BACK } = process.env;
@@ -1049,33 +1051,33 @@ export default function OrderList_Indi_Admin() {
                           status === '교환상품 배송완료' ? (
                             <></>
                           ) : disableShipping ? (
-                            <button
-                              className={
-                                orderListIndi.adminShippingConditionBTN
-                              }
-                              onClick={() =>
+                            <BTN_black_nomal_comp
+                              borderRadius="20px"
+                              fontSize="12px"
+                              fontWeight="500"
+                              onClickEvent={() =>
                                 setDisableShipping((cur) =>
                                   cur === true ? false : true,
                                 )
                               }
                             >
                               변경하기
-                            </button>
+                            </BTN_black_nomal_comp>
                           ) : (
                             <>
-                              <button
-                                onClick={() => {
+                              <BTN_white_nomal_comp
+                                borderRadius="20px"
+                                fontSize="12px"
+                                fontWeight="500"
+                                onClickEvent={() => {
                                   setDisableShipping((cur) =>
                                     cur === true ? false : true,
                                   );
                                   setAdminShippingCondition(status);
                                 }}
-                                className={
-                                  orderListIndi.adminShippingConditionBTN2
-                                }
                               >
                                 취소
-                              </button>
+                              </BTN_white_nomal_comp>
                               <button
                                 className={
                                   orderListIndi.adminShippingConditionBTN

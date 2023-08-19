@@ -9,15 +9,17 @@ interface BTN_White_nomal_comp_Props extends PropsWithChildren {
   className?: string;
   padding?: string;
   borderRadius?: string;
+  fontWeight?: string;
 }
 
 const Btn_white_nomal = styled.span<BTN_White_nomal_comp_Props>`
   cursor: pointer;
   background-color: #ffffff;
   color: #000000;
-  padding: ${(props) => props.padding};
-  font-size: ${(props) => props.fontSize};
-  border-radius: ${(props) => props.borderRadius};
+  padding: ${({ padding }) => padding};
+  font-size: ${({ fontSize }) => fontSize};
+  font-weight: ${({ fontWeight }) => fontWeight};
+  border-radius: ${({ borderRadius }) => borderRadius};
   transform-origin: center;
   transition: 0.2s ease;
   text-align: center;
@@ -27,7 +29,7 @@ const Btn_white_nomal = styled.span<BTN_White_nomal_comp_Props>`
     color: #ffffff;
   }
   &:active {
-    font-size: ${(props) => props.transFontSize};
+    font-size: ${({ transFontSize }) => transFontSize};
     text-align: center;
     background-color: white;
   }
@@ -41,6 +43,7 @@ export default function BTN_white_nomal_comp({
   className,
   padding,
   borderRadius,
+  fontWeight,
 }: BTN_White_nomal_comp_Props) {
   return (
     <Btn_white_nomal
@@ -50,6 +53,7 @@ export default function BTN_white_nomal_comp({
       className={className}
       padding={padding}
       borderRadius={borderRadius}
+      fontWeight={fontWeight}
     >
       {children}
     </Btn_white_nomal>

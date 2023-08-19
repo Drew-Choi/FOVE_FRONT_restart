@@ -9,15 +9,17 @@ interface BTN_black_nomal_comp_Props extends PropsWithChildren {
   className?: string;
   padding?: string;
   borderRadius?: string;
+  fontWeight?: string;
 }
 
 const Btn_blakc_nomal = styled.span<BTN_black_nomal_comp_Props>`
   cursor: pointer;
   background-color: black;
   color: white;
-  padding: ${(props) => props.padding};
-  font-size: ${(props) => props.fontSize};
-  border-radius: ${(props) => props.borderRadius};
+  padding: ${({ padding }) => padding};
+  font-size: ${({ fontSize }) => fontSize};
+  font-weight: ${({ fontWeight }) => fontWeight};
+  border-radius: ${({ borderRadius }) => borderRadius};
   transform-origin: center;
   transition: 0.2s ease;
   text-align: center;
@@ -27,7 +29,7 @@ const Btn_blakc_nomal = styled.span<BTN_black_nomal_comp_Props>`
     color: black;
   }
   &:active {
-    font-size: ${(props) => props.transFontSize};
+    font-size: ${({ transFontSize }) => transFontSize};
     text-align: center;
     background-color: #848484;
   }
@@ -41,11 +43,13 @@ const BTN_black_nomal_comp: React.FC<BTN_black_nomal_comp_Props> = ({
   className,
   padding,
   borderRadius,
+  fontWeight,
 }) => {
   return (
     <Btn_blakc_nomal
       transFontSize={transFontSize}
       fontSize={fontSize}
+      fontWeight={fontWeight}
       onClick={onClickEvent}
       className={className}
       padding={padding}
