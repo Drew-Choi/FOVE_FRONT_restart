@@ -10,6 +10,10 @@ interface BTN_White_nomal_comp_Props extends PropsWithChildren {
   padding?: string;
   borderRadius?: string;
   fontWeight?: string;
+  marginLeft?: string;
+  marginRight?: string;
+  marginTop?: string;
+  marginBottom?: string;
 }
 
 const Btn_white_nomal = styled.span<BTN_White_nomal_comp_Props>`
@@ -24,6 +28,10 @@ const Btn_white_nomal = styled.span<BTN_White_nomal_comp_Props>`
   transition: 0.2s ease;
   text-align: center;
   border: 0.5px solid black;
+  margin-left: ${({ marginLeft }) => marginLeft};
+  margin-right: ${({ marginRight }) => marginRight};
+  margin-top: ${({ marginTop }) => marginTop};
+  margin-bottom: ${({ marginBottom }) => marginBottom};
   &:hover {
     background-color: #000000;
     color: #ffffff;
@@ -44,6 +52,10 @@ export default function BTN_white_nomal_comp({
   padding,
   borderRadius,
   fontWeight,
+  marginLeft,
+  marginRight,
+  marginTop,
+  marginBottom,
 }: BTN_White_nomal_comp_Props) {
   return (
     <Btn_white_nomal
@@ -54,6 +66,10 @@ export default function BTN_white_nomal_comp({
       padding={padding}
       borderRadius={borderRadius}
       fontWeight={fontWeight}
+      marginLeft={marginLeft}
+      marginRight={marginRight}
+      marginTop={marginTop}
+      marginBottom={marginBottom}
     >
       {children}
     </Btn_white_nomal>

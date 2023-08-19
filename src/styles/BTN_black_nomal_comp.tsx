@@ -10,6 +10,10 @@ interface BTN_black_nomal_comp_Props extends PropsWithChildren {
   padding?: string;
   borderRadius?: string;
   fontWeight?: string;
+  marginLeft?: string;
+  marginRight?: string;
+  marginTop?: string;
+  marginBottom?: string;
 }
 
 const Btn_blakc_nomal = styled.span<BTN_black_nomal_comp_Props>`
@@ -24,6 +28,10 @@ const Btn_blakc_nomal = styled.span<BTN_black_nomal_comp_Props>`
   transition: 0.2s ease;
   text-align: center;
   border: 0.5px solid black;
+  margin-left: ${({ marginLeft }) => marginLeft};
+  margin-right: ${({ marginRight }) => marginRight};
+  margin-top: ${({ marginTop }) => marginTop};
+  margin-bottom: ${({ marginBottom }) => marginBottom};
   &:hover {
     background-color: #ffffff;
     color: black;
@@ -44,6 +52,10 @@ const BTN_black_nomal_comp: React.FC<BTN_black_nomal_comp_Props> = ({
   padding,
   borderRadius,
   fontWeight,
+  marginLeft,
+  marginRight,
+  marginTop,
+  marginBottom,
 }) => {
   return (
     <Btn_blakc_nomal
@@ -54,6 +66,10 @@ const BTN_black_nomal_comp: React.FC<BTN_black_nomal_comp_Props> = ({
       className={className}
       padding={padding}
       borderRadius={borderRadius}
+      marginLeft={marginLeft}
+      marginRight={marginRight}
+      marginTop={marginTop}
+      marginBottom={marginBottom}
     >
       {children}
     </Btn_blakc_nomal>
