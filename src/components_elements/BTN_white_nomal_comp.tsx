@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 // type
 interface BTN_White_nomal_comp_Props extends PropsWithChildren {
-  onClickEvent?: (e?: any) => void | Dispatch<SetStateAction<unknown>>;
+  onClickEvent?: (e?: any) => (void | any) | Dispatch<SetStateAction<unknown>>;
   fontSize?: string;
   transFontSize?: string;
   className?: string;
@@ -16,7 +16,8 @@ interface BTN_White_nomal_comp_Props extends PropsWithChildren {
   marginBottom?: string;
 }
 
-const Btn_white_nomal = styled.span<BTN_White_nomal_comp_Props>`
+const Btn_white_nomal = styled.button<BTN_White_nomal_comp_Props>`
+  all: unset;
   cursor: pointer;
   background-color: #ffffff;
   color: #000000;

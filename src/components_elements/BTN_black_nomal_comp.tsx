@@ -16,7 +16,8 @@ interface BTN_black_nomal_comp_Props extends PropsWithChildren {
   marginBottom?: string;
 }
 
-const Btn_blakc_nomal = styled.span<BTN_black_nomal_comp_Props>`
+const Btn_blakc_nomal = styled.button<BTN_black_nomal_comp_Props>`
+  all: unset;
   cursor: pointer;
   background-color: black;
   color: white;

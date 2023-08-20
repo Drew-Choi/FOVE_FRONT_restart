@@ -14,7 +14,7 @@ import orderReturn from '../../../../styles/orderReturn_client.module.scss';
 import styled from 'styled-components';
 import Loading from '../../Loading';
 import Select_Custom from '../../../../components_elements/Select_Custom';
-import BTN_black_nomal_comp from '../../../../styles/BTN_black_nomal_comp';
+import BTN_black_nomal_comp from '../../../../components_elements/BTN_black_nomal_comp';
 import { useSelector } from 'react-redux';
 import Loading_Spinner from '../../Loading_Spinner';
 

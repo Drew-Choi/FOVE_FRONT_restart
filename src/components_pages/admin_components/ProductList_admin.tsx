@@ -9,8 +9,8 @@ import React, {
   useState,
 } from 'react';
 import adminPdList from '../../styles/productList_admin.module.scss';
-import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
-import BTN_white_nomal_comp from '../../styles/BTN_white_nomal_comp';
+import BTN_black_nomal_comp from '../../components_elements/BTN_black_nomal_comp';
+import BTN_white_nomal_comp from '../../components_elements/BTN_white_nomal_comp';
 import MediaQuery from 'react-responsive';
 import LoadingAdmin from '../client_components/LoadingAdmin';
 import { useNavigate } from 'react-router-dom';

@@ -15,7 +15,7 @@ import '../../../styles/cartModal.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
 import getToken from '../../../constant/getToken';
 import { importdb } from '../../../store/modules/cart';
-import BTN_black_nomal_comp from '../../../styles/BTN_black_nomal_comp';
+import BTN_black_nomal_comp from '../../../components_elements/BTN_black_nomal_comp';
 
 const { REACT_APP_KEY_IMAGE } = process.env;
 const { REACT_APP_KEY_BACK } = process.env;

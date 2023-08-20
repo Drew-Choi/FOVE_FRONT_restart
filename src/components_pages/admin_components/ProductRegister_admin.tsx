@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import productRegister from '../../styles/productRegister_admin.module.scss';
 import Input_Custom from '../../components_elements/Input_Custom';
-import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
+import BTN_black_nomal_comp from '../../components_elements/BTN_black_nomal_comp';
 import Select_Custom from '../../components_elements/Select_Custom';
 import TextArea_Custom from '../../components_elements/TextArea_Custom';
 import styled from 'styled-components';

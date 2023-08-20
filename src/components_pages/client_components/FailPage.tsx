@@ -1,6 +1,7 @@
 import React from 'react';
 import tossPayComplete from '../../styles/tossPay_complete.module.scss';
 import { useNavigate } from 'react-router-dom';
+import BTN_black_nomal_comp from '../../components_elements/BTN_black_nomal_comp';
 
 export default function FailPage() {
   const navigate = useNavigate();
@@ -25,12 +26,9 @@ export default function FailPage() {
         </div>
 
         <div className={tossPayComplete.btn_container}>
-          <button
-            className={tossPayComplete.btn_continue}
-            onClick={() => navigate('/store')}
-          >
+          <BTN_black_nomal_comp onClickEvent={() => navigate('/store')}>
             쇼핑계속하기
-          </button>
+          </BTN_black_nomal_comp>
         </div>
 
         <div className={tossPayComplete.notice_wrap}>

@@ -10,7 +10,7 @@ import React, {
 import orderClient from '../../../styles/order_client.module.scss';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import BTN_black_nomal_comp from '../../../styles/BTN_black_nomal_comp';
+import BTN_black_nomal_comp from '../../../components_elements/BTN_black_nomal_comp';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Select_Custom from '../../../components_elements/Select_Custom';
 import TextArea_Custom from '../../../components_elements/TextArea_Custom';

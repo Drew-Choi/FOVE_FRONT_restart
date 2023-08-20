@@ -6,8 +6,8 @@ import styled from 'styled-components';
 import axios from 'axios';
 import LoadingAdmin from '../client_components/LoadingAdmin';
 import Loading_Spinner from '../client_components/Loading_Spinner';
-import BTN_black_nomal_comp from '../../styles/BTN_black_nomal_comp';
-import BTN_white_nomal_comp from '../../styles/BTN_white_nomal_comp';
+import BTN_black_nomal_comp from '../../components_elements/BTN_black_nomal_comp';
+import BTN_white_nomal_comp from '../../components_elements/BTN_white_nomal_comp';
 
 const { REACT_APP_KEY_IMAGE } = process.env;
 const { REACT_APP_KEY_BACK } = process.env;
@@ -1075,17 +1075,18 @@ export default function OrderList_Indi_Admin() {
                                   );
                                   setAdminShippingCondition(status);
                                 }}
+                                marginRight="5px"
                               >
                                 취소
                               </BTN_white_nomal_comp>
-                              <button
-                                className={
-                                  orderListIndi.adminShippingConditionBTN
-                                }
-                                onClick={req_AdminShippingCondition}
+                              <BTN_black_nomal_comp
+                                onClickEvent={req_AdminShippingCondition}
+                                borderRadius="20px"
+                                fontSize="12px"
+                                fontWeight="500"
                               >
                                 등록
-                              </button>
+                              </BTN_black_nomal_comp>
                             </>
                           )}
                         </div>
@@ -1162,41 +1163,42 @@ export default function OrderList_Indi_Admin() {
                               {status === '교환상품 배송완료' ? (
                                 <></>
                               ) : disableChange ? (
-                                <button
-                                  className={
-                                    orderListIndi.adminChangeConditionBTN
-                                  }
-                                  onClick={() =>
+                                <BTN_black_nomal_comp
+                                  onClickEvent={() =>
                                     setDisableChange((cur) =>
                                       cur === true ? false : true,
                                     )
                                   }
+                                  borderRadius="20px"
+                                  fontSize="12px"
+                                  fontWeight="500"
                                 >
                                   변경하기
-                                </button>
+                                </BTN_black_nomal_comp>
                               ) : (
                                 <>
-                                  <button
-                                    onClick={() => {
+                                  <BTN_white_nomal_comp
+                                    borderRadius="20px"
+                                    fontSize="12px"
+                                    fontWeight="500"
+                                    marginRight="5px"
+                                    onClickEvent={() => {
                                       setDisableChange((cur) =>
                                         cur === true ? false : true,
                                       );
                                       setAdminChangeCondition(status);
                                     }}
-                                    className={
-                                      orderListIndi.adminChangeConditionBTN2
-                                    }
                                   >
                                     취소
-                                  </button>
-                                  <button
-                                    className={
-                                      orderListIndi.adminChangeConditionBTN
-                                    }
-                                    onClick={req_AdminChangeCondition}
+                                  </BTN_white_nomal_comp>
+                                  <BTN_black_nomal_comp
+                                    borderRadius="20px"
+                                    fontSize="12px"
+                                    fontWeight="500"
+                                    onClickEvent={req_AdminChangeCondition}
                                   >
                                     등록
-                                  </button>
+                                  </BTN_black_nomal_comp>
                                 </>
                               )}
                             </div>
@@ -1310,41 +1312,44 @@ export default function OrderList_Indi_Admin() {
                               {status === '환불완료' ? (
                                 <></>
                               ) : disableReturn ? (
-                                <button
-                                  className={
-                                    orderListIndi.adminSubmitReturnConditionBTN
-                                  }
-                                  onClick={() =>
+                                <BTN_black_nomal_comp
+                                  borderRadius="20px"
+                                  fontSize="12px"
+                                  fontWeight="500"
+                                  onClickEvent={() =>
                                     setDisableReturn((cur) =>
                                       cur === true ? false : true,
                                     )
                                   }
                                 >
                                   변경하기
-                                </button>
+                                </BTN_black_nomal_comp>
                               ) : (
                                 <>
-                                  <button
-                                    onClick={() => {
+                                  <BTN_white_nomal_comp
+                                    borderRadius="20px"
+                                    fontSize="12px"
+                                    fontWeight="500"
+                                    marginRight="5px"
+                                    onClickEvent={() => {
                                       setDisableReturn((cur) =>
                                         cur === true ? false : true,
                                       );
                                       setAdminSubmitReturnCondition(status);
                                     }}
-                                    className={
-                                      orderListIndi.adminSubmitReturnConditionBTN2
-                                    }
                                   >
                                     취소
-                                  </button>
-                                  <button
-                                    className={
-                                      orderListIndi.adminSubmitReturnConditionBTN
+                                  </BTN_white_nomal_comp>
+                                  <BTN_black_nomal_comp
+                                    onClickEvent={
+                                      req_AdminSubmitReturnCondition
                                     }
-                                    onClick={req_AdminSubmitReturnCondition}
+                                    borderRadius="20px"
+                                    fontSize="12px"
+                                    fontWeight="500"
                                   >
                                     등록
-                                  </button>
+                                  </BTN_black_nomal_comp>
                                 </>
                               )}
                             </div>
@@ -1417,91 +1422,136 @@ export default function OrderList_Indi_Admin() {
                   </>
                 )}
               </div>
-              <button
-                className={orderListIndi.orderBack}
-                onClick={() => navigate(-1)}
+              <BTN_black_nomal_comp
+                borderRadius="0"
+                fontSize="13px"
+                fontWeight="500"
+                padding="5px 10px"
+                marginTop="20px"
+                marginRight="5px"
+                onClickEvent={() => navigate(-1)}
               >
                 뒤로가기
-              </button>
+              </BTN_black_nomal_comp>
               {status === '반품신청 중' ? (
-                <button
-                  className={orderListIndi.cancelSubmit}
-                  onClick={() => cancelSubmit()}
+                <BTN_white_nomal_comp
+                  borderRadius="0"
+                  fontSize="13px"
+                  fontWeight="500"
+                  padding="5px 50px"
+                  marginTop="20px"
+                  marginRight="5px"
+                  onClickEvent={cancelSubmit}
                 >
                   반품철회 *
-                </button>
+                </BTN_white_nomal_comp>
               ) : (
                 <></>
               )}
               {status === '교환신청 완료' || status == '상품회수 중 (교환)' ? (
-                <button
-                  className={orderListIndi.orderChange}
-                  onClick={() => adminPdChangeCancel()}
+                <BTN_white_nomal_comp
+                  borderRadius="0"
+                  fontSize="13px"
+                  fontWeight="500"
+                  padding="5px 20px"
+                  marginTop="20px"
+                  marginRight="5px"
+                  onClickEvent={adminPdChangeCancel}
                 >
                   교환신청 철회
-                </button>
+                </BTN_white_nomal_comp>
               ) : (
                 <></>
               )}
               {status === '배송완료' || status === '반품신청 중' ? (
-                <button
-                  className={orderListIndi.orderChange}
-                  onClick={() => adminPdChange()}
+                <BTN_white_nomal_comp
+                  borderRadius="0"
+                  fontSize="13px"
+                  fontWeight="500"
+                  padding="5px 20px"
+                  marginTop="20px"
+                  marginRight="5px"
+                  onClickEvent={adminPdChange}
                 >
                   교환신청*
-                </button>
+                </BTN_white_nomal_comp>
               ) : (
                 <></>
               )}
               {status === '결제 전' ? (
-                <button
-                  className={orderListIndi.orderCancel}
-                  onClick={() => forceDelete()}
+                <BTN_white_nomal_comp
+                  borderRadius="0"
+                  fontSize="13px"
+                  fontWeight="500"
+                  padding="5px 10px"
+                  marginTop="20px"
+                  marginRight="5px"
+                  onClickEvent={forceDelete}
                 >
                   주문강제취소
-                </button>
+                </BTN_white_nomal_comp>
               ) : (
                 <></>
               )}
               {status === '결제완료 (배송 전)' || status === '배송 중' ? (
-                <button
-                  className={orderListIndi.orderChange}
-                  onClick={() => pdCancel()}
+                <BTN_white_nomal_comp
+                  borderRadius="0"
+                  fontSize="13px"
+                  fontWeight="500"
+                  padding="5px 20px"
+                  marginTop="20px"
+                  marginRight="5px"
+                  onClickEvent={pdCancel}
                 >
                   결제취소(배송 전)
-                </button>
+                </BTN_white_nomal_comp>
               ) : (
                 <></>
               )}
               {status === '배송 중' ||
               status === '배송완료' ||
               status === '반품신청 중' ? (
-                <button
-                  className={orderListIndi.orderCancel}
-                  onClick={() => submitRefund()}
+                <BTN_white_nomal_comp
+                  borderRadius="0"
+                  fontSize="13px"
+                  fontWeight="500"
+                  padding="5px 20px"
+                  marginTop="20px"
+                  marginRight="5px"
+                  onClickEvent={submitRefund}
                 >
                   환불진행신청 (배송 후)
-                </button>
+                </BTN_white_nomal_comp>
               ) : (
                 <></>
               )}
               {status === '상품회수 완료 (환불)' ? (
-                <button
-                  className={orderListIndi.orderCancel}
-                  onClick={() => pdCancelRefund()}
+                <BTN_white_nomal_comp
+                  borderRadius="0"
+                  fontSize="13px"
+                  fontWeight="500"
+                  padding="5px 10px"
+                  marginTop="20px"
+                  marginRight="5px"
+                  onClickEvent={pdCancelRefund}
                 >
                   환불 결제취소*
-                </button>
+                </BTN_white_nomal_comp>
               ) : (
                 <></>
               )}
               {status === '환불신청완료' || status == '상품회수 중 (환불)' ? (
-                <button
-                  className={orderListIndi.orderCancel}
-                  onClick={() => submitRefundCancel()}
+                <BTN_white_nomal_comp
+                  borderRadius="0"
+                  fontSize="13px"
+                  fontWeight="500"
+                  padding="5px 10px"
+                  marginTop="20px"
+                  marginRight="5px"
+                  onClickEvent={submitRefundCancel}
                 >
                   환불신청 철회
-                </button>
+                </BTN_white_nomal_comp>
               ) : (
                 <></>
               )}
