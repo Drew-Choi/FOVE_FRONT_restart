@@ -6,6 +6,8 @@ import axios from 'axios';
 import orderCancel from '../../../../styles/orderCancel_client.module.scss';
 import styled from 'styled-components';
 import Loading from '../../Loading';
+import BTN_black_nomal_comp from '../../../../components_elements/BTN_black_nomal_comp';
+import BTN_white_nomal_comp from '../../../../components_elements/BTN_white_nomal_comp';
 
 const { REACT_APP_KEY_IMAGE } = process.env;
 const { REACT_APP_KEY_BACK } = process.env;
@@ -136,18 +138,26 @@ export default function OrderCancel_client_onlyOrder() {
                   </strong>{' '}
                   ea
                 </p>
-                <button
-                  className={orderCancel.orderBack}
-                  onClick={() => navigate(-1)}
+                <BTN_black_nomal_comp
+                  borderRadius="0"
+                  fontSize="13px"
+                  padding="5px 10px"
+                  font-weight="500"
+                  marginRight="10px"
+                  onClickEvent={() => navigate(-1)}
                 >
                   뒤로가기
-                </button>
-                <button
+                </BTN_black_nomal_comp>
+                <BTN_white_nomal_comp
+                  borderRadius="0"
+                  fontSize="13px"
+                  padding="5px 10px"
+                  font-weight="500"
                   className={orderCancel.orderCancle}
-                  onClick={() => readyCancel()}
+                  onClickEvent={() => readyCancel()}
                 >
                   취소진행
-                </button>
+                </BTN_white_nomal_comp>
                 <p className={orderCancel.caution}>
                   *취소내역을 다시 한번 잘 확인하신 후 취소진행을 눌러주세요.
                 </p>

@@ -1,4 +1,4 @@
-.toss_complete_container{
+.toss_complete_container {
   position: relative;
   width: 100vw;
   min-height: 700px;
@@ -18,7 +18,7 @@
       padding: 30px;
       font-size: 18px;
     }
-  
+
     .complete_box {
       position: relative;
       width: 70vw;
@@ -26,50 +26,49 @@
       border: 0.5px solid black;
       text-align: center;
       padding: 80px;
-      
+
       @media screen and (max-width: 821px) {
         padding: 80px 10px;
       }
 
       @media screen and (max-width: 635px) {
-      padding: 60px 10px;
-      width: 90vw;
+        padding: 60px 10px;
+        width: 90vw;
       }
-  
-      .order_title{
+
+      .order_title {
         font-weight: 700;
         font-size: 20px;
 
         @media screen and (max-width: 280px) {
           font-size: 15px;
           margin-bottom: 40px;
-          }
+        }
       }
-  
-      .order_guide{
+
+      .order_guide {
         font-size: 13px;
-  
+
         span {
           font-weight: 700;
           text-decoration: underline;
         }
       }
-  
+
       .order_info_number {
         font-size: 13px;
         margin-bottom: 5px;
-  
+
         .number {
           font-weight: 700;
           margin-left: 5px;
         }
       }
-  
+
       .order_info_date {
         font-size: 13px;
         margin-bottom: 5px;
-  
-  
+
         .date {
           margin-left: 5px;
         }
@@ -88,7 +87,7 @@
       @media screen and (max-width: 280px) {
         justify-content: center;
         gap: 15px;
-        }
+      }
 
       .btn_continue {
         all: unset;
@@ -111,10 +110,10 @@
         @media screen and (max-width: 280px) {
           font-size: 12px;
           padding: 10px 20px;
-          }
+        }
       }
-  
-      .btn_orderList{
+
+      .btn_orderList {
         all: unset;
         padding: 10px 15px;
         font-size: 15px;
@@ -136,61 +135,61 @@
         @media screen and (max-width: 280px) {
           font-size: 12px;
           padding: 10px 23px;
-          }
-      }
-    }
-  
-   .notice_wrap{
-    margin-top: 50px;
-    margin-bottom: 80px;
-
-    .notice_use{
-      margin-bottom: 30px;
-
-      .use_title{
-        font-weight: 600;
-        margin-bottom: 10px;
-      }
-      .use_desc{
-        font-size: 12px;
+        }
       }
     }
 
-    .notice_recip{
-      margin-bottom: 30px;
+    .notice_wrap {
+      margin-top: 50px;
+      margin-bottom: 80px;
 
-      .recip_title{
-        font-weight: 600;
-        margin-bottom: 10px;
+      .notice_use {
+        margin-bottom: 30px;
+
+        .use_title {
+          font-weight: 600;
+          margin-bottom: 10px;
+        }
+        .use_desc {
+          font-size: 12px;
+        }
       }
-      .recip_desc{
-        font-size: 12px;
+
+      .notice_recip {
+        margin-bottom: 30px;
+
+        .recip_title {
+          font-weight: 600;
+          margin-bottom: 10px;
+        }
+        .recip_desc {
+          font-size: 12px;
+        }
+      }
+
+      .notice_recip_detail {
+        margin-bottom: 30px;
+
+        .recip_detail_title {
+          font-weight: 600;
+          margin-bottom: 10px;
+        }
+        .recip_detail_desc {
+          font-size: 12px;
+        }
+      }
+
+      .notice_cash {
+        margin-bottom: 30px;
+
+        .cash_title {
+          font-weight: 600;
+          margin-bottom: 10px;
+        }
+        .cash_desc {
+          font-size: 12px;
+        }
       }
     }
-
-    .notice_recip_detail{
-      margin-bottom: 30px;
-
-      .recip_detail_title{
-        font-weight: 600;
-        margin-bottom: 10px;
-      }
-      .recip_detail_desc{
-        font-size: 12px;
-      }
-    }
-
-    .notice_cash{
-      margin-bottom: 30px;
-
-      .cash_title{
-        font-weight: 600;
-        margin-bottom: 10px;
-      }
-      .cash_desc{
-        font-size: 12px;
-      }
-    }
-   }
-  } 
+  }
 }

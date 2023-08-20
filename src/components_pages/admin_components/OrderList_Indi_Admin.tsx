@@ -1102,35 +1102,38 @@ export default function OrderList_Indi_Admin() {
                         >
                           결제 전
                         </Input_Custom>
-                        <label>결제완료 / 배송 전</label>
-                        <input
+                        <Input_Custom
                           type="radio"
                           name="adminShippingCondition"
                           value="결제완료 (배송 전)"
                           checked={
                             adminShippingCondition === '결제완료 (배송 전)'
                           }
-                          onChange={handleAdminShippingCondition}
+                          onChangeEvent={handleAdminShippingCondition}
                           disabled={disableShipping}
-                        />
-                        <label>배송 중</label>
-                        <input
+                        >
+                          결제완료 / 배송 전
+                        </Input_Custom>
+                        <Input_Custom
                           type="radio"
                           name="adminShippingCondition"
                           value="배송 중"
                           checked={adminShippingCondition === '배송 중'}
-                          onChange={handleAdminShippingCondition}
+                          onChangeEvent={handleAdminShippingCondition}
                           disabled={disableShipping}
-                        />
-                        <label>배송완료</label>
-                        <input
+                        >
+                          배송 중
+                        </Input_Custom>
+                        <Input_Custom
                           type="radio"
                           name="adminShippingCondition"
                           value="배송완료"
                           checked={adminShippingCondition === '배송완료'}
-                          onChange={handleAdminShippingCondition}
+                          onChangeEvent={handleAdminShippingCondition}
                           disabled={disableShipping}
-                        />
+                        >
+                          배송완료
+                        </Input_Custom>
                       </div>
                       <div
                         className={
@@ -1205,13 +1208,12 @@ export default function OrderList_Indi_Admin() {
                                 </>
                               )}
                             </div>
-                            <label>교환신청 완료</label>
-                            <input
+                            <Input_Custom
                               type="radio"
                               name="adminSubmitReturnCondition"
                               value="교환신청 완료"
                               checked={adminChangeCondition === '교환신청 완료'}
-                              onChange={handleadminChangeCondition}
+                              onChangeEvent={handleadminChangeCondition}
                               disabled={
                                 status === '상품회수 중 (교환)' ||
                                 status === '상품회수 완료 (교환)' ||
@@ -1220,51 +1222,57 @@ export default function OrderList_Indi_Admin() {
                                   ? true
                                   : disableChange
                               }
-                            />
-                            <label>상품회수 중 (교환)</label>
-                            <input
+                            >
+                              교환신청 완료
+                            </Input_Custom>
+                            <Input_Custom
                               type="radio"
                               name="adminSubmitReturnCondition"
                               value="상품회수 중 (교환)"
                               checked={
                                 adminChangeCondition === '상품회수 중 (교환)'
                               }
-                              onChange={handleadminChangeCondition}
+                              onChangeEvent={handleadminChangeCondition}
                               disabled={disableChange}
-                            />
-                            <label>상품회수 완료 (교환)</label>
-                            <input
+                            >
+                              상품회수 중 (교환)
+                            </Input_Custom>
+                            <Input_Custom
                               type="radio"
                               name="adminSubmitReturnCondition"
                               value="상품회수 완료 (교환)"
                               checked={
                                 adminChangeCondition === '상품회수 완료 (교환)'
                               }
-                              onChange={handleadminChangeCondition}
+                              onChangeEvent={handleadminChangeCondition}
                               disabled={disableChange}
-                            />
-                            <label>교환상품 배송 중</label>
-                            <input
+                            >
+                              상품회수 완료 (교환)
+                            </Input_Custom>
+                            <Input_Custom
                               type="radio"
                               name="adminSubmitReturnCondition"
                               value="교환상품 배송 중"
                               checked={
                                 adminChangeCondition === '교환상품 배송 중'
                               }
-                              onChange={handleadminChangeCondition}
+                              onChangeEvent={handleadminChangeCondition}
                               disabled={disableChange}
-                            />
-                            <label>교환상품 배송완료</label>
-                            <input
+                            >
+                              교환상품 배송 중
+                            </Input_Custom>
+                            <Input_Custom
                               type="radio"
                               name="adminSubmitReturnCondition"
                               value="교환상품 배송완료"
                               checked={
                                 adminChangeCondition === '교환상품 배송완료'
                               }
-                              onChange={handleadminChangeCondition}
+                              onChangeEvent={handleadminChangeCondition}
                               disabled={disableChange}
-                            />
+                            >
+                              교환상품 배송완료
+                            </Input_Custom>
                           </div>
                           <div
                             className={
@@ -1356,24 +1364,24 @@ export default function OrderList_Indi_Admin() {
                                 </>
                               )}
                             </div>
-                            <label>환불신청완료</label>
-                            <input
+                            <Input_Custom
                               type="radio"
                               name="adminSubmitReturnCondition"
                               value="환불신청완료"
                               checked={
                                 adminSubmitReturnCondition === '환불신청완료'
                               }
-                              onChange={handleadminSubmitReturnCondition}
+                              onChangeEvent={handleadminSubmitReturnCondition}
                               disabled={
                                 status === '상품회수 중 (환불)' ||
                                 status === '상품회수 완료 (환불)'
                                   ? true
                                   : disableReturn
                               }
-                            />
-                            <label>상품회수 중 (환불)</label>
-                            <input
+                            >
+                              환불신청완료
+                            </Input_Custom>
+                            <Input_Custom
                               type="radio"
                               name="adminSubmitReturnCondition"
                               value="상품회수 중 (환불)"
@@ -1381,11 +1389,12 @@ export default function OrderList_Indi_Admin() {
                                 adminSubmitReturnCondition ===
                                 '상품회수 중 (환불)'
                               }
-                              onChange={handleadminSubmitReturnCondition}
+                              onChangeEvent={handleadminSubmitReturnCondition}
                               disabled={disableReturn}
-                            />
-                            <label>상품회수 완료 (환불)</label>
-                            <input
+                            >
+                              상품회수 중 (환불)
+                            </Input_Custom>
+                            <Input_Custom
                               type="radio"
                               name="adminSubmitReturnCondition"
                               value="상품회수 완료 (환불)"
@@ -1393,9 +1402,11 @@ export default function OrderList_Indi_Admin() {
                                 adminSubmitReturnCondition ===
                                 '상품회수 완료 (환불)'
                               }
-                              onChange={handleadminSubmitReturnCondition}
+                              onChangeEvent={handleadminSubmitReturnCondition}
                               disabled={disableReturn}
-                            />
+                            >
+                              상품회수 완료 (환불)
+                            </Input_Custom>
                           </div>
                           <div
                             className={

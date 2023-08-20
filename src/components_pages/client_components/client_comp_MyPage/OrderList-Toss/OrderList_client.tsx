@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import Loading from '../../Loading';
 import { BsArrowDownCircle } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
+import BTN_white_nomal_comp from '../../../../components_elements/BTN_white_nomal_comp';
 
 type PD_ImagesType = {
   img: string;
@@ -557,9 +558,13 @@ export default function OrderList_client() {
                           !el.isReturn &&
                           !el.isShipping &&
                           !el.isReturnSubmit ? (
-                            <button
-                              className={orderList.orderCancle}
-                              onClick={() => {
+                            <BTN_white_nomal_comp
+                              borderRadius="0"
+                              padding="5px 10px"
+                              fontSize="13px"
+                              fontWeight="500"
+                              activeBackgroundColor="#e2e2e2"
+                              onClickEvent={() => {
                                 if (isLogin) {
                                   navigate(
                                     `/mypage/orderlist/cancel/${el.payments.orderId}`,
@@ -571,7 +576,7 @@ export default function OrderList_client() {
                               }}
                             >
                               주문취소
-                            </button>
+                            </BTN_white_nomal_comp>
                           ) : timeCheck(el) === true &&
                             el.payments.status === 'DONE' &&
                             !el.isShipping &&
@@ -582,9 +587,13 @@ export default function OrderList_client() {
                             !el.isRetrieved &&
                             !el.isRefund &&
                             !el.isReturnSubmit ? (
-                            <button
-                              className={orderList.orderCancle}
-                              onClick={() => {
+                            <BTN_white_nomal_comp
+                              borderRadius="0"
+                              padding="5px 10px"
+                              fontSize="13px"
+                              fontWeight="500"
+                              activeBackgroundColor="#e2e2e2"
+                              onClickEvent={() => {
                                 if (isLogin) {
                                   navigate(
                                     `/mypage/orderlist/return/${el.payments.orderId}`,
@@ -596,7 +605,7 @@ export default function OrderList_client() {
                               }}
                             >
                               반품신청
-                            </button>
+                            </BTN_white_nomal_comp>
                           ) : (el.payments.status === 'DONE' &&
                               !el.isShipping &&
                               el.shippingCode !== 0 &&
@@ -669,9 +678,13 @@ export default function OrderList_client() {
                               el.isRetrieved &&
                               el.isRefund &&
                               el.isReturnSubmit) ? (
-                            <button
-                              className={orderList.orderCancle}
-                              onClick={() => {
+                            <BTN_white_nomal_comp
+                              borderRadius="0"
+                              padding="5px 10px"
+                              fontSize="13px"
+                              fontWeight="500"
+                              activeBackgroundColor="#e2e2e2"
+                              onClickEvent={() => {
                                 if (isLogin) {
                                   navigate(
                                     `/mypage/orderlist/return_check/${el.payments.orderId}`,
@@ -683,16 +696,20 @@ export default function OrderList_client() {
                               }}
                             >
                               반품신청내역 확인
-                            </button>
+                            </BTN_white_nomal_comp>
                           ) : el.payments.status !== 'DONE' &&
                             !el.isDelivered &&
                             el.shippingCode === 0 &&
                             !el.isReturn &&
                             !el.isShipping &&
                             !el.isReturnSubmit ? (
-                            <button
-                              className={orderList.orderCancle}
-                              onClick={() => {
+                            <BTN_white_nomal_comp
+                              borderRadius="0"
+                              padding="5px 10px"
+                              fontSize="13px"
+                              fontWeight="500"
+                              activeBackgroundColor="#e2e2e2"
+                              onClickEvent={() => {
                                 if (isLogin) {
                                   navigate(
                                     `/mypage/orderlist/cancel_onlyOrder/${el.payments.orderId}`,
@@ -704,7 +721,7 @@ export default function OrderList_client() {
                               }}
                             >
                               주문취소
-                            </button>
+                            </BTN_white_nomal_comp>
                           ) : el.payments.status === 'DONE' &&
                             !el.isShipping &&
                             el.shippingCode !== 0 &&
@@ -715,9 +732,13 @@ export default function OrderList_client() {
                             !el.isRefund &&
                             !el.isReturnSubmit ? (
                             <>
-                              <button
-                                className={orderList.orderCancle}
-                                onClick={() => {
+                              <BTN_white_nomal_comp
+                                borderRadius="0"
+                                padding="5px 10px"
+                                fontSize="13px"
+                                fontWeight="500"
+                                activeBackgroundColor="#e2e2e2"
+                                onClickEvent={() => {
                                   if (isLogin) {
                                     navigate(
                                       `/mypage/orderlist/return_check/${el.payments.orderId}`,
@@ -729,7 +750,7 @@ export default function OrderList_client() {
                                 }}
                               >
                                 반품신청내역 확인
-                              </button>
+                              </BTN_white_nomal_comp>
                             </>
                           ) : (
                             <></>
@@ -969,9 +990,13 @@ export default function OrderList_client() {
                               el.isRetrieved &&
                               el.isRefund &&
                               el.isReturnSubmit && (
-                                <button
-                                  className={orderList.orderCancle}
-                                  onClick={() => {
+                                <BTN_white_nomal_comp
+                                  borderRadius="0"
+                                  padding="5px 10px"
+                                  fontSize="13px"
+                                  fontWeight="500"
+                                  activeBackgroundColor="#e2e2e2"
+                                  onClickEvent={() => {
                                     if (isLogin) {
                                       navigate(
                                         `/mypage/orderlist/return_check/${el.payments.orderId}`,
@@ -983,7 +1008,7 @@ export default function OrderList_client() {
                                   }}
                                 >
                                   반품신청내역 확인
-                                </button>
+                                </BTN_white_nomal_comp>
                               )}
 
                             <p className={orderList.orderCancelInfo}></p>

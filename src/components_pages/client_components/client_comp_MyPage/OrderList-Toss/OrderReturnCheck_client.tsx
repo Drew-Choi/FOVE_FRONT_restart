@@ -8,6 +8,8 @@ import styled from 'styled-components';
 import Loading from '../../Loading';
 import { useSelector } from 'react-redux';
 import Loading_Spinner from '../../Loading_Spinner';
+import BTN_black_nomal_comp from '../../../../components_elements/BTN_black_nomal_comp';
+import BTN_white_nomal_comp from '../../../../components_elements/BTN_white_nomal_comp';
 
 const { REACT_APP_KEY_BACK } = process.env;
 const { REACT_APP_KEY_IMAGE } = process.env;
@@ -307,12 +309,16 @@ export default function OrderReturnCheck_client() {
                     ></Preview>
                   );
                 })}
-                <button
-                  className={orderReturnCheck.orderBack}
-                  onClick={() => navigate(-1)}
+                <BTN_black_nomal_comp
+                  fontWeight="500"
+                  fontSize="13px"
+                  borderRadius="0"
+                  padding="5px 10px"
+                  marginRight="10px"
+                  onClickEvent={() => navigate(-1)}
                 >
                   뒤로가기
-                </button>
+                </BTN_black_nomal_comp>
                 {orderCancelItem.payments.status === 'DONE' &&
                 !orderCancelItem.isShipping &&
                 orderCancelItem.shippingCode !== 0 &&
@@ -322,12 +328,15 @@ export default function OrderReturnCheck_client() {
                 !orderCancelItem.isRetrieved &&
                 !orderCancelItem.isRefund &&
                 orderCancelItem.isReturnSubmit ? (
-                  <button
-                    className={orderReturnCheck.orderCancle}
-                    onClick={() => cancelSubmit()}
+                  <BTN_white_nomal_comp
+                    fontWeight="500"
+                    fontSize="13px"
+                    borderRadius="0"
+                    padding="5px 10px"
+                    onClickEvent={() => cancelSubmit()}
                   >
                     반품신청철회
-                  </button>
+                  </BTN_white_nomal_comp>
                 ) : (
                   <></>
                 )}

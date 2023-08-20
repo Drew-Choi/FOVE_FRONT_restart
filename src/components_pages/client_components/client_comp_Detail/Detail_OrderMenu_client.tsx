@@ -12,6 +12,8 @@ import Shipping_info_modal_client from './Shipping_info_modal_client';
 import Size_Modal_client from './Size_Modal_client';
 import { isMobile } from 'react-device-detect';
 import React from 'react';
+import BTN_white_nomal_comp from '../../../components_elements/BTN_white_nomal_comp';
+import BTN_black_nomal_comp from '../../../components_elements/BTN_black_nomal_comp';
 
 const { REACT_APP_KEY_BACK } = process.env;
 
@@ -237,86 +239,86 @@ export default function Detail_OrderMenu_client({
       </p>
       <div className={detailOrderMenu.infoContain}>
         {datas.size!.OS !== -1 && datas.size!.OS !== 0 ? (
-          <button
+          <BTN_white_nomal_comp
             className={`${detailOrderMenu.sizeBTN} ${
               onOS ? detailOrderMenu.on : ''
             }`}
-            onClick={(e) => {
+            onClickEvent={(e) => {
               handle(e);
               setCount(1);
             }}
             value="OS"
           >
             OS
-          </button>
+          </BTN_white_nomal_comp>
         ) : datas.size!.OS === 0 ? (
-          <button className={detailOrderMenu.sizeBTN_soldOut}>
+          <BTN_white_nomal_comp className={detailOrderMenu.sizeBTN_soldOut}>
             <div className={detailOrderMenu.line}></div>
             <span>OS</span>
-          </button>
+          </BTN_white_nomal_comp>
         ) : (
           <></>
         )}
         {datas.size!.S !== -1 && datas.size!.S !== 0 ? (
-          <button
+          <BTN_white_nomal_comp
             className={`${detailOrderMenu.sizeBTN} ${
               onS ? detailOrderMenu.on : ''
             }`}
-            onClick={(e) => {
+            onClickEvent={(e) => {
               handle(e);
               setCount(1);
             }}
             value="S"
           >
             S
-          </button>
+          </BTN_white_nomal_comp>
         ) : datas.size!.S === 0 ? (
-          <button className={detailOrderMenu.sizeBTN_soldOut}>
+          <BTN_white_nomal_comp className={detailOrderMenu.sizeBTN_soldOut}>
             <div className={detailOrderMenu.line}></div>
             <span>S</span>
-          </button>
+          </BTN_white_nomal_comp>
         ) : (
           <></>
         )}
         {datas.size!.M !== -1 && datas.size!.M !== 0 ? (
-          <button
+          <BTN_white_nomal_comp
             className={`${detailOrderMenu.sizeBTN} ${
               onM ? detailOrderMenu.on : ''
             }`}
-            onClick={(e) => {
+            onClickEvent={(e) => {
               handle(e);
               setCount(1);
             }}
             value="M"
           >
             M
-          </button>
+          </BTN_white_nomal_comp>
         ) : datas.size!.M === 0 ? (
-          <button className={detailOrderMenu.sizeBTN_soldOut}>
+          <BTN_white_nomal_comp className={detailOrderMenu.sizeBTN_soldOut}>
             <div className={detailOrderMenu.line}></div>
             <span>M</span>
-          </button>
+          </BTN_white_nomal_comp>
         ) : (
           <></>
         )}
         {datas.size!.L !== -1 && datas.size!.L !== 0 ? (
-          <button
+          <BTN_white_nomal_comp
             className={`${detailOrderMenu.sizeBTN} ${
               onL ? detailOrderMenu.on : ''
             }`}
-            onClick={(e) => {
+            onClickEvent={(e) => {
               handle(e);
               setCount(1);
             }}
             value="L"
           >
             L
-          </button>
+          </BTN_white_nomal_comp>
         ) : datas.size!.L === 0 ? (
-          <button className={detailOrderMenu.sizeBTN_soldOut}>
+          <BTN_white_nomal_comp className={detailOrderMenu.sizeBTN_soldOut}>
             <div className={detailOrderMenu.line}></div>
             <span>L</span>
-          </button>
+          </BTN_white_nomal_comp>
         ) : (
           <></>
         )}
@@ -408,11 +410,16 @@ export default function Detail_OrderMenu_client({
 
           <br></br>
           {sizeCheck === '' ? (
-            <button className={detailOrderMenu.buy_soldout}>Sold-Out</button>
+            <BTN_white_nomal_comp className={detailOrderMenu.buy_soldout}>
+              Sold-Out
+            </BTN_white_nomal_comp>
           ) : (
-            <button className={detailOrderMenu.buy} onClick={buyNow}>
+            <BTN_black_nomal_comp
+              className={detailOrderMenu.buy}
+              onClickEvent={buyNow}
+            >
               BUY
-            </button>
+            </BTN_black_nomal_comp>
           )}
         </div>
       </div>

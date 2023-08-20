@@ -1,16 +1,15 @@
-.orderList_container{
+.orderList_container {
   position: relative;
   // background-color: beige;
   width: 100vw;
   min-height: 700px;
 
-  .titleArea{
+  .titleArea {
     width: 100vw;
     padding: 50px;
     text-align: center;
 
-    .subtitle{
-
+    .subtitle {
     }
   }
 
@@ -21,104 +20,104 @@
     margin: 0px auto;
     margin-bottom: 262px;
 
-    @media screen and (max-width:1000px) {
+    @media screen and (max-width: 1000px) {
       width: 70vw;
     }
 
-    @media screen and (max-width:510px) {
+    @media screen and (max-width: 510px) {
       width: 90vw;
     }
 
-    .order_info_category{
+    .order_info_category {
       display: flex;
       font-size: 15px;
 
-      @media screen and (max-width:280px) {
+      @media screen and (max-width: 280px) {
         font-size: 13px;
       }
 
       .order_list_check {
-        margin-right:  20px;
+        margin-right: 20px;
         cursor: pointer;
-        &:hover{
+        &:hover {
           color: gray;
         }
-        &:active{
+        &:active {
           color: rgb(213, 213, 213);
         }
 
-        @media screen and (max-width:280px) {
+        @media screen and (max-width: 280px) {
           margin-right: 10px;
         }
       }
 
       .order_list_check.on {
-        margin-right:  20px;
+        margin-right: 20px;
         cursor: pointer;
         text-decoration: underline;
-        &:hover{
+        &:hover {
           color: gray;
         }
-        &:active{
+        &:active {
           color: rgb(213, 213, 213);
         }
 
-        @media screen and (max-width:280px) {
+        @media screen and (max-width: 280px) {
           margin-right: 10px;
         }
       }
 
-        .cancle_list_check {
-        margin-right:  20px;
+      .cancle_list_check {
+        margin-right: 20px;
         cursor: pointer;
-        &:hover{
+        &:hover {
           color: gray;
         }
-        &:active{
+        &:active {
           color: rgb(213, 213, 213);
         }
 
-        @media screen and (max-width:280px) {
+        @media screen and (max-width: 280px) {
           margin-right: 10px;
         }
       }
 
-        .cancle_list_check.on {
-        margin-right:  20px;
+      .cancle_list_check.on {
+        margin-right: 20px;
         cursor: pointer;
         text-decoration: underline;
-        &:hover{
+        &:hover {
           color: gray;
         }
-        &:active{
+        &:active {
           color: rgb(213, 213, 213);
         }
 
-        @media screen and (max-width:280px) {
+        @media screen and (max-width: 280px) {
           margin-right: 10px;
         }
       }
     }
 
-    .orderlist_Check_wrap{
+    .orderlist_Check_wrap {
       position: relative;
       // background-color: bisque;
       border: 0.5px solid black;
       margin-top: 20px;
       padding-bottom: 10px;
 
-      .older_date{
+      .older_date {
         margin: 5px 0px;
         margin-left: 10px;
         font-size: 15px;
       }
 
-      .older_image_info{
+      .older_image_info {
         // background-color: blueviolet;
         padding: 0px 10px;
         display: flex;
 
-        .older_image{
+        .older_image {
           width: 100px;
           height: 100px;
           background-position: center;
@@ -126,12 +125,12 @@
           background-size: cover;
           cursor: pointer;
 
-          @media screen and (max-width:332px) {
-            background-size: contain;;
+          @media screen and (max-width: 332px) {
+            background-size: contain;
           }
         }
 
-        .pdnameprice{
+        .pdnameprice {
           font-size: 15px;
           position: relative;
           margin: auto 0px;
@@ -142,34 +141,34 @@
             cursor: pointer;
           }
 
-          .pdprice{
+          .pdprice {
             font-size: 12px;
           }
-          p{
+          p {
             margin: 0px;
           }
         }
       }
 
-      .arrowWrap{
+      .arrowWrap {
         padding: 10px 30px;
         cursor: pointer;
 
-        &:active{
+        &:active {
           color: rgb(156, 156, 156);
         }
 
-        .arrowDown{ 
+        .arrowDown {
           font-size: 25px;
           transform: rotate(0deg);
           transition: 0.3s ease-out;
         }
-        .arrowDown_on{
+        .arrowDown_on {
           font-size: 25px;
           transform: rotate(-180deg);
           transition: 0.3s ease-out;
         }
-        span{
+        span {
           margin-left: 10px;
           font-size: 15px;
         }
@@ -179,55 +178,54 @@
         display: none;
       }
 
-      .detailInfoWrap{
+      .detailInfoWrap {
         position: relative;
         font-size: 15px;
         text-align: left;
-        padding: 0px 30px;        
+        padding: 0px 30px;
 
-        @media screen and (max-width:280px) {
+        @media screen and (max-width: 280px) {
           padding: 10px;
         }
 
-        .cashTitle{
+        .cashTitle {
           margin-top: 10px;
         }
-        .cashInfo{
+        .cashInfo {
           padding: 5px 15px;
         }
 
-        p{
+        p {
           margin-bottom: 10px;
         }
 
-
-        .line{
+        .line {
           position: relative;
           width: 45vw;
           height: 10px;
           border-bottom: 0.5px solid black;
 
-          @media screen and (max-width:1000px) {
+          @media screen and (max-width: 1000px) {
             width: 63vw;
           }
 
-          @media screen and (max-width:732px) {
+          @media screen and (max-width: 732px) {
             width: 62vw;
           }
 
-          @media screen and (max-width:581px) {
+          @media screen and (max-width: 581px) {
             width: 60vw;
           }
 
-          @media screen and (max-width:510px) {
+          @media screen and (max-width: 510px) {
             width: 77vw;
           }
 
-          @media screen and (max-width:375px) {
+          @media screen and (max-width: 375px) {
             width: 74vw;
           }
 
-          @media screen and (max-width:280px) {
+          @media screen and (max-width: 280px) {
             width: 82vw;
           }
         }
@@ -240,47 +238,27 @@
         text-align: right;
         padding: 0px 15px;
 
-         @media screen and (max-width: 280px) {
+        @media screen and (max-width: 280px) {
           padding: 0px 10px;
-          }
+        }
 
-        .older_detail_info{
+        .older_detail_info {
           font-size: 15px;
           margin-left: 15px;
           margin-top: 10px;
         }
-  
-        .status{
+
+        .status {
           margin-left: 15px;
           font-size: 15px;
           font-weight: 700;
         }
 
-        .shippingCode{
+        .shippingCode {
           margin-left: 15px;
           font-size: 15px;
         }
-  
-        .orderCancle{
-          all: unset;
-          cursor: pointer;
-          padding: 5px 10px;
-          border: 0.5px solid black;
-          font-size: 13px;
-          background-color: white;
-          font-weight: 500;
-          transition: 0.3s ease;
-          
-          &:hover {
-            color: white;
-            background-color: black;
-          }
-  
-          &:active {
-            background-color: rgb(226, 226, 226);
-          }
-        }
-  
+
         .orderCancelInfo {
           font-size: 12px;
           margin-top: 15px;
@@ -301,7 +279,6 @@
           }
         }
       }
-      
     }
   }
 }

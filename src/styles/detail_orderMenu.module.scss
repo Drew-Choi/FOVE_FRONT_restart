@@ -1,4 +1,4 @@
-.Detail_Order{
+.Detail_Order {
   background-color: white;
   position: relative;
   border-radius: 10px;
@@ -25,288 +25,288 @@
     border: none;
     width: 100vw;
     height: 500px;
-    margin: 0px
+    margin: 0px;
   }
 
-    .pdTitle {
-      position: relative;
-      top: 10px;
-      text-align: center;
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      padding: 0px 10px;
+  .pdTitle {
+    position: relative;
+    top: 10px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 0px 10px;
 
-      @media screen and (max-width: 767px) {
-        top: -440px;
-        text-align: left;
-        padding: 10px 30px;
-      }
-
-      @media screen and (max-width: 575px) {
-        top: -425px;
-      }
-
-      @media screen and (max-width: 555px) {
-        top: -520px;
-      }
-
-      @media screen and (max-width: 415px) {
-        top: -420px;
-        font-size: 17px;
-      }
-
-      @media screen and (max-width: 280px) {
-        top: -355px;
-        font-size: 17px;
-        padding: 10px 20px;
-      }
+    @media screen and (max-width: 767px) {
+      top: -440px;
+      text-align: left;
+      padding: 10px 30px;
     }
-    
-    .sumPrice{
-      position: relative;
-      font-size: 22px;
-      letter-spacing: 2px;
-      text-align: center;
-      top: 0px;
-      color: #555555;
 
-      @media screen and (max-width: 767px) {
-        top: -470px;
-        text-align: left;
-        padding: 10px 30px;
-      }
-
-      @media screen and (max-width: 555px) {
-        top: -560px;
-        text-align: left;
-        padding: 10px 30px;
-      }
-
-      @media screen and (max-width: 415px) {
-        top: -460px;
-        font-size: 15px;
-      }
-
-      @media screen and (max-width: 280px) {
-        top: -395px;
-        font-size: 15px;
-        padding: 10px 20px;
-      }
+    @media screen and (max-width: 575px) {
+      top: -425px;
     }
-    
-    .infoContain{
-      position: absolute;
-      // background-color: aqua;
-      top: 155px;
-      left: 50%;
-      transform: translateX(-50%);
 
-      @media screen and (max-width: 767px) {
-        top: 50px
-      }
-    
-      .sizeBTN{
-        all: unset;
-        position: relative;
-        bottom: 28px;
-        /* background-color: #000000; */
+    @media screen and (max-width: 555px) {
+      top: -520px;
+    }
+
+    @media screen and (max-width: 415px) {
+      top: -420px;
+      font-size: 17px;
+    }
+
+    @media screen and (max-width: 280px) {
+      top: -355px;
+      font-size: 17px;
+      padding: 10px 20px;
+    }
+  }
+
+  .sumPrice {
+    position: relative;
+    font-size: 22px;
+    letter-spacing: 2px;
+    text-align: center;
+    top: 0px;
+    color: #555555;
+
+    @media screen and (max-width: 767px) {
+      top: -470px;
+      text-align: left;
+      padding: 10px 30px;
+    }
+
+    @media screen and (max-width: 555px) {
+      top: -560px;
+      text-align: left;
+      padding: 10px 30px;
+    }
+
+    @media screen and (max-width: 415px) {
+      top: -460px;
+      font-size: 15px;
+    }
+
+    @media screen and (max-width: 280px) {
+      top: -395px;
+      font-size: 15px;
+      padding: 10px 20px;
+    }
+  }
+
+  .infoContain {
+    position: absolute;
+    // background-color: aqua;
+    top: 155px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    @media screen and (max-width: 767px) {
+      top: 50px;
+    }
+
+    .sizeBTN {
+      all: unset;
+      position: relative;
+      bottom: 28px;
+      /* background-color: #000000; */
+      color: black;
+      border: 1.5px solid black;
+      width: 40px;
+      margin-right: 10px;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 15px;
+      transition: 0.2s ease;
+
+      &:hover {
+        background-color: #cacaca5b;
         color: black;
-        border: 1.5px solid black;
-        width: 40px;
-        margin-right: 10px;
-        text-align: center;
-        cursor: pointer;
-        border-radius: 15px;
-        transition: 0.2s ease;
-    
-        &:hover {
-          background-color: #cacaca5b;
-          color: black;
-        }
-        &:active {
-          background-color: #eeeeee56;
-          color: white;
-          transform: scale(1.2);
-        }
       }
-      .sizeBTN.on {
-        background-color: black;
+      &:active {
+        background-color: #eeeeee56;
         color: white;
-      }
-
-      .sizeBTN_soldOut{
-        all: unset;
-        position: relative;
-        bottom: 28px;
-        /* background-color: #000000; */
-        color: rgb(136, 136, 136);
-        border: 1.5px solid rgb(136, 136, 136);
-        width: 40px;
-        margin-right: 10px;
-        text-align: center;
-        border-radius: 15px;
-        transition: 0.2s ease; 
-
-        .line{
-          position: absolute;
-          top: 10px;
-          left: 2px;
-          width: 39px;
-          height: 1px;
-          background-color: rgb(136, 136, 136);
-          transform: rotate(30deg);
-          z-index: 3;
-        }
-      }
-
-      .detailDesc {
-        /* background-color: blue; */
-        width: 200px;
-        height: 100px;
-        margin-bottom: -5px;
-        font-size: 14px;
-        font-weight: 500p;
-        letter-spacing: 1px;
-        white-space: pre-line;
-      }
-      .sizeFitCheck {
-        /* background-color: red; */
-        font-size: 13px;
-        font-weight: bold;
-        text-decoration: underline;
-        letter-spacing: 1px;
-        cursor: pointer;
-    
-        &:hover {
-          color: #a8a8a8;
-        }
-        &:active {
-          color: #d7d7d7;
-        }
-      }
-    
-      .downInfoContain{
-        transform: translateY(-25px);
-    
-        .countContainer{
-          position: relative;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin-top: 40px;
-          margin-bottom: 20px;
-          /* background-color: yellow; */
-    
-          .miners {
-            font-size: 22px;
-            font-weight: 500;
-            transform: translateY(-2px);
-            padding-right: 15px;
-            cursor: pointer;
-            &:active {
-              color: #b4b4b4;
-            }
-          }
-          .countNumber {
-            font-size: 20px;
-          }
-          .plus{
-            font-size: 20px;
-            padding-left: 15px;
-            cursor: pointer;
-            &:active {
-              color: #b4b4b4;
-            }
-          }
-        }
-
-        .catIcon {
-          font-size: 30px;
-          position: absolute;
-          margin-bottom: -10px;
-          bottom: 90px;
-          left: 3px;
-        }
-    
-        .addCart{
-          all: unset;
-          border: 2px solid black;
-          padding: 8px 45px;
-          border-radius: 50px;
-          margin-bottom: 10px;
-          margin-left: 45px;
-          font-weight: 500;
-          color: black;
-          transition: 0.3s ease;
-          cursor: pointer;
-    
-          &:hover {
-            background-color: black;
-            color: white;
-          }
-    
-          &:active {
-            background-color: rgb(255, 255, 255);
-            color: white;
-          }
-        }
-
-        .addCart_mobile{
-          all: unset;
-          border: 2px solid black;
-          padding: 8px 45px;
-          border-radius: 50px;
-          margin-bottom: 10px;
-          margin-left: 45px;
-          font-weight: 500;
-          color: black;
-          transition: 0.3s ease;
-
-          &:active {
-            background-color: rgb(0, 0, 0);
-            color: rgb(255, 255, 255);
-          }
-        }
-    
-        .buy{
-          all: unset;
-          border: 2px solid black;
-          padding: 8px 85px;
-          border-radius: 50px;
-          margin-bottom: 25px;
-          letter-spacing: 1px;
-          font-weight: 600;
-          color: white;
-          background-color: black;
-          cursor: pointer;
-    
-          &:hover {
-            background: white;
-            color: black;
-            transition: 0.2s ease;
-          }
-          &:active {
-            background-color: rgb(101, 101, 101);
-            color: rgb(0, 0, 0);
-            transition: 0.2s ease;
-          }
-        }
-
-        .buy_soldout{
-          position: absolute;
-          all: unset;
-          border: 2px solid rgb(136, 136, 136);
-          padding: 8px 0px;
-          width: 200px;
-          border-radius: 50px;
-          margin-bottom: 25px;
-          letter-spacing: 1px;
-          font-weight: 600;
-          color: white;
-          background-color:rgb(136, 136, 136);
-          text-align: center;
-        }
+        transform: scale(1.2);
       }
     }
+    .sizeBTN.on {
+      background-color: black;
+      color: white;
+    }
+
+    .sizeBTN_soldOut {
+      all: unset;
+      position: relative;
+      bottom: 28px;
+      /* background-color: #000000; */
+      color: rgb(136, 136, 136);
+      border: 1.5px solid rgb(136, 136, 136);
+      width: 40px;
+      margin-right: 10px;
+      text-align: center;
+      border-radius: 15px;
+      transition: 0.2s ease;
+
+      .line {
+        position: absolute;
+        top: 10px;
+        left: 2px;
+        width: 39px;
+        height: 1px;
+        background-color: rgb(136, 136, 136);
+        transform: rotate(30deg);
+        z-index: 3;
+      }
+    }
+
+    .detailDesc {
+      /* background-color: blue; */
+      width: 200px;
+      height: 100px;
+      margin-bottom: -5px;
+      font-size: 14px;
+      font-weight: 500p;
+      letter-spacing: 1px;
+      white-space: pre-line;
+    }
+    .sizeFitCheck {
+      /* background-color: red; */
+      font-size: 13px;
+      font-weight: bold;
+      text-decoration: underline;
+      letter-spacing: 1px;
+      cursor: pointer;
+
+      &:hover {
+        color: #a8a8a8;
+      }
+      &:active {
+        color: #d7d7d7;
+      }
+    }
+
+    .downInfoContain {
+      transform: translateY(-25px);
+
+      .countContainer {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 40px;
+        margin-bottom: 20px;
+        /* background-color: yellow; */
+
+        .miners {
+          font-size: 22px;
+          font-weight: 500;
+          transform: translateY(-2px);
+          padding-right: 15px;
+          cursor: pointer;
+          &:active {
+            color: #b4b4b4;
+          }
+        }
+        .countNumber {
+          font-size: 20px;
+        }
+        .plus {
+          font-size: 20px;
+          padding-left: 15px;
+          cursor: pointer;
+          &:active {
+            color: #b4b4b4;
+          }
+        }
+      }
+
+      .catIcon {
+        font-size: 30px;
+        position: absolute;
+        margin-bottom: -10px;
+        bottom: 90px;
+        left: 3px;
+      }
+
+      .addCart {
+        all: unset;
+        border: 2px solid black;
+        padding: 8px 45px;
+        border-radius: 50px;
+        margin-bottom: 10px;
+        margin-left: 45px;
+        font-weight: 500;
+        color: black;
+        transition: 0.3s ease;
+        cursor: pointer;
+
+        &:hover {
+          background-color: black;
+          color: white;
+        }
+
+        &:active {
+          background-color: rgb(255, 255, 255);
+          color: white;
+        }
+      }
+
+      .addCart_mobile {
+        all: unset;
+        border: 2px solid black;
+        padding: 8px 45px;
+        border-radius: 50px;
+        margin-bottom: 10px;
+        margin-left: 45px;
+        font-weight: 500;
+        color: black;
+        transition: 0.3s ease;
+
+        &:active {
+          background-color: rgb(0, 0, 0);
+          color: rgb(255, 255, 255);
+        }
+      }
+
+      .buy {
+        all: unset;
+        border: 2px solid black;
+        padding: 8px 85px;
+        border-radius: 50px;
+        margin-bottom: 25px;
+        letter-spacing: 1px;
+        font-weight: 600;
+        color: white;
+        background-color: black;
+        cursor: pointer;
+
+        &:hover {
+          background: white;
+          color: black;
+          transition: 0.2s ease;
+        }
+        &:active {
+          background-color: #656565;
+          color: rgb(0, 0, 0);
+          transition: 0.2s ease;
+        }
+      }
+
+      .buy_soldout {
+        position: absolute;
+        all: unset;
+        border: 2px solid rgb(136, 136, 136);
+        padding: 8px 0px;
+        width: 200px;
+        border-radius: 50px;
+        margin-bottom: 25px;
+        letter-spacing: 1px;
+        font-weight: 600;
+        color: white;
+        background-color: rgb(136, 136, 136);
+        text-align: center;
+      }
+    }
+  }
 }

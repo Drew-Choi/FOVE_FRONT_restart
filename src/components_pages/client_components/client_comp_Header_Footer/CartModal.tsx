@@ -11,7 +11,6 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { update } from '../../../store/modules/cart';
-import '../../../styles/cartModal.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
 import getToken from '../../../constant/getToken';
 import { importdb } from '../../../store/modules/cart';
@@ -513,7 +512,7 @@ const CartModal = ({
               ? unitSumMemo!.toLocaleString('ko-KR')
               : 0}
           </UnitSumNum>
-          <UnitSum>/ {cartInfo.cartProductsLength} ea</UnitSum>
+          <UnitSumNum>/ {cartInfo.cartProductsLength} ea</UnitSumNum>
           <AllRemove
             onClick={() => {
               allRemove();
@@ -522,7 +521,7 @@ const CartModal = ({
             All Remove
           </AllRemove>
           <BTN_black_nomal_comp
-            className="cart_Btn"
+            style={{ position: 'absolute', right: '20px' }}
             fontSize="12px"
             transFontSize="10px"
             padding="7px 30px"

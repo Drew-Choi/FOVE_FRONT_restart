@@ -17,6 +17,7 @@ import Select_Custom from '../../../../components_elements/Select_Custom';
 import BTN_black_nomal_comp from '../../../../components_elements/BTN_black_nomal_comp';
 import { useSelector } from 'react-redux';
 import Loading_Spinner from '../../Loading_Spinner';
+import BTN_white_nomal_comp from '../../../../components_elements/BTN_white_nomal_comp';
 
 const Pd_Images = styled.div<{ img: string }>`
   ${(props) =>
@@ -288,15 +289,15 @@ export default function OrderReturn_client() {
             </div>
 
             <div className={orderReturn.btn_container}>
-              <button
+              <BTN_white_nomal_comp
+                onClickEvent={() => navigate('/store')}
                 className={orderReturn.btn_continue}
-                onClick={() => navigate('/store')}
               >
                 쇼핑계속하기
-              </button>
-              <button
+              </BTN_white_nomal_comp>
+              <BTN_black_nomal_comp
                 className={orderReturn.btn_orderList}
-                onClick={() => {
+                onClickEvent={() => {
                   if (isLogin) {
                     navigate('/mypage/orderlist');
                   } else {
@@ -306,7 +307,7 @@ export default function OrderReturn_client() {
                 }}
               >
                 반품신청 확인하기
-              </button>
+              </BTN_black_nomal_comp>
             </div>
 
             <div className={orderReturn.notice_wrap}>
@@ -439,18 +440,25 @@ export default function OrderReturn_client() {
                   </BTN_black_nomal_comp>
                 </div>
 
-                <button
-                  className={orderReturn.orderBack}
-                  onClick={() => navigate(-1)}
+                <BTN_black_nomal_comp
+                  padding="5px 10px"
+                  fontSize="13px"
+                  font-weight="500"
+                  borderRadius="0"
+                  marginRight="10px"
+                  onClickEvent={() => navigate(-1)}
                 >
                   뒤로가기
-                </button>
-                <button
-                  className={orderReturn.orderCancle}
-                  onClick={() => submitReturnInfo()}
+                </BTN_black_nomal_comp>
+                <BTN_white_nomal_comp
+                  padding="5px 10px"
+                  fontSize="13px"
+                  font-weight="500"
+                  borderRadius="0"
+                  onClickEvent={() => submitReturnInfo()}
                 >
                   반품신청 진행
-                </button>
+                </BTN_white_nomal_comp>
                 <p className={orderReturn.caution}>
                   *반품신청을 해주시면 검토 후 연락드리도록 하겠습니다.
                   (카카오톡 or 주문자 전화번호)
