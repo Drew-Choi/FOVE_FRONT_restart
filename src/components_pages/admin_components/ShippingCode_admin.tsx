@@ -2,7 +2,6 @@
 import React, {
   ChangeEvent,
   KeyboardEvent,
-  useCallback,
   useEffect,
   useRef,
   useState,
@@ -222,151 +221,141 @@ export default function ShippingCode_admin() {
   };
 
   // 송장번호 등록하기 // 등록시에만 세팅하도록callback
-  const registerShippingcode = useCallback(
-    async (
-      orderId: string,
-      user: string,
-      recipientName: string,
-      recipientAddress: string,
-      index: number,
-    ) => {
-      try {
-        if (!inputValue[index]) return alert('송장번호를 입력해주세요.');
+  const registerShippingcode = async (
+    orderId: string,
+    user: string,
+    recipientName: string,
+    recipientAddress: string,
+    index: number,
+  ) => {
+    try {
+      if (!inputValue[index]) return alert('송장번호를 입력해주세요.');
 
-        if (inputValue[index].length < 10)
-          return alert('유효한 송장번호는 10자 이상입니다.');
+      if (inputValue[index].length < 10)
+        return alert('유효한 송장번호는 10자 이상입니다.');
 
-        // 아니라면 아래 진행
-        const response = await axios.post(
-          `${REACT_APP_KEY_BACK}/admin/orderlist/register_shippingCode`,
-          {
-            orderId,
-            user,
-            recipientName,
-            recipientAddress,
-            shippingCode: inputValue[index],
-          },
-        );
+      // 아니라면 아래 진행
+      const response = await axios.post(
+        `${REACT_APP_KEY_BACK}/admin/orderlist/register_shippingCode`,
+        {
+          orderId,
+          user,
+          recipientName,
+          recipientAddress,
+          shippingCode: inputValue[index],
+        },
+      );
 
-        if (response.status === 200) {
-          // 200번대 성공이면,
-          setUpdateInfo((cur) => {
-            const copy = [...cur];
-            copy.push(response.data);
-            return copy;
-          });
-          inputValue[index] = '';
-          setOrderRedirect((cur) => !cur);
-          return;
-        }
-      } catch (err) {
-        console.error(err);
-        return setOrderRedirect((cur) => !cur), alert('등록실패');
+      if (response.status === 200) {
+        // 200번대 성공이면,
+        setUpdateInfo((cur) => {
+          const copy = [...cur];
+          copy.push(response.data);
+          return copy;
+        });
+        inputValue[index] = '';
+        setOrderRedirect((cur) => !cur);
+        return;
       }
-    },
-    [orderRedirect],
-  );
+    } catch (err) {
+      console.error(err);
+      return setOrderRedirect((cur) => !cur), alert('등록실패');
+    }
+  };
 
   // 회수용 송장번호 등록하기 // 등록시에만 세팅하도록callback
-  const registerShippingcodeRetrieved = useCallback(
-    async (
-      orderId: string,
-      user: string,
-      recipientName: string,
-      recipientAddress: string,
-      index: number,
-    ) => {
-      try {
-        if (!inputValueRetrieved[index])
-          return alert('송장번호를 입력해주세요.');
+  const registerShippingcodeRetrieved = async (
+    orderId: string,
+    user: string,
+    recipientName: string,
+    recipientAddress: string,
+    index: number,
+  ) => {
+    try {
+      if (!inputValueRetrieved[index]) return alert('송장번호를 입력해주세요.');
 
-        if (inputValueRetrieved[index].length < 10)
-          return alert('유효한 송장번호는 10자 이상입니다.');
+      if (inputValueRetrieved[index].length < 10)
+        return alert('유효한 송장번호는 10자 이상입니다.');
 
-        const response = await axios.post(
-          `${REACT_APP_KEY_BACK}/admin/orderlist/register_shippingCode_retrieved`,
-          {
-            orderId,
-            user,
-            recipientName,
-            recipientAddress,
-            newShippingCode: inputValueRetrieved[index],
-          },
-        );
+      const response = await axios.post(
+        `${REACT_APP_KEY_BACK}/admin/orderlist/register_shippingCode_retrieved`,
+        {
+          orderId,
+          user,
+          recipientName,
+          recipientAddress,
+          newShippingCode: inputValueRetrieved[index],
+        },
+      );
 
-        if (response.status === 200) {
-          // 200번대 성공이면,
-          setUpdateInfoRetrieved((cur) => {
-            const copy = [...cur];
-            copy.push(response.data);
-            return copy;
-          });
-          inputValueRetrieved[index] = '';
-          setRetrievedRedirect((cur) => !cur);
-          return;
-        }
-      } catch (err: any) {
-        if (err.response.status === 400) {
-          setRetrievedRedirect((cur) => !cur);
-          alert(err.response.data);
-        } else {
-          console.error(err);
-          return setRetrievedRedirect((cur) => !cur), alert('등록실패');
-        }
+      if (response.status === 200) {
+        // 200번대 성공이면,
+        setUpdateInfoRetrieved((cur) => {
+          const copy = [...cur];
+          copy.push(response.data);
+          return copy;
+        });
+        inputValueRetrieved[index] = '';
+        setRetrievedRedirect((cur) => !cur);
+        return;
       }
-    },
-    [retrievedRedirect],
-  );
+    } catch (err: any) {
+      if (err.response.status === 400) {
+        setRetrievedRedirect((cur) => !cur);
+        alert(err.response.data);
+      } else {
+        console.error(err);
+        return setRetrievedRedirect((cur) => !cur), alert('등록실패');
+      }
+    }
+  };
 
   // 교환상품배송을 위한 송장등록 // 등록시에만 세팅하도록callback
-  const registerShippingcodeReturn = useCallback(
-    async (
-      orderId: string,
-      user: string,
-      recipientName: string,
-      recipientAddress: string,
-      index: number,
-    ) => {
-      try {
-        if (!inputValueReturn[index]) return alert('송장번호를 입력해주세요.');
+  const registerShippingcodeReturn = async (
+    orderId: string,
+    user: string,
+    recipientName: string,
+    recipientAddress: string,
+    index: number,
+  ) => {
+    try {
+      if (!inputValueReturn[index]) return alert('송장번호를 입력해주세요.');
 
-        if (inputValueReturn[index].length < 10)
-          return alert('유효한 송장번호는 10자 이상입니다.');
+      if (inputValueReturn[index].length < 10)
+        return alert('유효한 송장번호는 10자 이상입니다.');
 
-        const response = await axios.post(
-          `${REACT_APP_KEY_BACK}/admin/orderlist/register_shippingCode_return`,
-          {
-            orderId,
-            user,
-            recipientName,
-            recipientAddress,
-            newShippingCode: inputValueReturn[index],
-          },
-        );
+      const response = await axios.post(
+        `${REACT_APP_KEY_BACK}/admin/orderlist/register_shippingCode_return`,
+        {
+          orderId,
+          user,
+          recipientName,
+          recipientAddress,
+          newShippingCode: inputValueReturn[index],
+        },
+      );
 
-        if (response.status !== 200) {
-          // 200번대 성공이면,
-          setUpdateInfoReturn((cur) => {
-            const copy = [...cur];
-            copy.push(response.data);
-            return copy;
-          });
-          inputValueReturn[index] = '';
-          setReturnRedirect((cur) => !cur);
-          return;
-        }
-      } catch (err: any) {
-        if (err.response.status === 400) {
-          setReturnRedirect((cur) => !cur);
-          alert(err.response.data);
-        } else {
-          console.error(err);
-          return setReturnRedirect((cur) => !cur), alert('등록실패');
-        }
+      if (response.status !== 200) {
+        // 200번대 성공이면,
+        setUpdateInfoReturn((cur) => {
+          const copy = [...cur];
+          copy.push(response.data);
+          return copy;
+        });
+        inputValueReturn[index] = '';
+        setReturnRedirect((cur) => !cur);
+        return;
       }
-    },
-    [returnRedirect],
-  );
+    } catch (err: any) {
+      if (err.response.status === 400) {
+        setReturnRedirect((cur) => !cur);
+        alert(err.response.data);
+      } else {
+        console.error(err);
+        return setReturnRedirect((cur) => !cur), alert('등록실패');
+      }
+    }
+  };
 
   // 랜더링 부분
   return (
