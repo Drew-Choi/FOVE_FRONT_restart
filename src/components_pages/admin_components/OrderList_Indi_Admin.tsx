@@ -8,6 +8,7 @@ import LoadingAdmin from '../client_components/LoadingAdmin';
 import Loading_Spinner from '../client_components/Loading_Spinner';
 import BTN_black_nomal_comp from '../../components_elements/BTN_black_nomal_comp';
 import BTN_white_nomal_comp from '../../components_elements/BTN_white_nomal_comp';
+import Input_Custom from '../../components_elements/Input_Custom';
 
 const { REACT_APP_KEY_IMAGE } = process.env;
 const { REACT_APP_KEY_BACK } = process.env;
@@ -1090,15 +1091,17 @@ export default function OrderList_Indi_Admin() {
                             </>
                           )}
                         </div>
-                        <label>결제 전</label>
-                        <input
+
+                        <Input_Custom
                           type="radio"
                           name="adminShippingCondition"
                           value="결제 전"
                           checked={adminShippingCondition === '결제 전'}
-                          onChange={handleAdminShippingCondition}
+                          onChangeEvent={handleAdminShippingCondition}
                           disabled={disableShipping}
-                        />
+                        >
+                          결제 전
+                        </Input_Custom>
                         <label>결제완료 / 배송 전</label>
                         <input
                           type="radio"

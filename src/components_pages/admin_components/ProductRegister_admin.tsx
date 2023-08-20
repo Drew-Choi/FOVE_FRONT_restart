@@ -391,7 +391,8 @@ export default function ProductRegister_admin() {
             type="text"
             name="productCode"
             value={pdCode}
-            disabled
+            pStyle={{ display: 'block' }}
+            disabled={true}
           />
         </div>
 
@@ -405,6 +406,7 @@ export default function ProductRegister_admin() {
             name="productName"
             placeholder="상품이름을 입력해주세요."
             maxLength={30}
+            pStyle={{ display: 'block' }}
           />
         </div>
 
@@ -421,6 +423,7 @@ export default function ProductRegister_admin() {
             onChangeEvent={() =>
               setEnterNumPrice(changeEnteredNumComma(pd_price.current!.value))
             }
+            pStyle={{ display: 'block' }}
           />
         </div>
 
@@ -435,42 +438,46 @@ export default function ProductRegister_admin() {
           → * 사이즈체크 후 미입력시 SoldOut처리
         </p>
         <div className={productRegister.sizeUsed_check}>
-          <span>OS </span>
-          <input
-            className={productRegister.pd_size_checkbox}
+          <Input_Custom
+            classNameInput={productRegister.pd_size_checkbox}
             type="checkbox"
             value="OS"
-            onChange={(e) => {
+            onChangeEvent={(e) => {
               e.target.checked ? setOS_Value(e.target.value) : setOS_Value('');
             }}
-          />
-          <span>S</span>
-          <input
-            className={productRegister.pd_size_checkbox}
+          >
+            OS
+          </Input_Custom>
+          <Input_Custom
+            classNameInput={productRegister.pd_size_checkbox}
             type="checkbox"
             value="S"
-            onChange={(e) => {
+            onChangeEvent={(e) => {
               e.target.checked ? setS_Value(e.target.value) : setS_Value('');
             }}
-          />
-          <span>M</span>
-          <input
-            className={productRegister.pd_size_checkbox}
+          >
+            S
+          </Input_Custom>
+          <Input_Custom
+            classNameInput={productRegister.pd_size_checkbox}
             type="checkbox"
             value="M"
-            onChange={(e) => {
+            onChangeEvent={(e) => {
               e.target.checked ? setM_Value(e.target.value) : setM_Value('');
             }}
-          />
-          <span>L</span>
-          <input
-            className={productRegister.pd_size_checkbox}
+          >
+            M
+          </Input_Custom>
+          <Input_Custom
+            classNameInput={productRegister.pd_size_checkbox}
             type="checkbox"
             value="L"
-            onChange={(e) => {
+            onChangeEvent={(e) => {
               e.target.checked ? setL_Value(e.target.value) : setL_Value('');
             }}
-          />
+          >
+            L
+          </Input_Custom>
         </div>
 
         {os_Value === 'OS' && (
@@ -490,6 +497,7 @@ export default function ProductRegister_admin() {
                   changeEnteredNumComma(pd_sizeOS.current!.value),
                 )
               }
+              pStyle={{ display: 'block' }}
             />
           </div>
         )}
@@ -511,6 +519,7 @@ export default function ProductRegister_admin() {
                   changeEnteredNumComma(pd_sizeS.current!.value),
                 )
               }
+              pStyle={{ display: 'block' }}
             />
           </div>
         )}
@@ -532,6 +541,7 @@ export default function ProductRegister_admin() {
                   changeEnteredNumComma(pd_sizeM.current!.value),
                 )
               }
+              pStyle={{ display: 'block' }}
             />
           </div>
         )}
@@ -553,6 +563,7 @@ export default function ProductRegister_admin() {
                   changeEnteredNumComma(pd_sizeL.current!.value),
                 )
               }
+              pStyle={{ display: 'block' }}
             />
           </div>
         )}
