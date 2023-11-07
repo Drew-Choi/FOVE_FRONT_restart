@@ -8,7 +8,7 @@ export default function Footer_client() {
     <footer className="footer_client">
       <div className="footer_info_left">
         <p className="footer_copyright">
-          © FOVE / site by KDT 5th POSCO X CodingOn PROJECT
+          © FOVV / site by KDT 5th POSCO X CodingOn PROJECT
         </p>
         <ul className="footer_sub_menu">
           <li className="agreement" onClick={() => navigate('/agreement')}>
@@ -17,8 +17,8 @@ export default function Footer_client() {
           <li className="privacy" onClick={() => navigate('/privacy')}>
             Privacy
           </li>
-          <li className="guide" onClick={() => navigate('/guide')}>
-            Guide
+          <li className="guide" onClick={() => navigate('/electronic')}>
+            ElectronicFinancialTerms
           </li>
           <li>
             <a href="#" target="_blank" rel="noopener noreferrer">
@@ -26,11 +26,7 @@ export default function Footer_client() {
             </a>
           </li>
           <li>
-            <a
-              href="https://instagram.com/fove._official"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href="#" target="_blank" rel="noopener noreferrer">
               <img
                 className="to_insta"
                 src="/instagram.jpg"
@@ -44,17 +40,18 @@ export default function Footer_client() {
       <div className="footer_info_right">
         <ul className="footer_detail">
           <li>COMPANY. FOVE corp.</li>
+          <li>TAXPAYER IDENTIFICATIOM NUMBER: 624-31-01420</li>
+          <li>
+            COMPANY. 105-1306, 796, TONGIL-RO, EUNPYEONG-GU, SEOUL, REPUBLIC OF
+            KOREA
+          </li>
+          <li>REPRESENTATIVE. KIM YOUNG HO</li>
           <li>
             TEAM MEMBER. CHOI DREW, KIM SEONG HYEON, SHIN SANG AH, SONG MIN
             SEON, PARK SUNG HEE
           </li>
-          <li>REPRESENTATIVE. KIM YOUNG HO</li>
-          <li>
-            COMPANY. #03409 B1, 29, Jinheung-ro, Eunpyeong-gu, Seoul, Republic
-            of Korea
-          </li>
           <li>C/S CENTER. 010-9148-7457 / 11:00 - 17:00</li>
-          <li>E-MAIL. marketing@fove.com</li>
+          <li>E-MAIL. fovecorp@gmail.com</li>
         </ul>
       </div>
     </footer>

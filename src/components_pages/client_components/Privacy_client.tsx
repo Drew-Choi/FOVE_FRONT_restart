@@ -1,20 +1,20 @@
 import React from 'react';
-import '../../styles/privacy_client.scss';
+import style from '../../styles/privacy_client.module.scss';
 
 export default function Privacy_client() {
   return (
     <>
-      <div className="titleArea">
-        <h2 className="subtitle">개인정보취급방침</h2>
+      <div className={style.titleArea}>
+        <h2>개인정보취급방침</h2>
       </div>
-      <div className="privacy">
+      <div className={style.privacy}>
         <span>
-          (주)포브는 (이하 “회사”는) 고객님의 개인정보를 중요시하며, “개인정보
+          포브(FOVV)는 (이하 “몰”은) 고객님의 개인정보를 중요시하며, “개인정보
           보호법” 등 관련 법령을 준수하고 있습니다.
         </span>
         <br />
         <span>
-          회사는 개인정보처리방침을 통하여 고객님께서 제공하시는 개인정보가
+          “몰”은 개인정보처리방침을 통하여 고객님께서 제공하시는 개인정보가
           어떠한 용도와 방식으로 이용되고 있으며, 개인정보보호를 위해 어떠한
           조치가 취해지고 있는지 알려드립니다.
         </span>
@@ -25,14 +25,13 @@ export default function Privacy_client() {
         <span>&nbsp;&nbsp;가. 수집하는 개인정보의 항목</span>
         <br />
         <span>
-          &nbsp;&nbsp;o 회사는 회원가입, 상담, 서비스 신청 등을 위해 아래와 같은
+          &nbsp;&nbsp;o “몰”은 회원가입, 상담, 서비스 신청 등을 위해 아래와 같은
           개인정보를 수집하고 있습니다.
         </span>
         <br />
         <span>
           &nbsp;&nbsp;- 회원가입시 : 이름 , 생년월일 , 성별 , 로그인ID ,
-          비밀번호 , 자택 전화번호 , 휴대전화번호 , 이메일 , 14세미만 가입자의
-          경우 법정대리인의 정보
+          비밀번호, 휴대전화번호, 카카오로그인 이메일과 닉네임
         </span>
         <br />
         <span>&nbsp;&nbsp;- 서비스 신청시 : 주소, 결제 정보</span>
@@ -47,16 +46,13 @@ export default function Privacy_client() {
         <br />
         <span>&nbsp;&nbsp;나. 수집방법</span>
         <br />
-        <span>
-          &nbsp;&nbsp;- 홈페이지, 서면양식, 게시판, 이메일, 이벤트 응모,
-          배송요청, 전화, 팩스, 생성 정보 수집 툴을 통한 수집
-        </span>
+        <span>&nbsp;&nbsp;- 카카오로그인, 이벤트 응모, 배송요청 폼 등</span>
         <br />
         <br />
         <span>■ 개인정보의 수집 및 이용목적</span>
         <br />
         <span>
-          &nbsp;&nbsp;회사는 수집한 개인정보를 다음의 목적을 위해 활용합니다.
+          &nbsp;&nbsp;“몰”은 수집한 개인정보를 다음의 목적을 위해 활용합니다.
         </span>
         <br />
         <span>
@@ -74,8 +70,7 @@ export default function Privacy_client() {
         <span>
           &nbsp;&nbsp;회원제 서비스 이용에 따른 본인확인 , 개인 식별 ,
           불량회원의 부정 이용 방지와 비인가 사용 방지 , 가입 의사 확인 ,
-          연령확인 , 만14세 미만 아동 개인정보 수집 시 법정 대리인 동의여부
-          확인, 불만처리 등 민원처리 , 고지사항 전달
+          불만처리 등 민원처리 , 고지사항 전달
         </span>
         <br />
         <span>&nbsp;&nbsp;o 마케팅 및 광고에 활용</span>
@@ -95,12 +90,12 @@ export default function Privacy_client() {
         </span>
         <br />
         <br />
-        <span>&nbsp;&nbsp;가. 회사 내부방침에 의한 정보보유 사유</span>
+        <span>&nbsp;&nbsp;가. “몰” 내부방침에 의한 정보보유 사유</span>
         <br />
         <span>
           &nbsp;&nbsp;회원이 탈퇴한 경우에도 불량회원의 부정한 이용의 재발을
           방지, 분쟁해결 및 수사기관의 요청에 따른 협조를 위하여, 이용계약
-          해지일로부터 oo년간 회원의 정보를 보유할 수 있습니다.
+          해지일로부터 1년간 회원의 정보를 보유할 수 있습니다.
         </span>
         <br />
         <br />
@@ -108,7 +103,7 @@ export default function Privacy_client() {
         <br />
         <span>
           &nbsp;&nbsp;전자상거래등에서의소비자보호에관한법률 등 관계법령의
-          규정에 의하여 보존할 필요가 있는 경우 회사는 아래와 같이 관계법령에서
+          규정에 의하여 보존할 필요가 있는 경우 “몰”은 아래와 같이 관계법령에서
           정한 일정한 기간 동안 회원정보를 보관합니다.
         </span>
         <br />
@@ -146,7 +141,7 @@ export default function Privacy_client() {
         <span>■ 개인정보의 파기절차 및 방법</span>
         <br />
         <span>
-          &nbsp;&nbsp;회사는 원칙적으로 개인정보 수집 및 이용목적이 달성된
+          &nbsp;&nbsp;“몰”은 원칙적으로 개인정보 수집 및 이용목적이 달성된
           후에는 해당 정보를 지체없이 파기합니다. 파기절차 및 방법은 다음과
           같습니다.
         </span>
@@ -172,7 +167,7 @@ export default function Privacy_client() {
         <span>■ 개인정보 제공</span>
         <br />
         <span>
-          &nbsp;&nbsp;회사는 이용자의 개인정보를 원칙적으로 외부에 제공하지
+          &nbsp;&nbsp;“몰”은 이용자의 개인정보를 원칙적으로 외부에 제공하지
           않습니다. 다만, 아래의 경우에는 예외로 합니다.
         </span>
         <br />
@@ -187,29 +182,17 @@ export default function Privacy_client() {
         <span>■ 수집한 개인정보의 위탁</span>
         <br />
         <span>
-          &nbsp;&nbsp;회사는 서비스 이행을 위해 아래와 같이 외부 전문업체에
-          위탁하여 운영하고 있습니다.
+          &nbsp;&nbsp; “몰”은 서비스 향상을 위해서 회원의 개인정보를
+          위탁업체에서 수집, 분석하고 있으며, 관계 법령에 따라 위탁계약 시
+          개인정보가 안전하게 관리될 수 있도록 필요한 사항을 규정하고 있습니다.
+          <br />
+          &nbsp;&nbsp; 수탁자, 수탁범위, 공유 정보의 범위 등에 관한 사항을
+          전자우편, 전화 또는 홈페이지를 통해 게시합니다.
+          <br />
+          &nbsp;&nbsp;위탁계약 시 서비스 제공자의 개인정보보호 관련 지시엄수,
+          개인정보에 관한 비밀유지, 제3자 제공의 금지 등을 규정하고 계약내용을
+          전자적으로 보관합니다.
         </span>
-        <br />
-        <br />
-        <br />
-        <span>- 수탁자 : (주)루나소프트</span>
-        <br />
-        <br />
-        <span>- 개인정보제공처 : 주식회사 카카오</span>
-        <br />
-        <br />
-        <span>
-          - 위탁 업무 내용 : 카카오톡 알림톡(정보성 메시지) 발송, 상담톡 업무 및
-          톡 기반 상담 서비스 제공
-        </span>
-        <br />
-        <br />
-        <span>- 수집항목 : 휴대폰번호, 주문정보, 배송정보</span>
-        <br />
-        <br />
-        <span>- 보유기간 : 회원 탈퇴 시 혹은 법정 보유기간</span>
-        <br />
         <br />
         <br />
         <span>■ 이용자 및 법정대리인의 권리와 그 행사방법</span>
@@ -222,7 +205,7 @@ export default function Privacy_client() {
         <span>
           &nbsp;&nbsp;o 이용자들의 개인정보 조회,수정을 위해서는
           “개인정보변경”(또는 “회원정보수정” 등)을 가입해지(동의철회)를 위해서는
-          ㅍ회원탈퇴”를 클릭하여 본인 확인 절차를 거치신 후 직접 열람, 정정 또는
+          “회원탈퇴”를 클릭하여 본인 확인 절차를 거치신 후 직접 열람, 정정 또는
           탈퇴가 가능합니다.
         </span>
         <br />
@@ -239,8 +222,8 @@ export default function Privacy_client() {
         </span>
         <br />
         <span>
-          &nbsp;&nbsp;o 회사는 이용자의 요청에 의해 해지 또는 삭제된 개인정보는
-          “회사가 수집하는 개인정보의 보유 및 이용기간”에 명시된 바에 따라
+          &nbsp;&nbsp;o “몰”은 이용자의 요청에 의해 해지 또는 삭제된 개인정보는
+          “몰”이 수집하는 “개인정보의 보유 및 이용기간”에 명시된 바에 따라
           처리하고 그 외의 용도로 열람 또는 이용할 수 없도록 처리하고 있습니다.
         </span>
         <br />
@@ -250,10 +233,10 @@ export default function Privacy_client() {
         </span>
         <br />
         <span>
-          회사는 귀하의 정보를 수시로 저장하고 찾아내는 “쿠키(cookie)” 등을
+          “몰”은 귀하의 정보를 수시로 저장하고 찾아내는 “쿠키(cookie)” 등을
           운용합니다. 쿠키란 웹사이트를 운영하는데 이용되는 서버가 귀하의
           브라우저에 보내는 아주 작은 텍스트 파일로서 귀하의 컴퓨터 하드디스크에
-          저장됩니다. 회사은(는) 다음과 같은 목적을 위해 쿠키를 사용합니다.
+          저장됩니다. “몰”은 다음과 같은 목적을 위해 쿠키를 사용합니다.
         </span>
         <br />
         <span>&nbsp;&nbsp;o 쿠키 등 사용 목적</span>
@@ -293,7 +276,7 @@ export default function Privacy_client() {
         <span>■ 개인정보에 관한 민원서비스</span>
         <br />
         <span>
-          회사는 고객의 개인정보를 보호하고 개인정보와 관련한 불만을 처리하기
+          “몰”은 고객의 개인정보를 보호하고 개인정보와 관련한 불만을 처리하기
           위하여 아래와 같이 관련 부서 및 개인정보보호책임자를 지정하고
           있습니다.
         </span>
@@ -313,14 +296,14 @@ export default function Privacy_client() {
         <br />
         <br />
         <span>
-          &nbsp;&nbsp;o 귀하께서는 회사의 서비스를 이용하시며 발생하는 모든
+          &nbsp;&nbsp;o 귀하께서는 “몰”의 서비스를 이용하시며 발생하는 모든
           개인정보보호 관련 민원을 개인정보보호책임자 혹은 담당부서로 신고하실
           수 있습니다.
         </span>
         <br />
         <br />
         <span>
-          &nbsp;&nbsp;o 회사는 이용자들의 신고사항에 대해 신속하게 충분한 답변을
+          &nbsp;&nbsp;o “몰”은 이용자들의 신고사항에 대해 신속하게 충분한 답변을
           드릴 것입니다.
         </span>
         <br />

@@ -1,24 +1,19 @@
-body {
-}
-
 .titleArea {
   width: 100%;
-  padding-top: 150px;
+  padding-top: 100px;
   text-align: center;
 
   h2 {
+    font-size: 24px;
     font-weight: bold;
   }
 }
 
-.subtitle {
-  font-size: 14px;
-}
-
 .agreement {
-  font-size: 12px;
-  // margin: 50px;
-  padding: 70px 150px 150px 150px;
-  // padding: 0;
-  // justify-content: center;
+  position: relative;
+  margin: auto;
+  max-width: 1200px;
+  padding: 30px 50px;
+  font-size: 14px;
+  word-break: break-all;
 }

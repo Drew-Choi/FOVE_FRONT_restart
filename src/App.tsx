@@ -35,6 +35,9 @@ import TossPay_Cancel_Complete_onlyOrder from './components_pages/client_compone
 import ShippingCode_admin from './components_pages/admin_components/ShippingCode_admin';
 import FailPage from './components_pages/client_components/FailPage';
 import ErrorPage from './components_pages/client_components/ErrorPage';
+import Agreement_client from './components_pages/client_components/Agreement_client';
+import Privacy_client from './components_pages/client_components/Privacy_client';
+import ElectroTerms_client from './components_pages/client_components/ElectroTerms_client';
 
 const { REACT_APP_KEY_BACK } = process.env;
 
@@ -48,16 +51,23 @@ const createDatabase = async () => {
       }
     },
   });
+
   const transaction = db.transaction(['store'], 'readwrite');
   const store = transaction.objectStore('store');
   // 여기서 부터는 Key값의 존재 여부에 따라 초긱값 설정을 할지 아니면 그냥 리턴할지 정하는 곳
-  const key = await store.get('t');
+  const key = await store.getKey('t');
+
   if (!key) {
-    store.add('', 't');
-    await transaction.done;
-  } else {
-    return;
+    await store
+      .add('', 't')
+      .then(() => {
+        return;
+      })
+      .catch((error) => {
+        return console.error(error);
+      });
   }
+  return;
 };
 
 function App() {
@@ -105,15 +115,21 @@ function App() {
           const db = await openDB('db', 1);
           const transaction = db.transaction(['store'], 'readwrite');
           const store = transaction.objectStore('store');
-          store.put('', 't');
-          dispatch(
-            keepLogin({
-              nickName: '',
-              points: 0,
-              isAdmin: false,
-              isLogin: false,
-            }),
-          );
+          await store
+            .put('', 't')
+            .then(() => {
+              dispatch(
+                keepLogin({
+                  nickName: '',
+                  points: 0,
+                  isAdmin: false,
+                  isLogin: false,
+                }),
+              );
+            })
+            .catch((error) => {
+              console.error(error);
+            });
           console.error(err);
         }
       };
@@ -133,6 +149,12 @@ function App() {
           <Route path="" element={<Intro_movie_client />} />
           {/* 브랜드소개 */}
           <Route path="/aboutus" element={<AboutUs_client />} />
+          {/* 이용약관 */}
+          <Route path="/agreement" element={<Agreement_client />} />
+          {/* 개인정보방침 */}
+          <Route path="/privacy" element={<Privacy_client />} />
+          {/* 전자금융거래약관 */}
+          <Route path="/electronic" element={<ElectroTerms_client />} />
           {/* 상품진열 */}
           <Route path="/store" element={<Store_client />} />
           {/* 카테고리별 아이템 분리 */}

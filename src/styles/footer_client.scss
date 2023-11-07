@@ -1,5 +1,5 @@
 .footer_client {
-  position:relative;
+  position: relative;
   bottom: 0px;
   display: flex;
   width: 100vw;
@@ -20,19 +20,20 @@
       padding: 10px 30px;
     }
 
-    .footer_copyright{
+    .footer_copyright {
       font-size: 11px;
       margin-bottom: 5px;
     }
-    .footer_sub_menu{
+    .footer_sub_menu {
       list-style: none;
       padding: 0px;
       display: flex;
-      
+
       li {
         padding: 0px;
         margin-right: 15px;
         font-size: 10px;
+        cursor: pointer;
       }
 
       .to_kakao {
@@ -49,7 +50,7 @@
     position: relative;
     padding: 10px 30px;
 
-    .footer_detail{
+    .footer_detail {
       font-size: 10px;
       list-style: none;
       text-align: right;
