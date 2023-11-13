@@ -10,9 +10,9 @@ const fadeIn = keyframes`
   }
 `;
 
-const AnimationText = styled.span<{ delay: string }>`
+const AnimationText = styled.span<{ delay: string; top: string }>`
   position: relative;
-  top: 50%;
+  top: ${({ top }) => top};
   transform: translateY(-50%);
   display: inline-block;
   animation: ${fadeIn} 1s ease-in-out both infinite;
@@ -36,14 +36,14 @@ const Container = styled.div`
   z-index: 5;
 `;
 
-export default function Loading() {
+export default function Loading({ top = '50%' }) {
   const text = 'FOVV...';
 
   return (
     <Container>
       {text.split('').map((char, index) => {
         return (
-          <AnimationText key={index} delay={`${index * 0.1}s`}>
+          <AnimationText top={top} key={index} delay={`${index * 0.1}s`}>
             {char}
           </AnimationText>
         );

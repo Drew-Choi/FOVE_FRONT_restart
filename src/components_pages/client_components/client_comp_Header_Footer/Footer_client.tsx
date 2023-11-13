@@ -50,7 +50,7 @@ export default function Footer_client() {
             TEAM MEMBER. CHOI DREW, KIM SEONG HYEON, SHIN SANG AH, SONG MIN
             SEON, PARK SUNG HEE
           </li>
-          <li>C/S CENTER. 010-9148-7457 / 11:00 - 17:00</li>
+          <li>C/S CENTER. 0507-1407-3022 / 11:00 - 17:00</li>
           <li>E-MAIL. fovecorp@gmail.com</li>
         </ul>
       </div>

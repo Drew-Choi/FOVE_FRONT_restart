@@ -1,0 +1,56 @@
+.container {
+  position: relative;
+  display: flex;
+  width: 100vw;
+  min-height: 77vh;
+  box-sizing: border-box;
+  padding: 50px 0;
+
+  .intro_logo_box {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid black;
+
+    .intro_logo {
+      position: relative;
+      display: block;
+      max-width: 300px;
+      margin: 0 100px;
+    }
+
+    p {
+      margin: 50px 0;
+      font-size: 14px;
+      line-height: 1.5;
+      word-break: break-all;
+      padding: 0 30px;
+      color: #909090;
+    }
+  }
+
+  .image_box {
+    position: relative;
+    box-sizing: border-box;
+    padding-right: 15vw;
+    &::before {
+      content: '';
+      position: absolute;
+      right: 0;
+      display: block;
+      width: 15vw;
+      height: 1px;
+      background-color: black;
+    }
+
+    .swiper {
+      width: 500px;
+      border-bottom: 1px solid black;
+      border-top: 1px solid black;
+      border-radius: 100px 0 200px 0;
+    }
+  }
+}

@@ -9,7 +9,6 @@ import Client_main from './components_pages/client_components/Client_main';
 import AboutUs_client from './components_pages/client_components/client_comp_AboutUs/AboutUs_client';
 import Store_client from './components_pages/client_components/client_comp_Store/Store_client';
 import Detail_client from './components_pages/client_components/client_comp_Detail/Detail_client';
-import Intro_movie_client from './components_pages/client_components/client_comp_IntroMovie/Intro_movie_clinet';
 import Mypage_client from './components_pages/client_components/client_comp_MyPage/Mypage_client';
 import Login_client from './components_pages/client_components/client_comp_Kakao/Login_client';
 import Order_client from './components_pages/client_components/client_comp_Order-Toss/Order_client';
@@ -38,6 +37,7 @@ import ErrorPage from './components_pages/client_components/ErrorPage';
 import Agreement_client from './components_pages/client_components/Agreement_client';
 import Privacy_client from './components_pages/client_components/Privacy_client';
 import ElectroTerms_client from './components_pages/client_components/ElectroTerms_client';
+import Intro_clinet from './components_pages/client_components/client_comp_Intro/Intro_clinet';
 
 const { REACT_APP_KEY_BACK } = process.env;
 
@@ -145,8 +145,8 @@ function App() {
       <Routes>
         {/* Client 영역 */}
         <Route path="/" element={<Client_main />}>
-          {/* 인트로 무비 */}
-          <Route path="" element={<Intro_movie_client />} />
+          {/* 인트로 */}
+          <Route path="" element={<Intro_clinet />} />
           {/* 브랜드소개 */}
           <Route path="/aboutus" element={<AboutUs_client />} />
           {/* 이용약관 */}
