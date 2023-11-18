@@ -314,7 +314,7 @@ const CartModal = ({
               dispatch(importdb(cartDataGet.data));
             }
           } catch (err: any) {
-            if (err.response.status === 404) {
+            if (err?.response?.status === 404) {
               const nullCart: { products: []; cartQuantity: number } = {
                 products: [],
                 cartQuantity: 0,
@@ -324,7 +324,7 @@ const CartModal = ({
             }
             // 그외 오류는 로그 띄우고, 에러 페이지로 보내기
             navigate(
-              `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+              `/error?errorMessage=${err?.response?.data}&errorCode=${err?.response?.status}`,
             );
             console.error(err);
           }
@@ -525,20 +525,21 @@ const CartModal = ({
             fontSize="12px"
             transFontSize="10px"
             padding="7px 30px"
-            onClickEvent={() => {
-              if (isLogin) {
-                if ((cartInfo.cartProducts.length as number) !== 0) {
-                  navigate(`/store/cartorder`);
-                  closeOnClick((cur) => (cur === 'on' ? 'off' : 'on'));
-                } else {
-                  alert('카트오류');
-                  return navigate(`/store`);
-                }
-              } else {
-                alert('로그인이 필요한 서비스입니다.');
-                return navigate(`/login`);
-              }
-            }}
+            // onClickEvent={() => {
+            //   if (isLogin) {
+            //     if ((cartInfo.cartProducts.length as number) !== 0) {
+            //       navigate(`/store/cartorder`);
+            //       closeOnClick((cur) => (cur === 'on' ? 'off' : 'on'));
+            //     } else {
+            //       alert('카트가 비어있습니다.');
+            //       return navigate(`/store`);
+            //     }
+            //   } else {
+            //     alert('로그인이 필요한 서비스입니다.');
+            //     return navigate(`/login`);
+            //   }
+            // }}
+            onClickEvent={() => alert('서비스 준비 중')}
           >
             Buy
           </BTN_black_nomal_comp>

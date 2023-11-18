@@ -2,16 +2,14 @@
   position: relative;
   width: 100vw;
   min-height: 70vh;
-  // background-color: beige;
 
   .product_display {
-    // background-color: rgb(255, 208, 208);
     position: relative;
     width: 100vw;
-    
-      @media screen and (max-width: 575px) {
-    padding: 40px;
-  }
+
+    @media screen and (max-width: 575px) {
+      padding: 40px;
+    }
 
     .swiper_container {
       position: relative;
@@ -22,10 +20,8 @@
         min-height: 60vh;
       }
     }
-
-    
   }
-  .navi_pagi_fix{
+  .navi_pagi_fix {
     position: relative;
     width: 100vw;
     height: 105px;
@@ -37,46 +33,45 @@
       border-top: 0.5px solid black;
     }
 
-    .swiper_pagination_container{
-    position: relative;
-    top: 65px;
-    right: 50%;
-    transform: translateX(50%);
-
-    .nav_arrow_pre{
+    .swiper_pagination_container {
       position: relative;
-      top: 1px;
-      padding-right: 50px;
-    }
-    .nav_arrow_next{
-      position: relative;
-      top: 1px;
-      padding-left: 50px;
-    }
+      top: 65px;
+      right: 50%;
+      transform: translateX(50%);
 
-    .pagi1.on{
-      text-decoration: underline;
-    }
-    .pagi2.on{
-      text-decoration: underline;
-    }
-    .pagi3.on{
-      text-decoration: underline;
-    }
-    .pagi4.on{
-      text-decoration: underline;
-    }
-    .pagi5.on{
-      text-decoration: underline;
+      .nav_arrow_pre {
+        position: relative;
+        top: 1px;
+        padding-right: 50px;
+      }
+      .nav_arrow_next {
+        position: relative;
+        top: 1px;
+        padding-left: 50px;
+      }
+
+      .pagi1.on {
+        text-decoration: underline;
+      }
+      .pagi2.on {
+        text-decoration: underline;
+      }
+      .pagi3.on {
+        text-decoration: underline;
+      }
+      .pagi4.on {
+        text-decoration: underline;
+      }
+      .pagi5.on {
+        text-decoration: underline;
+      }
     }
   }
- }
 
- .container {
-  .store_col {
-    text-align: center;
-    cursor: pointer;
-  
+  .container {
+    .store_col {
+      text-align: center;
+      cursor: pointer;
+    }
   }
- }
 }

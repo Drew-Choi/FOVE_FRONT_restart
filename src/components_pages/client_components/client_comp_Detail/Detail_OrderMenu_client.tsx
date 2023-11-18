@@ -4,7 +4,7 @@ import { useCallback, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { add } from '../../../store/modules/cart';
 import { useNavigate } from 'react-router-dom';
-import { single } from '../../../store/modules/order';
+// import { single } from '../../../store/modules/order';
 import detailOrderMenu from '../../../styles/detail_orderMenu.module.scss';
 import { MdAddShoppingCart } from 'react-icons/md';
 import getToken from '../../../constant/getToken';
@@ -180,22 +180,22 @@ export default function Detail_OrderMenu_client({
   }, [sizeCheck, count, isLogin, datas]);
 
   //싱글상품 데이터, 매개변수만 받으면 되니 useCallback
-  const singleDataSum = useCallback(
-    (datas: ProductsType, count: number, sizeCheck: string): sumDataType => {
-      const sumData = {
-        productName: datas.productName,
-        productCode: datas.productCode,
-        price: datas.price!,
-        quantity: count,
-        size: sizeCheck,
-        totalPrice: datas.price! * count,
-        img: datas.img![0],
-        color: datas.color,
-      };
-      return sumData;
-    },
-    [],
-  );
+  // const singleDataSum = useCallback(
+  //   (datas: ProductsType, count: number, sizeCheck: string): sumDataType => {
+  //     const sumData = {
+  //       productName: datas.productName,
+  //       productCode: datas.productCode,
+  //       price: datas.price!,
+  //       quantity: count,
+  //       size: sizeCheck,
+  //       totalPrice: datas.price! * count,
+  //       img: datas.img![0],
+  //       color: datas.color,
+  //     };
+  //     return sumData;
+  //   },
+  //   [],
+  // );
 
   //배송정보 모달
   const [shipon, setShipon] = useState(false);
@@ -210,15 +210,15 @@ export default function Detail_OrderMenu_client({
   const handleCloseModal2 = useCallback(() => setBeanieSizeOn(false), []);
 
   // 바로 구매 시(Buy 버튼)
-  const buyNow = () => {
-    // 로그인 상태가 아니면, 로그인 페이지로 이동
-    if (!isLogin) {
-      alert('로그인이 필요한 서비스입니다.');
-      return navigate(`/login`);
-    }
-    dispatch(single(singleDataSum(datas, count, sizeCheck)));
-    navigate(`/store/order`);
-  };
+  // const buyNow = () => {
+  //   // 로그인 상태가 아니면, 로그인 페이지로 이동
+  //   if (!isLogin) {
+  //     alert('로그인이 필요한 서비스입니다.');
+  //     return navigate(`/login`);
+  //   }
+  //   dispatch(single(singleDataSum(datas, count, sizeCheck)));
+  //   navigate(`/store/order`);
+  // };
 
   return (
     <div className={detailOrderMenu.Detail_Order}>
@@ -416,7 +416,8 @@ export default function Detail_OrderMenu_client({
           ) : (
             <BTN_black_nomal_comp
               className={detailOrderMenu.buy}
-              onClickEvent={buyNow}
+              // onClickEvent={buyNow}
+              onClickEvent={() => alert('서비스 준비 중 ')}
             >
               BUY
             </BTN_black_nomal_comp>

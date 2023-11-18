@@ -12,9 +12,9 @@ import adminPdList from '../../styles/productList_admin.module.scss';
 import BTN_black_nomal_comp from '../../components_elements/BTN_black_nomal_comp';
 import BTN_white_nomal_comp from '../../components_elements/BTN_white_nomal_comp';
 import MediaQuery from 'react-responsive';
-import LoadingAdmin from '../client_components/LoadingAdmin';
 import { useNavigate } from 'react-router-dom';
 import { changeEnteredNumComma, resultCommaRemove } from '../../constant/comma';
+import Loading_Spinner from '../client_components/Loading_Spinner';
 
 const { REACT_APP_KEY_BACK } = process.env;
 const { REACT_APP_KEY_IMAGE } = process.env;
@@ -411,35 +411,35 @@ export default function ProductList_admin() {
   };
 
   // 삭제기능 핸들
-  const productDelete = async (productCode: string, productName: string) => {
-    // 클라이언트 체크 한번 더
-    const upadatConfirm = confirm(
-      `삭제 후 복구가 어렵습니다.\n상품명: ${productName}\n상품코드: ${productCode}\n정말 삭제하시겠습니까?`,
-    );
+  // const productDelete = async (productCode: string, productName: string) => {
+  //   // 클라이언트 체크 한번 더
+  //   const upadatConfirm = confirm(
+  //     `삭제 후 복구가 어렵습니다.\n상품명: ${productName}\n상품코드: ${productCode}\n정말 삭제하시겠습니까?`,
+  //   );
 
-    if (!upadatConfirm) return alert('삭제 취소');
+  //   if (!upadatConfirm) return alert('삭제 취소');
 
-    // confirm이 true이면 아래 진행
-    try {
-      setIsVisible(true);
-      const response = await axios.post(
-        `${REACT_APP_KEY_BACK}/admin/productlist/delete/${productCode}`,
-      );
+  //   // confirm이 true이면 아래 진행
+  //   try {
+  //     setIsVisible(true);
+  //     const response = await axios.post(
+  //       `${REACT_APP_KEY_BACK}/admin/productlist/delete/${productCode}`,
+  //     );
 
-      if (response.status === 200)
-        return (
-          setRedirect((cur) => !cur),
-          window.location.reload(),
-          alert(
-            `상품명: ${productName}\n상품코드: ${productCode}\n삭제되었습니다`,
-          )
-        );
-    } catch (err: any) {
-      console.error(err);
-      return alert('수정오류');
-    }
-    setIsVisible(false);
-  };
+  //     if (response.status === 200)
+  //       return (
+  //         setRedirect((cur) => !cur),
+  //         window.location.reload(),
+  //         alert(
+  //           `상품명: ${productName}\n상품코드: ${productCode}\n삭제되었습니다`,
+  //         )
+  //       );
+  //   } catch (err: any) {
+  //     console.error(err);
+  //     return alert('수정오류');
+  //   }
+  //   setIsVisible(false);
+  // };
 
   // Sub_2~4번까지 개별 사진 삭제
   const imgIndiDelete = async (
@@ -557,7 +557,7 @@ export default function ProductList_admin() {
             <input
               style={{ display: 'none' }}
               type="file"
-              accept="image/jpg, image/jpeg, image/png"
+              accept="image/jpg, image/jpeg, image/png, image/webp"
               ref={(e) => (imgClick.current[num] = e)}
               name="img"
               onChange={(e) =>
@@ -809,7 +809,8 @@ export default function ProductList_admin() {
 
             <BTN_black_nomal_comp
               onClickEvent={() =>
-                productDelete(item.productCode, item.productName)
+                // productDelete(item.productCode, item.productName)
+                alert('서비스 준비 중')
               }
             >
               삭제
@@ -823,11 +824,11 @@ export default function ProductList_admin() {
   return (
     <div className={adminPdList.whol_container}>
       <p className={adminPdList.mainTitle}>PRODUCT DISPLAY LIST</p>
-      {isVisible && <LoadingAdmin />}
+      {isVisible && <Loading_Spinner containerWidth="80vw" />}
       {(enterNum === null || enterNum === undefined || enterNum.length === 0) &&
       data.length === 0 &&
       disableControll.length === 0 ? (
-        <LoadingAdmin />
+        <Loading_Spinner containerWidth="80vw" />
       ) : (
         productList
       )}

@@ -19,6 +19,9 @@
     @media screen and (max-width: 575px) {
       padding: 10px 30px;
     }
+    @media screen and (max-width: 340px) {
+      padding: 10px;
+    }
 
     .footer_copyright {
       font-size: 11px;
@@ -28,12 +31,17 @@
       list-style: none;
       padding: 0px;
       display: flex;
+      align-items: center;
 
       li {
         padding: 0px;
         margin-right: 15px;
         font-size: 10px;
         cursor: pointer;
+        @media screen and (max-width: 340px) {
+          margin-right: 10px;
+          font-size: 9px;
+        }
       }
 
       .to_kakao {

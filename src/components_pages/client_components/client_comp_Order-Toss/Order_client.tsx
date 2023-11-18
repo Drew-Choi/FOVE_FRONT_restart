@@ -620,7 +620,7 @@ export default function Order_client() {
                       <BTN_black_nomal_comp
                         fontSize="18px"
                         className={orderClient.order_btn}
-                        padding="10px 0px"
+                        padding="10px 15px"
                         onClickEvent={() => {
                           if (isLogin) {
                             !agreement

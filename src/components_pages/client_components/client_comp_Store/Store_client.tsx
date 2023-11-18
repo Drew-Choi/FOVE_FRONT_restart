@@ -81,7 +81,7 @@ export default function Store_client() {
           }
         } catch (err: any) {
           navigate(
-            `/error?errorMessage=${err.response.data}&errorCode=${err.response.status}`,
+            `/error?errorMessage=${err?.response?.data}&errorCode=${err?.response?.status}`,
           );
           console.error(err);
         }

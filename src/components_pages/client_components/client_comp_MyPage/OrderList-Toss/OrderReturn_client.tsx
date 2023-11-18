@@ -416,7 +416,7 @@ export default function OrderReturn_client() {
                 <input
                   style={{ display: 'none' }}
                   type="file"
-                  accept="image/jpg, image/jpeg, image/png"
+                  accept="image/jpg, image/jpeg, image/png, image/webp"
                   ref={fileInputRef}
                   onChange={uploadProfile}
                   name="img"

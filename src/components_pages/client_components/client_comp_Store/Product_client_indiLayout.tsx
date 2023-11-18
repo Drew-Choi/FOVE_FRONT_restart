@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import styled from 'styled-components';
 
@@ -57,14 +57,14 @@ const Product_client_indiLayout = ({
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   //마우스엔터 핸들러
-  const handleMouseEnter = () => {
+  const handleMouseEnter = useCallback(() => {
     setIsHovered(true);
-  };
+  }, []);
 
   //마우스리브 핸들러
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     setIsHovered(false);
-  };
+  }, []);
 
   //마우스 오버 여부를 변수에 담는 곳, 이미지 파일들은 프롭스 받은 것들로 구성
   const image = isMobile
@@ -79,7 +79,7 @@ const Product_client_indiLayout = ({
       onMouseLeave={handleMouseLeave}
     >
       {/* 위에서 선별된 이미지를 실제로 쏴준다. */}
-      <ImageLayout src={`${REACT_APP_KEY_IMAGE}` + image} />
+      <ImageLayout src={`${REACT_APP_KEY_IMAGE}` + image} alt="상품이미지" />
       <ProductInfoLayout>
         <ProductName>{productName}</ProductName>
         <ProductPrice>{price}</ProductPrice>

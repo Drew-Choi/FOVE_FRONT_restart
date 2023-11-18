@@ -25,29 +25,32 @@ const AnimationText = styled.span<{ delay: string }>`
   }
 `;
 
-const Container = styled.div`
+interface ContainerProps {
+  containerWidth: string;
+}
+
+const Container = styled.div<ContainerProps>`
   position: fixed;
-  width: 100vw;
+  box-sizing: border-box;
+  width: ${({ containerWidth }) => containerWidth};
   min-height: 700px;
   height: 100%;
+  z-index: 999;
   text-align: center;
-  z-index: 10;
 `;
 
-export default function Loading_Spinner() {
+export default function Loading_Spinner({ containerWidth = '100vw' }) {
   const text = 'FOVV...';
 
   return (
-    <>
-      <Container>
-        {text.split('').map((char, index) => {
-          return (
-            <AnimationText key={index} delay={`${index * 0.1}s`}>
-              {char}
-            </AnimationText>
-          );
-        })}
-      </Container>
-    </>
+    <Container containerWidth={containerWidth}>
+      {text.split('').map((char, index) => {
+        return (
+          <AnimationText key={index} delay={`${index * 0.1}s`}>
+            {char}
+          </AnimationText>
+        );
+      })}
+    </Container>
   );
 }

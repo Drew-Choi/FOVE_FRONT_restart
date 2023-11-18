@@ -18,6 +18,12 @@ import MediaQuery from 'react-responsive';
 import Loading_Spinner from '../client_components/Loading_Spinner';
 import { changeEnteredNumComma, resultCommaRemove } from '../../constant/comma';
 
+interface FileInfo {
+  file: File;
+  thumbnail: string;
+  type: string;
+}
+
 const Preview = styled.div<{ thumbnail: string }>`
   position: relative;
   display: block;
@@ -118,14 +124,7 @@ export default function ProductRegister_admin() {
   //이미지 파일 업로드용 Ref
   const fileInputRef = useRef<HTMLInputElement>(null);
   //이미지 url접근값 저장 state
-  const [imageFile, setImageFile] = useState<
-    | {
-        file: File;
-        thumbnail: string;
-        type: string;
-      }[]
-    | null
-  >(null);
+  const [imageFile, setImageFile] = useState<FileInfo[] | null>(null);
   //이미지인풋클릭 함수
   const handleClickFileInput = () => {
     fileInputRef.current?.click();
@@ -138,41 +137,44 @@ export default function ProductRegister_admin() {
   const uploadProfile = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       const selectedFiles = e.target.files;
+
       const selectedFilesLength = selectedFiles!.length;
       if (selectedFilesLength > 5) {
         alert('최대 5개까지 업로드 가능합니다.');
       } else {
+        // 파일리스트를 배열로
+        const filesArray: File[] = Array.from(selectedFiles || []);
+
         // 파일리스트 2번 가공함
         // 첫 번째 가공배열 담을 배열
-        const copy = [];
-        // 두 번째 가공배열 담을 배열
-        const copyUpload = [];
+        const copy: FileInfo[] | undefined = filesArray?.map((el: File) => {
+          const imgInfo = {
+            file: el,
+            thumbnail: URL.createObjectURL(el),
+            type: el.type.split('/')[0],
+          };
+          return imgInfo;
+        });
 
-        if (selectedFiles) {
-          for (let i = 0; i < length; i += 1) {
-            const imgInfo = {
-              file: selectedFiles[i],
-              thumbnail: URL.createObjectURL(selectedFiles[i]),
-              type: selectedFiles[i].type.slice(0, 5),
-            };
-            copy.push(imgInfo);
-            // 파일리스트 두 번째 가공: 업로드 백엔드 요청용으로 가공.
-            // 파일명을 상품코드로 작성하여 정리함
+        // 두 번째 가공배열 담을 배열
+        const copyUpload: { file: File }[] = filesArray?.map(
+          (el: File, index: number) => {
             const uploadPdInfo = {
               file: new File(
-                [selectedFiles[i]],
-                `${pdCode}_${i + 1}.${selectedFiles[i].name.split('.').pop()}`,
-                { type: selectedFiles[i].type },
+                [el],
+                `${pdCode}_${index + 1}.${el.name.split('.').pop()}`,
+                { type: el.type },
               ),
             };
-            copyUpload.push(uploadPdInfo);
-          }
-        }
+            return uploadPdInfo;
+          },
+        );
+
         setImageFile(copy);
         setPd_img(copyUpload);
       }
     },
-    [fileInputRef],
+    [fileInputRef.current],
   );
 
   //이미지 뿌려주기, 유즈 메모로 image파일이 업로드 될때만 반응하도록
@@ -234,6 +236,7 @@ export default function ProductRegister_admin() {
       const formData = new FormData();
       //이미지 체크 및 form에 담기
       if (pd_img === undefined || pd_img === null || pd_img.length < 2) {
+        setSpinner(false);
         return alert('제품 사진을 최소 2개 이상 올려주세요.(필수사항)');
       } else {
         if (
@@ -250,6 +253,7 @@ export default function ProductRegister_admin() {
           category === null ||
           category === ''
         ) {
+          setSpinner(false);
           return alert('상품 필수 정보를 모두 입력해주세요.');
         } else {
           if (
@@ -258,6 +262,7 @@ export default function ProductRegister_admin() {
             (sizeM === -1 || sizeM === undefined || sizeM === null) &&
             (sizeL === -1 || sizeL === undefined || sizeL === null)
           ) {
+            setSpinner(false);
             return alert('최소 1개의 사이즈를 입력해주세요.');
           } else {
             //여러 이미지라 formdata에 담아줌
@@ -361,7 +366,7 @@ export default function ProductRegister_admin() {
 
   return (
     <div className={productRegister.productRegister_admin}>
-      {spinner && <Loading_Spinner />}
+      {spinner && <Loading_Spinner containerWidth="80vw" />}
       <div className={productRegister.register_container}>
         <div className={productRegister.indi_container_title}>
           <p className={productRegister.mainTitle}>PRODUCT REGISTRATION</p>
@@ -583,7 +588,7 @@ export default function ProductRegister_admin() {
           <input
             style={{ display: 'none' }}
             type="file"
-            accept="image/jpg, image/jpeg, image/png"
+            accept="image/jpg, image/jpeg, image/png, image/webp"
             ref={fileInputRef}
             onChange={uploadProfile}
             name="img"
