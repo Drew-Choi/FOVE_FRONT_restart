@@ -7,8 +7,6 @@ import 'swiper/css/effect-fade';
 import SwiperCore, { Autoplay, EffectFade } from 'swiper';
 import Loading from '../Loading';
 
-// import MediaQuery from 'react-responsive';
-
 SwiperCore.use([Autoplay, EffectFade]);
 
 export default function Intro_clinet() {
@@ -40,6 +38,7 @@ export default function Intro_clinet() {
               disableOnInteraction: false, // 사용자 상호작용 후에도 자동 재생 유지
             }}
             effect="fade"
+            speed={2000}
           >
             {Array.from({ length: 4 }).map((_, index) => (
               <SwiperSlide key={index} className={style.swiper_slide}>
