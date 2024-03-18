@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.d2293714.css",
-    "main.js": "/static/js/main.d4e16a08.js",
+    "main.js": "/static/js/main.6f49844a.js",
     "static/js/787.e282a9b2.chunk.js": "/static/js/787.e282a9b2.chunk.js",
     "static/media/FOVV_mainLogo.png": "/static/media/FOVV_mainLogo.2299d1b3de666907541e.png",
     "index.html": "/index.html",
     "main.d2293714.css.map": "/static/css/main.d2293714.css.map",
-    "main.d4e16a08.js.map": "/static/js/main.d4e16a08.js.map",
+    "main.6f49844a.js.map": "/static/js/main.6f49844a.js.map",
     "787.e282a9b2.chunk.js.map": "/static/js/787.e282a9b2.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.d2293714.css",
-    "static/js/main.d4e16a08.js"
+    "static/js/main.6f49844a.js"
   ]
 }

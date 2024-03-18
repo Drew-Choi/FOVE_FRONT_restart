@@ -526,19 +526,19 @@ const CartModal = ({
             transFontSize="10px"
             padding="7px 30px"
             onClickEvent={() => {
-              alert('테스트 결제입니다.\n실제로 결제되지 않습니다.');
-              if (isLogin) {
-                if ((cartInfo.cartProducts.length as number) !== 0) {
-                  navigate(`/store/cartorder`);
-                  closeOnClick((cur) => (cur === 'on' ? 'off' : 'on'));
-                } else {
-                  alert('카트가 비어있습니다.');
-                  return navigate(`/store`);
-                }
-              } else {
-                alert('로그인이 필요한 서비스입니다.');
-                return navigate(`/login`);
-              }
+              alert('결제시스템 교체 중');
+              // if (isLogin) {
+              //   if ((cartInfo.cartProducts.length as number) !== 0) {
+              //     navigate(`/store/cartorder`);
+              //     closeOnClick((cur) => (cur === 'on' ? 'off' : 'on'));
+              //   } else {
+              //     alert('카트가 비어있습니다.');
+              //     return navigate(`/store`);
+              //   }
+              // } else {
+              //   alert('로그인이 필요한 서비스입니다.');
+              //   return navigate(`/login`);
+              // }
             }}
           >
             Buy
